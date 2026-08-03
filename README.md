@@ -48,7 +48,8 @@ Conversation summaries are context, not primary evidence. Uploaded originals, si
 | `KNOWLEDGE_GRAPH_SCHEMA.md` | Schema for the living project brain |
 | `REQUIREMENTS_MATRIX.md` | Business capability to interface traceability |
 | `INTERFACE_REGISTER.md` | Canonical inventory of candidate interfaces |
-| `HANDOVER_2026-07-30_AI.md` | Current complete contextual handover for a successor AI agent — read this after the operating rules |
+| **`HANDOVER_AI.md`** | **START HERE (AI).** Complete current-state briefing. Includes the register-ID precedence map and the list of stale documents not to trust |
+| **`HANDOVER_HUMAN.md`** | **START HERE (human).** Plain-language position: what is known, what is open, what to say in meetings |
 | `SAP_API_DOSSIER.md` | Received spec assessment, meeting-derived process model, and the proposed SAP API set |
 | `BAPI_CANDIDATES.md` | Candidate SAP APIs and required validation |
 | `SEGW_ODATA_PLAN.md` | OData V2 design and implementation standards |
