@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(where.exe pdftotext *)",
+      "Bash(where.exe gs *)",
+      "Bash(where.exe soffice *)"
+    ]
+  }
+}
