@@ -226,7 +226,9 @@ Stated as decisions with reasons, so they can be challenged individually.
 
 ## C.3 API catalogue
 
-`Op` = GET (read) or POST (command). `IF` traces to `INTERFACE_REGISTER.md`. **All candidate APIs require SE37/SE11 verification and a released-alternative check before adoption.**
+`Op` = GET (read) or POST (command). `IF` traces to the retired interface register, now `_archive/INTERFACE_REGISTER.md` — see `_archive/README.md` for the IF→API mapping. **All candidate APIs require SE37/SE11 verification and a released-alternative check before adoption.**
+
+> **Note (2026-08-03):** this dossier predates architecture Option C (D-014), the KDS catalogue and the DigiGST finding (D-017). Part A (the specification defect register) remains accurate and useful. Part C's API set is superseded by `deliverables/CNF_API_Classification.xlsx` and `HANDOVER_AI.md §5`.
 
 ### `ZCNF_MASTER_SRV` — reference data
 

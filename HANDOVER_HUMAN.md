@@ -128,7 +128,7 @@ The right column is shorter than it was two weeks ago, and the left column now c
 
 **Don't treat the UI design as frozen.** The 3 August session said explicitly *"don't take this as the final handoff"* and *"you'll have to start only after that."* If field-level contracts can't be settled until the design freezes, that's a second dependency alongside access — and it isn't in the plan.
 
-**Don't trust the old documents in this repo.** `PROJECT_BRAIN.md`, `INTERFACE_REGISTER.md`, `REQUIREMENTS_MATRIX.md`, `MASTER_PLAN.md` and the earlier handover were written before any client documentation arrived. The method in them is sound; the SAP specifics are guesses. `HANDOVER_AI.md` §0.2 lists exactly what's stale.
+**Don't trust the pre-evidence documents.** `PROJECT_BRAIN.md`, `MASTER_PLAN.md`, `NEXT_MOVE.md`, `SEGW_ODATA_PLAN.md`, `BAPI_CANDIDATES.md` and `CPI_CONTRACTS.md` were written before any client documentation arrived. The method in them is sound; the SAP specifics are guesses. `HANDOVER_AI.md` §0.2 lists exactly what's stale, and the retired interface and requirements registers now sit in `_archive/` with a mapping to the current API numbering.
 
 ---
 
