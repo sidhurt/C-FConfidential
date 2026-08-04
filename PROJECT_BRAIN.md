@@ -1,161 +1,103 @@
 # Project Brain
 
+The mental model. For current state, open questions and register navigation, read `HANDOVER_AI.md` — this file is how to *think* about the project, not a status report.
+
+**Last reconciled:** 2026-08-03
+
 ## One-sentence model
 
-The C&F Agent Interface is a new operational application over Shree Cement's existing SAP dispatch processes: Commerce presents the user journey, CPI moves and coordinates messages, S/4HANA validates and creates authoritative business documents, and Datasphere supplies selected analytical or historical views.
+The C&F Agent Interface is a new operational portal over Shree Cement's existing SAP dispatch processes: a Spartacus storefront presents the journey, Commerce Cloud serves most reads, SAP Integration Suite moves messages, S/4HANA validates and creates the authoritative business documents, Datasphere supplies analytical and replicated data, and DigiGST handles statutory e-documents.
 
-## What the 28 July meeting established
-
-The project is not a generic data-extraction exercise. The application is attempting to reproduce and simplify a connected SD/MM/warehouse flow:
+## The operational spine
 
 ```text
-Order
-  → Delivery Instruction (DI)
-  → storage-location and batch determination
-  → transporter and freight
-  → PGI + shipment + shipment cost + billing
-  → e-Invoice + E-Way Bill
-  → document status/download
-  → correction or extension
+Sales Order / STO
+  → Delivery ("DI")                    the central operational object
+  → one storage location → 1..n batches
+  → transporter · route · freight
+  → PGI · shipment · shipment cost · billing
+  → e-Invoice (IRN) · E-Way Bill
+  → document status · download
+  → correction · extension
 ```
 
-Goods receipt/MIGO, warehouse-to-warehouse movement, physical inventory reconciliation, dashboards, and reports sit around this dispatch spine.
+Peripheral to the spine: inbound goods receipt (MIGO), warehouse-to-warehouse transfer (STO), reports.
 
-The essential SAP task is therefore:
+**Everything the SAP team builds hangs off this chain.** When a requirement arrives, the first question is always: which station does it touch, and does it read or write?
 
-> Understand the Shree Cement meaning of every process, code, master-data field, and document relationship; then expose only the approved SAP operations and data through reliable CPI-facing APIs.
+## The central thesis
 
-## The real technical problem
+> **A BAPI will not repair a semantically wrong payload.**
 
-The portal screen contains fields. A field cannot be mapped correctly until the team knows:
+This is the most important sentence in the repository and it has survived every piece of evidence since.
 
-- what the business term means at Shree Cement;
-- which SAP object/field represents it;
-- whether it is user input, derived, or configuration/master data;
-- which process state permits it;
-- which system owns it;
-- which validations and accounting/logistics consequences follow.
+The failure mode this guards against is specific: a technically correct API call, with correct syntax and a valid signature, carrying a business value that means the wrong thing. It posts successfully. Nothing errors. The defect surfaces weeks later in production, as wrong stock in the wrong place or an invoice a customer disputes.
 
-The side conversation exposed a serious knowledge-transfer gap. Senior business participants expect the technical team to understand Shree Cement's KDS/master-data vocabulary, SD treatment, trade/non-trade differences, product families, Incoterms, order/STO processes, and SAP field derivation. A BAPI will not repair a semantically wrong payload.
+Client senior stakeholders raised exactly this in the 28 July walkthrough, pushing back on the work being scoped as "field mapping and BAPI posting". They were right.
 
-## Current evidence map
+**What has changed since:** the semantic gap is now substantially closed. The KDS catalogue (`sources/`) decodes the client's actual configuration — material groups, customer groups, storage locations, special procurement indicators, org structure. The thesis stands, but the team is no longer working blind against it.
 
-### Verified from the 28 July meeting
+## How to think about the four systems
 
-- SAP remains the authoritative system that generates the invoice.
-- The new application presents and initiates existing SAP-backed processes.
-- Invoice work begins from an open DI.
-- The proposed flow uses one storage location per DI/invoice, with multiple batches allowed inside that location.
-- Batch quantities must sum to the DI quantity before further processing.
-- Only the DI quantity is intended to be editable after DI creation, while the DI is still open.
-- Transporter selection, freight estimation, shipment details, PGI, shipment, shipment cost, invoice, E-Way Bill, and e-Invoice are part of the desired invoice journey.
-- E-Way Bill Part B must remain editable within validity for vehicle changes.
-- E-Way Bill extension uses the vehicle's current location and reason, stays in Road mode, and extends by 24 hours.
-- FleetX is the proposed source of the live vehicle tracking link.
-- Open business questions remain around stock/freight checks at DI creation, FIFO behavior, pickup code, invoice identifiers, and document errors.
+Not "SAP plus some other things". Four systems that each genuinely own something:
 
-### Strong inferences
+| System | Owns | Do not ask it for |
+|---|---|---|
+| **S/4HANA** | Creating and posting business documents. Business validity, locking, document numbers, duplicate prevention | Portal display data. Under Option C most reads are served elsewhere |
+| **Commerce Cloud** | The user journey; portal masters (depot, geography, material alias, Incoterms, storage location); and — under Option C — serving orders, deliveries and invoices live from T1 | Business validity. Commerce must never decide what SAP will accept |
+| **Datasphere** | Analytical, consolidated and replicated data — MRN, STO list, stock ageing, vehicle and transporter masters | Transactional decisions. A batch allocation cannot be made from a 15-minute-old snapshot |
+| **Integration Suite (CPI)** | Message movement, routing, transformation, transport retry, correlation | Business rules. CPI must not become the hidden home of SAP logic |
 
-- The ABAP work will include more query/status services than the original six-interface proposal suggested.
-- “Generate Invoice” is probably a multi-step orchestration rather than a single atomic BAPI call.
-- DI is closely related to a delivery but its exact SAP object semantics are still unverified.
-- Current transactional reads should normally come from S/4; dashboard/history/ageing may come from Datasphere.
-- A shared semantic/KDS dictionary is a prerequisite for dependable mappings.
+The recurring mistake to guard against: **conflating "created in" with "read from".** S/4 creates the delivery; the portal reads it from Commerce T1. Both statements are true and they imply different work.
 
-### Hypotheses requiring validation
+## The domains, and what the brain must answer for each
 
-- DI maps one-to-one to an SAP outbound delivery.
-- “SPI” is the correct acronym and maps to a specific SAP shipping/storage concept.
-- SAP currently proposes batches by largest quantity rather than FIFO.
-- Commerce retains 60 days of operational history.
-- The invoice workflow can run synchronously end to end.
-
-## Project domains
-
-| Domain | Questions the brain must answer |
+| Domain | Questions that must have answers before building |
 |---|---|
-| Order | SO/STO/PO type, credit status, open quantity, customer, source plant |
-| DI | SAP object, creation API, edit rules, storage-location relationship |
-| Stock | physical vs ATP, plant/sloc/batch grain, blocked/unrestricted |
-| Batch | eligibility, FIFO/quantity ranking, manual reallocation |
-| Freight | route, rate, SPI, transporter, Incoterm, estimated shipment cost |
-| Shipment | shipment object, vehicle/driver/LR-GR, FleetX relationship |
-| PGI | trigger, status, material document, retry and reversal |
-| Billing | billing API, invoice identifiers, accounting treatment, output |
-| E-documents | IRN, acknowledgement, E-Way Bill, correction, extension, files |
-| Receipt | partial GR, storage-location split, pending quantity, MRN |
-| Analytics | dashboard/history/ageing objects and latency |
-| Master/KDS | code meanings, derivations, system of record, valid combinations |
+| Order | Predecessor type (SO or STO), credit status, open quantity, source plant |
+| Delivery (DI) | Creation API per predecessor, editable fields and cutoff, storage-location immutability |
+| Stock | Unrestricted vs availability-check, batch grain, eligibility, allocation ranking |
+| Batch | Determination ownership, FIFO rule, reset behaviour on quantity change |
+| Freight | Route, rate, Incoterm treatment (FTP/FTB/EX), pre-document estimate feasibility |
+| Shipment | Document model, where vehicle and driver belong, LR/GR mapping |
+| PGI | Trigger, movement type, material document, reversal policy |
+| Billing | Billing type, ODN vs billing document number, accounting consequence |
+| E-documents | IRN lifecycle and cancellation window, E-Way Part A/B, extension ownership |
+| Receipt | Reference model, partial receipt, MRN ownership |
+| Master / KDS | Code meanings, derivations, system of record, valid combinations |
 
-## Knowledge graph
+## What makes an interface implementation-ready
 
-The project brain should represent these node types:
-
-- Requirement
-- BusinessTerm
-- BusinessRule
-- ProcessStep
-- System
-- Team/Owner
-- MasterDataCode
-- SAPDocument
-- SAPField
-- Table/CDS/API
-- ABAPObject
-- ODataInterface
-- CPIFlow
-- DatasphereObject
-- Decision
-- Question
-- Test
-- Incident
-- EvidenceSource
-
-Important relationships:
-
-```text
-Requirement REQUIRES ProcessStep
-ProcessStep CREATES SAPDocument
-ProcessStep READS BusinessTerm
-BusinessTerm REPRESENTED_BY SAPField
-SAPField SOURCED_FROM Table/CDS/API
-MasterDataCode MEANS BusinessTerm
-ODataInterface IMPLEMENTED_BY ABAPObject
-ABAPObject CALLS SAPAPI
-CPIFlow CONSUMES ODataInterface
-DatasphereObject DERIVED_FROM SAP source
-Decision RESOLVES Question
-EvidenceSource SUPPORTS Claim
-Test VERIFIES Requirement
-```
-
-Every node or relationship carries evidence, confidence, owner, environment, and validation date.
-
-## Definition of an implementation-ready interface
-
-An interface is ready only when the brain can answer:
+An API is ready to build only when the brain can answer all ten:
 
 1. What business outcome is required?
-2. What SAP document/process represents it?
+2. Which SAP document or process represents it?
 3. Which fields are input, derived, and output?
-4. What does each code mean?
-5. Which system owns each value?
-6. Which released API/BAPI/query is correct?
-7. What statuses and exceptions are valid?
-8. What does CPI send, retry, and correlate?
-9. How does SAP prevent duplicates and log the request?
-10. How is success proven in SAP and, where relevant, Datasphere?
+4. What does each code mean — and which system owns it?
+5. Which released API, BAPI, query or existing custom object is correct?
+6. What statuses and exceptions are valid?
+7. What does the caller send, retry and correlate?
+8. How does SAP prevent duplicates and log the request?
+9. Is this a real-time SAP read, or is it served from Commerce or Datasphere?
+10. How is success proven — in SAP, and downstream?
 
-## Immediate strategy
+Question 9 is new, and it is the one Option C forces. Several things assumed to be SAP APIs are not.
 
-The first workstream is not mass extraction. It is controlled semantic discovery:
+## Evidence model
 
-1. obtain SD/MM/KDS knowledge transfer and historical process recordings;
-2. trace representative SAP document chains;
-3. inventory relevant Datasphere models and lineage;
-4. build the glossary and system-of-record matrix;
-5. select one formally assigned vertical slice;
-6. validate the standard SAP API;
-7. agree one CPI contract;
-8. implement and prove it end to end.
+Every claim carries: source ID, confidence, owner, environment, and validation date. Confidence labels are in `README.md §Evidence standard`.
 
+The discipline that makes this work: **every new document either confirms something, contradicts something, or opens a question.** Never merely "adds information". A document that changes no register has not been read properly.
+
+Two rules learned the hard way:
+
+- **Record conflicts rather than resolving them by preference.** C-8 (pickup code) and C-10 (sales org vs company code) are live because the sources genuinely disagree.
+- **Remove superseded beliefs rather than annotating them.** Three assumptions in this project were confidently wrong — SPI as shipping point, brand/grade as classification characteristics, SAP Document Compliance as the statutory framework. They are gone from the current documents, not footnoted, so nobody reasons from them again.
+
+## The standing risk
+
+The project's original risk was semantic — a technical team mapping fields whose meaning nobody knew. That has largely been mitigated.
+
+The current risk is different: **unowned work at system boundaries.** Option C reads deliveries and invoices from Commerce T1, but they are created in S/4, and nothing specifies what pushes them across. Nobody assigned it because it falls between three teams. Unassigned SAP-side work drifts to the ABAP developer by default, unnamed and unfunded.
+
+The countermeasure is the same as the standing rule in `ROLE_BOUNDARIES.md`: collaborate across every boundary, but name ownership out loud rather than absorbing it silently.
