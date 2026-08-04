@@ -1,0 +1,999 @@
+*&---------------------------------------------------------------------*
+*& Report ZSD_MRN_PENDING_REPORT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zle_mrn_pending_report.
+TABLES:matdoc,mara,t023t,marc,vttk,lips,zsdtprice.
+
+*--------------------------------------------------------------------*
+*---- Final Structure Declaration
+*--------------------------------------------------------------------*
+TYPES : BEGIN OF ty_list,
+          supplyingplant            TYPE i_purchaseorderapi01-supplyingplant,
+          supplyingplant_name       TYPE i_plant-plantname,
+          supplyingstatecodetxt     TYPE t005u-bezei,
+          material                  TYPE i_purchaseorderitemapi01-material,
+          productdescription        TYPE i_productdescription-productdescription,
+          baseunit                  TYPE i_purchaseorderitemapi01-baseunit,
+          receivingplant            TYPE i_plant-plant,
+          receivingplant_name       TYPE i_plant-plantname,
+          statecode                 TYPE  i_address_2-region,
+          statename                 TYPE  i_regiontext-regionname,
+          deliverydocument          TYPE matdoc-vbeln_im,
+          spart                     TYPE lips-spart,
+          zregion                   TYPE zsdtprice-zregion,
+          zregion_text              TYPE zsdtprice-zregion_text,
+          billingdocument           TYPE i_billingdocument-billingdocument,
+          billingdocumentdate       TYPE i_billingdocument-billingdocumentdate,
+          tax_invoice_code          TYPE bkpf-xblnr,
+          zzvehicle_no              TYPE vttk-zzvehicle_no,
+          ewbnumber                 TYPE /digigst/oward_h-ewbnumber,
+          transporter               TYPE string,
+          shtyp_desc                TYPE string,
+          materialfreightgroup_desc TYPE string,
+*          recpostingdate            TYPE matdoc-budat,
+          quantityinbaseunit        TYPE matdoc-menge,
+          recquantityinbaseunit     TYPE matdoc-menge,
+          intransitqty              TYPE matdoc-menge,
+          grade                     TYPE string,
+          brand                     TYPE string,
+          lrnumber                  TYPE vttk-zzlr_gr_no,
+        END OF ty_list.
+
+*--------------------------------------------------------------------*
+*---- Internal table & Variables Declaration
+*--------------------------------------------------------------------*
+DATA :lo_salv     TYPE REF TO cl_salv_table,             "Display ALV Grid
+      lo_columns  TYPE REF TO cl_salv_column,
+      lo_cols_tab TYPE REF TO cl_salv_columns_table,
+      lo_col_tab  TYPE REF TO cl_salv_column_table,
+      lo_columns1 TYPE REF TO cl_salv_columns_table,
+      lo_events   TYPE REF TO cl_salv_events_table,      "Event Double Click
+      lr_layout   TYPE REF TO cl_salv_layout,            " Variables for enabling Save button
+      ls_key      TYPE        salv_s_layout_key,         " Variables for enabling Save button
+      lr_header   TYPE REF TO cl_salv_form_layout_grid . "CL_SALV_FORM_HEADER_INFO.
+DATA: lr_selections TYPE REF TO cl_salv_selections,
+      lt_column     TYPE salv_t_column.
+
+
+DATA : it_data TYPE TABLE OF ty_list.
+DATA : statecode TYPE i_address_2-region.
+*--------------------------------------------------------------------*
+*---- Selection SCreen Block
+*--------------------------------------------------------------------*
+SELECTION-SCREEN : BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-001.
+
+  SELECT-OPTIONS : s_date FOR matdoc-budat OBLIGATORY,
+                   s_werks  FOR matdoc-werks ,
+                   r_werks  FOR matdoc-werks OBLIGATORY,
+                   s_matnr  FOR mara-matnr,
+                   s_mfrgr  FOR marc-mfrgr,
+                   s_shpmod FOR vttk-vsart,
+                   delivery FOR matdoc-vbeln_im,
+                   s_div FOR lips-spart,
+                   s_zregio FOR zsdtprice-zregion,
+                   statecod FOR statecode.
+SELECTION-SCREEN : END OF BLOCK b1.
+
+*--------------------------------------------------------------------*
+*... F4 HELP AT SELECTION SCREEN FOR S_ZREGIO-LOW
+*--------------------------------------------------------------------*
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR s_zregio-low.
+  SELECT DISTINCT zregion , zregion_text  FROM zsdtprice INTO TABLE @DATA(it_f41).
+  DELETE ADJACENT DUPLICATES FROM it_f41 COMPARING zregion.
+  CALL FUNCTION 'F4IF_INT_TABLE_VALUE_REQUEST'
+    EXPORTING
+      retfield        = 'ZREGION'
+      dynpprog        = sy-repid
+      dynpnr          = sy-dynnr
+      dynprofield     = 'S_ZREGIO-LOW'
+      value_org       = 'S'
+    TABLES
+      value_tab       = it_f41
+    EXCEPTIONS
+      parameter_error = 1
+      no_values_found = 2
+      OTHERS          = 3.
+
+  IF sy-subrc <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+INITIALIZATION.
+
+  MOVE :  'I' TO s_mfrgr-sign,
+          'EQ' TO s_mfrgr-option,
+          'A0000001' TO s_mfrgr-low.
+  APPEND s_mfrgr.
+  MOVE 'A0000002' TO s_mfrgr-low.
+  APPEND s_mfrgr.
+  MOVE 'A0000003' TO s_mfrgr-low.
+  APPEND s_mfrgr.
+  MOVE 'A0000004' TO s_mfrgr-low.
+  APPEND s_mfrgr.
+  MOVE 'A0000005' TO s_mfrgr-low.
+  APPEND s_mfrgr.
+  MOVE 'A0000006' TO s_mfrgr-low.
+  APPEND s_mfrgr.
+  MOVE 'A0000022' TO s_mfrgr-low.
+  APPEND s_mfrgr.
+
+AT SELECTION-SCREEN.
+  PERFORM authority_check.
+
+START-OF-SELECTION.
+  PERFORM get_data.
+  PERFORM build_fcat.
+  PERFORM show_alv.
+
+*&---------------------------------------------------------------------*
+*& Form get_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data.
+
+  SELECT
+    FROM zsd_mrn_pending_cds_opt
+    FIELDS
+     *
+    WHERE
+     supplyingplant       IN @s_werks  AND
+     receivingplant       IN @r_werks  AND
+     deliverydocument     IN @delivery AND
+     spart                IN @s_div    AND
+     zregion              IN @s_zregio AND
+     material             IN @s_matnr  AND
+     vsart                IN @s_shpmod AND
+     materialfreightgroup IN @s_mfrgr AND
+     postingdate          IN @s_date AND""recpostingdate
+     statecode            IN @statecod
+*     Intransitqty <> '0.00'
+     INTO CORRESPONDING FIELDS OF TABLE @it_data.
+
+  IF it_data IS NOT INITIAL .
+
+    SELECT FROM zle_di_inv_details
+      FIELDS
+      vbeln,
+      inv_doc_no,
+      inv_qty
+      FOR ALL ENTRIES IN @it_data
+      WHERE vbeln = @it_data-deliverydocument
+      INTO TABLE @DATA(it_inv_details).
+
+    SELECT FROM zle_mrn_goods_reciet_cds
+      FIELDS
+      vbelnim,
+      recmaterialdocument,
+      recquantityinbaseunit
+      FOR ALL ENTRIES IN @it_data
+      WHERE vbelnim = @it_data-deliverydocument
+      INTO TABLE @DATA(it_mrn).
+  ENDIF.
+
+*Begin of Change by Ashutosh Prakash for ME61644 on 02-APR-2026
+  SELECT low
+    FROM tvarvc
+    INTO TABLE @DATA(lt_tvarvc)
+    WHERE name = 'ZLE526_EXCLUDE_DI'.
+  IF sy-subrc EQ 0.
+    SORT lt_tvarvc BY low.
+  ENDIF.
+*End of Change by Ashutosh Prakash for ME61644 on 02-APR-2026
+
+  LOOP AT it_data INTO DATA(wa_data).
+*Begin of Change by Ashutosh Prakash for ME61644 on 02-APR-2026
+    READ TABLE lt_tvarvc TRANSPORTING NO FIELDS WITH KEY low = wa_data-deliverydocument
+                                        BINARY SEARCH.
+    IF sy-subrc EQ 0.
+      CLEAR wa_data-intransitqty.
+      MODIFY it_data FROM wa_data .
+      CLEAR : wa_data.
+    ELSE.
+*End of Change by Ashutosh Prakash for ME61644 on 02-APR-2026
+      wa_data-quantityinbaseunit = ( REDUCE #( INIT val TYPE menge_d FOR  wa_inv IN it_inv_details WHERE ( vbeln = wa_data-deliverydocument   )
+                                                                                               NEXT val = val + wa_inv-inv_qty ) ) .
+      wa_data-recquantityinbaseunit =  REDUCE #( INIT val TYPE menge_d FOR  wa_mrn IN it_mrn WHERE ( vbelnim = wa_data-deliverydocument   )
+                                                                                              NEXT val = val + wa_mrn-recquantityinbaseunit ).
+
+      wa_data-intransitqty = wa_data-quantityinbaseunit - wa_data-recquantityinbaseunit .
+      MODIFY it_data FROM wa_data .
+      CLEAR : wa_data.
+    ENDIF.
+  ENDLOOP.
+
+  DELETE it_data WHERE intransitqty IS INITIAL .
+
+
+***********Added by IBMABAP25 on 27-01-2024*******************
+  LOOP AT it_data INTO DATA(is_data).
+
+    DATA(lv_index) = sy-tabix.
+    SELECT SINGLE ebeln, charg_sid FROM matdoc INTO ( @DATA(lv_ebeln) , @DATA(charg_sid) ) WHERE vbeln_im = @is_data-deliverydocument AND werks = @is_data-supplyingplant.
+    IF sy-subrc = 0.
+*      SELECT SINGLE menge FROM matdoc INTO @DATA(lv_menge) WHERE ebeln = @lv_ebeln AND charg_sid = @charg_sid AND bwart = '101'.                                          "Commented by Satyam Agarwal for SR/ME/45764 on 24-SEP-2025
+      SELECT SINGLE menge FROM matdoc INTO @DATA(lv_menge) WHERE ebeln = @lv_ebeln AND charg_sid = @charg_sid AND bwart = '101' AND vbeln_im = @is_data-deliverydocument.  "Added by Satyam Agarwal for SR/ME/45764 on 24-SEP-2025
+      IF sy-subrc = 0.
+        IF lv_menge = is_data-intransitqty.
+          DELETE it_data INDEX lv_index.
+        ENDIF.
+*Begin of Change by Satyam Agarwal for SR/ME/44107 on 23-SEP-2025
+      ELSE.
+*        SELECT SINGLE menge FROM matdoc INTO @lv_menge WHERE charg_sid = @charg_sid AND bwart = '101'.                                             "Commented by Satyam Agarwal for SR/ME/45764 on 24-SEP-2025
+        SELECT SINGLE menge FROM matdoc INTO @lv_menge WHERE ebeln = @lv_ebeln AND xblnr = @is_data-deliverydocument AND bwart = '101' .                                  "Added by Satyam Agarwal for SR/ME/45764 on 24-SEP-2025
+        IF sy-subrc = 0.
+          IF lv_menge = is_data-intransitqty.
+            DELETE it_data INDEX lv_index.
+          ENDIF.
+        ENDIF.
+*End of Change by Satyam Agarwal for SR/ME/44107 on 23-SEP-2025
+      ENDIF.
+    ENDIF.
+    CLEAR : lv_index.
+  ENDLOOP.
+
+***********Added by IBMABAP25 on 27-01-2024*******************
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form build_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM build_fcat .
+  TRY.
+      cl_salv_table=>factory(
+      IMPORTING
+          r_salv_table   = lo_salv
+        CHANGING
+          t_table        = it_data[]
+      ).
+    CATCH cx_salv_msg.
+  ENDTRY.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form show_alv
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM show_alv .
+
+  TRY.
+*--------------------------------------------------------------------*
+*      -----------  Set Pf Status    -----------*
+*--------------------------------------------------------------------*
+      TRY.
+          lo_salv->set_screen_status( pfstatus = 'PF_STATUS'
+                                      report   = sy-repid
+                                      set_functions = lo_salv->c_functions_all ).
+
+        CATCH cx_salv_object_not_found .
+          MESSAGE ' Error during Pf-status Display ' TYPE 'I' DISPLAY LIKE 'E'.
+      ENDTRY.
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'BILLINGDOCUMENT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Plant INV No'  ).
+          lo_columns->set_long_text( 'Plant INV No' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'SUPPLYINGPLANT_NAME' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Supplying Plant'  ).
+          lo_columns->set_long_text( 'Supplying Plant' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'SUPPLYINGPLANT' ).
+          lo_columns->set_short_text( 'Spl.Plant' ).
+          lo_columns->set_medium_text( 'Supplying Plant'  ).
+          lo_columns->set_long_text( 'Supplying Plant' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'RECEIVINGPLANT_NAME' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Receiving Plant Name'  ).
+          lo_columns->set_long_text( 'Receiving Plant Name' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'RECEIVINGPLANT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Receiving Plant'  ).
+          lo_columns->set_long_text( 'Receiving Plant' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'BILLINGDOCUMENTDATE' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Plant INV Date'  ).
+          lo_columns->set_long_text( 'Plant INV Date' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'QUANTITYINBASEUNIT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Dispatch Quantity'  ).
+          lo_columns->set_output_length( 16 ).
+          lo_columns->set_long_text( 'Dispatch Quantity' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'GRADE' ).
+          lo_columns->set_short_text( 'Grade' ).
+          lo_columns->set_medium_text( 'Grade'  ).
+          lo_columns->set_long_text( 'Grade' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'BRAND' ).
+          lo_columns->set_short_text( 'Brand' ).
+          lo_columns->set_medium_text( 'Brand'  ).
+          lo_columns->set_long_text( 'Brand' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'ZREGION_TEXT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Man Made State Desc'  ).
+          lo_columns->set_long_text( 'Man Made State Desc' ).""zregion
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'ZREGION' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Man Made State'  ).
+          lo_columns->set_long_text( 'Man Made State' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'TRANSPORTER' ).
+          lo_columns->set_short_text( 'transpo.' ).
+          lo_columns->set_medium_text( 'Transporter'  ).
+          lo_columns->set_long_text( 'Transporter' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'SHTYP_DESC' ).
+          lo_columns->set_short_text( 'Sh.Typ' ).
+          lo_columns->set_medium_text( 'Sh.Typ'  ).
+          lo_columns->set_long_text( 'Shipping Type' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'DELIVERYDOCUMENT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Delivery '  ).
+          lo_columns->set_long_text( 'Delivery' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'SUPPLYINGSTATECODETXT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Supplying State'  ).
+          lo_columns->set_long_text( 'Supplying State' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'MATERIALFREIGHTGROUP_DESC' ).
+          lo_columns->set_short_text( 'MatlFrt' ).
+          lo_columns->set_medium_text( 'MatlFrt Grp'  ).
+          lo_columns->set_long_text( 'Material Freight Group' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'RECQUANTITYINBASEUNIT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_output_length( 16 ).
+          lo_columns->set_medium_text( 'Receiving Qty '  ).
+          lo_columns->set_long_text( 'Receiving Qty' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'INTRANSITQTY' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_output_length( 16 ).
+          lo_columns->set_medium_text( 'Intransit Qty'  ).
+          lo_columns->set_long_text( 'Intransit Qty' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'CONDITIONRATEVALUE' ).
+          lo_columns->set_short_text('' ).
+          lo_columns->set_medium_text( 'Cond.Value'  ).
+          lo_columns->set_long_text( 'Condition Value' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'CONDITIONAMOUNT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Cond.Amt'  ).
+          lo_columns->set_long_text( 'Cond.Amount' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'RECEIVINGPLANT' ).
+          lo_columns->set_short_text( ' ' ).
+          lo_columns->set_medium_text( ' '  ).
+          lo_columns->set_long_text( 'Receiving Plant' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'STATECODE' ).
+          lo_columns->set_short_text( ' ' ).
+          lo_columns->set_medium_text( ' '  ).
+          lo_columns->set_long_text( 'Receiving State Code' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'STATENAME' ).
+          lo_columns->set_short_text( ' ' ).
+          lo_columns->set_medium_text( ' '  ).
+          lo_columns->set_long_text( 'Receiving State Name' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'SUPPLYINGSTATECODETXT' ).
+          lo_columns->set_short_text( ' ' ).
+          lo_columns->set_medium_text( ' '  ).
+          lo_columns->set_long_text( 'Supplying State Name' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'RECQUANTITYINBASEUNIT' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_output_length( 16 ).
+          lo_columns->set_medium_text( 'Receiving Qty '  ).
+          lo_columns->set_long_text( 'Receiving Qty' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'INTRANSITQTY' ).
+          lo_columns->set_short_text( '' ).
+          lo_columns->set_medium_text( 'Intransit Qty'  ).
+          lo_columns->set_long_text( 'Intransit Qty' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      TRY.
+          lo_columns = lo_salv->get_columns( )->get_column( 'TAX_INVOICE_CODE' ).
+          lo_columns->set_short_text( 'TAXINVCODE' ).
+          lo_columns->set_medium_text( 'TAX Invoice Code'  ).
+          lo_columns->set_long_text( 'TAX Invoice Code' ).
+        CATCH cx_salv_not_found.
+      ENDTRY.
+
+      lo_columns1 = lo_salv->get_columns( ).
+      lo_columns1->set_optimize( 'X' ).
+
+      lo_salv->get_display_settings( )->set_striped_pattern( abap_true ).
+
+*
+      """"""" SET THE LAYOUT KEY
+      lr_layout = lo_salv->get_layout( ).
+      lr_layout->set_save_restriction( if_salv_c_layout=>restrict_none ).
+      lr_layout->set_default( 'X' ).
+      ls_key-report = sy-repid.
+      lr_layout->set_key( ls_key ).
+*
+*      """"" SET USAGE OF DEFAULT LAYOUTS
+      lr_selections = lo_salv->get_selections( ).
+      lr_selections->set_selection_mode( if_salv_c_selection_mode=>cell ).
+      APPEND 'EXCEPTION' TO lt_column.
+      lr_selections->set_selected_columns( lt_column ).
+    CATCH cx_salv_not_found.
+  ENDTRY.
+*----  Display ALV   ----*
+  lo_salv->display( ).
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form authority_check
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM authority_check .
+  IF r_werks[] IS NOT INITIAL.
+    DATA werks  TYPE RANGE OF werks WITH HEADER LINE.
+    REFRESH werks.
+    DATA : lv_message  TYPE string.
+    CLEAR lv_message.
+    SELECT FROM t001w
+      FIELDS DISTINCT
+      werks
+      WHERE werks IN @r_werks
+      INTO   TABLE @DATA(it_plant).
+    IF sy-subrc NE 0.
+      MESSAGE 'Plant Not Found' TYPE 'E'.
+    ENDIF.
+
+    LOOP AT it_plant INTO DATA(wa).
+      AUTHORITY-CHECK OBJECT 'ZLE_PLNT'
+      ID 'WERKS' FIELD wa-werks.
+      IF sy-subrc <> 0.
+        r_werks-low = wa-werks.
+        r_werks-high = ''.
+        r_werks-option = 'BT'.
+        r_werks-sign = 'I'.
+        APPEND werks.
+        CONCATENATE wa-werks ','  lv_message INTO lv_message SEPARATED BY space.
+        CONDENSE  lv_message NO-GAPS.
+*      DELETE s_werks WHERE low = wa-werks.
+        CLEAR wa.
+      ENDIF.
+    ENDLOOP.
+    IF werks[] IS NOT INITIAL."""s_werks[] IS INITIAL OR
+      REFRESH r_werks[].
+      DATA(lv_message1) = CONV string( 'You Are Not Authorised For' ).
+      DATA(lv_message2) = CONV string( 'Plant' ).
+      CONCATENATE lv_message1 lv_message lv_message2 INTO DATA(message) SEPARATED BY space.
+*    DATA(flag) = 'X'.
+      MESSAGE  message  TYPE 'E' DISPLAY LIKE 'I'.
+    ENDIF.
+  ENDIF.
+
+ENDFORM.
+
+
+
+*&---------------------------------------------------------------------*
+*& Report ZSD_PENDING_ORDER_REP_PP
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zsd_pending_order_rep_pp.
+TABLES: vbak,vbap,vbpa,kna1,knvv,vbkd, adrc,vbrk,zsdtprice.
+CONSTANTS: gc_rfcgr             TYPE rzllitab-classname VALUE 'parallel_generators'.
+
+DATA: gv_receive_jobs      TYPE i,
+      gv_send_jobs         TYPE i,
+      gv_pp_running        TYPE i,
+      gv_taskname          TYPE i,
+      gv_result            TYPE i,
+      gv_total             TYPE i,
+      gv_jobs              TYPE i,
+      gv_available         TYPE i,
+      max_use              TYPE i,
+      gv_initialisation_ok TYPE flag.
+
+DATA: lv_max_wps   TYPE i,
+      lv_free_wps  TYPE i,
+      lv_totalwait TYPE i,
+      lv_from      TYPE vtbbewe-atage,
+      lv_to        TYPE vtbbewe-atage,
+      lv_fromc     TYPE vtbbewe-atage,
+      lv_toc       TYPE vtbbewe-atage,
+      lt_final     TYPE TABLE OF zsd_st_pending_order_out, "ty,
+      ls_final     LIKE LINE OF lt_final,
+      lv_rowsz     TYPE i VALUE '100',
+      lv_wproc     TYPE i VALUE '10'.
+DATA: lr_column  TYPE REF TO cl_salv_column_table,
+      lr_columns TYPE REF TO cl_salv_columns_table.
+
+SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-001.
+
+  SELECT-OPTIONS: vbeln FOR vbak-vbeln,
+                  auart FOR vbak-auart,
+                  erdat FOR vbak-audat OBLIGATORY NO-EXTENSION,
+                  kunnr FOR vbak-kunnr,
+                  vkorg FOR vbak-vkorg OBLIGATORY,
+                  vtweg FOR vbrk-vtweg,
+                  spart FOR vbak-spart NO-EXTENSION NO INTERVALS OBLIGATORY,
+                  vkbur FOR vbak-vkbur,
+                  werks FOR vbap-werks,
+                  matnr FOR vbap-matnr,
+                  land1 FOR kna1-land1 DEFAULT 'IN' NO-DISPLAY,
+                  regio FOR kna1-regio,
+                  city2 FOR zsdtprice-zdist_ext.
+  PARAMETERS : chk  AS CHECKBOX,
+               chk1 AS CHECKBOX,
+               chk2 AS CHECKBOX.
+SELECTION-SCREEN END OF BLOCK b1.
+SELECTION-SCREEN:BEGIN OF BLOCK b2 WITH FRAME TITLE TEXT-ss2.
+  PARAMETERS:p_layout TYPE slis_vari.
+SELECTION-SCREEN:END OF BLOCK b2.
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_layout.
+  PERFORM find_layout.
+
+START-OF-SELECTION.
+  CLEAR: gv_receive_jobs,
+         gv_send_jobs.
+  PERFORM auth_check.
+  CALL FUNCTION 'FIMA_DAYS_AND_MONTHS_AND_YEARS'
+    EXPORTING
+      i_date_from = erdat-low
+      i_date_to   = erdat-high
+    IMPORTING
+      e_days      = lv_to.
+  lv_toc = lv_to.
+  PERFORM f_init_server_group.
+  PERFORM process_data.
+
+FORM f_init_server_group.
+  CALL FUNCTION 'SPBT_INITIALIZE'
+    EXPORTING
+      group_name                     = gc_rfcgr
+*     max_wait_time                  = 0
+    IMPORTING
+      max_pbt_wps                    = gv_total
+      free_pbt_wps                   = gv_available
+    EXCEPTIONS
+      invalid_group_name             = 1
+      internal_error                 = 2
+      pbt_env_already_initialized    = 3
+      currently_no_resources_avail   = 4
+      no_pbt_resources_found         = 5
+      cant_init_different_pbt_groups = 6
+      OTHERS                         = 7.
+  CASE sy-subrc.
+    WHEN 4.
+      gv_initialisation_ok = ' '.
+    WHEN 0 OR 3.
+      max_use = SWITCH #( sy-sysid WHEN 'DS4' THEN 6
+                                   WHEN 'QS4' THEN 15
+                                   WHEN 'PS4' THEN 15 ).
+      gv_initialisation_ok = 'X'.
+      gv_available = COND #( WHEN gv_available GE max_use THEN max_use ELSE gv_available ).
+    WHEN 1 OR 2 OR 5.
+      WRITE:/ |Server group { gc_rfcgr } could not be initialized|.
+      EXIT.
+  ENDCASE.
+ENDFORM.
+FORM f_parallel_get_details_mif_in.
+  cl_progress_indicator=>progress_indicate( i_text = 'Processing Data' ).
+  RANGES: r_erdat FOR sy-datum.
+  LOOP AT erdat WHERE high IS INITIAL.
+    erdat-high = erdat-low.
+    erdat-option = 'BT'.
+    MODIFY erdat.
+  ENDLOOP.
+  DO.
+    IF gv_initialisation_ok EQ abap_true.
+      CALL FUNCTION 'SPBT_GET_CURR_RESOURCE_INFO'
+        IMPORTING
+          max_pbt_wps                 = lv_max_wps
+          free_pbt_wps                = lv_free_wps
+        EXCEPTIONS
+          internal_error              = 1
+          pbt_env_not_initialized_yet = 2
+          OTHERS                      = 3.
+      IF lv_free_wps GT 2 AND gv_pp_running LT lv_wproc.
+      ELSE.
+        WAIT UP TO 1 SECONDS.
+        CONTINUE.
+      ENDIF.
+      IF r_erdat[] IS INITIAL.
+        r_erdat = VALUE #( sign = 'I' option = 'EQ' low = erdat-low high = erdat-high ).
+        APPEND r_erdat.
+      ELSE.
+        CALL FUNCTION 'FIAPPL_ADD_DAYS_TO_DATE'
+          EXPORTING
+            i_date      = r_erdat-low
+            i_days      = 1
+          IMPORTING
+            e_calc_date = r_erdat-low.
+        r_erdat-sign = 'I'.
+        r_erdat-option = 'BT'.
+        r_erdat-high = r_erdat-high.
+        FREE: r_erdat[].
+        APPEND r_erdat.
+      ENDIF.
+      IF r_erdat-low LE erdat-high.
+
+        gv_taskname = gv_taskname + 1.
+        gv_pp_running = gv_pp_running + 1.
+
+        gv_result = 3.
+        WHILE gv_result NE 0.
+          lv_from += 1.
+          cl_progress_indicator=>progress_indicate( i_text = 'Processing Data' i_processed = lv_from i_total = lv_to ).
+
+          CALL FUNCTION 'ZSD_PENDING_ORDER_FM'
+            STARTING NEW TASK gv_taskname
+            DESTINATION IN GROUP gc_rfcgr
+            PERFORMING f_call_back_mif_in ON END OF TASK
+            EXPORTING
+              vbeln = vbeln[]
+              auart = auart[]
+              erdat = r_erdat[]
+              kunnr = kunnr[]
+              vkorg = vkorg[]
+              vtweg = vtweg[]
+              spart = spart[]
+              vkbur = vkbur[]
+              werks = werks[]
+              matnr = matnr[]
+              regio = regio[]
+              city2 = city2[]
+              chk   = chk
+              chk1  = chk1
+              chk2  = chk2.
+
+          gv_result = sy-subrc.
+          CASE gv_result.
+            WHEN 0.
+              gv_send_jobs += 1.
+              gv_jobs = gv_send_jobs - gv_receive_jobs.
+              CONTINUE.
+            WHEN OTHERS.
+              WAIT UP TO 1 SECONDS.
+          ENDCASE.
+        ENDWHILE.
+      ENDIF.
+    ELSE.
+      PERFORM f_init_server_group.
+    ENDIF.
+    IF r_erdat[ 1 ]-low GT r_erdat[ 1 ]-high.
+      EXIT.
+    ENDIF.
+  ENDDO.
+  WAIT UNTIL gv_receive_jobs >= gv_send_jobs UP TO 1200 SECONDS.
+ENDFORM.
+FORM find_layout .
+  DATA(ls_alv_variant) = VALUE disvariant( ).
+  ls_alv_variant-report = sy-repid.
+  CALL FUNCTION 'REUSE_ALV_VARIANT_F4'
+    EXPORTING
+      is_variant = ls_alv_variant
+      i_save     = 'A'
+    IMPORTING
+      es_variant = ls_alv_variant
+    EXCEPTIONS
+      not_found  = 2.
+  IF sy-subrc = 2.
+    MESSAGE ID sy-msgid TYPE 'S' NUMBER sy-msgno
+    WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+  ELSE.
+    p_layout = ls_alv_variant-variant.
+  ENDIF.
+ENDFORM.
+FORM f_call_back_mif_in USING gv_taskname.
+  DATA: it_table LIKE lt_final[].
+
+  gv_receive_jobs += 1.
+  gv_jobs = gv_send_jobs - gv_receive_jobs.
+
+  RECEIVE RESULTS FROM FUNCTION 'ZSD_PENDING_ORDER_FM'
+  TABLES lt_final = it_table.
+  APPEND LINES OF it_table TO lt_final.
+  FREE: it_table.
+
+  gv_pp_running -= 1.
+
+ENDFORM.
+FORM process_data.
+  DATA: it_data LIKE lt_final[].
+  PERFORM f_parallel_get_details_mif_in.
+  IF lt_final[] IS NOT INITIAL.
+    PERFORM display USING lt_final[].
+  ELSE.
+    MESSAGE 'Data Not Found' TYPE 'E'.
+  ENDIF.
+ENDFORM.
+FORM auth_check.
+
+ENDFORM.
+FORM display USING cv_table TYPE STANDARD TABLE.
+  FIELD-SYMBOLS:<lt_tab> TYPE STANDARD TABLE.
+  ASSIGN cv_table TO <lt_tab>.
+  TRY.
+      CALL METHOD cl_salv_table=>factory
+        EXPORTING
+          list_display = if_salv_c_bool_sap=>false
+        IMPORTING
+          r_salv_table = DATA(lr_alv)
+        CHANGING
+          t_table      = <lt_tab>.
+    CATCH cx_salv_msg.
+  ENDTRY.
+
+  lr_columns = lr_alv->get_columns( ).
+
+  PERFORM fcat USING 'MVGR3'                   'Brand'                          'Brand'                 'Brand'.
+  PERFORM fcat USING 'MVGR3_DES'               'Brand Description'              'Brand Description'     'Brand Desc'.
+  PERFORM fcat USING 'PLANT_DEPOT'             'Plant Depot'                    'Plant Depot'           ''.
+  PERFORM fcat USING 'PLANT'                   'Plant Name'                     'Plant Name'            'Plant Name'.
+  PERFORM fcat USING 'CONTRACT_I'              'Contract Number'                'Contract Number'       'Contract'.
+  PERFORM fcat USING 'AUART'                   'Order Type'                     'Order Type'            'Order Type'.
+  PERFORM fcat USING 'CONTRACT_DATE'           'Contract Date'                  'Contract Date'         'Cont. Dt'.
+  PERFORM fcat USING 'BOOKING_DATE'            'Booking Date'                   'Booking Date'          'Book Date'.
+  PERFORM fcat USING 'ERZET'                   'Order Time'                     'Order Time'            'Order Time'.
+  PERFORM fcat USING 'STATUS'                  'Reason Of Rejecetion'           'Reason Of Rejecetion'  ''.
+  PERFORM fcat USING 'ZMENG'                   'Contract Qty'                   'Contract Qty'          ''.
+  PERFORM fcat USING 'ORDER_QTY'               'Order Qty'                      'Order Qty'             'Order Qty'.
+  PERFORM fcat USING 'SCHEDULE_QTY'            'Schedule Qty'                   'Schedule Qty'          ' '.
+  PERFORM fcat USING 'DEL_QTY'                 'Delivery Qty'                   'Delivery Qty'          'Deli. Qty'.
+  PERFORM fcat USING 'INV_QTY'                 'Invoice Qty'                    'Invoice Qty'           'Inv. Qty'.
+  PERFORM fcat USING 'REJ_QTY'                 'Rejected Qty'                   'Rejected Qty'          'Reje Qty'.
+  PERFORM fcat USING 'BAL_QTY'                 'Balance Qty'                    'Balance Qty'           'Bal. Qty'.
+  PERFORM fcat USING 'MATNR'                   'Product'                        'Product'               'Product'.
+  PERFORM fcat USING 'ARKTX'                   'Product Desc'                   'Product Desc'        ' '.
+  PERFORM fcat USING 'KUNNR'                   'Customer Code'                  'Customer Code'       'Customer'.
+  PERFORM fcat USING 'NAME1'                   'Customer Name'                  'Customer Name'       'Cust Name'.
+  PERFORM fcat USING 'SHIP_TO_CODE'            'Ship To Code'                   'Ship To Code'        'Ship Code'.
+  PERFORM fcat USING 'SHIP_TO_NAME'            'Ship To Name'                   'Ship To Name'        'Ship Name'.
+  PERFORM fcat USING 'CONSI_CITY'              'Ship To Consignee Add'          'Ship To Consignee'   ''.
+  PERFORM fcat USING 'CITY1'                   'Ship To City'                   'Ship To City'        'Ship City'.
+  PERFORM fcat USING 'ZTALUKA'                 'Ship To Taluka'                 'Ship To Taluka'      'Ship Taluk'.
+  PERFORM fcat USING 'CITY2'                   'Ship To District'               'Ship To District'    'Ship Dist'.
+  PERFORM fcat USING 'STATE_1'                 'Ship To State'                  'Ship To State'       'Ship State'.
+  PERFORM fcat USING 'REGION_DES'              'Ship To State Description'      'Ship To State'       ''.
+  PERFORM fcat USING 'VTWEG'                   'Dist.Channel'                   'Dist.Channel'        'Dist Ch'.
+  PERFORM fcat USING 'VSBED'                   'Mode Of Dispatch'               'Mode Of Dispatch'    'MOD'.
+  PERFORM fcat USING 'VSBED_DES'               'Mode Of Dispatch Description'   'Mode Of Dispatch'    'MOD'.
+  PERFORM fcat USING 'SPART'                   'Div.'                           'Div.'                'Div.'.
+  PERFORM fcat USING 'GROSS_RATE'              'Gross Rate'                     'Gross Rate'          'Gross Rate'.
+  PERFORM fcat USING 'NCR'                     'NCR'                            'NCR'                 'NCR'.
+  PERFORM fcat USING 'ZCOM'                    'Comission Amount'               'Comission Amount'    'Comission'.
+  PERFORM fcat USING 'MFRGR_I'                 'Packing'                        'Packing'             'Packing'.
+  PERFORM fcat USING 'BEZEI'                   'Packing Description'            'Packing Description' ''.
+  PERFORM fcat USING 'ORDER_STATUS'            'Order Status'                   'Order Status'        'Order Stat'.
+  PERFORM fcat USING 'ERDAT'                   'Order Date'                     'Order Date'          'Order Date'.
+  PERFORM fcat USING 'KD'                      'Customer Group'                 'Customer Group'      'Cust Group'.
+  PERFORM fcat USING 'MNSOFTRNS'               'Mns. Of Trns.'                  'Mns. Of Trns.'       ''.
+  PERFORM fcat USING 'INCO_TERM'               'Inco Terms'                     'Inco Terms'          'Inco Terms'.
+  PERFORM fcat USING 'SPECPROCID'              'Spec.Proc.ID'                   'Spec.Proc.ID'        ''.
+  PERFORM fcat USING 'ZDIST_EXT'               'Bill To District'               'Bill To District'    ''.
+  PERFORM fcat USING 'ZBEZEI'                  'Bill To State'                  'Bill To State'       ''.
+  PERFORM fcat USING 'BZIRK'                   'Price List Code'                'Price List Code'     ''.
+  PERFORM fcat USING 'ZBZTXT'                  'Price List Name'                'Price List Name'     ''.
+  PERFORM fcat USING 'TERRITORY_SHIP_TO'       'Territory Code(Ship To )'       'Territory Code'      ''.
+  PERFORM fcat USING 'ZTERRITORY_TEXT_SHIP_TO' 'Territory Dec.(Ship To )'       'Territory Dec.'      ''.
+  PERFORM fcat USING 'ZREGION_TEXT_SHIP_TO'    'Man Made State Dec. (Ship To )' 'Man Made State Dec.' ''.
+  PERFORM fcat USING 'ZZONE_TEXT_SHIP_TO'      'Zone Dec.(Ship To )'            'Zone Dec.(Ship To )' ''.
+  PERFORM fcat USING 'SALES_PRO'               'Sales Promoter/Middleman Name'  ''                    ''.
+  PERFORM fcat USING 'STATUS1'                 'Status(Block)'                  'Status(Block)'       ''.
+  PERFORM fcat USING 'BLOCK_REASON_TXT'        'Reason of Block'                'Reason of Block'     ''.
+  PERFORM fcat USING 'DELE_QTY'                'Delivery Qty With Token'        'Delivery Qty Token'  ''.
+  PERFORM fcat USING 'QTY_TOKEN'               'Pending for Execution'          ' '                   ' '.
+  PERFORM fcat USING 'CMGST'                   'Credit Status'                  'Credit Status'       'Credit'.
+  PERFORM fcat USING 'DDTEXT'                  'Credit Status Desc.'            'Credit Status Desc.' 'Cred Desc'.
+  PERFORM fcat USING 'LONGTEXT'                'CRM Remarks'                    'CRM Remarks'         'CRM'.
+  PERFORM fcat USING 'CUSTOMER_REF'            'CRM Order No.'                  'CRM Order No.'       'CRM Order'.
+  PERFORM fcat USING 'SHIP_TO_ZONE'            'Ship to Zone'                   'Ship to Zone'        'Ship Zone'.
+  PERFORM fcat USING 'SALEBLOCK'               'Blocked in BP'                  'Blocked in BP'       'Blocked BP'.
+  PERFORM fcat USING 'UDATE'                   'Order Release Date'             'Order Release Date'  'OrdRelDate'.
+  PERFORM fcat USING 'UTIME'                   'Order Release time'             'Order Release time'  'OrdRelTime'.
+
+  DATA(lo_column) = lr_alv->get_columns( ).
+  lo_column->set_optimize( 'X' ).
+  lr_alv->get_functions( )->set_all( ).
+  DATA(lr_layout) = lr_alv->get_layout( ).
+  lr_layout->set_key( VALUE #( report = sy-repid ) ).
+  lr_layout->set_save_restriction( if_salv_c_layout=>restrict_none ).
+  lr_layout->set_initial_layout( value = p_layout ).
+  lr_alv->get_display_settings( )->set_striped_pattern( if_salv_c_bool_sap=>true ).
+  DATA(lv_title) = VALUE lvc_title( ).
+  lr_alv->get_display_settings( )->set_list_header( lv_title ).
+
+  IF sy-batch = abap_true.
+    SELECT FROM zautomail_id FIELDS * WHERE
+                                         module1 = 'SD' AND
+                                         tcode = 'ZSDR512'  AND
+                                         user_id = @sy-uname AND
+                                         status = 'X'
+                                         INTO TABLE @DATA(it_mail).
+    IF it_mail[] IS NOT INITIAL.
+      LOOP AT it_mail INTO DATA(wa_mail).
+        DATA(lo_obj) = NEW zcl_auto_mail( ).
+        CALL METHOD lo_obj->send_mail
+          EXPORTING
+            lv_report_name = 'Pending Order Report'
+            xls            = wa_mail-xls
+            txt            = wa_mail-txt " 'X'
+            lo_salv        = lr_alv
+*           it_fcat_slis   =
+            lv_email       = wa_mail-email
+            it_data        = cv_table[].
+      ENDLOOP.
+    ENDIF.
+    lr_alv->display( ).
+  ELSE.
+    lr_alv->display( ).
+  ENDIF.
+ENDFORM.
+FORM fcat USING VALUE(p_col) TYPE lvc_fname
+                VALUE(p_long) TYPE scrtext_l
+                VALUE(p_med) TYPE scrtext_m
+                VALUE(p_short) TYPE scrtext_s .
+  TRY.
+      lr_column ?= lr_columns->get_column( p_col ).
+      lr_column->set_long_text( p_long ).
+      lr_column->set_medium_text( p_med ).
+      lr_column->set_short_text( p_short ).
+    CATCH cx_salv_not_found.
+  ENDTRY.
+ENDFORM.
+
+
+
+*&---------------------------------------------------------------------*
+*& Report EDOC_COCKPIT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT edoc_cockpit.
+
+DATA: gs_edocument TYPE edocument.                           "2853195
+
+SELECT-OPTIONS: so_guid FOR gs_edocument-edoc_guid NO-DISPLAY. "2853195
+
+*----------------------------------------------------------------------*
+* Types
+*----------------------------------------------------------------------*
+CLASS lcl_main DEFINITION DEFERRED.
+
+*----------------------------------------------------------------------*
+* Global variables and constants
+*----------------------------------------------------------------------*
+DATA: go_report  TYPE REF TO lcl_main,  "Instance variable for report
+      gv_ok_code TYPE sy-ucomm,
+*     moved to CL_EDOC_COCKPIT_UI                   "2927542"3005076
+      gt_range   TYPE rsds_trange.                          "2765690
+
+*----------------------------------------------------------------------*
+* Includes (for classes)
+*----------------------------------------------------------------------*
+INCLUDE edoc_cockpit_class.
+
+*----------------------------------------------------------------------*
+* Includes (for dynpro)
+*----------------------------------------------------------------------*
+INCLUDE edoc_cockpit_pai.
+INCLUDE edoc_cockpit_pbo.
+
+*----------------------------------------------------------------------*
+* Start of selection
+*----------------------------------------------------------------------*
+START-OF-SELECTION.
+
+  CREATE OBJECT go_report.
+
+  go_report->get_criteria(                                  "2765690
+    IMPORTING et_range = gt_range ).                        "2765690"2853195
+  go_report->display_main_screen(
+    EXPORTING it_range = gt_range ).                        "2765690
