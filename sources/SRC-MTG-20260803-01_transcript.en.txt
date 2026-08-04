@@ -1,0 +1,378 @@
+﻿[00:00] S1: Still more is left. I didn't take out more than 20. So, the order is the main thing.
+[00:04] S1: You cannot cut more than that. Instead of 20, you can cut 25.
+[00:10] S3: Can we go back there and update who should be returned?
+[00:14] S1: But in that, it is that it is not more than that, it is more than 25. Up to 25, as much as possible.
+[00:19] S3: So we will always get it validated from the pending account, whether it was twenty-five, whether it is twenty-five or not right now.
+[00:26] S1: So once you
+[00:30] S1: Yes, if once you update your DII quantity, then whatever you did in batch determination, that also gets reset because obviously we have changed the quantity.
+[00:37] S3: Now, the two that we are showing in this, we are showing the one before this, that in the current DI, you had put thirty, pending thirty. Yes.
+[00:44] S1: Yes, and how much will you update here now?
+[00:45] S3: Now let's assume, let's assume you put in thirty and you found out that brother, anything is less, so you put twenty-five here.
+[00:50] S1: It is not there at all, everything is less in the batch.
+[00:54] S1: We have to reduce it, that's why we usually plan.
+[00:56] S3: So next time when you open the DI quantity, then here you will see purchase, here you will see sale, right?
+[01:04] S3: Put in the HDI quantity. If you've done 25, then 25 here, 20 here.
+[01:12] S1: And when once you update this, then you will get a save button. Until you click this, it will get saved basically.
+[01:20] S3: Okay, now it can also happen that in this phase, the age determination changes again because you have changed the DI.
+[01:26] S1: That's what I'm telling you, when you go to batch determination after this, your delivery quantity will change here as well, and above as well.
+[01:32] S3: Okay.
+[01:32] S0: And these prices that we are showing through the toaster, we can show them on this page as well.
+[01:36] S1: Knowing this, I mean, when you, what happens in this is, it will hit the SAP. So processing, once the processing ends, it automatically takes you to the batch termination.
+[01:45] S3: I am showing the message there.
+[01:46] S1: Toss, toss, show. So, this will automatically go away and you can even toss. Toast is the basic way. Then again, same thing, you determine the match.
+[01:55] S0: I don't know why that feeling started coming, so it's a little bit again.
+[01:59] S1: So you determine the batch again. And once you are done with that, you go to the transporter details. That you, its shipping, we will do as a company or the client will arrange their own shipping. There are two options, FTB, that is already decided, input term. You will see this tab, there are multiple three tabs in it. FTP, FTB and EXL, there are three types of shipping types. That's all you need to know. According to the shipping type, you fill in these details to the agent. Once you enter your code or name, you will get a card.
+[02:29] S1: As in, its details will come from the transporter. Once you confirm this, you go on to the next step. Your basic process of generating billing documents, that is the, this was your first step after cutting the DI, billing documents.
+[02:41] S0: This is the FTP that you mentioned, right?
+[02:45] S1: Yes, this is for FTP.
+[02:46] S0: I have three types of shipping right now.
+[02:49] S1: Mostly they use two, FTP and FTB. This is also made by FTB. There is one.
+[02:54] S0: There is one.
+[02:58] S1: Meaning, one is freight to ship, one is freight to bill. In one, it is that we do it, and in one, it is that they get their own shipping done. That will explain to you easily. Don't get into details of the matter.
+[03:07] S0: Yes.
+[03:09] S1: Okay, once you are done, you have decided on your transporter, yes, this is done. Next step is, your shipping estimate has come. After taking all these details, you need to change the shipping estimate.
+[03:20] S3: Okay, one thing, when we go there, we should bring the shipping estimate from the app.
+[03:28] S3: Shipping estimate.
+[03:28] S1: Shipping estimate, yes, it calculates according to this.
+[03:30] S3: Because we are going to create an API when you click on this, the API will be created, some value will come from the app, we will provide that to them and she will show it. Right, isn't it? Okay.
+[03:36] S1: We will provide and she will join.
+[03:40] S1: Pesimist has arrived, this is just to validate. You can't change this, you can't do anything about it.
+[03:44] S3: Okay, when someone clicks on confirm and proceed, then what will happen?
+[03:47] S1: Go to the next step. This whole thing is running on a single model so far. But we have created steps in it, in a way. This was building documents. This was estimate. Man, there was no other option besides that. Now they have to work harder than this app. So we still...
+[03:49] S3: All of it is one model.
+[03:56] S3: Dude, there is no option.
+[04:01] S3: Okay, then it's fine.
+[04:02] S1: So then you come down to shipping details, shipment details. Here, there's nothing, it has your lorry number inside, vehicle number, meaning truck number, driver's details are there a little bit, and pickup code is there. They already know this. Okay, pickup.
+[04:15] S3: Okay, there was also one for the pickup code, that if our incoterms were mentioned on something.
+[04:19] S1: This is disabled in FTP.
+[04:20] S3: Because these are like incoterms, this is yours, okay. Based on this, this pickup code is not mandatory, only on FTP that pickup code is required.
+[04:28] S1: Yes, so there will be a variation in both processes. If your input term itself changes, then the front will be closed.
+[04:32] S3: Tell me about the content, how to disable it.
+[04:33] S1: Yes, that's right.
+[04:35] S1: That in some of them, these multiple things that you will see will be the same, but some features will be disabled just because your application will also come later, so we will tell you where and how it is.
+[04:48] S1: This is the basic delivery and the fan's information that you will enter, meaning the truck's. Then you can you can be done with this. Your entire DI, meaning the invoice, has been cut. It will either be processed, or this invoice will be shown generated there. I don't know its functionality yet.
+[05:02] S0: No, I mean, even that.
+[05:03] S1: What is it, how much time are you taking now?
+[05:05] S3: So I haven't seen it from the back yet.
+[05:07] S1: Okay, once this is confirmed from their side, we can actually finalize what should come here. Mostly, if, I mean
+[05:13] S3: According to me, it should be from this start.
+[05:17] S3: Once it is generated, it will come to you, see this.
+[05:20] S1: So, this is dynamic.
+[05:21] S0: I will change the model. As soon as I got the response, the successful invoice number came in it. What is this? Look.
+[05:26] S3: What is this, look, he clicked the button there instantly. Now, it's not like he will come within seconds. I don't know how.
+[05:33] S0: I don't know which side it is. It will take a little time.
+[05:34] S3: So, so we will show this. So, even if, look, if it comes, it's a good match. If it doesn't come, then this is a little, this is a little.
+[05:40] S1: So this is not writing.
+[05:41] S3: If, after wandering around, suppose it comes to them, then this one will move aside and come.
+[05:46] S0: Yes, great.
+[05:46] S3: Didn't come.
+[05:47] S0: Yes, that will be loaded and then like
+[05:49] S3: In this, we will do one more thing, ma'am. We can assume that it is rotating and some error is coming from behind.
+[05:54] S3: Then we will show the error.
+[05:57] S0: Yes, even while coming, they cannot do any network activities.
+[05:59] S3: You can't even do it while rotating it, right?
+[06:01] S3: Yes, okay.
+[06:05] S2: Okay, let's see, we will make it.
+[06:10] S0: Yes, network.
+[06:20] S1: And Sujal is coming.
+[06:23] S3: It is available in 8-8 types.
+[06:24] S1: Yes, I know, brother, I know.
+[06:28] S3: No, no.
+[06:31] S1: No, no, they will be able to tell better about the proper functioning. In some places, like I have been with them.
+[06:36] S3: I have sent the photo to the BID.
+[06:40] S3: It is useful now.
+[06:44] S3: Let's get the call set up.
+[06:47] S1: Okay, this invoice has been generated. There will be one more step, which is our in progress, this part is also over. From here, the DI on which we were working, that will be removed from here.
+[07:01] S3: Where, where, what were you saying, sorry?
+[07:02] S0: Yes, sir.
+[07:04] S1: From this table, the one you opened, the DI number one, which is like an order.
+[07:06] S3: Okay, okay.
+[07:09] S3: Okay.
+[07:10] S1: So, it will be removed from here, continue.
+[07:12] S3: Infra, invoice, when
+[07:12] S1: Invoice, when the invoice is created.
+[07:14] S3: If, let's say, there is any error in the invoice.
+[07:18] S1: I think even then, it will be removed without it because we created the document for this.
+[07:18] S0: I think the beep.
+[07:22] S3: No, sir.
+[07:23] S0: No, it shouldn't be removed then.
+[07:24] S3: I am Shiv, I am coming on invoice, and my invoice is coming as an adult.
+[07:29] S3: So you said from there, so then
+[07:29] S1: So then it will go into invoice management, right? It won't stay here. It has document flow. In a way, all the DIs that were coming, this is the same method. But in this, it shows you the status. All these things are generated. So it will show you here that its invoice has not been made for some any reason.
+[07:45] S0: Basically, when we click on continue on the last page, suppose the invoice is not being generated. So, when it comes back to usage on the speech, I should get the latest data. Here, its processing is not happening. So, I will remove whatever its status is on its page.
+[07:53] S1: Here, I can show its processing as well.
+[07:57] S1: Where will that go? You will see it in the document flow if the process is happening, okay? After its process, either it will not be generated or it will be generated. If it is being generated.
+[08:06] S3: Any questions?
+[08:08] S3: You are on this in progress tab.
+[08:11] S1: It doesn't open like that.
+[08:14] S3: No no, it's okay. I will go back there. You are in progress, you are new, and you have selected one of the, and the shipment is done.
+[08:21] S3: The shipment process has been started. Anyways, you won't come to the document flow at that time.
+[08:26] S1: Yes, so how is it in Modal?
+[08:26] S0: So, in the modal.
+[08:27] S3: So, this is the problem with processing.
+[08:28] S0: But the modern one is getting discarded. If we keep it somewhere else on the screen, it will become modern.
+[08:29] S1: Currently.
+[08:33] S1: We put it in, it was in processing right now. Suppose it was taking more time, so we gave it a state for processing.
+[08:38] S3: We can give this then, bro, from the leg, you did one or two steps.
+[08:45] S3: So, it's the same.
+[08:45] S1: It's the same, and after entering, the data entry is the same.
+[08:48] S0: We will have to save what we are continuing to do.
+[08:49] S1: We will have to save what we are doing.
+[08:53] S0: If we are saving the model that we are opening every time during the run time on its continue, then it's fine.
+[08:58] S2: Then it's okay.
+[09:01] S1: Okay, later I am not saying that it is a wrong question.
+[09:03] S3: No, no, I have a little doubt about this, that in process, 'to be' means either 'yet to be done'.
+[09:10] S1: Yes, right?
+[09:11] S3: Or if any process is running from behind, like in a single sleeve, then we will take it.
+[09:16] S3: Both of these can be animals, right? Both of these can be.
+[09:20] S1: According to me, it's like we just made the state, the papad that was made.
+[09:25] S1: I want to eat.
+[09:25] S3: According to me, it should be step-wise that you reach to this step and these three steps are your interface.
+[09:31] S1: Yes, that's what I'm saying.
+[09:32] S3: Yes.
+[09:33] S1: Yes. So if you continue right here, the processing is still going on. He hasn't rejected the invoice, nor has he generated it.
+[09:40] S3: Now one more thing, this processing is currently running and you have to continue it.
+[09:44] S3: And on the back side, there is an invoice number.
+[09:48] S1: So then it will be generated, right?
+[09:50] S3: It has been generated here, you have continuously.
+[09:52] S3: So, I went back and
+[09:53] S1: Show it on the number. Yes, it will show the generated number.
+[09:57] S0: Otherwise, if I go back to that step, I will get the latest data from the backend. If you send it, the status will change.
+[10:04] S1: I mean, if he hits it again from behind to check if it's made or not, he needs something to show that too, right?
+[10:09] S3: Okay brother, this hit also matters to us, right?
+[10:11] S1: Dude, we'll sit down and discuss this with the tech team, right? If it doesn't happen, that's a different story. We're going for the best-case scenario. If it doesn't happen, tell us, we'll see what happens then.
+[10:20] S1: For now, what I had designed, this is what it was, that you are showing the processing from here.
+[10:23] S0: I am not calling on my phone. I am calling on every continue button, which is updating the data.
+[10:23] S3: My point is that we need to turn on the pain.
+[10:30] S3: Why have you taught the processing continuously?
+[10:34] S1: Remove the processing one, brother. Remove it. Remove the processing one, it was taken out to remove the dial, that's all. Is there any other reason? Remove it, brother.
+[10:41] S3: Yes, if you see, clicking on the button doesn't have any impact, then it's okay.
+[10:45] S1: Yes, it's just to dismiss him.
+[10:47] S0: Anyway, even if the user clicks outside, outside the screen, it will still be modern. Yes, it will turn off.
+[10:50] S1: Yes, it will be closed.
+[10:53] S1: Don't keep that, we will develop it. When you start, we will give you a proper file, like that.
+[10:58] S1: Hand of I look.
+[10:58] S3: So if we remove this and it's taking a little time in the next generation, then what will we show? We will show something that is happening.
+[11:07] S1: Have you ever made it?
+[11:07] S2: It was kept for that.
+[11:09] S3: What role has been given to you?
+[11:10] S2: But these two things happen, like when the recipe is also stopped, right?
+[11:16] S3: The invoice gets generated.
+[11:20] S3: Otherwise, we then front end, that's why it was kept, we put this in.
+[11:22] S1: This is why it was kept. If you remove this and show it in the document flow. This is the reason. Yes, so that's it, from the document flow you will get an idea that it is still under processing. This is not your invoice.
+[11:33] S0: Okay, so we have to redirect the user in the first step.
+[11:36] S1: Not on the first step, it will land back here in progress. Okay. Stay here because what is his behavior? That he cuts the DI properly many times, then after that he collects the DI process. So it depends on his behavior.
+[11:39] S0: Okay.
+[11:45] S3: DI.
+[11:48] S3: Okay, will do the process.
+[11:50] S1: I did one, I made its invoice, then made this one, then this one, like that.
+[11:53] S3: Okay, when you made the invoice for this, it got removed from here.
+[11:55] S1: Yes, it went, it will go into the second invoice tab.
+[11:57] S3: If the invoice is not made from the back for any reason, then it will be closed.
+[12:01] S1: So he can see the processing in the document flow, at least this was kept, now this.
+[12:04] S3: So we will have to give them a demo that we are flying it from here.
+[12:08] S1: Yes, yes, we will have to give it. We will have to tell them. We are taking a review for this tomorrow. That you tell us, we have made this, you give your feedback on it. So the demo will come at the end, it will be completely made. To incorporate their feedback.
+[12:09] S3: It's been three days.
+[12:19] S0: Will you apply the Boolean check, etc., on the package, like?
+[12:23] S3: No, my point is, ma'am, that if you go and process it once, then it has to be removed from here.
+[12:29] S1: Yes, we need to get out of here.
+[12:31] S3: Whether it's a success or a failure, if you get in here, you can be removed from here.
+[12:34] S0: So then, there will be some key, right? Particularly, the table data will be updated based on what we get from the backend.
+[12:41] S1: Okay.
+[12:42] S0: Like suppose my model got closed again, okay, whether it was successful or failed. But I will get some response, right? It will be updated based on that.
+[12:48] S1: It will come, right?
+[12:50] S1: When you reach the final stage of the modal, those two dialogues, right? These ones. If you reach up to here, it means that it should get out of the inverse dial. If you don't reach up to here, then it's a different game.
+[12:53] S0: Yes
+[12:58] S0: It means
+[13:03] S3: So then, what does this mean? How did you find out? I mean, how did you find out according to the court?
+[13:05] S0: But how did you find out? I mean, how did you find out according to the code that we have reached this step?
+[13:07] S3: It's a book of this system. Hey, you write something on its action, ma'am.
+[13:11] S1: That by continuously pressing or by increasing
+[13:12] S3: On or
+[13:13] S1: Clicking outside, it's the same thing when this model comes.
+[13:15] S3: Now this model will come. You can give the address of the page, right? On this page or on this continue, on the click.
+[13:19] S0: The page will remain the same, right? The page in the URL will remain the same. Now understand that the page will remain the same, this model has been opened.
+[13:26] S3: It has been opened. We cannot link this model to the final. If we reach this model, it will have some section, some address, that we can remove it by clicking this button.
+[13:36] S0: I was thinking that if there are similar models, then I will create one common model.
+[13:42] S0: Like if you keep helping someone, because we will change its content.
+[13:42] S3: You will keep changing that.
+[13:46] S3: This is what they were doing.
+[13:47] S0: Yes.
+[13:48] S3: Yes
+[13:49] S0: Because width is the same as before. If there is a modal, then the modal reference, the number that we generate, the modal instance one.
+[13:56] S0: It remains the same, right?
+[13:57] S3: So, let that be, their point is that we need to reach here. Let's say we clicked on this button, see, generate invoice, this is our final number.
+[14:07] S1: This is their cement set.
+[14:09] S3: Any This is my final button. After this, whatever action is going to happen, show it here and remove that list directly. Understood? Until you reach here, don't remove that list.
+[14:21] S1: That's the only point.
+[14:23] S3: When Yadav reached and took his click, his click, you can take that, right, you can take his ID. His ID got fetched, his ID is present, that means we have to remove this list.
+[14:32] S0: But you know, you are getting it done from the front end, basically it should be from the back end. Like if you click on continue there, because it's user-friendly.
+[14:39] S3: They are getting it done on continue, right? Continue is just for closing. Continue is not for any action, right? Everything only, that's what it is.
+[14:46] S0: Yes, that is not an action.
+[14:47] S3: So, continue the action.
+[14:49] S0: The invoice that is being generated, the invoice number, that must be being generated from someone's paid policy, right?
+[14:52] S3: Which one is happening in this? If we are 100% confirmed that this one is going to be successful or a failure or what. Then instead of closing the bar, instead of closing this one, we will start the volume on the continue click.
+[15:11] S3: Okay, Ma'am.
+[15:12] S0: Tell me one thing, the way we are calling here continuously, is this invoice number generated from some API and sent to me?
+[15:18] S3: This is safe, yes, I will give you that quality one.
+[15:22] S3: The one that was generating before, go to that app and your number will come, then you can do this. So you have your number and your error and processing, there are three states.
+[15:30] S0: Okay.
+[15:31] S0: Three states.
+[15:32] S3: You will find it right there. When you click on it, at that very moment, before showing it, you will have it.
+[15:38] S0: Yes, so it's fine. If I get the success through and the invoice number, then I will show that. So you will show this? Yes, I will delete it from there.
+[15:43] S3: So, will you show this?
+[15:45] S3: If it's processing, then it will show this. If there's an error, then it will show the error. In all three cases, I'm saying remove that line on the button click. I'm talking about removing the line.
+[15:55] S3: That's right.
+[15:56] S0: I can remove it with a unique number because.
+[15:59] S3: Because after this, he said that the line won't come there if you are in that state.
+[16:05] S0: It will have a unique number, right? Okay, order ID.
+[16:06] S3: Anything.
+[16:08] S3: Any item here will either be successful after the invoice process or will fail.
+[16:13] S3: So, in those stages, we have to click on continue.
+[16:16] S1: Look, your function is the same here, the same system, just your status should appear. What are you showing the user?
+[16:22] S0: Okay.
+[16:24] S0: We understood. We will have to write some logic to him before taking the data to call the API. And a unique number, like the order ID is unique, so I will remove it from his list.
+[16:33] S1: So, I am removing it from its mains.
+[16:35] S1: For that, take the order rate and DII number. DII because it closes at this stage. DII doesn't happen here, bro.
+[16:38] S0: Yes, so it is a unique number.
+[16:42] S3: What is this?
+[16:43] S1: No, no, don't look at the screenshot after the pending one, it's from the previous list. The first thing is the DI number, look at this.
+[16:46] S3: It is of polyester.
+[16:50] S3: No, what do we have to remove? We don't have to remove this.
+[16:52] S1: List, this whole list, this is a pro.
+[16:54] S3: Both have the same thing.
+[16:55] S0: It's the same thing.
+[16:56] S0: I mean, the order numbers are also unique, right?
+[16:58] S1: The order number will be in the pending list, and it will be in the stamp list as well.
+[17:00] S3: Yes, let that be. Don't create a conflict. DI is unique because it's one order.
+[17:01] S1: Don't create conflict.
+[17:04] S0: Okay, okay, yes, so the DI number is correct.
+[17:05] S1: So, you can cut the DI multiple.
+[17:09] S0: Okay, yes, so then it's about the DI number.
+[17:11] S1: Particularly, if there is any conflict, it will be pending.
+[17:12] S3: It is a matter of unity.
+[17:14] S3: Remove that.
+[17:15] S3: It is also available in invoice management.
+[17:17] S3: It's about the facing.
+[17:18] S1: I will tell you the process.
+[17:20] S3: Let's move forward.
+[17:20] S1: Basically, we need to understand this for the document location. This is just for downloading it.
+[17:21] S0: Basically, we understand that.
+[17:23] S0: Yes
+[17:24] S3: This is just for download and to know what the status is.
+[17:27] S1: What is this? Which field is this for status? This is basically your orderable payment here, meaning for the invoice. After this, there is the invoice management tab. I would say let us discuss this with everyone. You should look at the design once. Too much, meaning that information will be too much, understand? It won't even be retained.
+[17:42] S0: Yes.
+[17:44] S3: Okay, let me explain this reasonability once.
+[17:48] S1: There is nothing in the visibility, the most basic thing is reports. I am just making some reports and showing them to you.
+[17:50] S3: Reports.
+[17:54] S3: Okay, make it then, then tell me.
+[17:55] S1: Look at what has been made.
+[17:57] S1: It's the same thing, now we are changing it with a different method.
+[17:59] S3: Now, first different
+[18:01] S1: If you go to any report section, all the reports will be visible. There is a filter on top, a filter is applied on these paints. If you apply the filter, those reports will be visible, and everything else will be hidden. And this is the download button I have.
+[18:13] S3: Now, this blue color that was given, that means it's a leaf.
+[18:15] S1: No, no, this is also a doubt, that's why. Leave that, leave that, you just look at the functionality.
+[18:21] S1: This is the list of total master faces.
+[18:23] S3: Then I selected Binu and clicked on download.
+[18:26] S1: So, all the double will happen.
+[18:29] S1: Excel is just like Excel. Even when you click here, it will download Excel, it will open Excel.
+[18:34] S3: So, while clicking, it will download directly.
+[18:36] S1: I mean, Excel will show whatever, I am not clear about that functionality, but what is the basic thing now? In Excel, there are reports. Long, meaning very detailed reports. Now they look at it in Excel, we have given them a view of it.
+[18:45] S3: Now that
+[18:48] S3: So I will not look at pending MRMs, completed MRMs.
+[18:51] S1: Going into the MRN, like the tags that weren't there, like that. It will be visible. Pending. There's nothing, it's the most basic section.
+[19:01] S1: It's a master list, apply the filter on it, sir.
+[19:03] S0: This is the design of the film, and I will show you that.
+[19:05] S1: I will tell you.
+[19:07] S1: Personal, I don't know, you got the Hivex one, right?
+[19:09] S3: No, today is the first day here.
+[19:10] S1: Okay, that will be done for you. I will do that for you, I will share it.
+[19:15] S1: Now, take a look at it, we will change it.
+[19:27] S1: Whose family is this? Deep sent it to me.
+[19:31] S1: This is not your vine.
+[19:33] S3: It has been made, brother.
+[19:34] S0: Then I treated it, then you send it on this as well.
+[19:35] S3: It is also being made in this.
+[19:39] S3: For now.
+[19:44] S0: Make it, write it down.
+[19:45] S1: You made it, right?
+[19:47] S0: You speak.
+[19:52] S0: I will tell him a little bit, I will tell him a little bit.
+[19:56] S1: Yes, you can look at the designs, I don't want to take this as the final hand off, just a brief overview so that you don't have any confusion.
+[20:12] S1: As we wrap up the review process, we will hand it off in a way that, yes, this is the one. I think you will have to start only after that. So.
+[20:19] S0: Now, in the beginning, they were saying something about KPT.
+[20:22] S1: KPIS
+[20:25] S1: What doubts do you have?
+[20:26] S0: I didn't understand what it was related to at that time.
+[20:30] S1: Yes, hello.
+[20:35] S1: Yes, absolutely.
+[20:35] S2: Yes, yes, yes.
+[20:36] S0: Kutta.
+[20:46] S1: When you get access, you can log in to Figma as well, and I would say use the app. I think you might also need the Dev Mode access for this, so for that, you'll have to put it in the subscription as well. Have you used Figma before? So you must be doing it with Dev Mode itself. So, for that, a subscription is required, I think, because on a free account, you can't use the Dev Mode.
+[21:06] S1: So, for that also, I think you will have to talk to Subhash first.
+[21:10] S1: I can use it in this.
+[21:13] S1: So let's see, once your setup is done.
+[21:16] S0: Because it doesn't show much on the right side, right? It doesn't give that much information about the design.
+[21:19] S1: Yes, yes, yes, it will be visible in the demo mode.
+[21:23] S1: So, in the dashboard, you were asking what they do, right? So, the top three ones, now this is where it starts, we are reviewing it now. So, this is not final.
+[21:32] S1: These are the total pending orders that we just showed you on the screen.
+[21:38] S3: Go there and apply the pressure.
+[21:41] S3: Okay, go.
+[21:41] S1: Here you saw three tabs: Pending, In Progress, and Document Flow.
+[21:42] S3: Talk a little.
+[21:44] S3: And Doctor
+[21:47] S3: When they were sitting.
+[21:49] S1: Yes, so these are pending orders.
+[21:51] S1: If I look at it like this, it's the total, total pending orders are all here.
+[21:53] S3: It's going on. It's lying inside. It's locked, right? It's locked inside. It's locked. What was that?
+[22:00] S1: Second one is pending orders credit free. So credit free means those people whose credit block status has a hyphen on it. There are only two statuses here. The hyphen ones and the credit block. So credit free means those who don't have a credit block. Here, there is a filter for order status above. This automatically filters and shows you the list. That's it, inside it. And the same goes for the credit block. If you click on credit block, a filter will be applied here, and you will see this list, credit block.
+[22:24] S3: He is saying that until he is on the grid, what all code is coming, how he is blocking.
+[22:28] S1: So, it is blocking.
+[22:29] S0: So, the user directly clicked there. Need to redirect. Need to redirect and then
+[22:31] S1: Redirect.
+[22:33] S1: Printed.
+[22:33] S3: Okay, okay.
+[22:34] S1: Apply the filter.
+[22:36] S1: These three are very simple. In this, these three are linked with the same thing. In process is again the next stage of that. You will directly redirect again, but switch to this tab. In process, switch. Then it ST1 transit is Meecom, which is also a bit Meecom order, directly bring it to this tab, that's it, nothing else. And the third, sixth one doesn't redirect Meecom. It is just a data point. This is for you to see. So, that's it. Otherwise, these don't have any functions, this was list. So, these filters are applied.
+[23:06] S1: So, the list will come up. This is the same in all of them, whatever things you keep adding, the list will keep increasing below.
+[22:37] S3: Simple, in this, these three are the same thing.
+[22:39] S3: In process.
+[22:43] S3: You will redirect again.
+[23:07] S3: Yes.
+[23:13] S0: And this is how it looks at the end.
+[23:15] S1: This is just a
+[23:16] S0: Information.
+[23:21] S1: I have shared the unsecured setup with you. So, tell me, tomorrow Sujal will also be there, he is a business analyst. So, he knows the product in proper detail. I know more about the UI. And I mean, I also have an idea about the product, but he knows it better. So, he will be able to explain the functioning better. So, you will get an idea from that, and whatever doubts you have about the UI, I will clear them.
+[23:41] S0: Thank you.
+[23:41] S1: Nice.
+[23:53] S1: Then after a while, I do the work on his website, then I have to do it inside that, after that.
+[24:23] S2: No, no, let's talk a little about taking the film.
+[24:29] S2: Show me, you show me. I am showing you, right?
+[24:38] S3: One minute.
+[24:39] S2: What is this, man?
+[24:53] S2: In Sigma, which one?
+[25:04] S2: Namit, how much more do you want to add? If there are six screens in the system, what will be the source of those six screens? There will be a DSP, there will be an RFP. This is coming from DSP, this is coming from SDP, this is coming from IB. So we have to do those things.
+[25:40] S2: Okay.
+[25:44] S2: Why, nothing happened from the recipe.
+[25:53] S2: Which one is that then? The one with the money. That's the one we are going to. Oh, look.
+[25:58] S1: No, no.
+[25:59] S2: Architecture, architecture is a high-end role. Now, I, I have designed a screen. So, inside that, I have brought six films. Two are being automatically designed by me. In six, I am putting them in, okay? So, ultimately, the data that is being automatically designed by me, is that coming from IBIS or from SAP? We should know that too, right?
+[26:23] S2: We have made the same thing while sitting here.
+[26:25] S1: No, that's fine, man. I mean, we will create so much information in such a short time.
+[26:29] S2: You are not coming here, right? The problem is, the problem is that when will you come, tell me that first.
+[26:40] S2: That is the reason.
+[26:43] S1: Okay, okay, okay.
+[26:46] S2: There is still a need.
+[26:49] S2: Can you see the screen?
+[26:52] S2: What have we done inside this? This is like a dashboard. Where are the total pending orders coming from? They are coming from the high bridge. Now, is this derived from SAP?
+[27:02] S2: Are you from this derived recipe? You had to verify this. Is it derived from the recipe or not?
+[27:11] S1: What does 'right from S.A.P.' mean? I didn't understand.
+[27:14] S2: Information, this total pending order that we are showing on the dashboard, for this, information suppose 46 is given here. Is this from 46 SST or from where?
+[27:26] S2: From IBPS.
+[27:27] S1: They are bringing it from T1, right? They are bringing it from the borders of T1.
+[27:29] S2: Okay. So, does that mean what we wrote for high bridge T1 is correct?
+[27:37] S2: So, that's the thing. Now, if tomorrow we, we have done mapping on you. That one, that mapping is done, high-end mapping. Brother, okay, all my fields, I, now from that, it is possible that one field may be missed or something else may not be there. For that, we are doing screen by screen mapping and taking information that yes, this mapping, this value is covered, this is constant, so somewhere we are taking from the default hybrid. So, this kind of information is for us.
+[28:07] S2: It's important to maintain, right? Tomorrow we can show from the business, right, that brother, my...
+[28:13] S1: No, no, you can do it like this, it's coming up. You ask him, I mean, screen level-wise. I think there is something that is getting merged into one screen. I think the source company is clearly defined. I mean, like if a product is coming, where is it coming from inside. If stock aging is coming, where is it coming from.
+[28:31] S2: Yes, this thing is there.
+

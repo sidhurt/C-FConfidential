@@ -1,0 +1,38 @@
+Customer Groups
+Customer Group | Description | Source Table | Field Name  | Field Name
+10 | Dlr-Wholesale based | T151 | KDGRP | KTEXT
+11 | Dealer-Retail based | T151 | KDGRP | KTEXT
+12 | Consignee (Ship to) | T151 | KDGRP | KTEXT
+13 | Retailer/Sub Dealer | T151 | KDGRP | KTEXT
+14 | Institutional Buyers | T151 | KDGRP | KTEXT
+15 | Industrial Buyers | T151 | KDGRP | KTEXT
+16 | Builder & Developers | T151 | KDGRP | KTEXT
+17 | Corporate | T151 | KDGRP | KTEXT
+18 | Consumer | T151 | KDGRP | KTEXT
+19 | Obligatory Non Trade | T151 | KDGRP | KTEXT
+20 | Resale NT MRP based | T151 | KDGRP | KTEXT
+21 | Government | T151 | KDGRP | KTEXT
+22 | Semi Government | T151 | KDGRP | KTEXT
+23 | SEZ | T151 | KDGRP | KTEXT
+24 | Export | T151 | KDGRP | KTEXT
+25 | Employee | T151 | KDGRP | KTEXT
+26 | Project Naman Cust. | T151 | KDGRP | KTEXT
+27 | Transporter | T151 | KDGRP | KTEXT
+28 | Depot | T151 | KDGRP | KTEXT
+29 | Plant | T151 | KDGRP | KTEXT
+30 | Sales Promoter (SP) | T151 | KDGRP | KTEXT
+31 | Handling Agent (HA) | T151 | KDGRP | KTEXT
+32 | Middle man (TPC) | T151 | KDGRP | KTEXT
+33 | Self Consumption | T151 | KDGRP | KTEXT
+34 | Stores | T151 | KDGRP | KTEXT
+35 | Contractors | T151 | KDGRP | KTEXT
+36 | AFR | T151 | KDGRP | KTEXT
+37 | Retainers | T151 | KDGRP | KTEXT
+38 | Power | T151 | KDGRP | KTEXT
+39 | Raw Material | T151 | KDGRP | KTEXT
+40 | CorssCompanyPlant | T151 | KDGRP | KTEXT
+41 | KAM | T151 | KDGRP | KTEXT
+42 | KAM RMC | T151 | KDGRP | KTEXT
+43 | Regional KAM | T151 | KDGRP | KTEXT
+44 | Regional KAM RMC | T151 | KDGRP | KTEXT
+45 | General B2B | T151 | KDGRP | KTEXT

@@ -1,0 +1,401 @@
+SOrg. | DChl | Dv | SOff. | Name | Name | Name | Description
+1000 | 10 | 10 | 1001 | Shree Cement​ Ltd | Trade | Cement​ | No Sales Office |  | Table | TVKBZ | Org.Unit: Sales Office: Assignment to Organizational Unit
+1000 | 10 | 10 | 1027 | Shree Cement​ Ltd | Trade | Cement​ | DL_CENTRAL DELHI_SC
+1000 | 10 | 10 | 1028 | Shree Cement​ Ltd | Trade | Cement​ | DL_CENTRAL DELHI_B
+1000 | 10 | 10 | 1029 | Shree Cement​ Ltd | Trade | Cement​ | DL_CENTRAL DELHI_RC
+1000 | 10 | 10 | 1030 | Shree Cement​ Ltd | Trade | Cement​ | DL_EAST DELHI_SC
+1000 | 10 | 10 | 1031 | Shree Cement​ Ltd | Trade | Cement​ | DL_EAST DELHI_B
+1000 | 10 | 10 | 1032 | Shree Cement​ Ltd | Trade | Cement​ | DL_EAST DELHI_RC
+1000 | 10 | 10 | 1033 | Shree Cement​ Ltd | Trade | Cement​ | DL_NORTH DELHI_SC
+1000 | 10 | 10 | 1034 | Shree Cement​ Ltd | Trade | Cement​ | DL_NORTH DELHI_B
+1000 | 10 | 10 | 1035 | Shree Cement​ Ltd | Trade | Cement​ | DL_NORTH DELHI_RC
+1000 | 10 | 10 | 1036 | Shree Cement​ Ltd | Trade | Cement​ | DL_SOUTH DELHI_SC
+1000 | 10 | 10 | 1037 | Shree Cement​ Ltd | Trade | Cement​ | DL_SOUTH DELHI_B
+1000 | 10 | 10 | 1038 | Shree Cement​ Ltd | Trade | Cement​ | DL_SOUTH DELHI_RC
+1000 | 10 | 10 | 1039 | Shree Cement​ Ltd | Trade | Cement​ | DL_WEST DELHI_SC
+1000 | 10 | 10 | 1040 | Shree Cement​ Ltd | Trade | Cement​ | DL_WEST DELHI_B
+1000 | 10 | 10 | 1041 | Shree Cement​ Ltd | Trade | Cement​ | DL_WEST DELHI_RC
+1000 | 10 | 10 | 1042 | Shree Cement​ Ltd | Trade | Cement​ | DL_SOUTH DELHI-II_SC
+1000 | 10 | 10 | 1043 | Shree Cement​ Ltd | Trade | Cement​ | DL_SOUTH DELHI-II_B
+1000 | 10 | 10 | 1044 | Shree Cement​ Ltd | Trade | Cement​ | DL_SOUTH DELHI-II_RC
+1000 | 10 | 10 | 1045 | Shree Cement​ Ltd | Trade | Cement​ | DL_EAST DELHI-II_SC
+1000 | 10 | 10 | 1046 | Shree Cement​ Ltd | Trade | Cement​ | DL_EAST DELHI-II_RC
+1000 | 10 | 10 | 1047 | Shree Cement​ Ltd | Trade | Cement​ | DL_EAST DELHI-III_SC
+1000 | 10 | 10 | 1048 | Shree Cement​ Ltd | Trade | Cement​ | DL_CENTRAL DELHI-2_S
+1000 | 10 | 10 | 1049 | Shree Cement​ Ltd | Trade | Cement​ | DL_WEST DELHI-2_SC
+1000 | 10 | 10 | 1050 | Shree Cement​ Ltd | Trade | Cement​ | DL_WEST DELHI-2_B
+1000 | 10 | 10 | 1051 | Shree Cement​ Ltd | Trade | Cement​ | DL_WEST DELHI-3_SC
+1000 | 10 | 10 | 1052 | Shree Cement​ Ltd | Trade | Cement​ | DL_WEST DELHI-4_SC
+1000 | 10 | 10 | 1053 | Shree Cement​ Ltd | Trade | Cement​ | DL_NORTH DELHI-2_SC
+1000 | 10 | 10 | 1054 | Shree Cement​ Ltd | Trade | Cement​ | DL_NORTH DELHI-2_B
+1000 | 10 | 10 | 1055 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD_SC
+1000 | 10 | 10 | 1056 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD_B
+1000 | 10 | 10 | 1057 | Shree Cement​ Ltd | Trade | Cement​ | GJ_BANASKANTHA_SC
+1000 | 10 | 10 | 1058 | Shree Cement​ Ltd | Trade | Cement​ | GJ_BANASKANTHA_B
+1000 | 10 | 10 | 1059 | Shree Cement​ Ltd | Trade | Cement​ | GJ_VADODARA_SC
+1000 | 10 | 10 | 1060 | Shree Cement​ Ltd | Trade | Cement​ | GJ_VADODARA_B
+1000 | 10 | 10 | 1061 | Shree Cement​ Ltd | Trade | Cement​ | GJ_MEHSANA_SC
+1000 | 10 | 10 | 1062 | Shree Cement​ Ltd | Trade | Cement​ | GJ_MEHSANA_B
+1000 | 10 | 10 | 1063 | Shree Cement​ Ltd | Trade | Cement​ | GJ_HIMMAT NAGAR_SC
+1000 | 10 | 10 | 1064 | Shree Cement​ Ltd | Trade | Cement​ | GJ_HIMMAT NAGAR_B
+1000 | 10 | 10 | 1065 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SABARKANTHA_SC
+1000 | 10 | 10 | 1066 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SABARKANTHA_B
+1000 | 10 | 10 | 1067 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SURAT_SC
+1000 | 10 | 10 | 1068 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SURAT_B
+1000 | 10 | 10 | 1069 | Shree Cement​ Ltd | Trade | Cement​ | GJ_GANDHIDHAM_SC
+1000 | 10 | 10 | 1070 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-2_SC
+1000 | 10 | 10 | 1071 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-2_B
+1000 | 10 | 10 | 1072 | Shree Cement​ Ltd | Trade | Cement​ | GJ_DAHOD_SC
+1000 | 10 | 10 | 1073 | Shree Cement​ Ltd | Trade | Cement​ | GJ_GODHRA_SC
+1000 | 10 | 10 | 1074 | Shree Cement​ Ltd | Trade | Cement​ | GJ_MAHISAGAR_SC
+1000 | 10 | 10 | 1075 | Shree Cement​ Ltd | Trade | Cement​ | GJ_PALANPUR_SC
+1000 | 10 | 10 | 1076 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-3_SC
+1000 | 10 | 10 | 1077 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-3_B
+1000 | 10 | 10 | 1078 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-4_SC
+1000 | 10 | 10 | 1079 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-4_B
+1000 | 10 | 10 | 1080 | Shree Cement​ Ltd | Trade | Cement​ | GJ_PATAN_SC
+1000 | 10 | 10 | 1081 | Shree Cement​ Ltd | Trade | Cement​ | GJ_KHEDA_SC
+1000 | 10 | 10 | 1082 | Shree Cement​ Ltd | Trade | Cement​ | GJ_KHEDA_B
+1000 | 10 | 10 | 1083 | Shree Cement​ Ltd | Trade | Cement​ | GJ_ANAND_SC
+1000 | 10 | 10 | 1084 | Shree Cement​ Ltd | Trade | Cement​ | GJ_ANAND_B
+1000 | 10 | 10 | 1085 | Shree Cement​ Ltd | Trade | Cement​ | GJ_PANCHMAHAL_SC
+1000 | 10 | 10 | 1086 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-5_SC
+1000 | 10 | 10 | 1087 | Shree Cement​ Ltd | Trade | Cement​ | GJ_AHMEDABAD-5_B
+1000 | 10 | 10 | 1088 | Shree Cement​ Ltd | Trade | Cement​ | GJ_VADODARA-2_B
+1000 | 10 | 10 | 1089 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SURAT-2_SC
+1000 | 10 | 10 | 1090 | Shree Cement​ Ltd | Trade | Cement​ | GJ_BHARUCH-ANKLESWAR
+1000 | 10 | 10 | 1091 | Shree Cement​ Ltd | Trade | Cement​ | GJ_BHARUCH-ANKLESWAR
+1000 | 10 | 10 | 1092 | Shree Cement​ Ltd | Trade | Cement​ | GJ_KUTCH_SC
+1000 | 10 | 10 | 1093 | Shree Cement​ Ltd | Trade | Cement​ | GJ_KUTCH_B
+1000 | 10 | 10 | 1094 | Shree Cement​ Ltd | Trade | Cement​ | GJ_RAJKOT_SC
+1000 | 10 | 10 | 1095 | Shree Cement​ Ltd | Trade | Cement​ | GJ_RAJKOT_B
+1000 | 10 | 10 | 1096 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SURENDRANAGAR_SC
+1000 | 10 | 10 | 1097 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SURAT-3_SC
+1000 | 10 | 10 | 1098 | Shree Cement​ Ltd | Trade | Cement​ | GJ_GANDHINAGAR_SC
+1000 | 10 | 10 | 1099 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SURAT-4_SC
+1000 | 10 | 10 | 1100 | Shree Cement​ Ltd | Trade | Cement​ | GJ_VADODARA-3_B
+1000 | 10 | 10 | 1101 | Shree Cement​ Ltd | Trade | Cement​ | GJ_SURAT-5_SC
+1000 | 10 | 10 | 1102 | Shree Cement​ Ltd | Trade | Cement​ | HR_AMBALA_SC
+1000 | 10 | 10 | 1103 | Shree Cement​ Ltd | Trade | Cement​ | HR_AMBALA_B
+1000 | 10 | 10 | 1104 | Shree Cement​ Ltd | Trade | Cement​ | HR_AMBALA_RC
+1000 | 10 | 10 | 1105 | Shree Cement​ Ltd | Trade | Cement​ | HR_BHIWANI_SC
+1000 | 10 | 10 | 1106 | Shree Cement​ Ltd | Trade | Cement​ | HR_BHIWANI_B
+1000 | 10 | 10 | 1107 | Shree Cement​ Ltd | Trade | Cement​ | HR_BHIWANI_RC
+1000 | 10 | 10 | 1108 | Shree Cement​ Ltd | Trade | Cement​ | HR_FARIDABAD_SC
+1000 | 10 | 10 | 1109 | Shree Cement​ Ltd | Trade | Cement​ | HR_FARIDABAD_B
+1000 | 10 | 10 | 1110 | Shree Cement​ Ltd | Trade | Cement​ | HR_FARIDABAD_RC
+1000 | 10 | 10 | 1111 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON_SC
+1000 | 10 | 10 | 1112 | Shree Cement​ Ltd | Trade | Cement​ | RJ_GURGAON_SC
+1000 | 10 | 10 | 1113 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON_B
+1000 | 10 | 10 | 1114 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON_RC
+1000 | 10 | 10 | 1115 | Shree Cement​ Ltd | Trade | Cement​ | HR_HISSAR_SC
+1000 | 10 | 10 | 1116 | Shree Cement​ Ltd | Trade | Cement​ | HR_HISSAR_B
+1000 | 10 | 10 | 1117 | Shree Cement​ Ltd | Trade | Cement​ | HR_HISSAR_RC
+1000 | 10 | 10 | 1118 | Shree Cement​ Ltd | Trade | Cement​ | HR_JHAJJAR_SC
+1000 | 10 | 10 | 1119 | Shree Cement​ Ltd | Trade | Cement​ | HR_JHAJJAR_B
+1000 | 10 | 10 | 1120 | Shree Cement​ Ltd | Trade | Cement​ | HR_JHAJJAR_RC
+1000 | 10 | 10 | 1121 | Shree Cement​ Ltd | Trade | Cement​ | HR_JIND_SC
+1000 | 10 | 10 | 1122 | Shree Cement​ Ltd | Trade | Cement​ | HR_JIND_B
+1000 | 10 | 10 | 1123 | Shree Cement​ Ltd | Trade | Cement​ | HR_JIND_RC
+1000 | 10 | 10 | 1124 | Shree Cement​ Ltd | Trade | Cement​ | HR_KAITHAL_SC
+1000 | 10 | 10 | 1125 | Shree Cement​ Ltd | Trade | Cement​ | HR_KAITHAL_B
+1000 | 10 | 10 | 1126 | Shree Cement​ Ltd | Trade | Cement​ | HR_KAITHAL_RC
+1000 | 10 | 10 | 1127 | Shree Cement​ Ltd | Trade | Cement​ | HR_KARNAL_SC
+1000 | 10 | 10 | 1128 | Shree Cement​ Ltd | Trade | Cement​ | HR_KARNAL_B
+1000 | 10 | 10 | 1129 | Shree Cement​ Ltd | Trade | Cement​ | HR_KARNAL_RC
+1000 | 10 | 10 | 1130 | Shree Cement​ Ltd | Trade | Cement​ | HR_KURUKSHATRA_SC
+1000 | 10 | 10 | 1131 | Shree Cement​ Ltd | Trade | Cement​ | HR_KURUKSHATRA_B
+1000 | 10 | 10 | 1132 | Shree Cement​ Ltd | Trade | Cement​ | HR_KURUKSHATRA_RC
+1000 | 10 | 10 | 1133 | Shree Cement​ Ltd | Trade | Cement​ | HR_MAHENDRAGARH_SC
+1000 | 10 | 10 | 1134 | Shree Cement​ Ltd | Trade | Cement​ | HR_MAHENDRAGARH_B
+1000 | 10 | 10 | 1135 | Shree Cement​ Ltd | Trade | Cement​ | HR_MAHENDRAGARH_RC
+1000 | 10 | 10 | 1136 | Shree Cement​ Ltd | Trade | Cement​ | HR_NARNAUL_SC
+1000 | 10 | 10 | 1137 | Shree Cement​ Ltd | Trade | Cement​ | HR_NARNAUL_B
+1000 | 10 | 10 | 1138 | Shree Cement​ Ltd | Trade | Cement​ | HR_NARNAUL_RC
+1000 | 10 | 10 | 1139 | Shree Cement​ Ltd | Trade | Cement​ | HR_PANCHKULA_SC
+1000 | 10 | 10 | 1140 | Shree Cement​ Ltd | Trade | Cement​ | HR_PANCHKULA_B
+1000 | 10 | 10 | 1141 | Shree Cement​ Ltd | Trade | Cement​ | HR_PANCHKULA_RC
+1000 | 10 | 10 | 1142 | Shree Cement​ Ltd | Trade | Cement​ | HR_PANIPAT_SC
+1000 | 10 | 10 | 1143 | Shree Cement​ Ltd | Trade | Cement​ | HR_PANIPAT_B
+1000 | 10 | 10 | 1144 | Shree Cement​ Ltd | Trade | Cement​ | HR_PANIPAT_RC
+1000 | 10 | 10 | 1145 | Shree Cement​ Ltd | Trade | Cement​ | HR_REWARI_SC
+1000 | 10 | 10 | 1146 | Shree Cement​ Ltd | Trade | Cement​ | HR_REWARI_B
+1000 | 10 | 10 | 1147 | Shree Cement​ Ltd | Trade | Cement​ | HR_REWARI_RC
+1000 | 10 | 10 | 1148 | Shree Cement​ Ltd | Trade | Cement​ | HR_ROHTAK_SC
+1000 | 10 | 10 | 1149 | Shree Cement​ Ltd | Trade | Cement​ | HR_ROHTAK_B
+1000 | 10 | 10 | 1150 | Shree Cement​ Ltd | Trade | Cement​ | HR_ROHTAK_RC
+1000 | 10 | 10 | 1151 | Shree Cement​ Ltd | Trade | Cement​ | HR_SIRSA_SC
+1000 | 10 | 10 | 1152 | Shree Cement​ Ltd | Trade | Cement​ | HR_SIRSA_B
+1000 | 10 | 10 | 1153 | Shree Cement​ Ltd | Trade | Cement​ | HR_SIRSA_RC
+1000 | 10 | 10 | 1154 | Shree Cement​ Ltd | Trade | Cement​ | HR_SONIPAT_SC
+1000 | 10 | 10 | 1155 | Shree Cement​ Ltd | Trade | Cement​ | HR_SONIPAT_B
+1000 | 10 | 10 | 1156 | Shree Cement​ Ltd | Trade | Cement​ | HR_SONIPAT_RC
+1000 | 10 | 10 | 1157 | Shree Cement​ Ltd | Trade | Cement​ | HR_YAMUNA NAGAR_SC
+1000 | 10 | 10 | 1158 | Shree Cement​ Ltd | Trade | Cement​ | HR_YAMUNA NAGAR_B
+1000 | 10 | 10 | 1159 | Shree Cement​ Ltd | Trade | Cement​ | HR_YAMUNA NAGAR_RC
+1000 | 10 | 10 | 1160 | Shree Cement​ Ltd | Trade | Cement​ | HR_FATEHABAD_SC
+1000 | 10 | 10 | 1161 | Shree Cement​ Ltd | Trade | Cement​ | HR_FATEHABAD_B
+1000 | 10 | 10 | 1162 | Shree Cement​ Ltd | Trade | Cement​ | HR_FATEHABAD_RC
+1000 | 10 | 10 | 1163 | Shree Cement​ Ltd | Trade | Cement​ | HR_BAHADURGARH_SC
+1000 | 10 | 10 | 1164 | Shree Cement​ Ltd | Trade | Cement​ | HR_BAHADURGARH_B
+1000 | 10 | 10 | 1165 | Shree Cement​ Ltd | Trade | Cement​ | HR_BAHADURGARH_RC
+1000 | 10 | 10 | 1166 | Shree Cement​ Ltd | Trade | Cement​ | HR_SAHUPURA_SC
+1000 | 10 | 10 | 1167 | Shree Cement​ Ltd | Trade | Cement​ | RJ_SAHUPURA_SC
+1000 | 10 | 10 | 1168 | Shree Cement​ Ltd | Trade | Cement​ | HR_MEWAT_B
+1000 | 10 | 10 | 1169 | Shree Cement​ Ltd | Trade | Cement​ | HR_MEWAT_RC
+1000 | 10 | 10 | 1170 | Shree Cement​ Ltd | Trade | Cement​ | HR_FIROZPUR ZIRKA_RC
+1000 | 10 | 10 | 1171 | Shree Cement​ Ltd | Trade | Cement​ | HR_TOHANA_SC
+1000 | 10 | 10 | 1172 | Shree Cement​ Ltd | Trade | Cement​ | HR_TOHANA_RC
+1000 | 10 | 10 | 1173 | Shree Cement​ Ltd | Trade | Cement​ | HR_PALWAL_B
+1000 | 10 | 10 | 1174 | Shree Cement​ Ltd | Trade | Cement​ | HR_PALWAL_RC
+1000 | 10 | 10 | 1175 | Shree Cement​ Ltd | Trade | Cement​ | HR_SOHNA (GURGAON)_S
+1000 | 10 | 10 | 1176 | Shree Cement​ Ltd | Trade | Cement​ | HR_TOSHAM_RC
+1000 | 10 | 10 | 1177 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON DLF_SC
+1000 | 10 | 10 | 1178 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON OLD_SC
+1000 | 10 | 10 | 1179 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON RURAL_SC
+1000 | 10 | 10 | 1180 | Shree Cement​ Ltd | Trade | Cement​ | HR_AMBALA CANTT_SC
+1000 | 10 | 10 | 1181 | Shree Cement​ Ltd | Trade | Cement​ | HR_AMBALA CITY_SC
+1000 | 10 | 10 | 1182 | Shree Cement​ Ltd | Trade | Cement​ | HR_SIRSA-2_B
+1000 | 10 | 10 | 1183 | Shree Cement​ Ltd | Trade | Cement​ | HR_KARNAL-2_B
+1000 | 10 | 10 | 1184 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON-2_SC
+1000 | 10 | 10 | 1185 | Shree Cement​ Ltd | Trade | Cement​ | HR_GURGAON-2_RC
+1000 | 10 | 10 | 1186 | Shree Cement​ Ltd | Trade | Cement​ | HR_PALWAL-2_SC
+1000 | 10 | 10 | 1187 | Shree Cement​ Ltd | Trade | Cement​ | HR_PALWAL-2_RC
+1000 | 10 | 10 | 1188 | Shree Cement​ Ltd | Trade | Cement​ | HR_REWARI-2_B
+1000 | 10 | 10 | 1189 | Shree Cement​ Ltd | Trade | Cement​ | MH_NAGPUR_SC
+1000 | 10 | 10 | 1190 | Shree Cement​ Ltd | Trade | Cement​ | MH_NAGPUR_B
+1000 | 10 | 10 | 1191 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR_SC
+1000 | 10 | 10 | 1192 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR_B
+1000 | 10 | 10 | 1193 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR-AKLUJ_SC
+1000 | 10 | 10 | 1194 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR-AKLUJ_B
+1000 | 10 | 10 | 1195 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR-KURUDUWAD
+1000 | 10 | 10 | 1196 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR-SANGOLA_S
+1000 | 10 | 10 | 1197 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR-BARSHI_SC
+1000 | 10 | 10 | 1198 | Shree Cement​ Ltd | Trade | Cement​ | MH_SOLAPUR-BARSHI_B
+1000 | 10 | 10 | 1199 | Shree Cement​ Ltd | Trade | Cement​ | MH_NANDED_SC
+1000 | 10 | 10 | 1200 | Shree Cement​ Ltd | Trade | Cement​ | MH_NANDED_B
+1000 | 10 | 10 | 1201 | Shree Cement​ Ltd | Trade | Cement​ | MH_PARBHANI_SC
+1000 | 10 | 10 | 1202 | Shree Cement​ Ltd | Trade | Cement​ | MH_PARBHANI_B
+1000 | 10 | 10 | 1203 | Shree Cement​ Ltd | Trade | Cement​ | MH_HINGOLI_SC
+1000 | 10 | 10 | 1204 | Shree Cement​ Ltd | Trade | Cement​ | MH_HINGOLI_B
+1000 | 10 | 10 | 1205 | Shree Cement​ Ltd | Trade | Cement​ | MH_LATUR_SC
+1000 | 10 | 10 | 1206 | Shree Cement​ Ltd | Trade | Cement​ | MH_LATUR_B
+1000 | 10 | 10 | 1207 | Shree Cement​ Ltd | Trade | Cement​ | MH_LATUR-AHMEDPUR_SC
+1000 | 10 | 10 | 1208 | Shree Cement​ Ltd | Trade | Cement​ | MH_LATUR-UDGIR_SC
+1000 | 10 | 10 | 1209 | Shree Cement​ Ltd | Trade | Cement​ | MH_LATUR-UDGIR_B
+1000 | 10 | 10 | 1210 | Shree Cement​ Ltd | Trade | Cement​ | MH_OSMANABAD_SC
+1000 | 10 | 10 | 1211 | Shree Cement​ Ltd | Trade | Cement​ | MH_OSMANABAD_B
+1000 | 10 | 10 | 1212 | Shree Cement​ Ltd | Trade | Cement​ | MH_OSMANABAD-BHOOM_S
+1000 | 10 | 10 | 1213 | Shree Cement​ Ltd | Trade | Cement​ | MH_OSMANABAD-BHOOM_B
+1000 | 10 | 10 | 1214 | Shree Cement​ Ltd | Trade | Cement​ | MH_BEED_SC
+1000 | 10 | 10 | 1215 | Shree Cement​ Ltd | Trade | Cement​ | MH_BEED_B
+1000 | 10 | 10 | 1216 | Shree Cement​ Ltd | Trade | Cement​ | MH_BEED-PARLI_SC
+1000 | 10 | 10 | 1217 | Shree Cement​ Ltd | Trade | Cement​ | MH_JALNA-2_BC
+1000 | 10 | 10 | 1218 | Shree Cement​ Ltd | Trade | Cement​ | MH_KOLHAPUR_SC
+1000 | 10 | 10 | 1219 | Shree Cement​ Ltd | Trade | Cement​ | MH_KOLHAPUR_B
+1000 | 10 | 10 | 1220 | Shree Cement​ Ltd | Trade | Cement​ | MH_KOLHAPUR-CHIPRI_S
+1000 | 10 | 10 | 1221 | Shree Cement​ Ltd | Trade | Cement​ | MH_KOLHAPUR-CHIPRI_B
+1000 | 10 | 10 | 1222 | Shree Cement​ Ltd | Trade | Cement​ | MH_KOLHAPUR-ICHALKAR
+1000 | 10 | 10 | 1223 | Shree Cement​ Ltd | Trade | Cement​ | MH_SANGLI_SC
+1000 | 10 | 10 | 1224 | Shree Cement​ Ltd | Trade | Cement​ | MH_SANGLI_B
+1000 | 10 | 10 | 1225 | Shree Cement​ Ltd | Trade | Cement​ | MH_SATARA_SC
+1000 | 10 | 10 | 1226 | Shree Cement​ Ltd | Trade | Cement​ | MH_SATARA_B
+1000 | 10 | 10 | 1227 | Shree Cement​ Ltd | Trade | Cement​ | MH_SATARA-KARAD_SC
+1000 | 10 | 10 | 1228 | Shree Cement​ Ltd | Trade | Cement​ | MH_SATARA-KARAD_B
+1000 | 10 | 10 | 1229 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-BHIGWAN_SC
+1000 | 10 | 10 | 1230 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-LONI_SC
+1000 | 10 | 10 | 1231 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-LONI_B
+1000 | 10 | 10 | 1232 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-PCMC_SC
+1000 | 10 | 10 | 1233 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-PCMC_B
+1000 | 10 | 10 | 1234 | Shree Cement​ Ltd | Trade | Cement​ | MH_AHMEDNAGAR_SC
+1000 | 10 | 10 | 1235 | Shree Cement​ Ltd | Trade | Cement​ | MH_AHMEDNAGAR_B
+1000 | 10 | 10 | 1236 | Shree Cement​ Ltd | Trade | Cement​ | MH_AHMEDNAGAR-SANGAM
+1000 | 10 | 10 | 1237 | Shree Cement​ Ltd | Trade | Cement​ | MH_AHMEDNAGAR-B
+1000 | 10 | 10 | 1238 | Shree Cement​ Ltd | Trade | Cement​ | MH_AURANGABAD_SC
+1000 | 10 | 10 | 1239 | Shree Cement​ Ltd | Trade | Cement​ | MH_AURANGABAD_B
+1000 | 10 | 10 | 1240 | Shree Cement​ Ltd | Trade | Cement​ | MH_JALNA_SC
+1000 | 10 | 10 | 1241 | Shree Cement​ Ltd | Trade | Cement​ | MH_JALNA_B
+1000 | 10 | 10 | 1242 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASIK_SC
+1000 | 10 | 10 | 1243 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASIK_B
+1000 | 10 | 10 | 1244 | Shree Cement​ Ltd | Trade | Cement​ | MH_BHANDARA_SC
+1000 | 10 | 10 | 1245 | Shree Cement​ Ltd | Trade | Cement​ | MH_BHANDARA_B
+1000 | 10 | 10 | 1246 | Shree Cement​ Ltd | Trade | Cement​ | MH_GONDIA_SC
+1000 | 10 | 10 | 1247 | Shree Cement​ Ltd | Trade | Cement​ | MH_GONDIA_B
+1000 | 10 | 10 | 1248 | Shree Cement​ Ltd | Trade | Cement​ | MH_SARAWADE-KOLHAPUR
+1000 | 10 | 10 | 1249 | Shree Cement​ Ltd | Trade | Cement​ | MH_SARAWADE-KOLHAPUR
+1000 | 10 | 10 | 1250 | Shree Cement​ Ltd | Trade | Cement​ | MH_HUPARI-KOLHAPUR_S
+1000 | 10 | 10 | 1251 | Shree Cement​ Ltd | Trade | Cement​ | MH_SINDHUDURG_SC
+1000 | 10 | 10 | 1252 | Shree Cement​ Ltd | Trade | Cement​ | MH_SINDHUDURG_B
+1000 | 10 | 10 | 1253 | Shree Cement​ Ltd | Trade | Cement​ | MH_RATNAGIRI_SC
+1000 | 10 | 10 | 1254 | Shree Cement​ Ltd | Trade | Cement​ | MH_RATNAGIRI_B
+1000 | 10 | 10 | 1255 | Shree Cement​ Ltd | Trade | Cement​ | MH_AHMEDNAGAR-SHRIGO
+1000 | 10 | 10 | 1256 | Shree Cement​ Ltd | Trade | Cement​ | MH_SANGLI-JATH_SC
+1000 | 10 | 10 | 1257 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASHIK- YEOLLA_SC
+1000 | 10 | 10 | 1258 | Shree Cement​ Ltd | Trade | Cement​ | MH_DHULE-1_BC
+1000 | 10 | 10 | 1259 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-BARAMATI_SC
+1000 | 10 | 10 | 1260 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-BARAMATI_B
+1000 | 10 | 10 | 1261 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-KHED_SC
+1000 | 10 | 10 | 1262 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-KHED_B
+1000 | 10 | 10 | 1263 | Shree Cement​ Ltd | Trade | Cement​ | MH_BEED-AMBEJOGAI_SC
+1000 | 10 | 10 | 1264 | Shree Cement​ Ltd | Trade | Cement​ | MH_BEED-AMBEJOGAI_B
+1000 | 10 | 10 | 1265 | Shree Cement​ Ltd | Trade | Cement​ | MH_NAGAR-2-B
+1000 | 10 | 10 | 1266 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASHIK-NIPHAD_SC
+1000 | 10 | 10 | 1267 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASHIK-KASAMA_SC
+1000 | 10 | 10 | 1268 | Shree Cement​ Ltd | Trade | Cement​ | MH_NSHIK_KASMA_SC
+1000 | 10 | 10 | 1269 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-BHOR_SC
+1000 | 10 | 10 | 1270 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-MAWAL_SC
+1000 | 10 | 10 | 1271 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-MAWAL_B
+1000 | 10 | 10 | 1272 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-MULSHI_SC
+1000 | 10 | 10 | 1273 | Shree Cement​ Ltd | Trade | Cement​ | MH_RAIGAD-PANVEL_B
+1000 | 10 | 10 | 1274 | Shree Cement​ Ltd | Trade | Cement​ | MH_RAIGAD-PANVEL_SC
+1000 | 10 | 10 | 1275 | Shree Cement​ Ltd | Trade | Cement​ | MH_JALGAON_SC
+1000 | 10 | 10 | 1276 | Shree Cement​ Ltd | Trade | Cement​ | MH_JALGAON_B
+1000 | 10 | 10 | 1277 | Shree Cement​ Ltd | Trade | Cement​ | MH_DHULE_SC
+1000 | 10 | 10 | 1278 | Shree Cement​ Ltd | Trade | Cement​ | MH_DHULE_B
+1000 | 10 | 10 | 1279 | Shree Cement​ Ltd | Trade | Cement​ | MH_NANDURBAR_SC
+1000 | 10 | 10 | 1280 | Shree Cement​ Ltd | Trade | Cement​ | MH_NANDURBAR_B
+1000 | 10 | 10 | 1281 | Shree Cement​ Ltd | Trade | Cement​ | MH_PANVEL_SC
+1000 | 10 | 10 | 1282 | Shree Cement​ Ltd | Trade | Cement​ | MH_PANVEL_SC
+1000 | 10 | 10 | 1283 | Shree Cement​ Ltd | Trade | Cement​ | MH_ROHA_SC
+1000 | 10 | 10 | 1284 | Shree Cement​ Ltd | Trade | Cement​ | MH_MAHAD_SC
+1000 | 10 | 10 | 1285 | Shree Cement​ Ltd | Trade | Cement​ | MH_MAHAD_B
+1000 | 10 | 10 | 1286 | Shree Cement​ Ltd | Trade | Cement​ | MH_SHAHAPUR_SC
+1000 | 10 | 10 | 1287 | Shree Cement​ Ltd | Trade | Cement​ | MH_ULHASNAGAR_SC
+1000 | 10 | 10 | 1288 | Shree Cement​ Ltd | Trade | Cement​ | MH_PALGHAR_SC
+1000 | 10 | 10 | 1289 | Shree Cement​ Ltd | Trade | Cement​ | MH_PALGHAR_B
+1000 | 10 | 10 | 1290 | Shree Cement​ Ltd | Trade | Cement​ | MH_THANE_SC
+1000 | 10 | 10 | 1291 | Shree Cement​ Ltd | Trade | Cement​ | MH_THANE_B
+1000 | 10 | 10 | 1292 | Shree Cement​ Ltd | Trade | Cement​ | MH_GADCHIROLI_SC
+1000 | 10 | 10 | 1293 | Shree Cement​ Ltd | Trade | Cement​ | MH_AMRAVATI_SC
+1000 | 10 | 10 | 1294 | Shree Cement​ Ltd | Trade | Cement​ | MH_AMRAVATI_B
+1000 | 10 | 10 | 1295 | Shree Cement​ Ltd | Trade | Cement​ | MH_BHANDARA-5_SC
+1000 | 10 | 10 | 1296 | Shree Cement​ Ltd | Trade | Cement​ | MH_WARDHA_B
+1000 | 10 | 10 | 1297 | Shree Cement​ Ltd | Trade | Cement​ | MH_BHANDARA-1_SC
+1000 | 10 | 10 | 1298 | Shree Cement​ Ltd | Trade | Cement​ | MH_BHANDARA-2_SC
+1000 | 10 | 10 | 1299 | Shree Cement​ Ltd | Trade | Cement​ | MH_BHANDARA-3_SC
+1000 | 10 | 10 | 1300 | Shree Cement​ Ltd | Trade | Cement​ | MH_AHMEDNAGAR-PARNER
+1000 | 10 | 10 | 1301 | Shree Cement​ Ltd | Trade | Cement​ | MH_AHMEDNAGAR-KOPERG
+1000 | 10 | 10 | 1302 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-SASWAD_B
+1000 | 10 | 10 | 1303 | Shree Cement​ Ltd | Trade | Cement​ | MH_SATARA-KHANDALA_S
+1000 | 10 | 10 | 1304 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASHIK-KALWAN_B
+1000 | 10 | 10 | 1305 | Shree Cement​ Ltd | Trade | Cement​ | MH_GONDIA-2_SC
+1000 | 10 | 10 | 1306 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-HAVELI_SC
+1000 | 10 | 10 | 1307 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-HAVELI_B
+1000 | 10 | 10 | 1308 | Shree Cement​ Ltd | Trade | Cement​ | MH_THANE-2_B
+1000 | 10 | 10 | 1309 | Shree Cement​ Ltd | Trade | Cement​ | MH_BEED-2_B
+1000 | 10 | 10 | 1310 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-PMC-1_SC
+1000 | 10 | 10 | 1311 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-PMC-2_SC
+1000 | 10 | 10 | 1312 | Shree Cement​ Ltd | Trade | Cement​ | MH_BULDHANA_SC
+1000 | 10 | 10 | 1313 | Shree Cement​ Ltd | Trade | Cement​ | MH_BULDHANA_B
+1000 | 10 | 10 | 1314 | Shree Cement​ Ltd | Trade | Cement​ | MH_BHIWANDI_SC
+1000 | 10 | 10 | 1315 | Shree Cement​ Ltd | Trade | Cement​ | MH_JALNA-1
+1000 | 10 | 10 | 1316 | Shree Cement​ Ltd | Trade | Cement​ | MH_BEED-3_B
+1000 | 10 | 10 | 1317 | Shree Cement​ Ltd | Trade | Cement​ | MH_PUNE-PMC-3_SC
+1000 | 10 | 10 | 1318 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASHIK-IGATPURI_S
+1000 | 10 | 10 | 1319 | Shree Cement​ Ltd | Trade | Cement​ | MH_THANE-3_SC
+1000 | 10 | 10 | 1320 | Shree Cement​ Ltd | Trade | Cement​ | MH_THANE-3_B
+1000 | 10 | 10 | 1321 | Shree Cement​ Ltd | Trade | Cement​ | MH_JALNA-BHOKARDAN_S
+1000 | 10 | 10 | 1322 | Shree Cement​ Ltd | Trade | Cement​ | MH_NASHIK-AMBAD_B
+1000 | 10 | 10 | 1323 | Shree Cement​ Ltd | Trade | Cement​ | HP_SOLAN_SC
+1000 | 10 | 10 | 1324 | Shree Cement​ Ltd | Trade | Cement​ | HP_SOLAN_B
+1000 | 10 | 10 | 1325 | Shree Cement​ Ltd | Trade | Cement​ | HP_UNA_SC
+1000 | 10 | 10 | 1326 | Shree Cement​ Ltd | Trade | Cement​ | HP_UNA_B
+1000 | 10 | 10 | 1327 | Shree Cement​ Ltd | Trade | Cement​ | HP_SIRMAUR_SC
+1000 | 10 | 10 | 1328 | Shree Cement​ Ltd | Trade | Cement​ | HP_SIRMAUR_B
+1000 | 10 | 10 | 1329 | Shree Cement​ Ltd | Trade | Cement​ | HP_DHANGU PEER_SC
+1000 | 10 | 10 | 1330 | Shree Cement​ Ltd | Trade | Cement​ | HP_DHANGU PEER_B
+1000 | 10 | 10 | 1331 | Shree Cement​ Ltd | Trade | Cement​ | HP_SHIMLA_B
+1000 | 10 | 10 | 1332 | Shree Cement​ Ltd | Trade | Cement​ | HP_KANGRA_B
+1000 | 10 | 10 | 1333 | Shree Cement​ Ltd | Trade | Cement​ | HP_HAMIRPUR_B
+1000 | 10 | 10 | 1334 | Shree Cement​ Ltd | Trade | Cement​ | HP_BILASPUR(NO SP)_B
+1000 | 10 | 10 | 1335 | Shree Cement​ Ltd | Trade | Cement​ | PB_AMRITSAR_SC
+1000 | 10 | 10 | 1336 | Shree Cement​ Ltd | Trade | Cement​ | PB_AMRITSAR_B
+1000 | 10 | 10 | 1337 | Shree Cement​ Ltd | Trade | Cement​ | PB_AMRITSAR_RC
+1000 | 10 | 10 | 1338 | Shree Cement​ Ltd | Trade | Cement​ | PB_BHATINDA_SC
+1000 | 10 | 10 | 1339 | Shree Cement​ Ltd | Trade | Cement​ | PB_BHATINDA_SC
+1000 | 10 | 10 | 1340 | Shree Cement​ Ltd | Trade | Cement​ | PB_BHATINDA_B
+1000 | 10 | 10 | 1341 | Shree Cement​ Ltd | Trade | Cement​ | PB_BHATINDA_RC
+1000 | 10 | 10 | 1342 | Shree Cement​ Ltd | Trade | Cement​ | PB_FARIDKOT_SC
+1000 | 10 | 10 | 1343 | Shree Cement​ Ltd | Trade | Cement​ | PB_FARIDKOT_B
+1000 | 10 | 10 | 1344 | Shree Cement​ Ltd | Trade | Cement​ | PB_FARIDKOT_RC
+1000 | 10 | 10 | 1345 | Shree Cement​ Ltd | Trade | Cement​ | PB_FEROZEPUR_SC
+1000 | 10 | 10 | 1346 | Shree Cement​ Ltd | Trade | Cement​ | PB_FEROZEPUR_B
+1000 | 10 | 10 | 1347 | Shree Cement​ Ltd | Trade | Cement​ | PB_FEROZEPUR_RC
+1000 | 10 | 10 | 1348 | Shree Cement​ Ltd | Trade | Cement​ | PB_GURDASPUR_SC
+1000 | 10 | 10 | 1349 | Shree Cement​ Ltd | Trade | Cement​ | PB_GURDASPUR_B
+1000 | 10 | 10 | 1350 | Shree Cement​ Ltd | Trade | Cement​ | PB_GURDASPUR_RC
+1000 | 10 | 10 | 1351 | Shree Cement​ Ltd | Trade | Cement​ | PB_HOSHIARPUR_SC
+1000 | 10 | 10 | 1352 | Shree Cement​ Ltd | Trade | Cement​ | PB_HOSHIARPUR_B
+1000 | 10 | 10 | 1353 | Shree Cement​ Ltd | Trade | Cement​ | PB_HOSHIARPUR_RC
+1000 | 10 | 10 | 1354 | Shree Cement​ Ltd | Trade | Cement​ | PB_JALLANDHAR_SC
+1000 | 10 | 10 | 1355 | Shree Cement​ Ltd | Trade | Cement​ | PB_JALLANDHAR_B
+1000 | 10 | 10 | 1356 | Shree Cement​ Ltd | Trade | Cement​ | PB_JALLANDHAR_RC
+1000 | 10 | 10 | 1357 | Shree Cement​ Ltd | Trade | Cement​ | PB_KAPURTHALA_SC
+1000 | 10 | 10 | 1358 | Shree Cement​ Ltd | Trade | Cement​ | PB_KAPURTHALA_B
+1000 | 10 | 10 | 1359 | Shree Cement​ Ltd | Trade | Cement​ | PB_KHANNA (FATEHGARH
+1000 | 10 | 10 | 1360 | Shree Cement​ Ltd | Trade | Cement​ | PB_KHANNA (FATEHGARH
+1000 | 10 | 10 | 1361 | Shree Cement​ Ltd | Trade | Cement​ | PB_KHANNA (FATEHGARH
+1000 | 10 | 10 | 1362 | Shree Cement​ Ltd | Trade | Cement​ | PB_LUDHIANA_SC
+1000 | 10 | 10 | 1363 | Shree Cement​ Ltd | Trade | Cement​ | PB_LUDHIANA_B
+1000 | 10 | 10 | 1364 | Shree Cement​ Ltd | Trade | Cement​ | PB_LUDHIANA_RC
+1000 | 10 | 10 | 1365 | Shree Cement​ Ltd | Trade | Cement​ | PB_MUKTSAR_SC
+1000 | 10 | 10 | 1366 | Shree Cement​ Ltd | Trade | Cement​ | PB_MUKTSAR_B
+1000 | 10 | 10 | 1367 | Shree Cement​ Ltd | Trade | Cement​ | PB_MUKTSAR_RC
+1000 | 10 | 10 | 1368 | Shree Cement​ Ltd | Trade | Cement​ | PB_NAWANSHAHAR_SC
+1000 | 10 | 10 | 1369 | Shree Cement​ Ltd | Trade | Cement​ | PB_NAWANSHAHAR_B
+1000 | 10 | 10 | 1370 | Shree Cement​ Ltd | Trade | Cement​ | PB_NAWANSHAHAR_RC
+1000 | 10 | 10 | 1371 | Shree Cement​ Ltd | Trade | Cement​ | PB_PABHAT (MOHALI)_S
+1000 | 10 | 10 | 1372 | Shree Cement​ Ltd | Trade | Cement​ | PB_PABHAT (MOHALI)_B
+1000 | 10 | 10 | 1373 | Shree Cement​ Ltd | Trade | Cement​ | PB_PABHAT (MOHALI)_B
+1000 | 10 | 10 | 1374 | Shree Cement​ Ltd | Trade | Cement​ | PB_PABHAT (MOHALI)_R
+1000 | 10 | 10 | 1375 | Shree Cement​ Ltd | Trade | Cement​ | PB_PATIALA_SC
+1000 | 10 | 10 | 1376 | Shree Cement​ Ltd | Trade | Cement​ | PB_PATIALA_B
+1000 | 10 | 10 | 1377 | Shree Cement​ Ltd | Trade | Cement​ | PB_PATIALA_RC
+1000 | 10 | 10 | 1378 | Shree Cement​ Ltd | Trade | Cement​ | PB_RAJPURA_SC
+1000 | 10 | 10 | 1379 | Shree Cement​ Ltd | Trade | Cement​ | PB_RAJPURA_B
+1000 | 10 | 10 | 1380 | Shree Cement​ Ltd | Trade | Cement​ | PB_RAJPURA_RC
+1000 | 10 | 10 | 1381 | Shree Cement​ Ltd | Trade | Cement​ | PB_SANGRUR_SC
+1000 | 10 | 10 | 1382 | Shree Cement​ Ltd | Trade | Cement​ | PB_SANGRUR_SC
+1000 | 10 | 10 | 1383 | Shree Cement​ Ltd | Trade | Cement​ | PB_SANGRUR_B
+1000 | 10 | 10 | 1384 | Shree Cement​ Ltd | Trade | Cement​ | PB_SANGRUR_RC
+1000 | 10 | 10 | 1385 | Shree Cement​ Ltd | Trade | Cement​ | PB_MANSA_SC
+1000 | 10 | 10 | 1386 | Shree Cement​ Ltd | Trade | Cement​ | PB_MANSA_B
+1000 | 10 | 10 | 1387 | Shree Cement​ Ltd | Trade | Cement​ | PB_MANSA_RC
+1000 | 10 | 10 | 1388 | Shree Cement​ Ltd | Trade | Cement​ | PB_MOGA_SC
+1000 | 10 | 10 | 1389 | Shree Cement​ Ltd | Trade | Cement​ | PB_MOGA_B
+1000 | 10 | 10 | 1390 | Shree Cement​ Ltd | Trade | Cement​ | PB_MOGA_RC
+1000 | 10 | 10 | 1391 | Shree Cement​ Ltd | Trade | Cement​ | PB_KOTKAPURA_SC
+1000 | 10 | 10 | 1392 | Shree Cement​ Ltd | Trade | Cement​ | PB_KOTKAPURA_SC
+1000 | 10 | 10 | 1393 | Shree Cement​ Ltd | Trade | Cement​ | PB_KOTKAPURA_B
+1000 | 10 | 10 | 1394 | Shree Cement​ Ltd | Trade | Cement​ | PB_KOTKAPURA_RC
+1000 | 10 | 10 | 1395 | Shree Cement​ Ltd | Trade | Cement​ | PB_ZIRAKPUR_SC
+1000 | 10 | 10 | 1396 | Shree Cement​ Ltd | Trade | Cement​ | CH_ZIRAKPUR_B
+1000 | 10 | 10 | 1397 | Shree Cement​ Ltd | Trade | Cement​ | PB_ZIRAKPUR_B
+1000 | 10 | 10 | 1398 | Shree Cement​ Ltd | Trade | Cement​ | PB_ZIRAKPUR_RC
+1000 | 10 | 10 | 1399 | Shree Cement​ Ltd | Trade | Cement​ | PB_ZIRAKPUR_RC
+1000 | 10 | 10 | 1400 | Shree Cement​ Ltd | Trade | Cement​ | PB_SUNAM_B
+1000 | 10 | 10 | 1401 | Shree Cement​ Ltd | Trade | Cement​ | PB_PATHANKOT_SC
+1000 | 10 | 10 | 1402 | Shree Cement​ Ltd | Trade | Cement​ | PB_PATHANKOT_B
+1000 | 10 | 10 | 1403 | Shree Cement​ Ltd | Trade | Cement​ | PB_PATHANKOT_RC
+1000 | 10 | 10 | 1404 | Shree Cement​ Ltd | Trade | Cement​ | PB_DERA BABA NANAK_S
+1000 | 10 | 10 | 1405 | Shree Cement​ Ltd | Trade | Cement​ | PB_DINANAGAR_SC
+1000 | 10 | 10 | 1406 | Shree Cement​ Ltd | Trade | Cement​ | PB_ROPAR_SC
+1000 | 10 | 10 | 1407 | Shree Cement​ Ltd | Trade | Cement​ | PB_ROPAR_B
+1000 | 10 | 10 | 1408 | Shree Cement​ Ltd | Trade | Cement​ | PB_ROPAR_RC
+1000 | 10 | 10 | 1409 | Shree Cement​ Ltd | Trade | Cement​ | PB_DASUYA_SC
+1000 | 10 | 10 | 1410 | Shree Cement​ Ltd | Trade | Cement​ | PB_RAIKOT_SC
+1000 | 10 | 10 | 1411 | Shree Cement​ Ltd | Trade | Cement​ | PB_TARAN TARAN_SC
+1000 | 10 | 10 | 1412 | Shree Cement​ Ltd | Trade | Cement​ | PB_TARAN TARAN_RC
+1000 | 10 | 10 | 1413 | Shree Cement​ Ltd | Trade | Cement​ | PB_SHAHKOT_SC
+1000 | 10 | 10 | 1414 | Shree Cement​ Ltd | Trade | Cement​ | PB_BARNALA_SC
+1000 | 10 | 10 | 1415 | Shree Cement​ Ltd | Trade | Cement​ | PB_BARNALA_SC
+1000 | 10 | 10 | 1416 | Shree Cement​ Ltd | Trade | Cement​ | PB_BARNALA_B
+1000 | 10 | 10 | 1417 | Shree Cement​ Ltd | Trade | Cement​ | PB_BARNALA_RC
+1000 | 10 | 10 | 1418 | Shree Cement​ Ltd | Trade | Cement​ | PB_SAMANA_SC
+1000 | 10 | 10 | 1419 | Shree Cement​ Ltd | Trade | Cement​ | PB_SAMANA_RC
+1000 | 10 | 10 | 1420 | Shree Cement​ Ltd | Trade | Cement​ | PB_BATALA_SC
+1000 | 10 | 10 | 1421 | Shree Cement​ Ltd | Trade | Cement​ | PB_AMRITSAR- 2_SC
+1000 | 10 | 10 | 1422 | Shree Cement​ Ltd | Trade | Cement​ | PB_MUKTSAR - 2_SC
+1000 | 10 | 10 | 1423 | Shree Cement​ Ltd | Trade | Cement​ | PB_BARNALA - 2_SC
+1000 | 10 | 10 | 1424 | Shree Cement​ Ltd | Trade | Cement​ | PB_BHOGPUR_B
+... (truncated at 400 rows)

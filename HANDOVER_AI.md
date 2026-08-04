@@ -18,8 +18,8 @@ This repository accumulated **five parallel numbering systems** as it grew. They
 | **`Q-001`..`Q-043`** | `OPEN_QUESTIONS.md` | **CURRENT — authoritative** | Open questions |
 | **`D-001`..`D-017`** | `DECISION_LOG.md` | **CURRENT — authoritative** | Decisions |
 | `V-01`..`V-29` | `deliverables/CNF_Delivery_Planning.xlsx` → Validation Register | Parallel to Q-items, partly duplicative | Client-facing access request only. Where V and Q disagree, **Q wins** |
-| `IF-001`..`IF-024` | `INTERFACE_REGISTER.md` | **SUPERSEDED** | Historical. The 24-interface model predates the client's 9-process register |
-| `R-001`..`R-027` | `REQUIREMENTS_MATRIX.md` | **SUPERSEDED** | Historical |
+| `IF-001`..`IF-024` | `_archive/INTERFACE_REGISTER.md` | **RETIRED 2026-08-03** | Archived. Old→new mapping in `_archive/README.md` |
+| `R-001`..`R-027` | `_archive/REQUIREMENTS_MATRIX.md` | **RETIRED 2026-08-03** | Archived |
 | `A-01`..`A-13` | Planning workbook → Assumptions | Current | Assumption log with confidence |
 | `C-1`..`C-10` | Various | Current | Conflicts |
 
@@ -27,28 +27,27 @@ This repository accumulated **five parallel numbering systems** as it grew. They
 
 ### 0.2 Documents in this repo that are STALE — do not trust
 
-- `HANDOVER_2026-07-30_AI.md` — superseded by this file
 - `PROJECT_BRAIN.md` — still lists SPI as unknown, DI-as-delivery as hypothesis, and a six-interface framing. Useful for the *project thesis* (§3.1 below), wrong on facts
-- `INTERFACE_REGISTER.md`, `REQUIREMENTS_MATRIX.md` — superseded numbering
 - `MASTER_PLAN.md`, `NEXT_MOVE.md`, `SEGW_ODATA_PLAN.md`, `BAPI_CANDIDATES.md`, `CPI_CONTRACTS.md` — written pre-evidence. Method is sound; specific SAP claims are unvalidated guesses from before the client documents arrived
-- `_archive/` — deliberately retired, provenance only
+- `_archive/` — deliberately retired, provenance only. See `_archive/README.md` for what went where and why
 
 **Trust, in order:** this file → `DECISION_LOG.md` → `OPEN_QUESTIONS.md` → `DOMAIN_GLOSSARY.md` → `SYSTEM_OF_RECORD_MATRIX.md` → the two deliverable workbooks.
 
-### 0.3 Source documents are NOT in this repository
+### 0.3 Source documents — in `sources/`
 
-They live in `C:\Users\sidmy\Downloads\`. A fresh agent cannot read them without being handed them again:
+Primary evidence is held in `sources/`, prefixed by source ID. Plain-text extractions of the Office files are in `sources/extracted/` and can be read directly without parsing OOXML. Index and caveats: `sources/README.md`.
 
-| Source ID | File | What it contains |
-|---|---|---|
-| `SRC-TECH-001` | `SAP_ABAP_OData_Technical_Specification.pdf` | Vendor-proposed spec, 32 defects logged |
-| `SRC-DOC-20260803-01` | `CNF_Feature_to_SAP_Mapping_Updated.docx` | Feature → SAP table/T-code mapping |
-| `SRC-DOC-20260803-02` | `CNF_Feature_to_SAP_Mapping_Updated.xlsx` | **The KDS catalogue** — 11 sheets of real code values |
-| `SRC-ARCH-20260803-01` | `CNF_Architecture_Optionsv1.2 (1).pptx` | Three architecture options; C selected |
-| `SRC-MTG-20260803-01` | `Morecontext.m4a` + `.hi.txt`/`.en.txt` | UI/UX design walkthrough |
-| `SRC-MTG-20260728-01..04` | Chaayos_3/4/6, New_Recording_12 | 28 July design walkthrough — **never ingested into the repo, only reconciled secondhand** |
+| Source ID | Holds |
+|---|---|
+| `SRC-TECH-001` | Vendor-proposed spec, 32 defects logged |
+| `SRC-DOC-20260803-01` | Feature → SAP table/T-code mapping |
+| `SRC-DOC-20260803-02` | **The KDS catalogue** — 11 sheets of real code values |
+| `SRC-ARCH-20260803-01` | Three architecture options; C selected |
+| `SRC-MTG-20260803-01` | UI/UX walkthrough transcripts (audio excluded — 27 MB, still in `Downloads`) |
 
-`SRC-BRD-001` (business requirements) and `SRC-CPI-001` (CPI workbook) **have never been supplied to anyone**. That remains the largest documentary gap.
+**Not held, and unrecoverable:** the 28 July recordings (`SRC-MTG-20260728-01..04`) are no longer on disk. Every 28 July claim — **including approved decisions D-001 to D-006** — rests permanently on secondhand reconciliation. Treat those decisions as needing business re-confirmation, not as primary evidence.
+
+**Never supplied to anyone:** `SRC-BRD-001` (business requirements) and `SRC-CPI-001` (CPI workbook). Largest documentary gap in the project.
 
 ### 0.4 Evidence rule specific to this project
 

@@ -1,3 +1,8 @@
+> **SUPERSEDED — 2026-08-03. Do not use.**
+> This numbering system has been retired. The current API inventory is `API-01`..`API-10` in
+> `deliverables/CNF_API_Classification.xlsx`, aligned 1:1 with the client's own process register.
+> See `_archive/README.md` for the full old-to-new mapping.
+> Retained for provenance only.
 # Requirements Matrix
 
 Status values: `Candidate`, `Clarification`, `Approved`, `Designing`, `Building`, `Testing`, `Done`, `Deferred`.
@@ -5,9 +10,9 @@ Status values: `Candidate`, `Clarification`, `Approved`, `Designing`, `Building`
 | ID | Capability | Likely authority | SAP-side responsibility | Likely interface | Status | Key uncertainty |
 |---|---|---|---|---|---|---|
 | R-001 | List pending/partial goods receipts | S/4 | Derive open receipt state and document flow | GET OData/query | Candidate | Exact predecessor: STO, PO, inbound/outbound delivery, or DI |
-| R-002 | Confirm MIGO/GR | S/4 | Validate, post, commit, return material document | POST OData → class → SAP API | Candidate | Movement code/type and reference model |
+| R-002 | Confirm MIGO/GR | S/4 | Validate, post, commit, return material document | POST OData â†’ class â†’ SAP API | Candidate | Movement code/type and reference model |
 | R-003 | List pending secondary orders | S/4 or Datasphere | Expose current open-order truth or analytical view | GET OData or Datasphere-native | Candidate | Required freshness and exact open quantity |
-| R-004 | Create Delivery Instruction | S/4 | Validate source and create delivery/custom DI | POST OData → delivery service | Candidate | Is DI a delivery, custom object, SO-based, or STO-based? |
+| R-004 | Create Delivery Instruction | S/4 | Validate source and create delivery/custom DI | POST OData â†’ delivery service | Candidate | Is DI a delivery, custom object, SO-based, or STO-based? |
 | R-005 | Modify Delivery Instruction | S/4 | Enforce allowed changes/status | PATCH/PUT OData | Candidate | Editable fields and cutoff status |
 | R-006 | Stock/availability and FIFO batch proposal | S/4 | Define stock semantic and derive eligible batches | GET OData/query | Candidate | ATP vs physical stock; who owns FIFO |
 | R-007 | Invoice orchestration | S/4 + CPI/GSP | Delivery/batch/PGI/shipment/billing SAP stages | Command API(s) | Clarification | One synchronous call or staged workflow |
@@ -16,7 +21,7 @@ Status values: `Candidate`, `Clarification`, `Approved`, `Designing`, `Building`
 | R-010 | Correct e-document metadata/retry | S/4 + CPI/GSP | Update permitted attributes and retrigger | POST/PATCH | Candidate | Not necessarily billing correction |
 | R-011 | Document-flow status | S/4 + CPI/GSP | Return related document keys/statuses | GET OData/query | Candidate | Ownership of external processing status |
 | R-012 | Download invoice/e-documents | S/4/repository/GSP | Provide metadata/content only if SAP owns file | Media/API | Clarification | Actual storage technology |
-| R-013 | Intra-warehouse transfer | S/4 | Support STO/PO → delivery → PGI → GR chain | Multiple APIs | Candidate | Exact document model |
+| R-013 | Intra-warehouse transfer | S/4 | Support STO/PO â†’ delivery â†’ PGI â†’ GR chain | Multiple APIs | Candidate | Exact document model |
 | R-014 | Inventory ageing | Datasphere | Confirm SAP keys/source only | Datasphere-native read | Candidate | Model, grain, refresh |
 | R-015 | Physical inventory reconciliation | Mixed | Current stock and possible difference posting | Query + workflow/API | Clarification | Portal-only review or SAP inventory posting |
 | R-016 | Cancellation request | Workflow + S/4 | Validate document and status; avoid direct cancellation by default | POST request/query | Candidate | Approval workflow and executor |

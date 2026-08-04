@@ -1,0 +1,11 @@
+Sheet Index: | Status
+SPI to Sloc | Completed
+Plant to Sloc | Completed
+Sales area to plant | Completed
+Sales area to sale office | Completed
+Incoterm to plant | Completed
+Customer Group | Completed
+Vendor and customer data | Completed
+Material Group | Completed
+Nielsen Indicator | Completed
+MatFrtGp | Completed

@@ -1,0 +1,55 @@
+Material Pricing Group
+Material P Group | Description | Source Table | Field Name  | Field Name
+01 | Normal | T178 | KONDM | VTEXT
+02 | Spare parts | T178 | KONDM | VTEXT
+1 | Perf.-bsd equi. (h) | T178 | KONDM | VTEXT
+2 | Time-based equi. (d) | T178 | KONDM | VTEXT
+6 | Scaffold./shuttering | T178 | KONDM | VTEXT
+W1 | Warranty - Material | T178 | KONDM | VTEXT
+W2 | Warranty - Subcon | T178 | KONDM | VTEXT
+W3 | Warranty - External | T178 | KONDM | VTEXT
+Material Group-1
+Material Group | Description | Source Table | Field Name  | Field Name
+000 | OPC | TVM1 | MVGR1 | BEZEI
+001 | PPC | TVM1 | MVGR1 | BEZEI
+002 | PSC | TVM1 | MVGR1 | BEZEI
+003 | CC | TVM1 | MVGR1 | BEZEI
+004 | AAC | TVM1 | MVGR1 | BEZEI
+005 | RMC | TVM1 | MVGR1 | BEZEI
+006 | Clinker | TVM1 | MVGR1 | BEZEI
+007 | Rubble | TVM1 | MVGR1 | BEZEI
+008 | Mortar | TVM1 | MVGR1 | BEZEI
+009 | Raw Material | TVM1 | MVGR1 | BEZEI
+010 | Scrap | TVM1 | MVGR1 | BEZEI
+011 | Synthetic Gypsum | TVM1 | MVGR1 | BEZEI
+012 | Limestone | TVM1 | MVGR1 | BEZEI
+013 | Misc. Service sales | TVM1 | MVGR1 | BEZEI
+Material Group-2
+Material Group | Description | Source Table | Field Name  | Field Name
+0 | OPC43 | TVM2 | MVGR2 | BEZEI
+1 | OPC53 | TVM2 | MVGR2 | BEZEI
+2 | PPC | TVM2 | MVGR2 | BEZEI
+3 | PSC | TVM2 | MVGR2 | BEZEI
+4 | CC | TVM2 | MVGR2 | BEZEI
+5 | PPC PREMIUM | TVM2 | MVGR2 | BEZEI
+6 | PPC POWER | TVM2 | MVGR2 | BEZEI
+7 | PPC CS | TVM2 | MVGR2 | BEZEI
+8 | CLINKER | TVM2 | MVGR2 | BEZEI
+9 | AAC BLOCK | TVM2 | MVGR2 | BEZEI
+10 | MORTAR | TVM2 | MVGR2 | BEZEI
+11 | OPC 53 S | TVM2 | MVGR2 | BEZEI
+Material Group-3
+Material Group | Description | Source Table | Field Name  | Field Name
+000 | SHREE | TVM3 | MVGR3 | BEZEI
+001 | BANGUR | TVM3 | MVGR3 | BEZEI
+002 | ROCKSTRONG | TVM3 | MVGR3 | BEZEI
+003 | MAGNA | TVM3 | MVGR3 | BEZEI
+Material Group-4
+Material Group | Description | Source Table | Field Name  | Field Name
+000 | HDPE | TVM4 | MVGR4 | BEZEI
+001 | LPP | TVM4 | MVGR4 | BEZEI
+002 | LOOSE | TVM4 | MVGR4 | BEZEI
+Material Group-5
+Material Group | Description | Source Table | Field Name  | Field Name
+1 | TRADE | TVM5 | MVGR5 | BEZEI
+002 | NON TRADE | TVM5 | MVGR5 | BEZEI

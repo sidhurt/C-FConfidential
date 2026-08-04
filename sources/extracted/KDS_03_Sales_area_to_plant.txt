@@ -1,0 +1,401 @@
+Sales Organization | Ref.dist.channel-Cust/Material | Plant | Name | Name | Name 1
+1000 | 10 | 1000 | Shree Cement​ Ltd | Trade | SCL Beawar | Table  | TVKWZ
+1000 | 10 | 1001 | Shree Cement​ Ltd | Trade | SCL Shree Mega Power
+1000 | 10 | 1002 | Shree Cement​ Ltd | Trade | SCL Ras
+1000 | 10 | 1003 | Shree Cement​ Ltd | Trade | SCL RNCU
+1000 | 10 | 1004 | Shree Cement​ Ltd | Trade | SCL-Nawalgarh
+1000 | 10 | 1005 | Shree Cement​ Ltd | Trade | SCL-Khushkhera
+1000 | 10 | 1006 | Shree Cement​ Ltd | Trade | SCL-Jobner
+1000 | 10 | 1007 | Shree Cement​ Ltd | Trade | SCL ROORKEE
+1000 | 10 | 1008 | Shree Cement​ Ltd | Trade | SCL-Suratgarh -I
+1000 | 10 | 1009 | Shree Cement​ Ltd | Trade | SCL-Suratgarh -II
+1000 | 10 | 1010 | Shree Cement​ Ltd | Trade | SCL-UPGU
+1000 | 10 | 1011 | Shree Cement​ Ltd | Trade | SCL-UPGU AAC
+1000 | 10 | 1012 | Shree Cement​ Ltd | Trade | SCL-Panipat
+1000 | 10 | 1013 | Shree Cement​ Ltd | Trade | SCL-Bhuj
+1000 | 10 | 1014 | Shree Cement​ Ltd | Trade | BANGUR CEMENT UNIT
+1000 | 10 | 1015 | Shree Cement​ Ltd | Trade | SHREE CEMENT LIMITED, NAGAUR
+1000 | 10 | 1017 | Shree Cement​ Ltd | Trade | SCL Jaisalmer
+1000 | 10 | 1018 | Shree Cement​ Ltd | Trade | SHREE CEMENT LIMITED, DHAR
+1000 | 10 | 1019 | Shree Cement​ Ltd | Trade | SHREE CEMENT LIMITED, SINLA
+1000 | 10 | 1021 | Shree Cement​ Ltd | Trade | RAJASTHAN WIND POWER 35.7 MW
+1000 | 10 | 1031 | Shree Cement​ Ltd | Trade | BANGUR SOLAR PLANT RAJASTHAN
+1000 | 10 | 1040 | Shree Cement​ Ltd | Trade | SCL-Raipur
+1000 | 10 | 1041 | Shree Cement​ Ltd | Trade | SCL-Aurangabad - 1
+1000 | 10 | 1042 | Shree Cement​ Ltd | Trade | SCL-Aurangabad - 2
+1000 | 10 | 1043 | Shree Cement​ Ltd | Trade | SCL-Banka Solar - 1
+1000 | 10 | 1044 | Shree Cement​ Ltd | Trade | SCL-Jharkhand
+1000 | 10 | 1045 | Shree Cement​ Ltd | Trade | SCL-Cuttack
+1000 | 10 | 1046 | Shree Cement​ Ltd | Trade | SCL RAIPUR GU II
+1000 | 10 | 1047 | Shree Cement​ Ltd | Trade | SCL RAIPUR LINE IV
+1000 | 10 | 1048 | Shree Cement​ Ltd | Trade | SHREE CEMENT LIMITED, MEGHALAY
+1000 | 10 | 1070 | Shree Cement​ Ltd | Trade | SCL-Kodla
+1000 | 10 | 1071 | Shree Cement​ Ltd | Trade | SCL-Guntur
+1000 | 10 | 1072 | Shree Cement​ Ltd | Trade | SCL-Farthabad
+1000 | 10 | 1073 | Shree Cement​ Ltd | Trade | SCL-Patas
+1000 | 10 | 1074 | Shree Cement​ Ltd | Trade | SCL-Chittarpur RLW Siding
+1000 | 10 | 1075 | Shree Cement​ Ltd | Trade | SCL-Jath Mendhigiri Wind
+1000 | 10 | 1076 | Shree Cement​ Ltd | Trade | SCL-Kushtagi Wind - I
+1000 | 10 | 1077 | Shree Cement​ Ltd | Trade | SCL-Kushtagi Wind - II
+1000 | 10 | 1078 | Shree Cement​ Ltd | Trade | SCL-Basavana Wind
+1000 | 10 | 1079 | Shree Cement​ Ltd | Trade | SCL-KODLA UNIT -II
+1000 | 10 | 1080 | Shree Cement​ Ltd | Trade | SCL-NANDURBAR WIND POWER (6.3)
+1000 | 10 | 1081 | Shree Cement​ Ltd | Trade | SCL-TAMILNADU
+1000 | 10 | 1082 | Shree Cement​ Ltd | Trade | VIDARBHA CEMENT PLANT
+1000 | 10 | 1300 | Shree Cement​ Ltd | Trade | SCEPL-Corporate -WB
+1000 | 10 | 1301 | Shree Cement​ Ltd | Trade | SCEPL-Purulia
+1000 | 10 | 1304 | Shree Cement​ Ltd | Trade | SHREE AGRA CEMENT PLANT
+1000 | 10 | 1305 | Shree Cement​ Ltd | Trade | SHREE PUNJAB CEMENT PLANT
+1000 | 10 | 1306 | Shree Cement​ Ltd | Trade | SHREE KOLKATA CEMENT PLANT
+1000 | 10 | 1307 | Shree Cement​ Ltd | Trade | SCEPL- BILASPUR
+1000 | 10 | 1308 | Shree Cement​ Ltd | Trade | SHREE CEMENT EAST PVT.LTD.
+1000 | 10 | 1309 | Shree Cement​ Ltd | Trade | SHREE CEMENT EST PVT LTD SOLAR
+1000 | 10 | 1310 | Shree Cement​ Ltd | Trade | SCEPL-SINLA
+1000 | 10 | 1311 | Shree Cement​ Ltd | Trade | SCEPL - JAISALMER
+1000 | 10 | 1398 | Shree Cement​ Ltd | Trade | SCEPL - JHARKHAND
+1000 | 10 | 1399 | Shree Cement​ Ltd | Trade | SCEPL - BIHAR
+1000 | 10 | 1401 | Shree Cement​ Ltd | Trade | Shree Foundation Trust
+1000 | 10 | 1402 | Shree Cement​ Ltd | Trade | SFT BEAWAR
+1000 | 10 | 1403 | Shree Cement​ Ltd | Trade | SFT-RAS
+1000 | 10 | 1404 | Shree Cement​ Ltd | Trade | SFT-RAIPUR
+1000 | 10 | 1405 | Shree Cement​ Ltd | Trade | SFT-KODLA
+1000 | 10 | 1406 | Shree Cement​ Ltd | Trade | SFT-NAWALGARH
+1000 | 10 | 1407 | Shree Cement​ Ltd | Trade | SFT-KHUSHKHERA
+1000 | 10 | 1408 | Shree Cement​ Ltd | Trade | SFT-SURATGARH
+1000 | 10 | 1409 | Shree Cement​ Ltd | Trade | SFT-PANIPAT
+1000 | 10 | 1410 | Shree Cement​ Ltd | Trade | SFT-ROORKEE
+1000 | 10 | 1411 | Shree Cement​ Ltd | Trade | SFT-BULANDSAHAR
+1000 | 10 | 1412 | Shree Cement​ Ltd | Trade | SFT-JOBNER
+1000 | 10 | 1413 | Shree Cement​ Ltd | Trade | SFT-PATAS
+1000 | 10 | 1414 | Shree Cement​ Ltd | Trade | SFT-JHARKHAND
+1000 | 10 | 1415 | Shree Cement​ Ltd | Trade | SFT-PURULIA
+1000 | 10 | 1416 | Shree Cement​ Ltd | Trade | SFT-AURANGABAD
+1000 | 10 | 1417 | Shree Cement​ Ltd | Trade | SFT-BHUBANESHAR
+1000 | 10 | 1418 | Shree Cement​ Ltd | Trade | SFT-NOIDA
+1000 | 10 | 1419 | Shree Cement​ Ltd | Trade | SFT-CUTTACK
+1000 | 10 | 1420 | Shree Cement​ Ltd | Trade | SFT-AGRA
+1000 | 10 | 1421 | Shree Cement​ Ltd | Trade | SFT-BHUJ
+1000 | 10 | 1422 | Shree Cement​ Ltd | Trade | SFT-FARTHABAD
+1000 | 10 | 1423 | Shree Cement​ Ltd | Trade | SFT-SANGRUR
+1000 | 10 | 1424 | Shree Cement​ Ltd | Trade | SFT-BANGLORE
+1000 | 10 | 1425 | Shree Cement​ Ltd | Trade | SFT-ULUBERIA
+1000 | 10 | 1426 | Shree Cement​ Ltd | Trade | SFT-CHENNAI
+1000 | 10 | 1427 | Shree Cement​ Ltd | Trade | SFT-GUNTUR
+1000 | 10 | 1428 | Shree Cement​ Ltd | Trade | SFT-CHITRAKOOT
+1000 | 10 | 1429 | Shree Cement​ Ltd | Trade | SFT-DHAR (MP)
+1000 | 10 | 1430 | Shree Cement​ Ltd | Trade | SFT-KONDALA
+1000 | 10 | 1431 | Shree Cement​ Ltd | Trade | SFT-MEGHALAYA
+1000 | 10 | 1451 | Shree Cement​ Ltd | Trade | SFT-BPS RAS
+1000 | 10 | 1452 | Shree Cement​ Ltd | Trade | SFT-BPS RAIPUR
+1000 | 10 | 2101 | Shree Cement​ Ltd | Trade | SCL RMC MANKHAL HYDERABAD
+1000 | 10 | 2102 | Shree Cement​ Ltd | Trade | SCL RMC BOLLARAM HYDERABAD
+1000 | 10 | 2103 | Shree Cement​ Ltd | Trade | SCL RMC YELUMALA HYDERABAD
+1000 | 10 | 2104 | Shree Cement​ Ltd | Trade | SCL RMC MAHAPURA JAIPUR
+1000 | 10 | 2105 | Shree Cement​ Ltd | Trade | SCL RMC SURAJPUR GREATER NOIDA
+1000 | 10 | 2106 | Shree Cement​ Ltd | Trade | SCL RMC SAKATPUR GURGAON
+1000 | 10 | 2107 | Shree Cement​ Ltd | Trade | SCL RMC DEONAR MUMBAI
+1000 | 10 | 2108 | Shree Cement​ Ltd | Trade | SCL RMC PADEGHAR
+1000 | 10 | 2109 | Shree Cement​ Ltd | Trade | SCL RMC JNPT NAVI MUMBAI
+1000 | 10 | 2110 | Shree Cement​ Ltd | Trade | SCL RMC DOMBIVALI
+1000 | 10 | 2111 | Shree Cement​ Ltd | Trade | SCL RMC MANKOLI BHIWANDI
+1000 | 10 | 2112 | Shree Cement​ Ltd | Trade | SCL RMC NACHARAM HYDERABAD
+1000 | 10 | 2113 | Shree Cement​ Ltd | Trade | SCL RMC MANGALAGIRI GUNTUR
+1000 | 10 | 2114 | Shree Cement​ Ltd | Trade | SCL RMC SANAWADIA INDORE
+1000 | 10 | 2115 | Shree Cement​ Ltd | Trade | SCL RMC BHOJPUR ROAD BHOPAL
+1000 | 10 | 2116 | Shree Cement​ Ltd | Trade | SCL RMC MOHANLALGUNJ LUCKNOW
+1000 | 10 | 2117 | Shree Cement​ Ltd | Trade | SCL RMC ICHCHAPORE SURAT
+1000 | 10 | 2118 | Shree Cement​ Ltd | Trade | SCL RMC BAIDYABATI KOLKATA
+1000 | 10 | 2119 | Shree Cement​ Ltd | Trade | SCL RMC DEVANAHALLI BANGALORE
+1000 | 10 | 2120 | Shree Cement​ Ltd | Trade | SCL RMC YELAHANKA BANGALORE
+1000 | 10 | 2121 | Shree Cement​ Ltd | Trade | SCL RMC SERIKHERI RAIPUR
+1000 | 10 | 2122 | Shree Cement​ Ltd | Trade | SCL RMC WAGHOLI PUNE
+1000 | 10 | 2123 | Shree Cement​ Ltd | Trade | SCL RMC LIMBADIYA AHMEDABAD
+1000 | 10 | 2124 | Shree Cement​ Ltd | Trade | SCL RMC CUTTACK ROAD
+1000 | 10 | 2125 | Shree Cement​ Ltd | Trade | SCL RMC TELAV AHMEDABAD
+1000 | 10 | 2126 | Shree Cement​ Ltd | Trade | SCL RMC MEDCHAL HYDERABAD
+1000 | 10 | 2127 | Shree Cement​ Ltd | Trade | SCL RMC MANJARI PUNE
+1000 | 10 | 2128 | Shree Cement​ Ltd | Trade | SCL RMC KHORDHA ROAD BHUBNESWR
+1000 | 10 | 2129 | Shree Cement​ Ltd | Trade | SCL RMC NELLORE
+1000 | 10 | 2130 | Shree Cement​ Ltd | Trade | SCL RMC TIRUPATI
+1000 | 10 | 2131 | Shree Cement​ Ltd | Trade | SCL RMC BHIWADI
+1000 | 10 | 2132 | Shree Cement​ Ltd | Trade | SCL RMC UDAIPUR
+1000 | 10 | 2133 | Shree Cement​ Ltd | Trade | SCL RMC PATNA NAUBATPUR
+1000 | 10 | 2134 | Shree Cement​ Ltd | Trade | SCL RMC RAJARHAT KOLKATATA
+1000 | 10 | 2135 | Shree Cement​ Ltd | Trade | SCL RMC MALHARGANJ INDORE
+1000 | 10 | 2136 | Shree Cement​ Ltd | Trade | SCL RMC MARUNJI PUNE
+1000 | 10 | 2137 | Shree Cement​ Ltd | Trade | SCL RMC KALYANI NADIA
+1000 | 10 | 2500 | Shree Cement​ Ltd | Trade | SCL RMC Head Office
+1000 | 10 | 2501 | Shree Cement​ Ltd | Trade | SCL RMC NORTH ZONE
+1000 | 10 | 2502 | Shree Cement​ Ltd | Trade | SCL RMC EAST ZONE
+1000 | 10 | 2503 | Shree Cement​ Ltd | Trade | SCL RMC WEST ZONE
+1000 | 10 | 2504 | Shree Cement​ Ltd | Trade | SCL RMC SOUTH ZONE
+1000 | 10 | 3700 | Shree Cement​ Ltd | Trade | UP BIJNOR (T) SC TR
+1000 | 10 | 3701 | Shree Cement​ Ltd | Trade | UP BIJNOR (T) BG TR
+1000 | 10 | 3702 | Shree Cement​ Ltd | Trade | UP BIJNOR (T) RS TR
+1000 | 10 | 3703 | Shree Cement​ Ltd | Trade | UK DOIWALA (T) SC TR- CLOSED
+1000 | 10 | 3735 | Shree Cement​ Ltd | Trade | OD MANGULI CHOWK TR RD
+1000 | 10 | 3736 | Shree Cement​ Ltd | Trade | OD SAMBALPUR TR RD
+1000 | 10 | 3737 | Shree Cement​ Ltd | Trade | OD BARGARH TR RD
+1000 | 10 | 3738 | Shree Cement​ Ltd | Trade | OD JHARSUGUDA TR RD
+1000 | 10 | 3739 | Shree Cement​ Ltd | Trade | OD SUNDARGARH TR RD
+1000 | 10 | 3740 | Shree Cement​ Ltd | Trade | RJ BARAN TR
+1000 | 10 | 3741 | Shree Cement​ Ltd | Trade | UP CHANDAULI RD TR
+1000 | 10 | 3742 | Shree Cement​ Ltd | Trade | OD ROURKELA TR RD
+1000 | 10 | 3745 | Shree Cement​ Ltd | Trade | OD JARAKA TR VD
+1000 | 10 | 3746 | Shree Cement​ Ltd | Trade | BR SAMASTIPUR TR
+1000 | 10 | 3747 | Shree Cement​ Ltd | Trade | BR SAMASTIPUR TR RSD
+1000 | 10 | 3748 | Shree Cement​ Ltd | Trade | BR TAJPUR TR [VD]
+1000 | 10 | 3749 | Shree Cement​ Ltd | Trade | RJ VATIKA TR
+1000 | 10 | 3750 | Shree Cement​ Ltd | Trade | GJ LIMBADIYA NT (TP)
+1000 | 10 | 3751 | Shree Cement​ Ltd | Trade | PB SANGRUR TR
+1000 | 10 | 3752 | Shree Cement​ Ltd | Trade | BR PANIGHATTA SALMARI TR
+1000 | 10 | 3753 | Shree Cement​ Ltd | Trade | WB TR BOYERMARI VD
+1000 | 10 | 3754 | Shree Cement​ Ltd | Trade | CG BHATAPARA HUB
+1000 | 10 | 3755 | Shree Cement​ Ltd | Trade | JH HATIA TR RSD
+1000 | 10 | 3757 | Shree Cement​ Ltd | Trade | JH DALTONGANJ TR RSD
+1000 | 10 | 3758 | Shree Cement​ Ltd | Trade | MH KOLHAPUR RSD TR
+1000 | 10 | 3759 | Shree Cement​ Ltd | Trade | GJ MODASA TR
+1000 | 10 | 3760 | Shree Cement​ Ltd | Trade | RJ JHALRAPATAN TR
+1000 | 10 | 3761 | Shree Cement​ Ltd | Trade | GJ LIMBADIYA BULK
+1000 | 10 | 3762 | Shree Cement​ Ltd | Trade | MH VAIBHAVWADI TR
+1000 | 10 | 3764 | Shree Cement​ Ltd | Trade | BR BUXAR TR
+1000 | 10 | 3765 | Shree Cement​ Ltd | Trade | BR BUXAR TR RSD
+1000 | 10 | 3766 | Shree Cement​ Ltd | Trade | BR ARA TR RSD
+1000 | 10 | 3769 | Shree Cement​ Ltd | Trade | WB TR RD KRISHNANAGAR
+1000 | 10 | 3770 | Shree Cement​ Ltd | Trade | WB TR KRISHNANAGAR RSD
+1000 | 10 | 3771 | Shree Cement​ Ltd | Trade | WB TR NANDAKUMAR VD
+1000 | 10 | 3772 | Shree Cement​ Ltd | Trade | PB PATIALA TR
+1000 | 10 | 3773 | Shree Cement​ Ltd | Trade | OR -CUTTACK-RLY SIDING
+1000 | 10 | 3774 | Shree Cement​ Ltd | Trade | OR -RJGR-RLY SIDING
+1000 | 10 | 3775 | Shree Cement​ Ltd | Trade | CG DHAMTARI SOW
+1000 | 10 | 3776 | Shree Cement​ Ltd | Trade | UP SC NAKAHA JUNGLE TR RSD
+1000 | 10 | 3777 | Shree Cement​ Ltd | Trade | UP BC NAKAHA JUNGLE TR RSD
+1000 | 10 | 3778 | Shree Cement​ Ltd | Trade | UP BC DEORIA TR RSD
+1000 | 10 | 3779 | Shree Cement​ Ltd | Trade | UP SC DEORIA TR RSD
+1000 | 10 | 3780 | Shree Cement​ Ltd | Trade | UP BC PHARIHA TR RSD
+1000 | 10 | 3781 | Shree Cement​ Ltd | Trade | UP SC PHARIHA TR RSD
+1000 | 10 | 3782 | Shree Cement​ Ltd | Trade | RJ BUNDI TR
+1000 | 10 | 3783 | Shree Cement​ Ltd | Trade | UP BC DEORIA TR RSD
+1000 | 10 | 3785 | Shree Cement​ Ltd | Trade | MH BARAMATI TR
+1000 | 10 | 3786 | Shree Cement​ Ltd | Trade | MH PANDHARPUR TR
+1000 | 10 | 3788 | Shree Cement​ Ltd | Trade | MH MHASANE PHATA TR
+1000 | 10 | 3789 | Shree Cement​ Ltd | Trade | RJ NAGAUR TR
+1000 | 10 | 3790 | Shree Cement​ Ltd | Trade | RJ SRI DUNGARGARH TR
+1000 | 10 | 3791 | Shree Cement​ Ltd | Trade | NEEMUCH MP
+1000 | 10 | 3792 | Shree Cement​ Ltd | Trade | JH RANCHI POLE FACTORY TR
+1000 | 10 | 3793 | Shree Cement​ Ltd | Trade | UP BASTI BG TR [VD]
+1000 | 10 | 3794 | Shree Cement​ Ltd | Trade | UP KHALILABAD BG TR [VD]
+1000 | 10 | 3795 | Shree Cement​ Ltd | Trade | UP PADRAUNA BG [VD]
+1000 | 10 | 3796 | Shree Cement​ Ltd | Trade | UP PADRAUNA SC TR [VD]
+1000 | 10 | 3797 | Shree Cement​ Ltd | Trade | KA GNGAVATHI TR
+1000 | 10 | 3799 | Shree Cement​ Ltd | Trade | RJ BARMER TR
+1000 | 10 | 3800 | Shree Cement​ Ltd | Trade | KA YELHANKA TR
+1000 | 10 | 3801 | Shree Cement​ Ltd | Trade | KA PEENYA TR
+1000 | 10 | 3802 | Shree Cement​ Ltd | Trade | MH BALINGE TR
+1000 | 10 | 3803 | Shree Cement​ Ltd | Trade | MH GADHINGLAJ TR
+1000 | 10 | 3804 | Shree Cement​ Ltd | Trade | MH CHIPRI TR
+1000 | 10 | 3805 | Shree Cement​ Ltd | Trade | MH LONI TR
+1000 | 10 | 3806 | Shree Cement​ Ltd | Trade | MH NAVARASTA TR
+1000 | 10 | 3807 | Shree Cement​ Ltd | Trade | MH SOLAPUR TR
+1000 | 10 | 3809 | Shree Cement​ Ltd | Trade | HR TOHANA BG TR
+1000 | 10 | 3810 | Shree Cement​ Ltd | Trade | MP BALAGHAT TR [VD]
+1000 | 10 | 3811 | Shree Cement​ Ltd | Trade | HP BHOTA TR
+1000 | 10 | 3812 | Shree Cement​ Ltd | Trade | RJ CHHOKARWARA TR
+1000 | 10 | 3813 | Shree Cement​ Ltd | Trade | RJ BEAWAR BTST
+1000 | 10 | 3814 | Shree Cement​ Ltd | Trade | RJ SURATGARH BTST
+1000 | 10 | 3815 | Shree Cement​ Ltd | Trade | RJ PINDWARA TR
+1000 | 10 | 3816 | Shree Cement​ Ltd | Trade | KA RAMANAGARA TR
+1000 | 10 | 3817 | Shree Cement​ Ltd | Trade | WB SURJAPUR TR
+1000 | 10 | 3818 | Shree Cement​ Ltd | Trade | WB SURJAPUR TR RSD
+1000 | 10 | 3819 | Shree Cement​ Ltd | Trade | MH JALGAON TR
+1000 | 10 | 3820 | Shree Cement​ Ltd | Trade | MH NAGPUR TR [VD]
+1000 | 10 | 3821 | Shree Cement​ Ltd | Trade | WB KALIGHAT TR
+1000 | 10 | 3822 | Shree Cement​ Ltd | Trade | WB KALIGHAT TR RSD
+1000 | 10 | 3823 | Shree Cement​ Ltd | Trade | MH CHALISGAON TR
+1000 | 10 | 3824 | Shree Cement​ Ltd | Trade | UP SC PHEPHANA TR RSD
+1000 | 10 | 3825 | Shree Cement​ Ltd | Trade | UP BC PHEPHANA TR RSD
+1000 | 10 | 3826 | Shree Cement​ Ltd | Trade | DL BATLA HOUSE TR
+1000 | 10 | 3829 | Shree Cement​ Ltd | Trade | RJ KHUSHKHERA BTST
+1000 | 10 | 3830 | Shree Cement​ Ltd | Trade | DL ADARSH NAGAR TR RSD
+1000 | 10 | 3831 | Shree Cement​ Ltd | Trade | MP GUNA SC TR RSD
+1000 | 10 | 3832 | Shree Cement​ Ltd | Trade | MP GUNA BG TR RSD
+1000 | 10 | 3833 | Shree Cement​ Ltd | Trade | HR YAMUNANAGAR RSD
+1000 | 10 | 3834 | Shree Cement​ Ltd | Trade | GJ PATAN TR
+1000 | 10 | 3835 | Shree Cement​ Ltd | Trade | HR MAHENDRAGARH TR
+1000 | 10 | 3836 | Shree Cement​ Ltd | Trade | GJ IDAR TR
+1000 | 10 | 3837 | Shree Cement​ Ltd | Trade | MH WAI TR
+1000 | 10 | 3838 | Shree Cement​ Ltd | Trade | GJ MORBI TR
+1000 | 10 | 3839 | Shree Cement​ Ltd | Trade | RJ RNCU BTST
+1000 | 10 | 3840 | Shree Cement​ Ltd | Trade | MH CWC- KALAMBOLI TR
+1000 | 10 | 3841 | Shree Cement​ Ltd | Trade | HR SATROD (HSR) RSD
+1000 | 10 | 3842 | Shree Cement​ Ltd | Trade | PB CHANDIGARH TR RSD
+1000 | 10 | 3843 | Shree Cement​ Ltd | Trade | PB CHANDIGARH NTR RSD
+1000 | 10 | 3844 | Shree Cement​ Ltd | Trade | MP JABALPUR TR
+1000 | 10 | 3845 | Shree Cement​ Ltd | Trade | BR ROSERA TR [VD]
+1000 | 10 | 3846 | Shree Cement​ Ltd | Trade | MH TROMBAY- MAHUL TR
+1000 | 10 | 3847 | Shree Cement​ Ltd | Trade | KA RAMANAGARA TR
+1000 | 10 | 3848 | Shree Cement​ Ltd | Trade | WB KULSONA TR [VD]
+1000 | 10 | 3849 | Shree Cement​ Ltd | Trade | WB VIDYANAGAR TR [VD]
+1000 | 10 | 3850 | Shree Cement​ Ltd | Trade | MP NEEMUCH SOW
+1000 | 10 | 3851 | Shree Cement​ Ltd | Trade | UP GAURIGANJ SC TR
+1000 | 10 | 3853 | Shree Cement​ Ltd | Trade | HP KANGOO MANDI - NT
+1000 | 10 | 3854 | Shree Cement​ Ltd | Trade | PB KHARAR TR
+1000 | 10 | 3855 | Shree Cement​ Ltd | Trade | HP MEHATPUR UNA - TR
+1000 | 10 | 3894 | Shree Cement​ Ltd | Trade | HR JIND TR
+1000 | 10 | 3895 | Shree Cement​ Ltd | Trade | HR KAITHAL TR
+1000 | 10 | 3897 | Shree Cement​ Ltd | Trade | MH AURANGABAD 1 TR
+1000 | 10 | 3898 | Shree Cement​ Ltd | Trade | MH AURANGABAD 2 TR
+1000 | 10 | 3899 | Shree Cement​ Ltd | Trade | RJ SAGWARA TR
+1000 | 10 | 3900 | Shree Cement​ Ltd | Trade | MP BALAGHAT TR
+1000 | 10 | 3901 | Shree Cement​ Ltd | Trade | PB RAJPURA SOW RAS
+1000 | 10 | 3902 | Shree Cement​ Ltd | Trade | PB RAJPURA SOW NWL
+1000 | 10 | 3905 | Shree Cement​ Ltd | Trade | PB MANSA TR
+1000 | 10 | 3907 | Shree Cement​ Ltd | Trade | RJ CHANDAWAL TR
+1000 | 10 | 3908 | Shree Cement​ Ltd | Trade | RJ RAMGARH TR
+1000 | 10 | 3909 | Shree Cement​ Ltd | Trade | RJ CHIRAWA TR
+1000 | 10 | 3910 | Shree Cement​ Ltd | Trade | WB COSSIMBAZAR RAJ TR
+1000 | 10 | 3911 | Shree Cement​ Ltd | Trade | WB COSSIMBAZAR RAJ TR RSD
+1000 | 10 | 3912 | Shree Cement​ Ltd | Trade | GJ RAJKOT TR
+1000 | 10 | 3913 | Shree Cement​ Ltd | Trade | WB DHULIYAN TR
+1000 | 10 | 3914 | Shree Cement​ Ltd | Trade | WB DHULIYAN TR RSD
+1000 | 10 | 3915 | Shree Cement​ Ltd | Trade | RJ CHIRAWA TR
+1000 | 10 | 3916 | Shree Cement​ Ltd | Trade | MH AKLUJ TR
+1000 | 10 | 3918 | Shree Cement​ Ltd | Trade | MH KURDUWADI TR
+1000 | 10 | 3919 | Shree Cement​ Ltd | Trade | WB DHULIYAN TR VD
+1000 | 10 | 3924 | Shree Cement​ Ltd | Trade | MH BEED TR
+1000 | 10 | 3925 | Shree Cement​ Ltd | Trade | MH AMBAJOGAI TR
+1000 | 10 | 3926 | Shree Cement​ Ltd | Trade | MH BHOOM TR
+1000 | 10 | 3927 | Shree Cement​ Ltd | Trade | MH OSMANABAD TR
+1000 | 10 | 3928 | Shree Cement​ Ltd | Trade | MP SHIVPURI TR RSD
+1000 | 10 | 3932 | Shree Cement​ Ltd | Trade | MP SHIVPURI TR
+1000 | 10 | 3956 | Shree Cement​ Ltd | Trade | DL KOTLA TP
+1000 | 10 | 3957 | Shree Cement​ Ltd | Trade | PB PATHANKOT SOW STH
+1000 | 10 | 3958 | Shree Cement​ Ltd | Trade | PB PATHANKOT SOW RAS
+1000 | 10 | 3959 | Shree Cement​ Ltd | Trade | PB PATHANKOT SOW NWL
+1000 | 10 | 3960 | Shree Cement​ Ltd | Trade | UP GHAZIABAD TR
+1000 | 10 | 3961 | Shree Cement​ Ltd | Trade | UP GHAZIABAD RSD
+1000 | 10 | 3962 | Shree Cement​ Ltd | Trade | UP GHAZIABAD NT RSD
+1000 | 10 | 3964 | Shree Cement​ Ltd | Trade | UP NOIDA TR
+1000 | 10 | 3965 | Shree Cement​ Ltd | Trade | UP GHAZIABAD NT
+1000 | 10 | 3966 | Shree Cement​ Ltd | Trade | UP GTR NOIDA TR
+1000 | 10 | 3967 | Shree Cement​ Ltd | Trade | UP LONI TR
+1000 | 10 | 3968 | Shree Cement​ Ltd | Trade | UP HAPUR TR
+1000 | 10 | 3969 | Shree Cement​ Ltd | Trade | UP MEERUT TR
+1000 | 10 | 3970 | Shree Cement​ Ltd | Trade | UP MEERUT TR RSD
+1000 | 10 | 3971 | Shree Cement​ Ltd | Trade | UP MEERUT NT RSD
+1000 | 10 | 3972 | Shree Cement​ Ltd | Trade | UP MEERUT NT
+1000 | 10 | 3975 | Shree Cement​ Ltd | Trade | PB RAJPURA SOW STH
+1000 | 10 | 3976 | Shree Cement​ Ltd | Trade | GJ VISNAGAR TR
+1000 | 10 | 3977 | Shree Cement​ Ltd | Trade | PB MALOUT TR
+1000 | 10 | 3978 | Shree Cement​ Ltd | Trade | PB RAIKOT SOW STH
+1000 | 10 | 3979 | Shree Cement​ Ltd | Trade | PB RAIKOT SOW RAS
+1000 | 10 | 3993 | Shree Cement​ Ltd | Trade | AP SRIKAKULAM TR
+1000 | 10 | 3994 | Shree Cement​ Ltd | Trade | AP VIZIANAGARAM TR
+1000 | 10 | 3995 | Shree Cement​ Ltd | Trade | PB MEHARBANPUR TR
+1000 | 10 | 3996 | Shree Cement​ Ltd | Trade | AP NARSIPATNAM TR
+1000 | 10 | 3998 | Shree Cement​ Ltd | Trade | MH AMBAD NSK TR
+1000 | 10 | 3999 | Shree Cement​ Ltd | Trade | MH BARSHI TR
+1000 | 10 | 4000 | Shree Cement​ Ltd | Trade | AP ADONI TR
+1000 | 10 | 4001 | Shree Cement​ Ltd | Trade | AP VIJAYAWADA PIPE ROAD TR
+1000 | 10 | 4002 | Shree Cement​ Ltd | Trade | AP KURNOOL BG TR
+1000 | 10 | 4003 | Shree Cement​ Ltd | Trade | AP NELLORE TR
+1000 | 10 | 4004 | Shree Cement​ Ltd | Trade | BR ANUGRAH NARAYAN BG TR RSD
+1000 | 10 | 4005 | Shree Cement​ Ltd | Trade | BR AURAI SC TR
+1000 | 10 | 4006 | Shree Cement​ Ltd | Trade | BR BARH BG TR VD
+1000 | 10 | 4007 | Shree Cement​ Ltd | Trade | BR BATHNAHA (SUPAUL-I SC TR
+1000 | 10 | 4008 | Shree Cement​ Ltd | Trade | BR BETTIAH SC TR
+1000 | 10 | 4009 | Shree Cement​ Ltd | Trade | BR BHUPATI SC TR [VD]
+1000 | 10 | 4010 | Shree Cement​ Ltd | Trade | BR BUXAR BG TR [VD]
+1000 | 10 | 4011 | Shree Cement​ Ltd | Trade | BR CHAKIA SC TR
+1000 | 10 | 4012 | Shree Cement​ Ltd | Trade | BR DARBHANGA SC TR
+1000 | 10 | 4013 | Shree Cement​ Ltd | Trade | BR DEHRI SAND SC TR RSD
+1000 | 10 | 4014 | Shree Cement​ Ltd | Trade | BR GAYA BG TR
+1000 | 10 | 4015 | Shree Cement​ Ltd | Trade | BR KARPORIGRAM BG TR
+1000 | 10 | 4016 | Shree Cement​ Ltd | Trade | BR KISHANGANJ SC TR
+1000 | 10 | 4017 | Shree Cement​ Ltd | Trade | BR MASHRAK SC TR
+1000 | 10 | 4018 | Shree Cement​ Ltd | Trade | BR NAWADA SC TR
+1000 | 10 | 4019 | Shree Cement​ Ltd | Trade | BR PAHLEZA BG TR RLY
+1000 | 10 | 4020 | Shree Cement​ Ltd | Trade | BR ARARIA BG TR RSD
+1000 | 10 | 4021 | Shree Cement​ Ltd | Trade | BR SIWAIPATTI BG TR
+1000 | 10 | 4022 | Shree Cement​ Ltd | Trade | BR SIWAN BG TR
+1000 | 10 | 4023 | Shree Cement​ Ltd | Trade | CG DHAMTARI BG TR
+1000 | 10 | 4024 | Shree Cement​ Ltd | Trade | CG DURG SC TR
+1000 | 10 | 4025 | Shree Cement​ Ltd | Trade | CG MANDIR HASOD SC TR
+1000 | 10 | 4026 | Shree Cement​ Ltd | Trade | CG RHIH BG TR RLY
+1000 | 10 | 4027 | Shree Cement​ Ltd | Trade | CG SANTOSHI NAGAR BG TR
+1000 | 10 | 4028 | Shree Cement​ Ltd | Trade | DL FATEHPUR BERI SC TR
+1000 | 10 | 4029 | Shree Cement​ Ltd | Trade | DL SHAKURBASTI BG NT
+1000 | 10 | 4030 | Shree Cement​ Ltd | Trade | GO COLVALE BG TR
+1000 | 10 | 4031 | Shree Cement​ Ltd | Trade | GJ ASLALI SC NT VD
+1000 | 10 | 4032 | Shree Cement​ Ltd | Trade | GJ BG NT JOLWA RSD
+1000 | 10 | 4033 | Shree Cement​ Ltd | Trade | GJ SARKEHJ BG TR
+1000 | 10 | 4034 | Shree Cement​ Ltd | Trade | HR KHORI BG NT RLY
+1000 | 10 | 4035 | Shree Cement​ Ltd | Trade | HR PINJORE SC NT
+1000 | 10 | 4036 | Shree Cement​ Ltd | Trade | HR KHORI BG TR RLY
+1000 | 10 | 4037 | Shree Cement​ Ltd | Trade | JH BARAWADIH BG TR
+1000 | 10 | 4038 | Shree Cement​ Ltd | Trade | MP GWALIOR SC NT VD
+1000 | 10 | 4039 | Shree Cement​ Ltd | Trade | MP NEEMUCH SC NT
+1000 | 10 | 4040 | Shree Cement​ Ltd | Trade | PB DOOMWALI SC NT
+1000 | 10 | 4041 | Shree Cement​ Ltd | Trade | RJ BHARATPUR SC NT RSD
+1000 | 10 | 4042 | Shree Cement​ Ltd | Trade | RJ JOBNER BG NT RLY
+1000 | 10 | 4043 | Shree Cement​ Ltd | Trade | RJ MANDI CHOURAHA BG NT
+1000 | 10 | 4044 | Shree Cement​ Ltd | Trade | RJ SHREE YARD BG NT YARD
+1000 | 10 | 4045 | Shree Cement​ Ltd | Trade | RJ SHREE YARD SC NT YARD
+1000 | 10 | 4046 | Shree Cement​ Ltd | Trade | RJ ASALPUR BG TR
+1000 | 10 | 4047 | Shree Cement​ Ltd | Trade | RJ BIRDHWAL SC TR
+1000 | 10 | 4048 | Shree Cement​ Ltd | Trade | RJ ANDHERI DEORI SC TR YARD
+1000 | 10 | 4049 | Shree Cement​ Ltd | Trade | RJ ASALPUR SC TR YARD
+1000 | 10 | 4050 | Shree Cement​ Ltd | Trade | RJ BANGUR CITY RS TR YARD
+1000 | 10 | 4051 | Shree Cement​ Ltd | Trade | RJ MANDI CHOURAHA BG TR
+1000 | 10 | 4052 | Shree Cement​ Ltd | Trade | UP ALIGARH SC NT RSD
+1000 | 10 | 4053 | Shree Cement​ Ltd | Trade | UP BAREILLY SC NT
+1000 | 10 | 4054 | Shree Cement​ Ltd | Trade | UP GHAZIABAD BG NT RSD
+1000 | 10 | 4055 | Shree Cement​ Ltd | Trade | UP SHAHJAHANPUR SC NT
+1000 | 10 | 4056 | Shree Cement​ Ltd | Trade | UP SHAMLI SC TR
+1000 | 10 | 4057 | Shree Cement​ Ltd | Trade | UK AKBARPUR OUD BG TR YARD
+1000 | 10 | 4058 | Shree Cement​ Ltd | Trade | UK HALDWANI BG TR
+1000 | 10 | 4059 | Shree Cement​ Ltd | Trade | UK TANAKPUR SC TR
+1000 | 10 | 4060 | Shree Cement​ Ltd | Trade | UP FARUKKHABAD BG NT
+1000 | 10 | 4061 | Shree Cement​ Ltd | Trade | UP AGRA BG TR
+1000 | 10 | 4062 | Shree Cement​ Ltd | Trade | SCL-HARYANA-ISD
+1000 | 10 | 4063 | Shree Cement​ Ltd | Trade | SCL-RAJASTHAN-ISD
+1000 | 10 | 4064 | Shree Cement​ Ltd | Trade | SCL-UTTAR PRADESH-ISD
+1000 | 10 | 4065 | Shree Cement​ Ltd | Trade | SCL-WEST BENGAL-ISD
+1000 | 10 | 4066 | Shree Cement​ Ltd | Trade | SCL-CHHATTISGARH-ISD
+1000 | 10 | 4067 | Shree Cement​ Ltd | Trade | SCL-TAMIL NADU-ISD
+1000 | 10 | 4068 | Shree Cement​ Ltd | Trade | SCL-UTTRAKHAND-ISD
+1000 | 10 | 4069 | Shree Cement​ Ltd | Trade | SCL-JAMMU & KASHMIR
+1000 | 10 | 4070 | Shree Cement​ Ltd | Trade | SCL-HIMACHAL PRADESH
+1000 | 10 | 4071 | Shree Cement​ Ltd | Trade | SCL-PUNJAB
+1000 | 10 | 4072 | Shree Cement​ Ltd | Trade | SCL-CHANDIGARH
+1000 | 10 | 4073 | Shree Cement​ Ltd | Trade | SCL-DELHI
+1000 | 10 | 4074 | Shree Cement​ Ltd | Trade | SCL-RAJASTHAN-DEPOT
+1000 | 10 | 4075 | Shree Cement​ Ltd | Trade | SCL-UTTAR PRADESH DEPOT
+1000 | 10 | 4076 | Shree Cement​ Ltd | Trade | SCL-WEST BENGAL
+1000 | 10 | 4077 | Shree Cement​ Ltd | Trade | SCL-MADHYA PRADESH
+1000 | 10 | 4078 | Shree Cement​ Ltd | Trade | SCL-GUJARAT
+1000 | 10 | 4079 | Shree Cement​ Ltd | Trade | SCL-TELANGANA
+1000 | 10 | 4080 | Shree Cement​ Ltd | Trade | SCL-GOA
+1000 | 10 | 4081 | Shree Cement​ Ltd | Trade | SCL-KOLKATA OFFICE
+1000 | 10 | 4082 | Shree Cement​ Ltd | Trade | SCL-MUMBAI OFFICE
+1000 | 10 | 4083 | Shree Cement​ Ltd | Trade | SCL-JAIPUR OFFICE
+1000 | 10 | 4084 | Shree Cement​ Ltd | Trade | SCL-UTTARAKHAND DEPOT
+1000 | 10 | 4085 | Shree Cement​ Ltd | Trade | BR BEGUSARAI BG TR
+1000 | 10 | 4086 | Shree Cement​ Ltd | Trade | BR MUZAFFARPUR BG TR
+1000 | 10 | 4087 | Shree Cement​ Ltd | Trade | BR SAHARSA BG TR
+1000 | 10 | 4088 | Shree Cement​ Ltd | Trade | RJ MANDI CHOURAHA SC TR
+1000 | 10 | 4089 | Shree Cement​ Ltd | Trade | CG SARAIPALI BG TR
+1000 | 10 | 4090 | Shree Cement​ Ltd | Trade | CG RAIGARH BG TR
+1000 | 10 | 4091 | Shree Cement​ Ltd | Trade | CG GOGAON BG TR
+1000 | 10 | 4092 | Shree Cement​ Ltd | Trade | JH DEOGHAR-II SC TR
+1000 | 10 | 4093 | Shree Cement​ Ltd | Trade | JH GIRIDIH-II SC TR
+1000 | 10 | 4094 | Shree Cement​ Ltd | Trade | JH RANCHI SC TR
+1000 | 10 | 4095 | Shree Cement​ Ltd | Trade | WB COSSIPORE ROAD-II BG TR
+1000 | 10 | 4096 | Shree Cement​ Ltd | Trade | WB SURJAPUR BG TR
+1000 | 10 | 4097 | Shree Cement​ Ltd | Trade | TL BODUPPAL TR
+1000 | 10 | 4098 | Shree Cement​ Ltd | Trade | TL CHANDRAYANAGUTTA TR
+1000 | 10 | 4099 | Shree Cement​ Ltd | Trade | KA KALABURAGI BG TR
+1000 | 10 | 4100 | Shree Cement​ Ltd | Trade | KA RAICHUR BG TR
+1000 | 10 | 4101 | Shree Cement​ Ltd | Trade | KA BIDAR BG TR
+1000 | 10 | 4102 | Shree Cement​ Ltd | Trade | MH TATHAWADE-PCMC BG TR
+... (truncated at 400 rows)

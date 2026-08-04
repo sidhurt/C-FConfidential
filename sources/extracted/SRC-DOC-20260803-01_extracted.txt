@@ -1,0 +1,66 @@
+1. Login & Authorisation
+
+[TABLE]
+Mapping / Concern | Description | Master / Object | SAP Source (table / T-code / API)
+CNF as Vendor & Customer | Enrolling C&F agent as a Vendor and Customer in SAP | Vendor (LFA1)Customer (KNA1) | Vendor master: LFA1 / LFB1/LFBKCustomer master: KNA1 / KNB1 / KNVVCustomer Group: 31 (T151) Account Group: ZDOM T-Code: ZMDM_BP
+CNF User | Creating username and password for SAP system access for a C&F agent | User master (CNF agent) | SU01 — creating a T- CodeUSR02 — user logon data
+CNF user Allowed depot , channel and roles | Allocating specific roles to C&F user which allow warehouse and distribution channel access | PFCG — T-Code.ADRCAGR_DEFINE — role definitionAGR_USERS — role ↔ userZUSROLE — role ↔ T-codeTVKWZ (Sales org + Distribution channel + Plant)TVKVZ (Sales. Org + DC + Division + Sales Office) | Master role created and Derived Roles assigned to SUSERDerived roles do have Sales office assignmentKNVV (Customer Sales Office)Sales Office Sales AreaSales Area Plant (TVKWZ)
+[/TABLE]
+2. Common Masters & KDS
+
+[TABLE]
+Master / Org Object | SAP Table / Field | Value(s) in scope | Used across portal
+Company Code | T001 (BUKRS) | 1000, 1300 etc. | Customer / vendor company-code data (KNB1 / LFB1); financial postings
+Sales Organization | TVKO (VKORG) | 1000 = Shree Cement Ltd | DI, Invoice, order & billing reports
+Distribution / Sales Channel | TVTW (VTWEG) | 10, 20, 99 | DI, Invoice, channel scoping, reports
+Division | TSPA (SPART) | 10 = Cement | Sales-area determination
+Sales Office | TVBUR (VKBUR) | e.g. 1027 = GJ GODHRA | Order reports, territory
+Plant / Depot | T001W (WERKS) |  | Every module
+Storage Location / Type | T001L (Plant to Sloc) |  | MIGO, Stock, Invoice, STO
+Customer (sold-to / ship-to) | KNA1 / KNB1 / KNVV |  | DI, Invoice, order & billing reports
+Material | MARA / MARC / MARD/ MVKE |  | Every module
+Vendor | LFA1 / LFB1/LFBK |  | Invoice
+Batch | MCH1 / MCHB |  | MIGO, Invoice
+Unit of Measure (UoM) | T006 | MT | MIGO, DI, Invoice, STO
+Incoterm | KNVV/ TINC | PRCD_ELEMENT (Base table – Pricing)Condition type (ZISP) will maintain condition record. | DI, Invoice
+[/TABLE]
+3. Functionalities
+
+[TABLE]
+Feature | Required Master | Required KDS / Config | SAP T-code / API | Notes
+3.1 MIGO — Goods Receipt against DI | Document type. A01Outbound delivery 05Material masterPlant / DepotStorage Type & Storage LocationBatchStock type (Unrestricted / Blocked)Movement Type | Plant to Sloc (T001L) — storage-type list per plantSPI to Sloc (ZLETSPIMAP)Movement Type ref — 101/102 / 313 / 315 / 311 / 122 / 551UoM | Pending list: ZLE526 (get DI)MIGOMovement Type: BWART |
+3.2 DI Creation | Sales Order (txn)Customer (KNB1 / KNVV)MaterialPlant / DepotIncotermCredit statusDistribution channelShip-to zoneUoM | Sales area to plant (TVKWZ)Sales area to sale office (TVKBZ)Incoterm to Plant assignment: Condition type (ZISP) will maintain condition record. Nielsen indicator to material group With Plant. (KOTG508) | VL01N (create delivery)Pending orders: ZSDR512N |
+3.3 Invoice Creation / DI Modification | DI (txn)BatchStorage Type & Location MaterialTransporter / Vendor (LFA1 / LFB1,LFBK)Shipment cost (condition)VehicleCustomerIncotermUoM | Vendor & customer data (LFA1 / LFB1)Incotm to plant (ZISP — FTP pickup)Plant to Sloc (T001L)SPI to Sloc (ZLETSPIMAP) | VL02N (DI Modification) VL03N DisplayVT01N / VT02N/VL03N(shipment)VI01 / VI02 /VI03(Shipment cost)PGIVF01,VF02, VF03 (invoice)VL06O (Pending DI) |
+3.4 Process E-Invoice & e-Way Bill through cockpit | Billing doc / Invoice e-Way Bill | — | /DIGIGST/INVP | Verify doc generated in SAP before display; else error.Download invoice + e-Way Bill PDF.After successfully generating E-invoice and E-way bill, system allow to take printout.
+3.5 Information Correction for generating E-way Bill | Billing doc / InvoiceVehicleTransporter | — | /DIGIGST/INVP | Show error reason (e.g. vehicle no.).Edit → resubmit → regenerate Invoice & e-Way Bill.
+3.6 e-Way Bill Extension | e-Way Bill (external) | — |  | Extend validity by 1 day.Handled at GSP / NIC e-Way Bill portal, not core SAP.
+3.7 Warehouse-to-Warehouse Stock Transfer (STO) | Document type (ZP06)Company codePurchase OrgPurchase groupMaterialPricing masterPlant / Depot (supplying & receiving)Storage Type & LocationSTO (txn)StockUoM | Plant to Sloc (T001L)Sales area to plant (TVKWZ)SPI to Sloc (ZLETSPIMAP)UoM (API_UOM_SRV)Pricing PRCD_ELEMENTNielsen indicator to material group. (KOTG508) | ME21N, ME22N ME23N | Receiving WH performs MIGO against same reference to close transfer.
+[/TABLE]
+4. Visibilities (Reports)
+
+[TABLE]
+Report (Visibility) | Required T-code | Filter Options | Required Master | Required KDS
+4.1 Pending MRNs | ZLE526 | Posting Date (Mandatory)Supplying PlantReceiving Plant (Mandatory)MaterialMaterial freight grpShipping TypeDeliveryDivisionInbound DIPlantMaterial | Plant to Sloc (T001L) |
+4.2 Completed MRNs | ZLE520 | MRN Date (Mandatory)Supplying PlantReceiving PlantMaterialMaterial freight grpShipping TypeDelivery document | Plant to Sloc (T001L) |
+4.3 Pending Orders | ZSDR512N | Sales DocumentSales Document TypeDocument Date (Mandatory)Customer NameSales Organization (Mandatory)Distribution ChannelDivision (Mandatory)Sales OfficePlantProductRegionDistrict name | Sales orderCustomerMaterialPlant | Sales area to plant (TVKWZ)Sales area to sale office (TVKBZ)Cust grp (T151)
+4.4 Sales register | ZSDR513 | Billing Date (Mandatory)Billing TypeBilling DocumentSales Organization (Mandatory)Distribution Channel (Mandatory)Division (Mandatory)Sales OfficePlantMode of DispatchProductTransporterPack TypeBrandStorage LocationStateDistrictCityCustomer Name | Billing doc / InvoiceCustomerMaterial | Sales area to plant (TVKWZ)Cust grp (T151)
+4.5 Stock Available at Warehouse | MB52 | MaterialPlant / WarehouseStorage LocationBatchSpecial stock indicator | MaterialPlantStorage Type & LocationBatchStock | Plant to Sloc (T001L)SPI to Sloc (ZLETSPIMAP)
+4.6 Warehouse Stock Aging | ZMM5013 | WarehouseMaterialStorage LocationAging bracket / key date | MaterialPlantStorage Type & LocationBatch (GR date) |
+4.7 Historical Billing | ZSDR513 | WarehousePeriod (date range)CustomerMaterialInvoice number | Billing docCustomerMaterial | Sales area to plant (TVKWZ)Cust grp (T151)
+4.8 Pending Stock Transfer Orders | ME2M | Supplying WHReceiving WHMaterialSTO NumberDate rangeStatus | STO (purchase doc)Plant (supplying / receiving)Material | Plant to Sloc (T001L)Sales area to plant (TVKWZ)
+[/TABLE]
+5. KDS Reference Index
+
+[TABLE]
+KDS Sheet / Object | SAP Table / Condition | Purpose & where used
+SPI to Sloc | ZLETSPIMAP | Storage Location ↔ Special Procurement Indicator. Used by MIGO, Stock, Invoice for SLoc eligibility.
+Plant to Sloc | T001L | Plant ↔ Storage Location. Used across MIGO, Stock, Invoice, STO and all reports.
+Sales area to plant | TVKWZ | Sales org / dist. channel ↔ Plant. Used by DI Creation and order/billing reports.
+Sales area to sale office | TVKBZ | Sales office assignment to org unit. Used by order reports.
+Incoterm to plant | ZISP (cond.) / VK11,VK12,VK13 | Incoterm at plant level (FTB, FTP, etc.). Drives DI and FTP pickup-code logic in Invoice.
+Cust grp | T151 (KDGRP) | Customer group classification. Used in order and billing visibility.
+Vendor & customer data | LFA1 / LFB1 / KNA1 / KNB1 / KNVV / LFBK | Transporter (vendor) and customer master. Used in DI and Invoice (transporter, ship-to).
+Mat. grp (Material Pricing Group) | T178 (KONDM) | Material pricing group. Feeds invoice pricing.
+Nielsen Indicator | MARC / TNLS | Brand / Nielsen indicator (SC, Bangur, RC, Magna). Reporting & segmentation.
+MatFrtGp (Material Freight Group) | TMFG / MFRGR | Material freight group (Cement Packed / Loose, Clinker, etc.). Used for shipment cost.
+[/TABLE]

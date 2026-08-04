@@ -14,11 +14,13 @@ Its purpose is to help Codex or Claude turn meetings, specifications, system obs
 
 ## Start here
 
-1. Read `AI_OPERATING_RULES.md`.
-2. Read `PROJECT_BRAIN.md`, `PROJECT_CONTEXT.md`, `ARCHITECTURE.md`, and `ROLE_BOUNDARIES.md`.
-3. Ingest original source documents through `MEETING_INGEST.md` and the templates.
-4. Follow `MASTER_PLAN.md`; never silently replace uncertainty with assumptions.
-5. Use `NEXT_MOVE.md` when DEV access and a formal assignment arrive.
+1. **`HANDOVER_AI.md`** (agents) or **`HANDOVER_HUMAN.md`** (humans) — current state, register precedence, and which documents are stale.
+2. `AI_OPERATING_RULES.md` — safety, approval and evidence rules.
+3. `ROLE_BOUNDARIES.md` — what is and isn't the ABAP team's scope.
+4. Live registers: `DECISION_LOG.md`, `OPEN_QUESTIONS.md`, `DOMAIN_GLOSSARY.md`, `SYSTEM_OF_RECORD_MATRIX.md`.
+5. `sources/` for primary evidence; `MEETING_INGEST.md` for the intake procedure.
+
+**Note:** `PROJECT_BRAIN.md`, `MASTER_PLAN.md`, `NEXT_MOVE.md`, `SEGW_ODATA_PLAN.md`, `BAPI_CANDIDATES.md` and `CPI_CONTRACTS.md` were written before any client documentation arrived. Their *method* is sound; their specific SAP claims are pre-evidence guesses. `HANDOVER_AI.md §0.2` lists exactly what not to trust.
 
 ## Evidence standard
 
@@ -46,8 +48,6 @@ Conversation summaries are context, not primary evidence. Uploaded originals, si
 | `DOMAIN_GLOSSARY.md` | Client vocabulary, KDS codes, and validation status |
 | `SYSTEM_OF_RECORD_MATRIX.md` | Authority for cross-system business concepts |
 | `KNOWLEDGE_GRAPH_SCHEMA.md` | Schema for the living project brain |
-| `REQUIREMENTS_MATRIX.md` | Business capability to interface traceability |
-| `INTERFACE_REGISTER.md` | Canonical inventory of candidate interfaces |
 | **`HANDOVER_AI.md`** | **START HERE (AI).** Complete current-state briefing. Includes the register-ID precedence map and the list of stale documents not to trust |
 | **`HANDOVER_HUMAN.md`** | **START HERE (human).** Plain-language position: what is known, what is open, what to say in meetings |
 | `SAP_API_DOSSIER.md` | Received spec assessment, meeting-derived process model, and the proposed SAP API set |
@@ -65,6 +65,9 @@ Conversation summaries are context, not primary evidence. Uploaded originals, si
 | `AI_OPERATING_RULES.md` | Safety, approval, confidentiality, and agent rules |
 | `NEXT_MOVE.md` | Short execution plan for DEV and first assignment |
 | `templates/` | Reusable working templates |
+| `sources/` | **Primary evidence** — originals by source ID, plus plain-text extractions |
+| `deliverables/` | Client-facing output: API classification, delivery planning register, timeline, specification |
+| `_archive/` | Superseded documents and retired numbering, with old-to-new mapping |
 
 ## Definition of success
 

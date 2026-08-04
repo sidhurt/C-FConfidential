@@ -1,0 +1,10 @@
+Master Data | Table | Description | Account group  | Table
+Vendor General Data | LFA1 | Vendor master general information (Name, Address, Contact Details, PAN/GST, etc.) | ZDOM | T077K
+Vendor Company Code Data | LFB1/ LFBK | Vendor accounting information specific to company code (Reconciliation Account, Payment Terms, etc.) |  | KTOKK
+Customer General Data | KNA1 | Customer master general information (Name, Address, Contact Details, GST, etc.)
+Customer Company Code Data | KNB1 | Customer accounting data for a company code (Credit Control, Reconciliation Account, Payment Terms, etc.)
+Customer Sales Area Data | KNVV | Sales-related customer information (Sales Org, Distribution Channel, Division, Pricing Procedure, Shipping Conditions, etc.)
+Material General Data | MARA | Material master basic information applicable across all plants
+Material Plant Data | MARC | Material information specific to a plant (MRP, Procurement, Production Data)
+Material Storage Location Data | MARD | Material stock and storage location information
+Material Sales Data | MVKE | Material sales information by Sales Organization and Distribution Channel

@@ -1,0 +1,23 @@
+MatFrtGp | Description |  | Table
+A0000001 | Cement Packed |  | TMFG
+A0000002 | Cement Loose
+A0000003 | Clinker
+A0000004 | AACB
+A0000005 | Mortar
+A0000006 | Rubble
+A0000007 | Damage
+A0000008 | Raw Material
+A0000009 | AFR
+A0000010 | Other
+A0000011 | Semi Finished Goods
+A0000012 | Lime
+A0000013 | Raw Material - Fuel
+A0000014 | RMC
+A0000015 | Steel
+A0000016 | Diesel
+A0000017 | Refractory
+A0000018 | Scrap
+A0000019 | Store Spare
+A0000020 | Explosive
+A0000021 | PP Bag
+A0000022 | Cement Loose (F)

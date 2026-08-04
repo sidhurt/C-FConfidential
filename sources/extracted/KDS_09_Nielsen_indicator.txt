@@ -1,0 +1,10 @@
+NS | Desp | Table
+01 | SC | TNLS |  | The Nielsen Indicator and Material Group linkage is maintained in MV45AFZZ
+02 | Bangur |  |  | custom enhancement (User Exit) implemented in the sales order processing program.
+03 | RC |  |  | MARC
+04 | Magna
+05 | SC, Magna |  |  | KOTG508 | Link table  | MVGR3
+06 | Bangur, Magna
+07 | RC, Magna
+08 | SC,Bangur, RC, Magna
+09 | Others

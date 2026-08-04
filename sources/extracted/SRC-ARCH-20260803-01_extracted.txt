@@ -1,0 +1,188 @@
+
+================ SLIDE 1 ================
+  CNF PORTAL
+  CNF Architecture
+  July 2026 · Confidential
+
+================ SLIDE 2 ================
+
+================ SLIDE 3 ================
+  CNF PORTAL
+  DSP Data Integration — Architecture Options
+  Comparative Analysis of Two Integration Approaches
+  Shree Cement Limited · Technology Architecture
+  OPTION A
+  Real-Time DSP Query with OCC Caching
+  OPTION B
+  Hybris-Managed Data Store with Scheduled DSP Sync
+  July 2026 · Confidential
+
+================ SLIDE 4 ================
+  Option A — Real-Time DSP Query with OCC Caching (within session)
+  T2 queries DSP live on demand. OCC cache absorbs repeated requests.
+  CNF Agent
+  (Browser)
+  Hybris T2
+  OCC API Layer
+  OCC Cache
+  (Hybris Region)
+  SAP SCPI
+  Middleware
+  SAP Datasphere
+  OData API
+  ✓ HIT
+  serve instantly
+  → MISS
+  call SCPI live
+  TTL is matched to each object's DSP refresh cycle — no persistent copy of DSP data is kept in T2.
+  MASTER DATA
+  Depot → Storage Location Mapping
+  Synced from DSP · stored in T2.cached 23 hrs
+  Vehicle Master
+  Synced from DSP · stored in T2. cached 23 hrs
+  Transporter Master
+  Synced from DSP ·stored in T2. cached 23 hrs
+  REAL-TIME OPERATIONAL (SLT)
+  Pending MRN
+  DSP SLT CDC · OCC cache 4 min
+  Pending Orders
+  DSP SLT CDC · OCC cache 4 min
+  Deliveries
+  DSP SLT CDC · OCC cache 4 min
+  STO List
+  DSP SLT CDC · OCC cache 4 min
+  Stock Aging
+  DSP refresh once in a day
+  Invoice Billing
+  DSP SLT CDC · OCC cache 4 min
+  ✓ Simpler to build
+  ✓ Always current
+  ✓ Low T2 storage
+  ✗ DSP dependency
+  ✗ SCPI bottleneck
+  ✗ Cache tuning needed
+  Option A · Shree Cement CNF Portal · Architecture Decision
+  July 2026
+  eInvoice
+
+================ SLIDE 5 ================
+  Option B — Hybris-Managed Data Store with Scheduled DSP Sync
+  T2 maintains its own persistent data store. DSP sync runs in the background. Agents always read from T2.
+  BACKGROUND SYNC PATH · no agent involvement
+  Hybris
+  T2 Data Store
+  SCPI / Direct
+  Connection
+  DSP
+  JDBC connection
+  SAP S/4HANA
+  (via SCPI)
+  pushes delivery & invoice updates back to Hybris
+  AGENT RUNTIME PATH · zero DSP dependency
+  CNF Agent
+  (Browser)
+  Hybris T2
+  OCC API Layer
+  Hybris T2
+  Data Store (same as above)
+  Daily sync · master data 10–15 min sync · operational data
+  Created on write · transactional data, synced back via SCPI
+  MASTER DATA · DAILY BATCH
+  Depot → Storage Location Mapping
+  DSP daily batch → T2 persistent table
+  Vehicle Master
+  DSP daily batch → T2 persistent table
+  Transporter Master
+  DSP daily batch → T2 persistent table
+  OPERATIONAL · 10–15 MIN
+  Pending MRN
+  SCPI syncs from DSP to T2. Data stored in T2.
+  Pending Orders
+  SCPI syncs from DSP to T2. Data stored in T2.
+  STO List
+  SCPI syncs from DSP to T2. Data stored in T2.
+  Stock Aging
+  SCPI syncs from DSP to T2. Data stored in T2.
+  eInvoice
+  SCPI syncs from DSP to T2. Data stored in T2.
+  TRANSACTIONAL · CREATED IN T2 only after persisted in SAP
+  Deliveries
+  Created on DI confirm ·stored in T2
+  Invoices
+  Created on invoice post · stored persistently in T2
+  Invoice PDF Downloads
+  First fetch via API · then persisted in T2 media
+  ✓ Portal resilience
+  ✓ Fast agent screens
+  ✓ Complex queries possible
+  ✗ Higher dev effort
+  ✗ Data duplication
+  Deliveries/Invoice Updates
+  Deliveries/Invoice Updates
+  EVENT DRIVEN - Created in SAP , pushed from SAP to T2
+  Same as T1
+  Deliveries
+  Create in SAP pushed to T2 via SCPI
+  Invoices
+  Create in SAP pushed to T2 via SCPI
+
+================ SLIDE 6 ================
+  CNF PORTAL
+  Option C - Direct T1 (CRM) Query with Scheduled DSP Sync (Hybrid)
+  July 2026 · Confidential
+
+================ SLIDE 7 ================
+
+================ SLIDE 8 ================
+  Option C — Direct T1 (CRM) Query with Scheduled DSP Sync
+  Orders, Deliveries & Invoices are served live from T1 (CRM) via OCC. MRN, STO List & Stock Aging sync from DSP to T2 on a fixed schedule.
+  DIRECT T1 (CRM) QUERY PATH · zero DSP / T2 dependency
+  CNF Agent
+  (Browser)
+  Hybris T1 (CRM)
+  OCC API Layer
+  Live OCC call for Orders, Deliveries & Invoices — served directly from T1, no T2 or DSP round-trip.
+  DSP SYNC PATH · scheduled, no agent involvement,Fetch stock Aging , Depot-SL, Vehicle Master and Transporter master
+  MASTER DATA · DAILY
+  Depot → Storage Location Mapping
+  Synced from DSP · stored in T2 (daily)
+  Vehicle Master
+  Synced from DSP · stored in T2 (daily)
+  Transporter Master
+  Synced from DSP · stored in T2 (daily)
+  OPERATIONAL · SCHEDULED/Realtime DSP SYNC
+  Pending MRN
+  15 min sync
+  STO List
+  15 min sync
+  Stock Aging
+  Dialy refresh from DSP
+  TRANSACTIONAL · REAL-TIME FROM T1
+  Orders
+  Live OCC query to T1 (CRM)
+  Deliveries
+  Live OCC query to T1 (CRM)
+  Invoices
+  Live OCC query to T1 (CRM)
+  ✓ Orders, Deliveries & Invoices always current — no DSP lag
+  ✓ Fewer entities to sync via DSP — just Stock Aging, vehicle master.transporter master
+  ✓ Master data pattern stays consistent with Option A / B
+  ✗ Two integration patterns to build and maintain
+  Option C · Shree Cement CNF Portal · Architecture Decision
+  July 2026
+  Hybris
+  T2 Data Store
+  SCPI / Direct
+  Connection
+  DSP
+  JDBC connection
+  DIRECT T2 QUERY PATH · zero DSP / T2 dependency
+  CNF Agent
+  (Browser)
+  Hybris T2 (CNF/OMS)
+  OCC API Layer
+  Direct calls for Vehical master, transporter and stock Aging. No DSP round trip
+  Invoice Download
+  OCC query to T1
+
+================ SLIDE 9 ================
