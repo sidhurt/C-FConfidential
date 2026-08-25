@@ -1,0 +1,18 @@
+NAME	VALUE
+~status_code	200
+~status_reason	OK
+sap-processing-info	ODataBEP=,crp=,RAL=,st=X,MedCacheHub=Table,MedCacheBEP=Table,codeployed=X,softstate=
+cache-control	no-store, no-cache
+content-length	20
+content-type	application/json; charset=utf-8
+dataserviceversion	2.0
+sap-metadata-last-modified	Tue, 18 Aug 2026 07:02:13 GMT
+sap-original-protocol	h2
+sap-perf-fesrec	185663.000000
+sap-server	true
+set-cookie	[REDACTED]
+set-cookie	[REDACTED]
+~remote_addr	
+~server_protocol	HTTP/1.1
+~uri_scheme_expanded	NONE
+~grid_title	HTTP Response - Processing Time = 193  ms

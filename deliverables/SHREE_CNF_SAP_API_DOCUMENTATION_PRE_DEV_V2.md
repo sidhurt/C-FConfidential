@@ -1,5 +1,7 @@
 # Shree Cement C&F Agent Interface
 
+> **SUPERSEDED IMPLEMENTATION BASELINE — retained for traceability.** This pre-access proposal predates the unrestricted 2,626-project SEGW catalogue and completed Tier-A deep dives. Its business/process analysis remains evidence; its `ZCNF_*` service recommendations do not. Use `CNF_STANDARD_API_SOLUTION_AND_TEST_PLAN.md` for the current standard-first solution.
+
 ## SAP API Documentation and Pre-Development Proposal
 
 **Document ID:** CNF-SAP-API-DOC-002  

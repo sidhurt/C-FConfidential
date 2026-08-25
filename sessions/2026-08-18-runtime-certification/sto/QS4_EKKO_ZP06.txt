@@ -1,0 +1,6 @@
+﻿SESSION|QS4/700 located at connection[1] session[0]|user=QNOVATE8
+SELFIELD|ctxtI4-LOW=ZP06
+TABLE|EKKO
+TITLE|Data Browser: Table EKKO: Selection Screen
+SBAR|Enter date in the format 31.12.2026
+CELLS|0

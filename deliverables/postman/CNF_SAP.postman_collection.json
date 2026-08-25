@@ -1,0 +1,1465 @@
+{
+ "info": {
+  "_postman_id": "cnf-sap-runtime-certified",
+  "name": "CNF C&F Agent — SAP APIs (runtime-certified 2026-08-25)",
+  "description": "Shree Cement CNF C&F Agent — environment-driven SAP API collection.\n\nCURRENT MATERIAL CERTIFICATION — QS4/700, 2026-08-21\n  API_OUTBOUND_DELIVERY_SRV;v=2 is registered with LOCAL as the default system alias.\n  A single external deep insert created delivery 9004953174 from STO 5600084209/000010.\n  HTTP 201, OData GET readback, and LIKP/LIPS persistence were confirmed.\n\nEVERY request is labelled with its evidence status:\n  [PROVEN]    executed against SAP, response captured\n  [UNTESTED]  endpoint confirmed to exist, never executed\n  [REJECTED]  executed and refused — kept deliberately as proof\n  [NO HTTP]   not callable over HTTP at all; spec only\n\nSAFETY\n  Mutating requests require a valid CSRF token and matching Postman session cookie.\n  Create DI additionally requires confirmCreateDI=YES and resets it to NO after execution.\n  The ;v=2 service-path segment is mandatory.\n  Use the supplied QS4/700 environment for the certified Create DI flow.\n  TLS uses an internal CA; install the CA chain for pipelines or disable SSL verification only in controlled testing.",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "auth": {
+  "type": "basic",
+  "basic": [
+   {
+    "key": "username",
+    "value": "{{sap-user}}",
+    "type": "string"
+   },
+   {
+    "key": "password",
+    "value": "{{sap-pass}}",
+    "type": "string"
+   }
+  ]
+ },
+ "variable": [
+  {
+   "key": "base",
+   "value": "{{host}}/sap/opu/odata/sap"
+  }
+ ],
+ "item": [
+  {
+   "name": "0 — Setup",
+   "description": "Run 'Fetch CSRF token' first. SAP Gateway rejects every POST/PATCH/DELETE without a valid x-csrf-token plus the matching session cookie.",
+   "item": [
+    {
+     "name": "Fetch CSRF token — outbound delivery v2  [PROVEN QS4/700]",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "const t = pm.response.headers.get('x-csrf-token');",
+         "if (t) { pm.environment.set('csrf', t); pm.test('CSRF token captured', () => pm.expect(t).to.be.a('string')); }",
+         "else { pm.test('CSRF token captured', () => pm.expect.fail('No x-csrf-token header. Check gateway reachability and auth.')); }"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "x-csrf-token",
+        "value": "Fetch"
+       },
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        ""
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "Runtime-proven on QS4/700. Returns the service document plus an x-csrf-token header. The test script stores it in {{csrf}}. Postman must keep the matching SAP session cookie — leave cookie handling on."
+     }
+    },
+    {
+     "name": "Fetch CSRF token — material document  [PROVEN QS4/700]",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "const t = pm.response.headers.get('x-csrf-token');",
+         "if (t) { pm.environment.set('csrf', t); pm.test('CSRF token captured', () => pm.expect(t).to.be.a('string')); }",
+         "else { pm.test('CSRF token captured', () => pm.expect.fail('No x-csrf-token header. Check gateway reachability and auth.')); }"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       },
+       {
+        "key": "x-csrf-token",
+        "value": "Fetch"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_MATERIAL_DOCUMENT_SRV",
+        ""
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "Executed 2026-08-25 against QS4/700, HTTP 200, token returned. The plain service path resolves; ;v=1 is NOT required for this service. The CSRF token is session-scoped, so either setup request will do, but keep this one so the MIGO folder is self-contained."
+     }
+    }
+   ]
+  },
+  {
+   "name": "1 — Standard OData: service contracts  [PROVEN]",
+   "description": "All five $metadata documents were retrieved successfully inside GW_CLIENT on DS4/200. These define the request/response contracts.",
+   "item": [
+    {
+     "name": "$metadata — API_PURCHASEORDER_PROCESS_SRV",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{base}}/API_PURCHASEORDER_PROCESS_SRV/$metadata?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_PURCHASEORDER_PROCESS_SRV",
+        "$metadata"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "$metadata — API_OUTBOUND_DELIVERY_SRV;v=2",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/$metadata?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "$metadata"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "The ;v=2 segment is REQUIRED. v2 exposes PickAndBatchSplitOneItem (5 params) and CreateBatchSplitItem (6 params); v1 does not. Version 2 is the ONLY version registered - without ;v=2 the call returns HTTP 403 (/IWFND/MED/170 no service found, version 0001). Verified 2026-08-19."
+     }
+    },
+    {
+     "name": "$metadata — API_MATERIAL_STOCK_SRV",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{base}}/API_MATERIAL_STOCK_SRV/$metadata?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_MATERIAL_STOCK_SRV",
+        "$metadata"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "Read-only model: every entity set is creatable=false / updatable=false / deletable=false. This is book stock, NOT ATP."
+     }
+    },
+    {
+     "name": "$metadata — API_MATERIAL_DOCUMENT_SRV",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/$metadata?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_MATERIAL_DOCUMENT_SRV",
+        "$metadata"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "$metadata — API_BILLING_DOCUMENT_SRV",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{base}}/API_BILLING_DOCUMENT_SRV/$metadata?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_BILLING_DOCUMENT_SRV",
+        "$metadata"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "CONFIRMED LIMITATION: all 8 entity sets are creatable=false. Billing documents CANNOT be created through this service. Read and GetPDF only."
+     }
+    }
+   ]
+  },
+  {
+   "name": "2 — Standard OData: reads  [PROVEN]",
+   "description": "Executed on DS4/200. All returned HTTP 200 with zero rows, because DS4 has no data. A 200 with an empty collection proves routing and authorisation work — it does not prove the operation works.",
+   "item": [
+    {
+     "name": "Purchase orders — top 5",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?$top=5&$format=json&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_PURCHASEORDER_PROCESS_SRV",
+        "A_PurchaseOrder"
+       ],
+       "query": [
+        {
+         "key": "$top",
+         "value": "5"
+        },
+        {
+         "key": "$format",
+         "value": "json"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "Purchase order + items + schedule lines (expand)",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?$top=1&$expand=to_PurchaseOrderItem/to_ScheduleLine&$format=json&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_PURCHASEORDER_PROCESS_SRV",
+        "A_PurchaseOrder"
+       ],
+       "query": [
+        {
+         "key": "$top",
+         "value": "1"
+        },
+        {
+         "key": "$expand",
+         "value": "to_PurchaseOrderItem/to_ScheduleLine"
+        },
+        {
+         "key": "$format",
+         "value": "json"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "API-08. Two-level expand confirmed valid against $metadata."
+     }
+    },
+    {
+     "name": "Outbound deliveries — header + items",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader?$top=5&$expand=to_DeliveryDocumentItem&$format=json&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "A_OutbDeliveryHeader"
+       ],
+       "query": [
+        {
+         "key": "$top",
+         "value": "5"
+        },
+        {
+         "key": "$expand",
+         "value": "to_DeliveryDocumentItem"
+        },
+        {
+         "key": "$format",
+         "value": "json"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "API-09."
+     }
+    },
+    {
+     "name": "Book stock by material",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_MATERIAL_STOCK_SRV/A_MatlStkInAcctMod?$filter=Material eq '{{material}}'&$format=json&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_MATERIAL_STOCK_SRV",
+        "A_MatlStkInAcctMod"
+       ],
+       "query": [
+        {
+         "key": "$filter",
+         "value": "Material eq '{{material}}'"
+        },
+        {
+         "key": "$format",
+         "value": "json"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "API-05. Book stock, not availability. ATP requires BAPI_MATERIAL_AVAILABILITY — see folder 5."
+     }
+    },
+    {
+     "name": "Billing documents — top 1",
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_BILLING_DOCUMENT_SRV/A_BillingDocument?$top=1&$expand=to_Item&$format=json&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_BILLING_DOCUMENT_SRV",
+        "A_BillingDocument"
+       ],
+       "query": [
+        {
+         "key": "$top",
+         "value": "1"
+        },
+        {
+         "key": "$expand",
+         "value": "to_Item"
+        },
+        {
+         "key": "$format",
+         "value": "json"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "API-10."
+     }
+    }
+   ]
+  },
+  {
+   "name": "3 — Create DI: outbound delivery from STO  [PROVEN — real document]",
+   "description": "Runtime-certified on QS4/700 on 2026-08-21. Exactly one external POST created delivery 9004953174 from STO 5600084209/000010 for 1 TO. HTTP 201, OData readback and LIKP/LIPS persistence were confirmed.\n\nRun the setup request first so {{csrf}} and the matching SAP session cookie come from the same v2 service. Set confirmCreateDI=YES only after replacing the predecessor variables with a currently open, delivery-eligible STO item. The request resets the switch to NO after every response.\n\nReferenceSDDocumentCategory is intentionally omitted: live QS4 metadata marks it sap:creatable=false.",
+   "item": [
+    {
+     "name": "POST Create DI — STO deep insert  [PROVEN — CREATES DOCUMENT]",
+     "event": [
+      {
+       "listen": "prerequest",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "const confirmation = pm.environment.get('confirmCreateDI');",
+         "if (confirmation !== 'YES') {",
+         "  throw new Error('Create DI blocked. Set environment variable confirmCreateDI=YES after validating an open STO item.');",
+         "}",
+         "const required = ['csrf', 'shippingPoint', 'referenceSDDocument', 'referenceSDDocumentItem', 'actualDeliveryQuantity', 'deliveryQuantityUnit'];",
+         "for (const key of required) {",
+         "  if (!pm.environment.get(key)) throw new Error(`Missing required environment variable: ${key}`);",
+         "}"
+        ]
+       }
+      },
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.environment.set('confirmCreateDI', 'NO');",
+         "pm.test('Create DI returned 201 Created', () => pm.response.to.have.status(201));",
+         "const payload = pm.response.json();",
+         "const delivery = payload?.d?.DeliveryDocument ?? payload?.DeliveryDocument;",
+         "pm.test('SAP returned a delivery document number', () => pm.expect(delivery).to.match(/^\\d+$/));",
+         "if (delivery) pm.environment.set('deliveryDocument', delivery);"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "Accept",
+        "value": "application/json"
+       },
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"ShippingPoint\": \"{{shippingPoint}}\",\n  \"to_DeliveryDocumentItem\": [\n    {\n      \"ReferenceSDDocument\": \"{{referenceSDDocument}}\",\n      \"ReferenceSDDocumentItem\": \"{{referenceSDDocumentItem}}\",\n      \"ActualDeliveryQuantity\": \"{{actualDeliveryQuantity}}\",\n      \"DeliveryQuantityUnit\": \"{{deliveryQuantityUnit}}\"\n    }\n  ]\n}"
+      },
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "A_OutbDeliveryHeader"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "CREATES A REAL SAP OUTBOUND DELIVERY. Proven payload fields: ShippingPoint, ReferenceSDDocument, ReferenceSDDocumentItem, ActualDeliveryQuantity and DeliveryQuantityUnit. SAP derives delivery type, plants, route, customer and movement type. Do not add ReferenceSDDocumentCategory; the live runtime marks it non-creatable. A 201 response may contain an empty expanded item array, so run both readback requests before treating the call as fully verified."
+     }
+    },
+    {
+     "name": "GET created delivery header  [PROVEN readback]",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test('Created delivery header is readable', () => pm.response.to.have.status(200));",
+         "const payload = pm.response.json();",
+         "const delivery = payload?.d?.DeliveryDocument ?? payload?.DeliveryDocument;",
+         "pm.test('Readback matches environment delivery', () => pm.expect(delivery).to.eql(pm.environment.get('deliveryDocument')));"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader('{{deliveryDocument}}')?$format=json&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "A_OutbDeliveryHeader('{{deliveryDocument}}')"
+       ],
+       "query": [
+        {
+         "key": "$format",
+         "value": "json"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "name": "GET delivery item by STO predecessor  [PROVEN readback]",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test('Predecessor item query succeeded', () => pm.response.to.have.status(200));",
+         "const results = pm.response.json()?.d?.results ?? [];",
+         "pm.test('Created delivery item persisted', () => {",
+         "  pm.expect(results.some(row => row.DeliveryDocument === pm.environment.get('deliveryDocument'))).to.be.true;",
+         "});"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryItem?$filter=ReferenceSDDocument%20eq%20'{{referenceSDDocument}}'%20and%20ReferenceSDDocumentItem%20eq%20'{{referenceSDDocumentItem}}'&$format=json&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "A_OutbDeliveryItem"
+       ],
+       "query": [
+        {
+         "key": "$filter",
+         "value": "ReferenceSDDocument eq '{{referenceSDDocument}}' and ReferenceSDDocumentItem eq '{{referenceSDDocumentItem}}'"
+        },
+        {
+         "key": "$format",
+         "value": "json"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "This is the durable item-level verification. The 201 response can return an empty expanded item collection even though the item has persisted."
+     }
+    }
+   ]
+  },
+  {
+   "name": "4 — Submit MIGO: goods receipt against STO  [PROVEN — real document]",
+   "description": "Certified 2026-08-25 in QS4/700. Created material document 5007138597 / year 2026 against STO 5600084239 item 00010 (2 EA, material 17035056, plant 1022, storage location FKGU). Verified three ways: OData $expand re-read, MSEG direct database read, and EKET showing WEMNG move from 0.000 to 2.000.\n\nREUSE: 5600084239 is now fully received and cannot be used again. The next candidate with stock in transit and an open goods receipt is 5600084238 item 00010, 4 EA, same material and plant. A valid item needs BOTH a posted 641 (stock in transit exists) AND EKET WEMNG < MENGE.\n\n## Request field mapping\n\nHeader (A_MaterialDocumentHeader):\n\n| OData property | SAP field | Value used | Notes |\n|---|---|---|---|\n| PostingDate | MKPF-BUDAT | /Date(1787616000000)/ | Epoch ms, UTC midnight. Must fall in an open MM period. |\n| DocumentDate | MKPF-BLDAT | /Date(1787616000000)/ | |\n| GoodsMovementCode | BAPI GM_CODE | 01 | 01 = goods receipt for purchase order. |\n| MaterialDocumentHeaderText | MKPF-BKTXT | CNF API TEST | Free text, useful for tracing test documents. |\n| ReferenceDocument | MKPF-XBLNR | not sent | Vendor delivery note. Optional; unused for STO receipts. |\n| CtrlPostgForExtWhseMgmtSyst | - | not sent | DELIBERATELY OMITTED. Can produce a delivery instead of a material document. |\n\nItem (to_MaterialDocumentItem):\n\n| OData property | SAP field | Value used | Notes |\n|---|---|---|---|\n| Material | MSEG-MATNR | 000000000017035056 | Sent zero-padded to 18. |\n| Plant | MSEG-WERKS | 1022 | Receiving plant. |\n| StorageLocation | MSEG-LGORT | FKGU | Taken from EKPO-LGORT of the PO item. |\n| GoodsMovementType | MSEG-BWART | 101 | Receiving movement for a two-step STO. |\n| GoodsMovementRefDocType | BAPI MVT_IND | B | THE DECIDING FIELD. B = movement for a purchase order. Omit it and the PO fields are rejected. |\n| QuantityInEntryUnit | MSEG-ERFMG | 2 | See caveat below. |\n| EntryUnit | MSEG-ERFME | EA | See caveat below. |\n| PurchaseOrder | MSEG-EBELN | 5600084239 | Predecessor. |\n| PurchaseOrderItem | MSEG-EBELP | 00010 | Sent padded; returned unpadded as 10. |\n\n## Response field mapping\n\n| OData property | SAP field | Observed | Notes |\n|---|---|---|---|\n| MaterialDocument | MKPF-MBLNR | 5007138597 | The authoritative key. |\n| MaterialDocumentYear | MKPF-MJAHR | 2026 | Part of the composite key; comes FIRST in the URL. |\n| InventoryTransactionType | - | WE | WE = goods receipt. |\n| CreatedByUser | MKPF-USNAM | QNOVATE8 | |\n| CreationDate | MKPF-CPUDT | 2026-08-25 | |\n| CreationTime | MKPF-CPUTM | PT12H41M16S | ISO 8601 duration, not a clock time. |\n| GoodsMovementCode | BAPI GM_CODE | 01 | Echoed. |\n| to_MaterialDocumentItem | - | EMPTY on create | Documented SAP behaviour. Always read back. |\n| (HTTP header) location | - | .../A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138597') | Carries the created key; usable instead of parsing the body. |\n\n## Verified independently in the database\n\nMSEG for 5007138597/2026 item 0001: BWART 101, MATNR 000000000017035056, WERKS 1022,\nLGORT FKGU, MENGE 2 EA, EBELN/EBELP 5600084239/00010, SHKZG S, BUKRS 1000, WAERS INR.\n\nEKET for 5600084239/00010: WEMNG moved from 0.000 to 2.000 against MENGE 2.000.\n\n## Two things NOT established\n\n1. ERFMG/ERFME versus MENGE/MEINS could not be distinguished on this test, because the\n   entry unit EA is also the base unit for this material. A material whose order unit\n   differs from its base unit is needed to confirm which pair QuantityInEntryUnit and\n   EntryUnit actually populate.\n2. MSEG-DMBTR came back 0.00. For a stock transfer the receiving value derives from the\n   issuing plant's valuation. Whether zero is correct for this material, or indicates it\n   is unvaluated, must be confirmed with MM before any value field enters the contract.",
+   "item": [
+    {
+     "name": "POST Submit MIGO — GR against STO  [PROVEN — CREATES DOCUMENT]",
+     "event": [
+      {
+       "listen": "prerequest",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "const confirmation = pm.environment.get('confirmSubmitMIGO');",
+         "if (confirmation !== 'YES') {",
+         "  throw new Error('Submit MIGO blocked. Set confirmSubmitMIGO=YES only after confirming the PO item has stock in transit (a posted 641) and EKET WEMNG < MENGE.');",
+         "}",
+         "const required = ['csrf', 'migoMaterial', 'migoPlant', 'migoStorageLocation', 'migoQuantity', 'migoUnit', 'migoPurchaseOrder', 'migoPurchaseOrderItem'];",
+         "for (const key of required) {",
+         "  if (!pm.environment.get(key)) throw new Error(`Missing required environment variable: ${key}`);",
+         "}",
+         "// posting date = today at UTC midnight, the exact form SAP accepted",
+         "const d = new Date();",
+         "pm.environment.set('postingDateEpochMs', String(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())));"
+        ]
+       }
+      },
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.environment.set('confirmSubmitMIGO', 'NO');",
+         "pm.test('Submit MIGO returned 201 Created', () => pm.response.to.have.status(201));",
+         "const d = pm.response.json()?.d ?? {};",
+         "pm.test('SAP returned a material document number', () => pm.expect(d.MaterialDocument).to.match(/^\\d+$/));",
+         "pm.test('SAP returned the document year', () => pm.expect(d.MaterialDocumentYear).to.match(/^\\d{4}$/));",
+         "pm.test('Transaction type is goods receipt (WE)', () => pm.expect(d.InventoryTransactionType).to.eql('WE'));",
+         "if (d.MaterialDocument) pm.environment.set('materialDocument', d.MaterialDocument);",
+         "if (d.MaterialDocumentYear) pm.environment.set('materialDocumentYear', d.MaterialDocumentYear);",
+         "pm.test('Create response echoes no items - documented, run the readback', () => {",
+         "  const items = d.to_MaterialDocumentItem?.results ?? [];",
+         "  pm.expect(items.length).to.eql(0);",
+         "});"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "Accept",
+        "value": "application/json"
+       },
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"PostingDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"DocumentDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"GoodsMovementCode\": \"01\",\n  \"MaterialDocumentHeaderText\": \"{{materialDocumentHeaderText}}\",\n  \"to_MaterialDocumentItem\": [\n    {\n      \"Material\": \"{{migoMaterial}}\",\n      \"Plant\": \"{{migoPlant}}\",\n      \"StorageLocation\": \"{{migoStorageLocation}}\",\n      \"GoodsMovementType\": \"101\",\n      \"GoodsMovementRefDocType\": \"B\",\n      \"QuantityInEntryUnit\": \"{{migoQuantity}}\",\n      \"EntryUnit\": \"{{migoUnit}}\",\n      \"PurchaseOrder\": \"{{migoPurchaseOrder}}\",\n      \"PurchaseOrderItem\": \"{{migoPurchaseOrderItem}}\"\n    }\n  ]\n}"
+      },
+      "url": {
+       "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_MATERIAL_DOCUMENT_SRV",
+        "A_MaterialDocumentHeader"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "CREATES A REAL SAP MATERIAL DOCUMENT.\n\nTHE FIELD THAT DECIDES THIS CALL: GoodsMovementRefDocType = \"B\". It is the OData equivalent of MVT_IND in BAPI_GOODSMVT_CREATE, where B means goods movement for a purchase order. Without it SAP returns 400 with MM_IM_ODATA_API_MDOC/011 \"Property PURCHASEORDER is not supported for GoodsMovementType 101\". That message names the PO properties and points at the wrong field - the missing field is the reference document type. See the negative request in this folder.\n\nThe goods receipt references the PURCHASE ORDER, not a delivery. Confirmed from three live receipts in QS4 (5600084213, 5600075302, 5600075921), all with LIFNR and LFBNR blank.\n\nCtrlPostgForExtWhseMgmtSyst is deliberately omitted; setting it can produce a delivery instead of a material document.\n\nPostingDate is computed by the pre-request script as today at UTC midnight, the form SAP accepted. The MM period must be open for the company code: QS4 company code 1000 was on period 2026/05, April-March fiscal variant."
+     },
+     "response": [
+      {
+       "name": "201 Created — material document 5007138597 / 2026",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         },
+         {
+          "key": "Accept",
+          "value": "application/json"
+         },
+         {
+          "key": "x-csrf-token",
+          "value": "{{csrf}}"
+         }
+        ],
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"PostingDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"DocumentDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"GoodsMovementCode\": \"01\",\n  \"MaterialDocumentHeaderText\": \"{{materialDocumentHeaderText}}\",\n  \"to_MaterialDocumentItem\": [\n    {\n      \"Material\": \"{{migoMaterial}}\",\n      \"Plant\": \"{{migoPlant}}\",\n      \"StorageLocation\": \"{{migoStorageLocation}}\",\n      \"GoodsMovementType\": \"101\",\n      \"GoodsMovementRefDocType\": \"B\",\n      \"QuantityInEntryUnit\": \"{{migoQuantity}}\",\n      \"EntryUnit\": \"{{migoUnit}}\",\n      \"PurchaseOrder\": \"{{migoPurchaseOrder}}\",\n      \"PurchaseOrderItem\": \"{{migoPurchaseOrderItem}}\"\n    }\n  ]\n}"
+        },
+        "url": {
+         "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader?sap-client={{sap-client}}",
+         "host": [
+          "{{base}}"
+         ],
+         "path": [
+          "API_MATERIAL_DOCUMENT_SRV",
+          "A_MaterialDocumentHeader"
+         ],
+         "query": [
+          {
+           "key": "sap-client",
+           "value": "{{sap-client}}"
+          }
+         ]
+        },
+        "description": "CREATES A REAL SAP MATERIAL DOCUMENT.\n\nTHE FIELD THAT DECIDES THIS CALL: GoodsMovementRefDocType = \"B\". It is the OData equivalent of MVT_IND in BAPI_GOODSMVT_CREATE, where B means goods movement for a purchase order. Without it SAP returns 400 with MM_IM_ODATA_API_MDOC/011 \"Property PURCHASEORDER is not supported for GoodsMovementType 101\". That message names the PO properties and points at the wrong field - the missing field is the reference document type. See the negative request in this folder.\n\nThe goods receipt references the PURCHASE ORDER, not a delivery. Confirmed from three live receipts in QS4 (5600084213, 5600075302, 5600075921), all with LIFNR and LFBNR blank.\n\nCtrlPostgForExtWhseMgmtSyst is deliberately omitted; setting it can produce a delivery instead of a material document.\n\nPostingDate is computed by the pre-request script as today at UTC midnight, the form SAP accepted. The MM period must be open for the company code: QS4 company code 1000 was on period 2026/05, April-March fiscal variant."
+       },
+       "status": "Created",
+       "code": 201,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "content-type",
+         "value": "application/json; charset=utf-8"
+        },
+        {
+         "key": "dataserviceversion",
+         "value": "2.0"
+        },
+        {
+         "key": "location",
+         "value": "https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138597')"
+        }
+       ],
+       "cookie": [],
+       "body": "{\n  \"d\": {\n    \"__metadata\": {\n      \"id\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138597')\",\n      \"uri\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138597')\",\n      \"type\": \"API_MATERIAL_DOCUMENT_SRV.A_MaterialDocumentHeaderType\"\n    },\n    \"MaterialDocumentYear\": \"2026\",\n    \"MaterialDocument\": \"5007138597\",\n    \"InventoryTransactionType\": \"WE\",\n    \"DocumentDate\": \"/Date(1787616000000)/\",\n    \"PostingDate\": \"/Date(1787616000000)/\",\n    \"CreationDate\": \"/Date(1787616000000)/\",\n    \"CreationTime\": \"PT12H41M16S\",\n    \"CreatedByUser\": \"QNOVATE8\",\n    \"MaterialDocumentHeaderText\": \"CNF API TEST\",\n    \"ReferenceDocument\": \"\",\n    \"VersionForPrintingSlip\": \"\",\n    \"ManualPrintIsTriggered\": \"\",\n    \"CtrlPostgForExtWhseMgmtSyst\": \"\",\n    \"GoodsMovementCode\": \"01\",\n    \"to_MaterialDocumentItem\": {\n      \"results\": []\n    }\n  }\n}"
+      }
+     ]
+    },
+    {
+     "name": "GET created material document + items (expand)  [PROVEN readback]",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test('Readback returned 200', () => pm.response.to.have.status(200));",
+         "const d = pm.response.json()?.d ?? {};",
+         "const items = d.to_MaterialDocumentItem?.results ?? [];",
+         "pm.test('At least one item is present on readback', () => pm.expect(items.length).to.be.above(0));",
+         "if (items.length) {",
+         "  const it = items[0];",
+         "  pm.test('Movement type is 101', () => pm.expect(it.GoodsMovementType).to.eql('101'));",
+         "  pm.test('Reference document type is B', () => pm.expect(it.GoodsMovementRefDocType).to.eql('B'));",
+         "  pm.test('Plant matches', () => pm.expect(it.Plant).to.eql(pm.environment.get('migoPlant')));",
+         "}"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "GET",
+      "header": [
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='{{materialDocumentYear}}',MaterialDocument='{{materialDocument}}')?$expand=to_MaterialDocumentItem&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_MATERIAL_DOCUMENT_SRV",
+        "A_MaterialDocumentHeader(MaterialDocumentYear='{{materialDocumentYear}}',MaterialDocument='{{materialDocument}}')"
+       ],
+       "query": [
+        {
+         "key": "$expand",
+         "value": "to_MaterialDocumentItem"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "The create response returns an empty item array, so this readback is mandatory before treating the posting as verified. Proven 2026-08-25 for 5007138597/2026: item 1, material 17035056, plant 1022, storage location FKGU, movement 101, GoodsMovementRefDocType B, PO 5600084239 item 10, 2 EA.\n\nThe key is composite and the year comes FIRST. Note also that PurchaseOrderItem is returned unpadded (10) although it is sent padded (00010)."
+     },
+     "response": [
+      {
+       "name": "200 OK — header + 1 item, verified against MSEG",
+       "originalRequest": {
+        "method": "GET",
+        "header": [
+         {
+          "key": "Accept",
+          "value": "application/json"
+         }
+        ],
+        "url": {
+         "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='{{materialDocumentYear}}',MaterialDocument='{{materialDocument}}')?$expand=to_MaterialDocumentItem&sap-client={{sap-client}}",
+         "host": [
+          "{{base}}"
+         ],
+         "path": [
+          "API_MATERIAL_DOCUMENT_SRV",
+          "A_MaterialDocumentHeader(MaterialDocumentYear='{{materialDocumentYear}}',MaterialDocument='{{materialDocument}}')"
+         ],
+         "query": [
+          {
+           "key": "$expand",
+           "value": "to_MaterialDocumentItem"
+          },
+          {
+           "key": "sap-client",
+           "value": "{{sap-client}}"
+          }
+         ]
+        },
+        "description": "The create response returns an empty item array, so this readback is mandatory before treating the posting as verified. Proven 2026-08-25 for 5007138597/2026: item 1, material 17035056, plant 1022, storage location FKGU, movement 101, GoodsMovementRefDocType B, PO 5600084239 item 10, 2 EA.\n\nThe key is composite and the year comes FIRST. Note also that PurchaseOrderItem is returned unpadded (10) although it is sent padded (00010)."
+       },
+       "status": "OK",
+       "code": 200,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "content-type",
+         "value": "application/json; charset=utf-8"
+        },
+        {
+         "key": "dataserviceversion",
+         "value": "2.0"
+        }
+       ],
+       "cookie": [],
+       "body": "{\n  \"d\": {\n    \"__metadata\": {\n      \"id\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138597')\",\n      \"uri\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138597')\",\n      \"type\": \"API_MATERIAL_DOCUMENT_SRV.A_MaterialDocumentHeaderType\"\n    },\n    \"MaterialDocumentYear\": \"2026\",\n    \"MaterialDocument\": \"5007138597\",\n    \"InventoryTransactionType\": \"WE\",\n    \"DocumentDate\": \"/Date(1787616000000)/\",\n    \"PostingDate\": \"/Date(1787616000000)/\",\n    \"CreationDate\": \"/Date(1787616000000)/\",\n    \"CreationTime\": \"PT12H41M16S\",\n    \"CreatedByUser\": \"QNOVATE8\",\n    \"MaterialDocumentHeaderText\": \"CNF API TEST\",\n    \"ReferenceDocument\": \"\",\n    \"VersionForPrintingSlip\": \"\",\n    \"ManualPrintIsTriggered\": \"\",\n    \"CtrlPostgForExtWhseMgmtSyst\": \"\",\n    \"GoodsMovementCode\": \"01\",\n    \"to_MaterialDocumentItem\": {\n      \"results\": [\n        {\n          \"__metadata\": {\n            \"id\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentItem(MaterialDocumentYear='2026',MaterialDocument='5007138597',MaterialDocumentItem='1')\",\n            \"uri\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentItem(MaterialDocumentYear='2026',MaterialDocument='5007138597',MaterialDocumentItem='1')\",\n            \"type\": \"API_MATERIAL_DOCUMENT_SRV.A_MaterialDocumentItemType\"\n          },\n          \"MaterialDocumentYear\": \"2026\",\n          \"MaterialDocument\": \"5007138597\",\n          \"MaterialDocumentItem\": \"1\",\n          \"Material\": \"17035056\",\n          \"Plant\": \"1022\",\n          \"StorageLocation\": \"FKGU\",\n          \"Batch\": \"\",\n          \"GoodsMovementType\": \"101\",\n          \"InventoryStockType\": \"01\",\n          \"InventoryValuationType\": \"\",\n          \"InventorySpecialStockType\": \"\",\n          \"Supplier\": \"\",\n          \"Customer\": \"\",\n          \"SalesOrder\": \"\",\n          \"SalesOrderItem\": \"0\",\n          \"SalesOrderScheduleLine\": \"0\",\n          \"PurchaseOrder\": \"5600084239\",\n          \"PurchaseOrderItem\": \"10\",\n          \"WBSElement\": \"\",\n          \"ManufacturingOrder\": \"\",\n          \"ManufacturingOrderItem\": \"0\",\n          \"GoodsMovementRefDocType\": \"B\",\n          \"GoodsMovementReasonCode\": \"0\",\n          \"Delivery\": \"\",\n          \"DeliveryItem\": \"0\",\n          \"AccountAssignmentCategory\": \"\",\n          \"CostCenter\": \"\",\n          \"ControllingArea\": \"1000\",\n          \"CostObject\": \"\",\n          \"GLAccount\": \"\",\n          \"FunctionalArea\": \"\",\n          \"ProfitabilitySegment\": \"0\",\n          \"ProfitCenter\": \"1005110101\",\n          \"MasterFixedAsset\": \"\",\n          \"FixedAsset\": \"\",\n          \"MaterialBaseUnit\": \"EA\",\n          \"QuantityInBaseUnit\": \"2\",\n          \"EntryUnit\": \"EA\",\n          \"QuantityInEntryUnit\": \"2\",\n          \"CompanyCodeCurrency\": \"INR\",\n          \"GdsMvtExtAmtInCoCodeCrcy\": \"0.00\",\n          \"SlsPrcAmtInclVATInCoCodeCrcy\": \"0.00\",\n          \"FiscalYear\": \"2026\",\n          \"FiscalYearPeriod\": \"2026005\",\n          \"FiscalYearVariant\": \"V3\",\n          \"IssgOrRcvgMaterial\": \"\",\n          \"IssgOrRcvgBatch\": \"\",\n          \"IssuingOrReceivingPlant\": \"\",\n          \"IssuingOrReceivingStorageLoc\": \"\",\n          \"IssuingOrReceivingStockType\": \"06\",\n          \"IssgOrRcvgSpclStockInd\": \"\",\n          \"IssuingOrReceivingValType\": \"\",\n          \"IsCompletelyDelivered\": true,\n          \"MaterialDocumentItemText\": \"\",\n          \"UnloadingPointName\": \"\",\n          \"ShelfLifeExpirationDate\": null,\n          \"ManufactureDate\": null,\n          \"SerialNumbersAreCreatedAutomly\": false,\n          \"Reservation\": \"0\",\n          \"ReservationItem\": \"0\",\n          \"ReservationIsFinallyIssued\": false,\n          \"SpecialStockIdfgSalesOrder\": \"\",\n          \"SpecialStockIdfgSalesOrderItem\": \"0\",\n          \"SpecialStockIdfgWBSElement\": \"\",\n          \"IsAutomaticallyCreated\": \"\",\n          \"MaterialDocumentLine\": \"1\",\n          \"MaterialDocumentParentLine\": \"0\",\n          \"HierarchyNodeLevel\": \"0\",\n          \"GoodsMovementIsCancelled\": false,\n          \"ReversedMaterialDocumentYear\": \"0000\",\n          \"ReversedMaterialDocument\": \"\",\n          \"ReversedMaterialDocumentItem\": \"0\",\n          \"ReferenceDocumentFiscalYear\": \"0000\",\n          \"InvtryMgmtRefDocumentItem\": \"0\",\n          \"InvtryMgmtReferenceDocument\": \"\",\n          \"MaterialDocumentPostingType\": \"\",\n          \"InventoryUsabilityCode\": \"\",\n          \"EWMWarehouse\": \"\",\n          \"EWMStorageBin\": \"\",\n          \"StockSegment\": \"\",\n          \"IssgOrRcvgStockSegment\": \"\",\n          \"to_MaterialDocumentHeader\": {\n            \"__deferred\": {\n              \"uri\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentItem(MaterialDocumentYear='2026',MaterialDocument='5007138597',MaterialDocumentItem='1')/to_MaterialDocumentHeader\"\n            }\n          },\n          \"to_SerialNumbers\": {\n            \"__deferred\": {\n              \"uri\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentItem(MaterialDocumentYear='2026',MaterialDocument='5007138597',MaterialDocumentItem='1')/to_SerialNumbers\"\n            }\n          }\n        }\n      ]\n    }\n  }\n}"
+      }
+     ]
+    },
+    {
+     "name": "POST negative — omit GoodsMovementRefDocType — expect 400  [PROVEN rejection]",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test('Rejected with 400', () => pm.response.to.have.status(400));",
+         "const err = pm.response.json()?.error ?? {};",
+         "const details = err.innererror?.errordetails ?? [];",
+         "const msgs = details.map(x => x.message).join(' | ');",
+         "pm.test('SAP names the PO properties as unsupported', () => pm.expect(msgs).to.include('PURCHASEORDER'));",
+         "pm.test('No document was created', () => pm.expect(pm.response.json()?.d).to.be.undefined);"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "Accept",
+        "value": "application/json"
+       },
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"PostingDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"DocumentDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"GoodsMovementCode\": \"01\",\n  \"MaterialDocumentHeaderText\": \"{{materialDocumentHeaderText}}\",\n  \"to_MaterialDocumentItem\": [\n    {\n      \"Material\": \"{{migoMaterial}}\",\n      \"Plant\": \"{{migoPlant}}\",\n      \"StorageLocation\": \"{{migoStorageLocation}}\",\n      \"GoodsMovementType\": \"101\",\n      \"QuantityInEntryUnit\": \"{{migoQuantity}}\",\n      \"EntryUnit\": \"{{migoUnit}}\",\n      \"PurchaseOrder\": \"{{migoPurchaseOrder}}\",\n      \"PurchaseOrderItem\": \"{{migoPurchaseOrderItem}}\"\n    }\n  ]\n}"
+      },
+      "url": {
+       "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_MATERIAL_DOCUMENT_SRV",
+        "A_MaterialDocumentHeader"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "KEPT AS PROOF. Identical to the accepted request except GoodsMovementRefDocType is omitted. Executed 2026-08-25 in QS4/700 and returned:\n\nHTTP 400\nMM_IM_ODATA_API_MDOC/011  Property PURCHASEORDER is not supported for GoodsMovementType 101\nMM_IM_ODATA_API_MDOC/011  Property PURCHASEORDERITEM is not supported for GoodsMovementType 101\nMM_IM_ODATA_API_MDOC/014  Material Document processing failed\n\nNo document is created by this call, so it is safe to run. It exists to stop a future developer concluding the API cannot accept PO-referenced goods receipts."
+     },
+     "response": [
+      {
+       "name": "400 Bad Request — GoodsMovementRefDocType omitted",
+       "originalRequest": {
+        "method": "POST",
+        "header": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         },
+         {
+          "key": "Accept",
+          "value": "application/json"
+         },
+         {
+          "key": "x-csrf-token",
+          "value": "{{csrf}}"
+         }
+        ],
+        "body": {
+         "mode": "raw",
+         "raw": "{\n  \"PostingDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"DocumentDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"GoodsMovementCode\": \"01\",\n  \"MaterialDocumentHeaderText\": \"{{materialDocumentHeaderText}}\",\n  \"to_MaterialDocumentItem\": [\n    {\n      \"Material\": \"{{migoMaterial}}\",\n      \"Plant\": \"{{migoPlant}}\",\n      \"StorageLocation\": \"{{migoStorageLocation}}\",\n      \"GoodsMovementType\": \"101\",\n      \"QuantityInEntryUnit\": \"{{migoQuantity}}\",\n      \"EntryUnit\": \"{{migoUnit}}\",\n      \"PurchaseOrder\": \"{{migoPurchaseOrder}}\",\n      \"PurchaseOrderItem\": \"{{migoPurchaseOrderItem}}\"\n    }\n  ]\n}"
+        },
+        "url": {
+         "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader?sap-client={{sap-client}}",
+         "host": [
+          "{{base}}"
+         ],
+         "path": [
+          "API_MATERIAL_DOCUMENT_SRV",
+          "A_MaterialDocumentHeader"
+         ],
+         "query": [
+          {
+           "key": "sap-client",
+           "value": "{{sap-client}}"
+          }
+         ]
+        },
+        "description": "KEPT AS PROOF. Identical to the accepted request except GoodsMovementRefDocType is omitted. Executed 2026-08-25 in QS4/700 and returned:\n\nHTTP 400\nMM_IM_ODATA_API_MDOC/011  Property PURCHASEORDER is not supported for GoodsMovementType 101\nMM_IM_ODATA_API_MDOC/011  Property PURCHASEORDERITEM is not supported for GoodsMovementType 101\nMM_IM_ODATA_API_MDOC/014  Material Document processing failed\n\nNo document is created by this call, so it is safe to run. It exists to stop a future developer concluding the API cannot accept PO-referenced goods receipts."
+       },
+       "status": "Bad Request",
+       "code": 400,
+       "_postman_previewlanguage": "json",
+       "header": [
+        {
+         "key": "content-type",
+         "value": "application/json; charset=utf-8"
+        },
+        {
+         "key": "dataserviceversion",
+         "value": "2.0"
+        }
+       ],
+       "cookie": [],
+       "body": "{\n  \"error\": {\n    \"code\": \"MM_IM_ODATA_API_MDOC/014\",\n    \"message\": {\n      \"lang\": \"en\",\n      \"value\": \"Material Document processing failed\"\n    },\n    \"innererror\": {\n      \"application\": {\n        \"component_id\": \"MM-IM-VDM-SGM\",\n        \"service_namespace\": \"/SAP/\",\n        \"service_id\": \"API_MATERIAL_DOCUMENT_SRV\",\n        \"service_version\": \"0001\"\n      },\n      \"transactionid\": \"C2CA5F832CE40120E006A8CEED4DD85D\",\n      \"timestamp\": \"\",\n      \"Error_Resolution\": {\n        \"SAP_Transaction\": \"\",\n        \"SAP_Note\": \"See SAP Note 1797736 for error analysis (https://service.sap.com/sap/support/notes/1797736)\"\n      },\n      \"errordetails\": [\n        {\n          \"ContentID\": \"\",\n          \"code\": \"MM_IM_ODATA_API_MDOC/011\",\n          \"message\": \"Property PURCHASEORDER is not supported for GoodsMovementType 101\",\n          \"propertyref\": \"\",\n          \"severity\": \"error\",\n          \"transition\": false,\n          \"target\": \"\"\n        },\n        {\n          \"ContentID\": \"\",\n          \"code\": \"MM_IM_ODATA_API_MDOC/011\",\n          \"message\": \"Property PURCHASEORDERITEM is not supported for GoodsMovementType 101\",\n          \"propertyref\": \"\",\n          \"severity\": \"error\",\n          \"transition\": false,\n          \"target\": \"\"\n        },\n        {\n          \"ContentID\": \"\",\n          \"code\": \"MM_IM_ODATA_API_MDOC/014\",\n          \"message\": \"Material Document processing failed\",\n          \"propertyref\": \"\",\n          \"severity\": \"error\",\n          \"transition\": false,\n          \"target\": \"\"\n        }\n      ]\n    }\n  }\n}"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "5 — Standard OData: STO create  [REJECTED — keep as proof]",
+   "description": "EXECUTED 2026-08-19. Returned HTTP 400 with a 742-byte error body. This request is retained deliberately: it is the evidence that the standard purchase-order service cannot create stock transport orders.\n\nErrors returned:\n  APPL_MM_PUR_PO/064  Use purchase order type Standard (NB) or a type copied from NB\n  APPL_MM_PUR_PO/065  Use a supported purchase order item category\n\nWhy this matters for ZP06, their real STO type:\n  QS4 T161: ZP06 -> BSAKZ = T, BREFN = UBF  (a copy of UB, not of NB)  -> fails 064\n  QS4 EKPO: PSTYP = 7 on live STO 5600084210                          -> fails 065\n\nTwo independent locks. Master data, plant pairing and transporting ZP06 to DS4 change neither.\nv1.8 pairs API-11 with this service. That pairing is wrong and should be corrected in the workbook.",
+   "item": [
+    {
+     "name": "POST A_PurchaseOrder (STO, deep insert) — expect 400",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "type": "text/javascript",
+        "exec": [
+         "pm.test('Documented rejection: 400', () => pm.response.to.have.status(400));",
+         "pm.test('Rejected on API scope, not on data', () => {",
+         "  const b = pm.response.text();",
+         "  pm.expect(b, 'expected error 064 or 065').to.match(/06[45]/);",
+         "});"
+        ]
+       }
+      }
+     ],
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "Accept",
+        "value": "application/json"
+       },
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"PurchaseOrderType\": \"{{poDocType}}\",\n  \"CompanyCode\": \"{{companyCode}}\",\n  \"PurchasingOrganization\": \"{{purchOrg}}\",\n  \"PurchasingGroup\": \"{{purchGroup}}\",\n  \"SupplyingPlant\": \"{{supplyingPlant}}\",\n  \"to_PurchaseOrderItem\": [\n    {\n      \"Material\": \"{{material}}\",\n      \"Plant\": \"{{receivingPlant}}\",\n      \"PurchaseOrderItemCategory\": \"7\",\n      \"OrderQuantity\": \"1\",\n      \"PurchaseOrderQuantityUnit\": \"EA\"\n    }\n  ]\n}"
+      },
+      "url": {
+       "raw": "{{base}}/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_PURCHASEORDER_PROCESS_SRV",
+        "A_PurchaseOrder"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "6 — Delivery function imports  [UNTESTED]",
+   "description": "Signatures runtime-confirmed from $metadata. NONE has been executed.\n\nCAVEAT: OData V2 POST function imports conventionally carry parameters in the query string. That convention is INFERRED here, not proven — no executed call has confirmed the encoding. Treat a 400 on these as a possible encoding issue before concluding the operation is unsupported.",
+   "item": [
+    {
+     "name": "PostGoodsIssue",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       },
+       {
+        "key": "Accept",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/PostGoodsIssue?DeliveryDocument='{{deliveryDocument}}'&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "PostGoodsIssue"
+       ],
+       "query": [
+        {
+         "key": "DeliveryDocument",
+         "value": "'{{deliveryDocument}}'"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "1 parameter. The pre-PGI chain must be complete before this succeeds."
+     }
+    },
+    {
+     "name": "ReverseGoodsIssue",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/ReverseGoodsIssue?DeliveryDocument='{{deliveryDocument}}'&ReversalReason=''&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "ReverseGoodsIssue"
+       ],
+       "query": [
+        {
+         "key": "DeliveryDocument",
+         "value": "'{{deliveryDocument}}'"
+        },
+        {
+         "key": "ReversalReason",
+         "value": "''"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "2 parameters. Reversal is the ONLY recovery path once PGI commits — there is no rollback."
+     }
+    },
+    {
+     "name": "PickOneItem",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/PickOneItem?DeliveryDocument='{{deliveryDocument}}'&DeliveryDocumentItem='000010'&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "PickOneItem"
+       ],
+       "query": [
+        {
+         "key": "DeliveryDocument",
+         "value": "'{{deliveryDocument}}'"
+        },
+        {
+         "key": "DeliveryDocumentItem",
+         "value": "'000010'"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "2 parameters."
+     }
+    },
+    {
+     "name": "PickAndBatchSplitOneItem",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/PickAndBatchSplitOneItem?DeliveryDocument='{{deliveryDocument}}'&DeliveryDocumentItem='000010'&Batch=''&SplitQuantity='0'&SplitQuantityUnit=''&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "PickAndBatchSplitOneItem"
+       ],
+       "query": [
+        {
+         "key": "DeliveryDocument",
+         "value": "'{{deliveryDocument}}'"
+        },
+        {
+         "key": "DeliveryDocumentItem",
+         "value": "'000010'"
+        },
+        {
+         "key": "Batch",
+         "value": "''"
+        },
+        {
+         "key": "SplitQuantity",
+         "value": "'0'"
+        },
+        {
+         "key": "SplitQuantityUnit",
+         "value": "''"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "5 parameters — v1.8 documents 4 and omits SplitQuantityUnit. CORRECTION to the workbook."
+     }
+    },
+    {
+     "name": "CreateBatchSplitItem",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       }
+      ],
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/CreateBatchSplitItem?DeliveryDocument='{{deliveryDocument}}'&DeliveryDocumentItem='000010'&Batch=''&PickQuantity='0'&PickQuantityUnit=''&PickQuantityInSalesUOM='0'&sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "CreateBatchSplitItem"
+       ],
+       "query": [
+        {
+         "key": "DeliveryDocument",
+         "value": "'{{deliveryDocument}}'"
+        },
+        {
+         "key": "DeliveryDocumentItem",
+         "value": "'000010'"
+        },
+        {
+         "key": "Batch",
+         "value": "''"
+        },
+        {
+         "key": "PickQuantity",
+         "value": "'0'"
+        },
+        {
+         "key": "PickQuantityUnit",
+         "value": "''"
+        },
+        {
+         "key": "PickQuantityInSalesUOM",
+         "value": "'0'"
+        },
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "6 parameters incl. PickQuantityInSalesUOM. CORRECTION to the workbook."
+     }
+    },
+    {
+     "name": "PATCH delivery item quantity",
+     "request": {
+      "method": "PATCH",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       },
+       {
+        "key": "x-csrf-token",
+        "value": "{{csrf}}"
+       },
+       {
+        "key": "If-Match",
+        "value": "*"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"ActualDeliveryQuantity\": \"5\"\n}"
+      },
+      "url": {
+       "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryItem(DeliveryDocument='{{deliveryDocument}}',DeliveryDocumentItem='000010')?sap-client={{sap-client}}",
+       "host": [
+        "{{base}}"
+       ],
+       "path": [
+        "API_OUTBOUND_DELIVERY_SRV;v=2",
+        "A_OutbDeliveryItem(DeliveryDocument='{{deliveryDocument}}',DeliveryDocumentItem='000010')"
+       ],
+       "query": [
+        {
+         "key": "sap-client",
+         "value": "{{sap-client}}"
+        }
+       ]
+      },
+      "description": "API-12. Runtime-confirmed from $metadata: ActualDeliveryQuantity is updatable; DeliveryQuantityUnit is updatable=false; Batch is creatable=false; HigherLvlItmOfBatSpltItm is both false — SAP owns the split hierarchy, you cannot set it. If-Match: * is used here for convenience; production callers should send the real ETag."
+     }
+    }
+   ]
+  },
+  {
+   "name": "7 — NOT CALLABLE OVER HTTP  [NO HTTP — spec only]",
+   "description": "STOP. Nothing in this folder can be sent.\n\nThese are RFC function modules. They have no URL, no HTTP verb, and no OData entity set. They are documented here as request-contract specifications so the team knows the exact payload the moment an exposure layer exists — and so nobody wastes a day hunting for an endpoint that was never there.\n\nTO MAKE THESE CALLABLE, exactly one of:\n  (a) a custom SEGW OData service wrapping the BAPI — this is the ZCNF_* pattern the business hard-stopped on 2026-08-14;\n  (b) a SOAP service generated over the BAPI via SOAMANAGER;\n  (c) the calling system speaks RFC directly (needs an SAP connector, not Postman).\n\nThe SD_SCDS_* freight modules are worse than the BAPIs: they are neither released NOR RFC-enabled, so options (b) and (c) do not apply to them either. They need an ABAP wrapper before any exposure is possible.",
+   "item": [
+    {
+     "name": "SPEC — BAPI_PO_CREATE1 (STO creation)  [PROVEN via SE37, TESTRUN=X]",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "X-Not-Callable",
+        "value": "RFC function module — no HTTP endpoint exists"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"_comment\": \"RFC module. Not callable from Postman. Field contract below.\",\n  \"_evidence\": \"DOC_TYPE=UB executed with TESTRUN=X on DS4 2026-08-19. Cleared document-type validation (no ME 013). Failed only on DS4 data: ME 083 purchasing group, 06 166 plant currency, M3 351 material not in receiving plant. ZP06 is a UB copy (T161 BREFN=UBF) so it takes the same path, but ZP06 itself has NOT been executed - DS4 does not have it.\",\n\n  \"POHEADER\": {\n    \"COMP_CODE\":  \"1000\",\n    \"DOC_TYPE\":   \"ZP06\",\n    \"PURCH_ORG\":  \"1000\",\n    \"PUR_GROUP\":  \"801\",\n    \"SUPPL_PLNT\": \"<supplying plant>\",\n    \"VENDOR\":     \"\",\n    \"_note\": \"VENDOR STAYS EMPTY. Confirmed on all 15 live ZP06 STOs in QS4 - EKKO-LIFNR is blank. An STO has a supplying plant (EKKO-RESWK), not a vendor. SUPPL_PLNT is off-screen in SE37; use Column/Position (Ctrl+Shift+F8) to reach it.\"\n  },\n\n  \"POHEADERX\": {\n    \"COMP_CODE\": \"X\", \"DOC_TYPE\": \"X\", \"PURCH_ORG\": \"X\", \"PUR_GROUP\": \"X\", \"SUPPL_PLNT\": \"X\",\n    \"_note\": \"MANDATORY. Every field set in POHEADER needs its X flag here. Miss one and the BAPI IGNORES that value SILENTLY - no error is raised. This is the single most common cause of a BAPI call that appears to work and does nothing.\"\n  },\n\n  \"POITEM\": [\n    { \"PO_ITEM\": \"00010\", \"MATERIAL\": \"<material>\", \"PLANT\": \"<receiving plant>\", \"ITEM_CAT\": \"7\", \"QUANTITY\": \"1\", \"PO_UNIT\": \"EA\" }\n  ],\n  \"POITEMX\": [\n    { \"PO_ITEM\": \"00010\", \"MATERIAL\": \"X\", \"PLANT\": \"X\", \"ITEM_CAT\": \"X\", \"QUANTITY\": \"X\", \"PO_UNIT\": \"X\" }\n  ],\n\n  \"TESTRUN\": \"X\",\n  \"_commit\": \"TESTRUN=X simulates. For a real create, TESTRUN must be blank AND the caller must issue BAPI_TRANSACTION_COMMIT. This BAPI does NOT commit on its own.\",\n\n  \"_not_passable\": \"EKPV (shipping data: VSTEL, ROUTE, KUNNR, VSART, VSBED) has NO table in this BAPI. SAP derives it from the plant, the plant-customer assignment and route determination. Do not spec it as input.\"\n}"
+      },
+      "url": {
+       "raw": "rfc://BAPI_PO_CREATE1",
+       "protocol": "rfc",
+       "host": [
+        "BAPI_PO_CREATE1"
+       ]
+      }
+     }
+    },
+    {
+     "name": "SPEC — BAPI_SHIPMENT_CREATE  [PROVEN — 2 real writes]",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "X-Not-Callable",
+        "value": "RFC function module — no HTTP endpoint exists"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"_comment\": \"RFC module. Not callable from Postman.\",\n  \"_evidence\": \"Executed twice on DS4 2026-08-19 as REAL WRITES. Run 1 without commit: returned TRANSPORT=1000 and 'S VW 488 Save shipment' - but VTTK had 0 rows, the document did NOT exist. Run 2 with BAPI_TRANSACTION_COMMIT in the same LUW: TRANSPORT=1001, VTTK had 1 row.\",\n\n  \"HEADERDATA\": {\n    \"SHIPMENT_TYPE\":  \"0001\",\n    \"TRANS_PLAN_PT\":  \"0001\"\n  },\n\n  \"_commit_hazard\": \"THE CALLER OWNS THE COMMIT. The shipment number is allocated BEFORE commit. An uncommitted call therefore returns a success message AND a real-looking document number for a document that does not exist, and burns a number-range value doing it. DS4 number 1000 is permanently gone. Never treat RETURN-TYPE='S' plus a populated TRANSPORT field as proof of persistence - read the document back.\",\n\n  \"_warning_not_error\": \"W VW 094 (deliveries missing) is a WARNING. A header-only shipment is accepted.\"\n}"
+      },
+      "url": {
+       "raw": "rfc://BAPI_SHIPMENT_CREATE",
+       "protocol": "rfc",
+       "host": [
+        "BAPI_SHIPMENT_CREATE"
+       ]
+      }
+     }
+    },
+    {
+     "name": "SPEC — BAPI_GOODSMVT_CREATE  [PROVEN — TESTRUN=X]",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "X-Not-Callable",
+        "value": "RFC function module — no HTTP endpoint exists"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"_comment\": \"RFC module. Not callable from Postman.\",\n  \"_evidence\": \"Executed on DS4 2026-08-19 with TESTRUN=X. Single RETURN row: 'E M7 053 Posting only possible in periods 1998/03 and 1998/02 in company code 0001'. The call REACHED period control, which means GM_CODE=01 and the item structure were NOT rejected. Blocker is the MM period, not valuation. Also establishes plant PLQ3 -> company code 0001.\",\n\n  \"GOODSMVT_CODE\": { \"GM_CODE\": \"01\" },\n  \"_gm_code\": \"01 = MB01 goods receipt for purchase order, from T158G. Still a CANDIDATE for CNF - reaching period control does not prove it is the right code for this business step.\",\n\n  \"GOODSMVT_HEADER\": { \"PSTNG_DATE\": \"19.08.2026\", \"DOC_DATE\": \"19.08.2026\" },\n\n  \"GOODSMVT_ITEM\": [\n    { \"MATERIAL\": \"<material>\", \"PLANT\": \"<plant>\", \"STGE_LOC\": \"<storage location>\", \"MOVE_TYPE\": \"101\", \"ENTRY_QNT\": \"1\", \"ENTRY_UOM\": \"EA\" }\n  ],\n\n  \"TESTRUN\": \"X\",\n  \"_commit\": \"Commit behaviour for this BAPI is NOT yet proven. Do not assume it matches BAPI_SHIPMENT_CREATE. Test it explicitly before relying on it.\"\n}"
+      },
+      "url": {
+       "raw": "rfc://BAPI_GOODSMVT_CREATE",
+       "protocol": "rfc",
+       "host": [
+        "BAPI_GOODSMVT_CREATE"
+       ]
+      }
+     }
+    },
+    {
+     "name": "SPEC — BAPI_MATERIAL_AVAILABILITY (ATP)  [PROVEN ×2]",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "X-Not-Callable",
+        "value": "RFC function module — no HTTP endpoint exists"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"_comment\": \"RFC module. Not callable from Postman.\",\n  \"_evidence\": \"Executed twice, read-only, on DS4. MAT18/PLQ3/EA returned no error with ATP 0.000.\",\n\n  \"PLANT\":    \"<plant>\",\n  \"MATERIAL\": \"<material>\",\n  \"UNIT\":     \"EA\",\n  \"CHECK_RULE\": \"\",\n\n  \"_scope\": \"This is ATP (availability), NOT book stock. It does NOT satisfy API-05. Book stock comes from API_MATERIAL_STOCK_SRV in folder 2. Do not substitute one for the other - they answer different questions.\"\n}"
+      },
+      "url": {
+       "raw": "rfc://BAPI_MATERIAL_AVAILABILITY",
+       "protocol": "rfc",
+       "host": [
+        "BAPI_MATERIAL_AVAILABILITY"
+       ]
+      }
+     }
+    },
+    {
+     "name": "SPEC — SD_SCDS_* freight chain  [UNTESTED / UNPROVEN]",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "X-Not-Callable",
+        "value": "Neither released NOR RFC-enabled — needs an ABAP wrapper before any exposure"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"_comment\": \"The pre-PGI freight chain. NOT released, NOT RFC-enabled. Package VTRA. These are not BAPIs, which is why every BAPI_SHIPMENT* / *SHIPMENTCOST* search missed them.\",\n\n  \"chain\": [\n    { \"step\": \"1. cost document create\", \"module\": \"SD_SCDS_CREATE\",             \"status\": \"EXECUTED ONCE standalone from SE37 with no VI01 dialog context - it ran clean, so a wrapper is viable for THIS step. No cost document was produced (no eligible shipment). I_OPT_COMMIT DEFAULTS TO 'X' - it commits unless explicitly told not to. E_REFOBJ_RANGE_LOCKED returns objects that could not be locked, which is the standard partial-completion surface.\" },\n    { \"step\": \"2. calculate\",            \"module\": \"SD_SCD_ITEM_CALCULATE\",       \"status\": \"NOT EXECUTED. Item-level, mandatory I_T180 (dialog structure). QS4 evidence shows it runs AUTOMATICALLY inside cost-document creation - DTBER/UZBER equal the creation timestamp and STBER=C on 200 of 200 sampled items.\" },\n    { \"step\": \"3. account assignment\",   \"module\": \"SD_SCD_ITEM_ACCT_ASSIGNMENT\", \"status\": \"NOT EXECUTED. The one module that defaults to background (I_OPT_BACKGROUND='X').\" },\n    { \"step\": \"4. settle / release\",     \"module\": \"SD_SCDS_RELEASE\",            \"status\": \"EXECUTED 2026-08-19 from SE37 with I_OPT_WITH_DIALOG=' ' - RUNS HEADLESS. No screen, no modal, no exception, runtime 263,976 microseconds, normal return. Function group V54R. The dialog default is a default, not a requirement. BUT it ran with ZERO documents in C_SCD_TAB, so completing a REAL settlement headless is still unproven - that needs a freight cost document to exist. German short text is 'Ueberleitung' (transfer), corroborating that release = the settlement step. DO NOT restate this as 'never executed' - that claim was corrected on 2026-08-19 and reintroduced in the 2026-08-21 collection.\" },\n    { \"step\": \"5. save\",                 \"module\": \"SD_SCDS_SAVE\",               \"status\": \"NOT EXECUTED. Mandatory I_T180. I_OPT_RELEASE_WITH_DIALOG defaults to 'X'. Proven to be called internally by LV54CU10.\" },\n    { \"step\": \"6. status write-back\",    \"module\": \"SD_SCDS_SHIPMENT_UPDATE\",    \"status\": \"NOT EXECUTED. Writes VTTK-FBGST / VTTK-ARGST.\" },\n    { \"step\": \"read settlement status\",  \"module\": \"SD_SCD_HISTORY_SETTLEMENT\",   \"status\": \"NOT EXECUTED. Pure read, no commit option - lowest-risk element of the whole surface.\" }\n  ],\n\n  \"_wrapper_scope\": \"VIABLE ACROSS BOTH HALVES on current evidence. SD_SCDS_CREATE and SD_SCDS_RELEASE have each been shown to execute standalone, outside their dialog transactions. What remains unproven is a real settlement: SD_SCDS_RELEASE has never run with actual freight cost documents in C_SCD_TAB. Scope the wrapper for both halves; keep the real-settlement test as the open risk.\",\n\n  \"_commit_trap\": \"BAPI_SHIPMENT_CREATE requires an explicit commit. SD_SCDS_CREATE commits UNLESS TOLD NOT TO. Two adjacent steps with opposite defaults. This is how a half-committed process gets built by accident - decide and document the commit boundary per step.\",\n\n  \"_not_atomic\": \"Once the shipment commits it is committed. Once PGI commits it is committed. Recovery is REVERSAL, not rollback. True whether this is exposed as one API or three - so it is not an argument between them, but it must be written down.\"\n}"
+      },
+      "url": {
+       "raw": "rfc://SD_SCDS_CREATE",
+       "protocol": "rfc",
+       "host": [
+        "SD_SCDS_CREATE"
+       ]
+      }
+     }
+    },
+    {
+     "name": "SPEC — BAPI_TRANSACTION_COMMIT  [PROVEN ×1]",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "X-Not-Callable",
+        "value": "RFC function module — no HTTP endpoint exists"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n  \"_comment\": \"RFC module. Not callable from Postman.\",\n  \"WAIT\": \"X\",\n  \"_evidence\": \"Executed once on DS4 in the same SE37 test sequence as BAPI_SHIPMENT_CREATE. Persisted shipment 1001 to VTTK.\",\n  \"_scope\": \"Commit ownership is proven FOR BAPI_SHIPMENT_CREATE ONLY. Every other module must be tested individually - commit behaviour is per-module and empirical, and the defaults are not consistent.\"\n}"
+      },
+      "url": {
+       "raw": "rfc://BAPI_TRANSACTION_COMMIT",
+       "protocol": "rfc",
+       "host": [
+        "BAPI_TRANSACTION_COMMIT"
+       ]
+      }
+     }
+    }
+   ]
+  }
+ ]
+}

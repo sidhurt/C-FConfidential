@@ -1,0 +1,812 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_SHIPMENT_COST_ESTIMATE",
+    "functionGroup": "V56I_BAPI",
+    "remoteEnabled": true,
+    "releaseStatus": "Not released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "HEADERDATA",
+        "associatedType": "BAPISHIPMENTHEADER",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Header Data",
+        "structureFields": [
+          {
+            "field": "SHIPMENT_NUM",
+            "position": "0001",
+            "dataElement": "TKNUM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GUID",
+            "position": "0002",
+            "dataElement": "TSEGGUID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPMENT_TYPE",
+            "position": "0003",
+            "dataElement": "SHTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TRANS_PLAN_PT",
+            "position": "0004",
+            "dataElement": "TPLST",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SERVICE_LEVEL",
+            "position": "0005",
+            "dataElement": "BFART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPPING_TYPE",
+            "position": "0006",
+            "dataElement": "VSARTTR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPPING_TYPE_PRE_LEG",
+            "position": "0007",
+            "dataElement": "VSAVL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPPING_TYPE_SUB_LEG",
+            "position": "0008",
+            "dataElement": "VSANL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPPING_COND",
+            "position": "0009",
+            "dataElement": "VSBED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPMENT_ROUTE",
+            "position": "0010",
+            "dataElement": "ROUTR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONTAINER_ID",
+            "position": "0011",
+            "dataElement": "SIGNI",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXTERNAL_ID_1",
+            "position": "0012",
+            "dataElement": "EXTI1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXTERNAL_ID_2",
+            "position": "0013",
+            "dataElement": "EXTI2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DESCRIPTION",
+            "position": "0014",
+            "dataElement": "TPBEZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_PLAN",
+            "position": "0015",
+            "dataElement": "STDIS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_CHECKIN",
+            "position": "0016",
+            "dataElement": "STREG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_LOAD_START",
+            "position": "0017",
+            "dataElement": "STLBG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_LOAD_END",
+            "position": "0018",
+            "dataElement": "STLAD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_COMPL",
+            "position": "0019",
+            "dataElement": "STABF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_SHPMNT_START",
+            "position": "0020",
+            "dataElement": "STTBG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_SHPMNT_END",
+            "position": "0021",
+            "dataElement": "STTEN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SERVICE_AGENT_ID",
+            "position": "0022",
+            "dataElement": "TDLNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DISTANCE",
+            "position": "0023",
+            "dataElement": "DISTZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DISTANCE_UNIT",
+            "position": "0024",
+            "dataElement": "MEDST",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DISTANCE_UNIT_ISO",
+            "position": "0025",
+            "dataElement": "MEDSTISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_TRAVEL",
+            "position": "0026",
+            "dataElement": "FAHZTD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_TOTAL",
+            "position": "0027",
+            "dataElement": "GESZTD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_UNIT",
+            "position": "0028",
+            "dataElement": "MEIZT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_UNIT_ISO",
+            "position": "0029",
+            "dataElement": "MEIZTISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICING_PROCEDURE",
+            "position": "0030",
+            "dataElement": "KALSM_KOPF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SPECIAL_PROCEDURE_ID",
+            "position": "0031",
+            "dataElement": "SDABW",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHPMNT_COST_REL",
+            "position": "0032",
+            "dataElement": "FRKRL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_TOTAL_PLAN",
+            "position": "0033",
+            "dataElement": "KP_GESZTDP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_DURATION_PLAN",
+            "position": "0034",
+            "dataElement": "KP_EFFZTDP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_TOTAL_ACT",
+            "position": "0035",
+            "dataElement": "KP_GESZTDA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_DURATION_ACT",
+            "position": "0036",
+            "dataElement": "KP_EFFZTDA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_1",
+            "position": "0037",
+            "dataElement": "VTTK_ADD01",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_2",
+            "position": "0038",
+            "dataElement": "VTTK_ADD02",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_3",
+            "position": "0039",
+            "dataElement": "VTTK_ADD03",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_4",
+            "position": "0040",
+            "dataElement": "VTTK_ADD04",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TEXT_1",
+            "position": "0041",
+            "dataElement": "VTTK_TEXT1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TEXT_2",
+            "position": "0042",
+            "dataElement": "VTTK_TEXT2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TEXT_3",
+            "position": "0043",
+            "dataElement": "VTTK_TEXT3",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TEXT_4",
+            "position": "0044",
+            "dataElement": "VTTK_TEXT4",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DG_GOOD_PROFILE",
+            "position": "0045",
+            "dataElement": "ADGE_PROLI",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_WAIT_PLAN",
+            "position": "0046",
+            "dataElement": "KP_WARZTDP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TIME_WAIT_ACT",
+            "position": "0047",
+            "dataElement": "KP_WARZTDA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROUTE_SCHEDULE",
+            "position": "0048",
+            "dataElement": "AULWE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_TENDERING",
+            "position": "0049",
+            "dataElement": "TNDRST",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_ACCREJ_REASON",
+            "position": "0050",
+            "dataElement": "TNDRRC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_TEXT",
+            "position": "0051",
+            "dataElement": "TNDR_TEXT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_MAX_PRICE",
+            "position": "0052",
+            "dataElement": "TNDR_MAXP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_MP_CURR_UNIT",
+            "position": "0053",
+            "dataElement": "TNDR_MAXC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_MP_CURR_UNIT_ISO",
+            "position": "0054",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_ACT_PRICE",
+            "position": "0055",
+            "dataElement": "TNDR_ACTP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_AP_CURR_UNIT",
+            "position": "0056",
+            "dataElement": "TNDR_ACTC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_AP_CURR_UNIT_ISO",
+            "position": "0057",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_CARRIER_ID",
+            "position": "0058",
+            "dataElement": "TNDR_CARR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_CARRIER_NAME",
+            "position": "0059",
+            "dataElement": "TNDR_CRNM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_CARRIER_TRACK_ID",
+            "position": "0060",
+            "dataElement": "TNDR_TRKID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_OFFER_DATE",
+            "position": "0061",
+            "dataElement": "TNDR_EXPD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_OFFER_TIME",
+            "position": "0062",
+            "dataElement": "TNDR_EXPT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_LOAD_LENGTH",
+            "position": "0063",
+            "dataElement": "TNDR_LDLG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_LL_UNIT",
+            "position": "0064",
+            "dataElement": "TNDR_LDLU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TENDERING_LL_UNIT_ISO",
+            "position": "0065",
+            "dataElement": "TNDR_LDLU_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZVEHICLE_NO",
+            "position": "0067",
+            "dataElement": "ZVEHICAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZDRIVER_NO",
+            "position": "0068",
+            "dataElement": "BU_PARTNER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZDRIVER_NAME",
+            "position": "0069",
+            "dataElement": "BU_NAMEOR1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZGROSS_WT",
+            "position": "0070",
+            "dataElement": "BRGEW",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZNET_WT",
+            "position": "0071",
+            "dataElement": "NTGEW",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZTARE_WT",
+            "position": "0072",
+            "dataElement": "ZTAREWT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZLR_GR_NO",
+            "position": "0073",
+            "dataElement": "ZLRGRNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZDRIVERMOB",
+            "position": "0074",
+            "dataElement": "TELEF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ZZLR_GR_DATE",
+            "position": "0075",
+            "dataElement": "ZLRDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "EXPORT": [],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "ADDRESS",
+        "associatedType": "BAPISHIPMENTADDRESS",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Addresses",
+        "structureFields": []
+      },
+      {
+        "parameter": "DLVHEADER",
+        "associatedType": "BAPISHIPMENTDLVHEADER",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Delivery Header Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "DLVITEMS",
+        "associatedType": "BAPISHIPMENTDLVITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Delivery Item Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "HDUNHEADER",
+        "associatedType": "BAPISHIPMENTHDUNHEADER",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Handling Unit Header Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "HDUNITEM",
+        "associatedType": "BAPISHIPMENTHDUNITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Handling Unit Items",
+        "structureFields": []
+      },
+      {
+        "parameter": "HEADERDEADLINE",
+        "associatedType": "BAPISHIPMENTHEADERDEADLINE",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Deadlines",
+        "structureFields": []
+      },
+      {
+        "parameter": "ITEMDATA",
+        "associatedType": "BAPISHIPMENTITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Items",
+        "structureFields": [
+          {
+            "field": "DELIVERY",
+            "position": "0001",
+            "dataElement": "VBELN_VL",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITENERARY",
+            "position": "0002",
+            "dataElement": "TPRFO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "ITEMONSTAGE",
+        "associatedType": "BAPISHIPMENTITEMONSTAGE",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Items on Stages",
+        "structureFields": []
+      },
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRET2",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Return Parameter",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARAMETER",
+            "position": "0011",
+            "dataElement": "BAPI_PARAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROW",
+            "position": "0012",
+            "dataElement": "BAPI_LINE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FIELD",
+            "position": "0013",
+            "dataElement": "BAPI_FLD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SYSTEM",
+            "position": "0014",
+            "dataElement": "BAPILOGSYS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "RETURNCOSTS",
+        "associatedType": "BAPISHIPMENTCARRIERCOSTS",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Estimated Costs of Forwarding Agents",
+        "structureFields": [
+          {
+            "field": "CARRIERID",
+            "position": "0001",
+            "dataElement": "TDLNR",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CARRIERCOST",
+            "position": "0002",
+            "dataElement": "VS_COST",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_RATES_IND",
+            "position": "0003",
+            "dataElement": "SELKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "STAGEDATA",
+        "associatedType": "BAPISHIPMENTSTAGE",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Stages",
+        "structureFields": []
+      },
+      {
+        "parameter": "STAGEDEADLINE",
+        "associatedType": "BAPISHIPMENTSTAGEDEADLINE",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Shipment BAPI, Deadlines",
+        "structureFields": []
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "NOT_EXECUTED_NOT_RELEASED",
+    "request": {
+      "HEADERDATA": {
+        "SHIPMENT_TYPE": "<configured DEV type>",
+        "TRANS_PLAN_PT": "<transportation planning point>",
+        "SERVICE_AGENT_ID": "<DEV transporter>",
+        "SHPMNT_COST_REL": "X"
+      },
+      "ITEMDATA": [
+        {
+          "DELIVERY": "<approved DEV delivery>",
+          "ITENERARY": "<if required>"
+        }
+      ]
+    },
+    "successEvidence": "RETURNCOSTS returns carrier/cost candidates and RETURN contains no E/A messages. Do not treat remote-enabled as released."
+  }
+}

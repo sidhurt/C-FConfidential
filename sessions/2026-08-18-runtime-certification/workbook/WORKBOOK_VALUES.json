@@ -1,0 +1,8110 @@
+{
+  "Overview": [
+    [
+      "Shree Cement — C&F Agent Interface · SAP API Request/Response Specification",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "One sheet per API. Columns C/D/E/G are RE-DERIVED FROM THE TWELVE SHEETS - the v1.7 S/C/X class taxonomy and its POST-for-reads convention are superseded. Every API is RUNTIME-UNPROVEN: no service is activated and no OData call has been made.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Version 1.8 - 2026-08-16 - standard-first specification. All twelve APIs are specified against released SAP services or identified existing client routes. v1.7 (2026-08-12) is retained only as the comparison baseline; its ZCNF_* custom-service drafts are superseded.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API ID",
+      "API Name",
+      "Operation",
+      "Method",
+      "Class",
+      "SAP standard service (v1.8)",
+      "Contract status"
+    ],
+    [
+      "API-01",
+      "Submit MIGO",
+      "Command",
+      "POST",
+      "STD-DIRECT + ADAPTER",
+      "API_MATERIAL_DOCUMENT_SRV",
+      "INBOUND SIDE - a goods receipt into a depot. Whether any pillar triggers its own receipt, and whether non-transfer receipts exist, is OPEN. Persisted reference model RESOLVED - the posted GR carries both the STO PO (MSEG-EBELN) and the outbound delivery (MSEG-VBELN_IM); inbound-delivery route rejected. Required CREATE-REQUEST fields runtime-unproven. BLOCKER: GoodsMovementCode unconfirmed."
+    ],
+    [
+      "API-02",
+      "Create DI",
+      "Command",
+      "POST",
+      "STD-DIRECT + ADAPTER",
+      "API_OUTBOUND_DELIVERY_SRV;v=2",
+      "TRADE / NON-TRADE / STO. One service for all three; only the predecessor differs - sales order for Trade and Non-trade, stock transport order for STO. Field evidence exists for the STO route only; the sales-order variant has not been traced. That is an evidence gap, not a scope reduction. BLOCKER: creation path VL10X vs custom ZLE020 undefined."
+    ],
+    [
+      "API-03",
+      "Create Invoice / Billing Documents",
+      "Orchestration",
+      "multi-stage",
+      "COMPOSITION",
+      "API_OUTBOUND_DELIVERY_SRV;v=2 + billing route",
+      "TRADE / NON-TRADE / STO. CONDITIONAL COMPOSITION - SIX stages A-F across five services/routes, NOT one SAP API and no atomic rollback. Stage B (shipment/cost/cost release) route unidentified; stage D billing-create service is application-internal."
+    ],
+    [
+      "API-04",
+      "Shipment Calculation",
+      "Read",
+      "n/a - no service",
+      "DISCOVERY GAP",
+      "no standard OData service found - discovery gap",
+      "TRADE / NON-TRADE / STO. PROVEN STANDARD-ODATA DISCOVERY GAP - zero candidates across the full catalogue screen. Existing freight route still to IDENTIFY; BAPI_SHIPMENT_COST_ESTIMATE existence and suitability UNVERIFIED; narrow custom endpoint justified only if neither proves callable."
+    ],
+    [
+      "API-05",
+      "Stock Availability",
+      "Read",
+      "GET",
+      "STD-DIRECT",
+      "API_MATERIAL_STOCK_SRV",
+      "TRADE / NON-TRADE / STO. PRIMARY - GET A_MatlStkInAcctMod at material x plant x storage location. BOOK STOCK ONLY: not ATP, not stock ageing, not DI-context batch determination. Pending activation and the MM stock-category decision."
+    ],
+    [
+      "API-06",
+      "E-Way Bill Extension",
+      "Command",
+      "provider HTTP",
+      "EXISTING ROUTE",
+      "existing DigiGST/EY eDocument route",
+      "TRADE / NON-TRADE / STO. EXISTING CLIENT ROUTE TO PROVE. Installed/configured DigiGST/EY footprint observed; operational use NOT evidenced and the callable boundary is untraced. Policy confirmed: 8-hour pre-expiry window, fixed 24-hour extension."
+    ],
+    [
+      "API-07",
+      "Invoice Correction",
+      "Command",
+      "provider HTTP",
+      "EXISTING ROUTE",
+      "existing DigiGST/EY eDocument route",
+      "TRADE / NON-TRADE / STO. EXISTING CLIENT ROUTE TO PROVE. Validated Part A/Part B transport delta only - not a billing cancellation. Cancel/regenerate semantics and the callable implementation remain unproven."
+    ],
+    [
+      "API-08",
+      "STO Orders",
+      "Read",
+      "GET",
+      "STD-DIRECT",
+      "API_PURCHASEORDER_PROCESS_SRV",
+      "STO ONLY - CONFIRMED. How Trade/Non-trade equivalents reach the portal is OPEN. PRIMARY - ZP06 SYSTEM-VALIDATED against 22,378 STO item rows for supplying plant 1002. True delta timestamp available. Pending activation and an approved status-normalization rule."
+    ],
+    [
+      "API-09",
+      "STO Deliveries",
+      "Read",
+      "GET",
+      "STD + ADAPTER",
+      "API_OUTBOUND_DELIVERY_SRV;v=2",
+      "STO ONLY - CONFIRMED. How Trade/Non-trade equivalents reach the portal is OPEN. PRIMARY CANDIDATE. Leading discriminator is DeliveryDocumentType = ZNL, with ReferenceSDDocumentCategory = V as supporting evidence. OPEN: ZNL population validation, and delta is exposed at DATE grain only."
+    ],
+    [
+      "API-10",
+      "STO Invoice",
+      "Read",
+      "GET",
+      "STD-DIRECT (COND)",
+      "API_BILLING_DOCUMENT_SRV",
+      "STO ONLY - CONFIRMED. How Trade/Non-trade equivalents reach the portal is OPEN. OBSERVED POPULATION IS SD BILLING, TYPE ZSTO (VBRK 1100012896, FKTYP=L, accounting posted); intercompany and MM-invoice both ruled out. The remaining uncertainty is metadata and India GST semantics, NOT object classification. BLOCKER: AUBEL -> SalesDocument mapping unverified."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Candidate interfaces — outside the manager-shared API-01…API-10 baseline",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-11",
+      "Create STO Purchase Order",
+      "Command",
+      "POST",
+      "STD-DIRECT",
+      "API_PURCHASEORDER_PROCESS_SRV",
+      "STO ONLY. PRIMARY - pending activation. ShippingType has NO home on the purchase order and must move, derive or be removed. RequisitionNumber mapping remains functionally OPEN - neither EKPO-BEDNR nor PurchaseRequisition is settled from one sample."
+    ],
+    [
+      "API-12",
+      "Update DI Quantity",
+      "Command",
+      "PATCH",
+      "STD + ADAPTER",
+      "API_OUTBOUND_DELIVERY_SRV;v=2",
+      "TRADE / NON-TRADE / STO - PROVISIONAL, nothing restricts it and nothing confirms it. LEADING CANDIDATE - PATCH A_OutbDeliveryItem with If-Match. OPEN: main-item versus batch-split-sub-item targeting, and the positive test must run BEFORE batch determination, not merely before PGI."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Reading this workbook",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "• API-01 retains all authoritative live checks inside Submit MIGO. Removing Check MIGO removes only the standalone read contract, not posting validation.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "• API-02 creates the SAP outbound delivery. API-12 is deliberately separate because it changes an already-created DI and has different preconditions and idempotency semantics.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "• API-03 remains a provisional orchestration contract. The portal's one Generate Billing Documents journey does not prove one SAP LUW or one internal operation.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "• API-05 is the sole stock-availability / physical-inventory read. It does not post adjustments; SAP revalidates live stock and batch eligibility before PGI.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "- API-08, API-09 and API-10 remain independent STO read contracts. The v1.7 ZCNF_STO_SRV grouping is superseded: API-08 -> API_PURCHASEORDER_PROCESS_SRV, API-09 -> API_OUTBOUND_DELIVERY_SRV;v=2, API-10 -> API_BILLING_DOCUMENT_SRV. Confirm CPI pull versus S/4 push and reconcile the real-time row with Option C's Datasphere feed.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "• Candidate APIs retain their own numbers so the manager-shared API-01…API-10 sequence stays stable and traceable to the functional interface screenshot.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.8 - 2026-08-16 - THIS IS A NEW SPECIFICATION, NOT AN ANNOTATED v1.7",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "ALL TWELVE sheets have been REWRITTEN as standard-first contracts. Each specifies the actual service or route, the operation/entity/action, request and response properties, the SAP field mapping, standard coverage, the v1.7 fields that do NOT exist in the standard contract, derivations, genuine gaps with named owners, activation status, required positive and negative tests, and a final disposition.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "The speculative ZCNF_* custom services are gone. v1.7's envelope fields (RequestId, IsReplay, SourceSystem, MessageCode, TotalCount, HasMore) are no longer specified as SAP fields; each is listed on its sheet as a named gap with an owner - almost always CPI/T2.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API identifiers are unchanged from v1.7. Nothing has been renumbered. v1.7 remains the comparison baseline.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classifications used: STANDARD-DIRECT / STANDARD + CPI-T2 ADAPTER / EXISTING CLIENT ROUTE / PROVEN CUSTOM GAP / RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Honest headline: API-05 and API-08 are the cleanest standard reads. API-01, API-02, API-09, API-11 and API-12 are standard with real adapter gaps. API-10 is conditional on $metadata. API-03 is a SIX-STAGE composition (stages A-F), NOT one SAP API. API-04 is a proven standard-OData DISCOVERY gap. API-06 and API-07 are existing DigiGST/EY routes that must be traced, not reinvented.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-04, API-06 and API-07 returned ZERO candidate rows across the full 2,626-project SEGW catalogue screen. That absence is the evidence for their disposition, not a gap in the analysis.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence: read-only SAP GUI trace of QS4 client 700, 2026-08-16, plus the SEGW design-time extracts of 14-15 Aug (SRC-SYS-20260814-01, SRC-SYS-20260815-01..16). OData entity types, properties and function-import signatures for the screened projects are LOCALLY EXTRACTED design-time evidence, not documentation. What remains unproven is RUNTIME: Gateway registration, activation, ICF, authorization and actual call behaviour. No OData call has been made and no service is activated.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "System-validated: STO type ZP06; item category PSTYP=7; delivery type ZNL; plants 1002 -> 5412 and 1002 -> 1010, all in company code 1000 (intra-company).",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Complete observed chain: STO PO 5600000339 -> delivery 0080019087 -> shipment 2100005093 -> goods movements 4900180168 / 5000014663 -> billing 1100012896 (ZSTO). GR proof: material document 5000018851/2024, movement 101.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAMPLE SIZE - read every 'observed' claim with this caveat",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Only ONE finding is population-scale: 22,378 ZP06 STO item rows for supplying plant 1002 (ME2W). Everything else rests on ONE OR TWO documents - EKPO-BANFN empty, LIKP-LFART=ZNL, LIKP-VSART on the delivery, the P+plant ship-to convention, the ZSTO billing type, the 101 goods-receipt reference model. Each is a real system observation and none is a population proof. Where a single-document finding is load-bearing, the sheet says so and the item is left OPEN rather than settled.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "EXPLICIT BLOCKERS - these prevent implementation, not just certification",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-01 GoodsMovementCode is UNCONFIRMED and mandatory. The goods-receipt posting cannot be built without it. Owner: Functional/business (MM).",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-02 creation path is UNDEFINED - VL10X (2026 documents) versus custom ZLE020 (2024); neither is VL01N. Owner: Functional/business + ABAP/SAP.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-02 Trade/Non-trade is CONFIRMED business scope but NOT yet field-mapped - the sales-order predecessor variant has not been traced in QS4. This is an evidence gap in this pass, not a descope. Owner: ABAP/SAP to trace and map.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-10 AUBEL -> SalesDocument is UNVERIFIED. VBRP-AUBEL holds a PURCHASE order, but the released model names that property SalesDocument. Load-bearing for the STO-invoice join and must be proven against local $metadata before use. Owner: ABAP/SAP.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-11 RequisitionNumber is FUNCTIONALLY OPEN - neither EKPO-BEDNR nor PurchaseRequisition is settled from one sample. Owner: Functional/business.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-09 STO discriminator: DeliveryDocumentType = ZNL leads, category V supports. ZNL population validation remains OPEN, and delta is exposed at DATE grain only against a feed described as real-time. Owner: Functional/business + CPI/T2.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "THE SHARED OUTBOUND SPINE - read this first",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade, Non-trade and STO are three equally important business pillars. They share one outbound spine: a sales order (Trade, Non-trade) or a stock transport order (STO) leads to Create DI, then stock and batch selection, then shipment and freight, then goods issue, then billing, then the statutory documents.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API-02, API-03, API-04, API-05, API-06, API-07 and API-12 sit on that shared spine and serve all three pillars. API-08, API-09, API-10 and API-11 are STO-specific. API-01 is the inbound side - receiving stock into a depot - and is not one of the three outbound pillars.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SCOPE CORRECTION: earlier drafts of v1.8 read as though STO were the default architecture. It is not. STO is simply the first pillar traced end to end in QS4, because it was the flow available there. Every ZP06, ZNL, ZSTO and individual document number in this workbook is stock transfer evidence and must never be copied onto Trade or Non-trade.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Three words are used throughout for pillar behaviour. CONFIRMED means we know it. STO-OBSERVED means we saw it on a stock transfer document and it may not hold for Trade or Non-trade. OPEN means nobody has checked. An OPEN cell is not a small cell - it means unknown, not simple.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Never copy an STO-OBSERVED value into an OPEN cell. ZP06, ZNL, ZSTO, ZSTON, 641 and every document number in this workbook are stock transfer values.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "COLUMN CONVENTION - read this before reading any request or response table",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "The Mandatory column answers ONE question: is this field required on the call? Permitted values are Yes / No / Conditional / Derived / Defaulted / Assertion only / OPEN. It NEVER carries an evidence status.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Runtime status is UNIFORM across all twelve APIs - nothing is runtime-proven anywhere - and is stated once per sheet in section 11. It is deliberately NOT repeated per row, because putting it on some rows and not others would falsely imply the other rows had been proven live.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "HOW TO DEFEND A SINGLE FIELD - the five evidence levels",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Every request or response property in this workbook carries FIVE separable claims. They have different evidence and must not be collapsed into one word.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "LEVEL 1 - the property EXISTS: name, EDM type, precision, scale, max length. PROVEN from the local SEGW design-time extracts.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "LEVEL 2 - the DDIC FIELD behind it. PROVEN - the extracts carry an ABAP_FIELD column per property.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "LEVEL 3 - its ROLE: IS_KEY, CREATABLE, UPDATABLE, NULLABLE, FILTERABLE, SORTABLE, UNIT_PROPERTY. PARTIAL - see the mining-pass result below. IS_KEY is captured everywhere; the creatable/updatable/filterable/sortable flags are captured ONLY for the delivery family. A BLANK flag means NOT CAPTURED, never false.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "LEVEL 4 - the BUSINESS VALUE is correct (ZP06, ZNL, movement 101, ZSTO). PROVEN by read-only QS4 table observation, subject to the sample-size caveat above.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "LEVEL 5 - SAP ACCEPTS IT IN A LIVE CALL. NOT PROVEN for any API. This requires Gateway activation.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Wherever this workbook says RUNTIME-UNPROVEN it means LEVEL 5 ONLY. Levels 1 to 4 are evidenced. Earlier drafts of this workbook wrongly implied that property names were vendor documentation - they are local extracts from QS4 client 700.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Extract sources: SRC-SYS-20260814-01 (API_OUTBOUND_DELIVERY_0002) and SRC-SYS-20260815-01 through -16, covering outbound and inbound delivery, material document, billing document, purchase order process, material stock, and the rejected alternatives.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "MINING PASS RESULT - 2026-08-17 - evidence/21_SEGW_PROPERTY_INDEX.tsv, 4,557 properties across all 16 extracted projects",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "CLOSED - API-12 writable property: A_OutbDeliveryItemType.ActualDeliveryQuantity, Edm.Decimal(13,3), CREATABLE=X and UPDATABLE=X, ABAP field ACTUALDELIVERYQUANTITY. Also found: Batch is UPDATABLE but NOT CREATABLE, so batch cannot be set on the create call.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "CLOSED - API-09 discriminator: A_OutbDeliveryHeaderType.DeliveryDocumentType, Edm.String(4), FILTERABLE=X, ABAP field DELIVERYDOCUMENTTYPE. The ZNL filter is valid. ReceivingPlant is also on the header and filterable.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "STILL OPEN - API-10 AUBEL: A_BillingDocumentItemType.SalesDocument exists, Edm.String(10), ABAP field SALESDOCUMENT. That is the CDS VIEW field name, NOT the source table field, so it does NOT prove the property carries VBRP-AUBEL. This was predicted to close from the extract and did not. It needs the CDS view definition (read-only SE11/DDLS) or a runtime read.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Reliability boundary of the index: property name, EDM type, precision, scale, max length and ABAP field are captured for ALL 4,557 rows. IS_KEY is captured throughout. The creatable/updatable/filterable/sortable annotations are captured ONLY for API_OUTBOUND_DELIVERY(_0002) and API_INBOUND_DELIVERY(_0002) - they are absent for billing, material document, purchase order, material stock and the rejected alternatives, which are SADL/CDS-exposed services whose annotations live in the CDS layer. Treat a blank flag on those services as UNKNOWN.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Correct label for this workbook: requirements discovery and standard-API solution mapping COMPLETE; local runtime certification and several contract details REMAIN OPEN. Do not describe any API as activated, callable or implementation-ready.",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ],
+  "API-01 Submit MIGO": [
+    [
+      "API-01 - Submit MIGO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Command - POST - API_MATERIAL_DOCUMENT_SRV - posts a goods receipt (MKPF/MSEG)",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Goods receipt at a depot or plant.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What this is",
+      "CONFIRMED - a goods receipt into a depot or plant. It sits on the inbound side, before anything is sold.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Receiving a stock transfer",
+      "STO-OBSERVED - we traced this route end to end.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Any other way goods arrive",
+      "OPEN - customer returns, direct receipts from production, anything else. Nobody has checked whether CNF has to handle those. The stock transfer trace cannot answer it.",
+      null,
+      null,
+      null
+    ],
+    [
+      "How this relates to the three pillars",
+      "OPEN - this API brings stock in; Trade, Non-trade and STO all consume that stock going out. Whether any of them triggers its own goods receipt is a business question, not something the trace settled.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Post a full or partial goods receipt, splitting the quantity across storage locations, and return the material document and year, what was posted, the receipt status and what is still outstanding.",
+      null,
+      null,
+      null
+    ],
+    [
+      "The question v1.7 could not answer",
+      "What does the goods receipt point at - the purchase order, the delivery, or an inbound delivery?",
+      null,
+      null,
+      null
+    ],
+    [
+      "What we found",
+      "Both. Material document 5000018851 from 2024 kept the purchase order (5600000339, line 00010) and the delivery (0080024605, line 000010). It was movement type 101 into plant 1010, storage location RMYD.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What that rules out",
+      "The inbound delivery fields on the document were empty, so no inbound delivery was involved. That rules out API_INBOUND_DELIVERY_SRV for this, and we can say so from evidence rather than guesswork.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not tell us",
+      "SAP keeping both references does not tell us which ones the call has to send. SAP may work one out from the other. Only an actual test posting settles that.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Two-step transfer confirmed",
+      "That order has 61 goods issues and 203 goods receipts against it, which is what a two-step transfer looks like.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_MATERIAL_DOCUMENT_SRV",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2",
+      null,
+      null,
+      null
+    ],
+    [
+      "Companion for reading back",
+      "MMIM_MATDOC_SRV, already registered and read-only, if the create response does not return line numbers.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "POST A_MaterialDocumentHeader with the lines sent in the same call",
+      null,
+      null,
+      null
+    ],
+    [
+      "Entity sets",
+      "A_MaterialDocumentHeader, A_MaterialDocumentItem",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "What it is"
+    ],
+    [
+      "GoodsMovementCode",
+      "-",
+      "CHAR(2)",
+      "Yes",
+      "Always required. We do not yet know which code value means goods receipt here - MM has to tell us. Nothing can be posted until they do."
+    ],
+    [
+      "PostingDate / DocumentDate",
+      "MKPF-BUDAT / BLDAT",
+      "DATS(8)",
+      "Defaults to today",
+      "Only send these if the business needs a different date."
+    ],
+    [
+      "to_MaterialDocumentItem/GoodsMovementType",
+      "MSEG-BWART",
+      "CHAR(3)",
+      "Yes",
+      "101, confirmed on the receipt we looked at."
+    ],
+    [
+      "to_MaterialDocumentItem/PurchaseOrder",
+      "MSEG-EBELN",
+      "CHAR(10)",
+      "Yes, or send Delivery instead",
+      "The receipt has to point at something. SAP kept both the purchase order and the delivery on the posted document, so we know it accepts them - we do not yet know if the call needs one, the other, or both. We saw 5600000339."
+    ],
+    [
+      "to_MaterialDocumentItem/PurchaseOrderItem",
+      "MSEG-EBELP",
+      "NUMC(5)",
+      "Yes, if you send PurchaseOrder",
+      "The line on that order. We saw 00010."
+    ],
+    [
+      "to_MaterialDocumentItem/Delivery",
+      "MSEG-VBELN_IM",
+      "CHAR(10)",
+      "Yes, or send PurchaseOrder instead",
+      "The other way to point at the receipt. We saw 0080024605."
+    ],
+    [
+      "to_MaterialDocumentItem/DeliveryItem",
+      "MSEG-VBELP_IM",
+      "NUMC(6)",
+      "Yes, if you send Delivery",
+      "The line on that delivery. We saw 000010."
+    ],
+    [
+      "to_MaterialDocumentItem/Plant",
+      "MSEG-WERKS",
+      "CHAR(4)",
+      "Yes",
+      "1010, the plant receiving the goods."
+    ],
+    [
+      "to_MaterialDocumentItem/StorageLocation",
+      "MSEG-LGORT",
+      "CHAR(4)",
+      "Yes",
+      "Where the goods are put, e.g. RMYD. Send one line per storage location the quantity is split across."
+    ],
+    [
+      "to_MaterialDocumentItem/Material",
+      "MSEG-MATNR",
+      "CHAR(40)",
+      "Yes",
+      "Taken from whatever the receipt refers to."
+    ],
+    [
+      "to_MaterialDocumentItem/QuantityInEntryUnit + EntryUnit",
+      "MSEG-ERFMG / ERFME",
+      "QUAN / UNIT",
+      "Yes",
+      "How much, and in what unit. We saw 41.710 TO."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "What comes back",
+      null
+    ],
+    [
+      "MaterialDocument",
+      "MKPF-MBLNR",
+      "CHAR(10)",
+      "5000018851. The portal calls this an MRN number - that is fine as a label, but the number itself is the SAP material document.",
+      null
+    ],
+    [
+      "MaterialDocumentYear",
+      "MKPF-MJAHR",
+      "NUMC(4)",
+      "2024. You need both this and the number to identify the document.",
+      null
+    ],
+    [
+      "to_MaterialDocumentItem/MaterialDocumentItem",
+      "MSEG-ZEILE",
+      "NUMC(4)",
+      "One line per storage location. Document 5000018851 had two: 41.710 TO and 0.140 TO.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Header",
+      "MKPF - MBLNR, MJAHR, BUDAT, BLDAT, VGART",
+      null,
+      null,
+      null
+    ],
+    [
+      "Item",
+      "MSEG - ZEILE, BWART, WERKS, LGORT, MATNR, ERFMG, ERFME, EBELN, EBELP, VBELN_IM, VBELP_IM, SHKZG",
+      null,
+      null,
+      null
+    ],
+    [
+      "Empty on the document we checked",
+      "MSEG-LFBNR, LFBJA and LFPOS - the inbound delivery fields. This is the evidence that no inbound delivery is involved.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What SAP covers",
+      "Posting a receipt across several storage locations in one call, the dates, material, plant, unit, and returning the document number and year.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not",
+      "Telling you how much is still outstanding, protecting against duplicates, or reporting errors line by line.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "What is actually true",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "RequestId / IsReplay",
+      "Post the same thing twice and you get two material documents. SAP will not notice.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "SourceSystem / RequestedBy",
+      "Tracing information, not posting fields.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "ReceiptStatus / RemainingQuantity",
+      "Not returned when you post. These have to be read separately from the order or delivery history. Working them out from the posting response would be guessing.",
+      "ABAP/SAP and CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Errors[].AllocationIndex",
+      "If one storage location line fails, SAP does not tell you which one in the way v1.7 wants.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "The DMG and STG rejection record",
+      "There is nowhere standard to record rejected quantities. Either an existing process handles it, or something small has to be built.",
+      "Functional/business, then ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP fills in by itself",
+      "Material, unit and valuation, all from the document being received against.",
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP will reject",
+      "More than is outstanding, a storage location that does not belong to the plant, and a posting period that is closed.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Worth knowing",
+      "203 receipts against a single order line is normal here. Receiving in parts, repeatedly, is how this works - which is exactly the tracing difficulty raised in the August meetings.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "What it means",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Which references the call must send",
+      "Only a test posting in DEV will settle whether it needs the order, the delivery, or both.",
+      "ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "The goods movement code",
+      "Nothing can be posted until MM says which value to use.",
+      "Functional/business (MM)",
+      null,
+      null
+    ],
+    [
+      "Outstanding quantity has to come from somewhere else",
+      "A second read, and somebody has to own it.",
+      "ABAP/SAP and CPI/T2",
+      null,
+      null
+    ],
+    [
+      "No duplicate protection",
+      "Has to be handled before the call reaches SAP.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Recording rejected quantities",
+      "No standard home for DMG and STG.",
+      "Functional/business, then ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Service activation and roles",
+      "Nothing can be called until this is done.",
+      "Basis/security",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "Not activated in QS4 and no ",
+      "$metadata",
+      " has been fetched. Nothing on this sheet has been called.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Post a partial receipt split across two storage locations against a test order, then check the document in MB03 and confirm it shows in the order history.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Try to receive more than is outstanding and confirm SAP refuses. Try an invalid storage location and confirm SAP refuses. Try a closed period and confirm SAP refuses. Post the same request twice and confirm you get two documents.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD-DIRECT for the posting, with a CPI/T2 adapter for status, outstanding quantity and duplicate protection. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "Use this service. We know what the receipt points at and we know the inbound delivery route is wrong. We do not know what the call has to send, and that needs a test posting.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "QS4/700 read-only, 2026-08-16",
+      " - evidence/17_EKBE_5600000339_full, evidence/18_MSEG_5000018851, evidence/11_EKBE_5600000339.",
+      null,
+      null
+    ]
+  ],
+  "API-02 Create DI": [
+    [
+      "API-02 - Create DI",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Command - POST - API_OUTBOUND_DELIVERY_SRV;v=2 - creates an outbound delivery (LIKP/LIPS)",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Used by all three pillars.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade",
+      "CONFIRMED - uses this service, from a sales order.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Non-trade",
+      "CONFIRMED - uses this service, from a sales order.",
+      null,
+      null,
+      null
+    ],
+    [
+      "STO",
+      "CONFIRMED - uses this service, from a stock transport order.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Same service for all three",
+      "CONFIRMED. What differs is what the delivery is created from, and the values SAP then derives - see the pillar differences below.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Create one outbound delivery, with the caller choosing the quantity, and return the delivery number and everything SAP worked out. The predecessor is a sales order for Trade and Non-trade, and a stock transport order for STO.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What we actually traced",
+      "The STO route. Trade and Non-trade use the same service with a sales order as predecessor and their own delivery type, which we have not looked at yet. That is a gap in our evidence, not a change to the scope.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_OUTBOUND_DELIVERY_SRV;v=2, generated by SEGW project API_OUTBOUND_DELIVERY_0002",
+      null,
+      null,
+      null
+    ],
+    [
+      "Runtime path",
+      "/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2",
+      null,
+      null,
+      null
+    ],
+    [
+      "Why version 2 and not the older one",
+      "The client's deliveries are split by batch - one line becomes several. The operations that do batch splitting only exist in version 2. Asking Basis for the base version by mistake would break this.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Why not the two registered alternatives",
+      "LE_SHP_OD_CREATE_SRV works from a worklist and has no quantity and no STO predecessor. LE_SHP_QC_DLVREF_SRV only handles a simple sales order case. Neither can do what is needed.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Roles needed",
+      "S_SERVICE, F_LFA1_BEK, V_LIKP_VST",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "POST A_OutbDeliveryHeader referring to the stock transport order",
+      null,
+      null,
+      null
+    ],
+    [
+      "Entity sets",
+      "A_OutbDeliveryHeader, A_OutbDeliveryItem",
+      null,
+      null,
+      null
+    ],
+    [
+      "Batch splitting",
+      "CreateBatchSplitItem and PickAndBatchSplitOneItem",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "What it is"
+    ],
+    [
+      "ReferenceSDDocument",
+      "LIPS-VGBEL",
+      "CHAR(10)",
+      "Yes",
+      "The stock transport order this delivery is for, e.g. 5600084208."
+    ],
+    [
+      "ReferenceSDDocumentItem",
+      "LIPS-VGPOS",
+      "NUMC(6)",
+      "Yes",
+      "Which line of that order, e.g. 000010."
+    ],
+    [
+      "ReferenceSDDocumentCategory",
+      "LIPS-VGTYP",
+      "CHAR(1)",
+      "Yes",
+      "V, meaning the predecessor is a purchase order. This is how SAP tells an STO delivery from a sales order delivery."
+    ],
+    [
+      "ActualDeliveryQuantity",
+      "LIPS-LFIMG",
+      "QUAN(13,3)",
+      "Yes",
+      "How much to deliver. This is the only business decision the caller makes."
+    ],
+    [
+      "DeliveryQuantityUnit",
+      "LIPS-VRKME",
+      "UNIT(3)",
+      "Only to double-check",
+      "TO. SAP takes this from the order anyway; send it only if you want the call to fail on a mismatch."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Value (all STO-OBSERVED)",
+      "What it is",
+      null
+    ],
+    [
+      "DeliveryDocument",
+      "LIKP-VBELN",
+      "9004953077",
+      "The new delivery number.",
+      null
+    ],
+    [
+      "DeliveryDocumentType",
+      "LIKP-LFART",
+      "ZNL",
+      "The client's own delivery type for stock transfers. The purchase order agrees - EKPO-LFRET also said ZNL.",
+      null
+    ],
+    [
+      "SDDocumentCategory",
+      "LIKP-VBTYP",
+      "J",
+      "Marks it as an outbound delivery.",
+      null
+    ],
+    [
+      "ShippingPoint",
+      "LIKP-VSTEL",
+      "1002",
+      "Same as the supplying plant.",
+      null
+    ],
+    [
+      "SalesOrganization",
+      "LIKP-VKORG",
+      "1000",
+      "Shree Cement Limited.",
+      null
+    ],
+    [
+      "Division",
+      "LIPS-SPART",
+      "10",
+      "Cement.",
+      null
+    ],
+    [
+      "ReceivingPlant",
+      "LIKP-WERKS",
+      "5412",
+      "Sits on the header, not the line.",
+      null
+    ],
+    [
+      "ShipToParty",
+      "LIKP-KUNNR",
+      "P5412",
+      "The receiving plant set up as a customer. The pattern looks like P plus the plant number, but nobody has confirmed that as a rule.",
+      null
+    ],
+    [
+      "IncotermsClassification",
+      "LIKP-INCO1",
+      "FTB",
+      "One of the approved values.",
+      null
+    ],
+    [
+      "ShippingType",
+      "LIKP-VSART",
+      "01",
+      "Shipping type lives here, on the delivery. This is where v1.7 wrongly put it on the purchase order instead.",
+      null
+    ],
+    [
+      "Route",
+      "LIKP-ROUTE",
+      "P27356",
+      "Worked out by SAP.",
+      null
+    ],
+    [
+      "BillingDocumentType",
+      "LIKP-FKARV",
+      "ZSTO",
+      "The delivery already knows what kind of invoice it will produce.",
+      null
+    ],
+    [
+      "GoodsMovementType",
+      "LIPS-BWART",
+      "641",
+      "Goods issue into stock in transit. This is what makes it a two-step transfer: the goods leave now and are received later.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING - HOW BATCH SPLITTING LOOKS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Main line 000010",
+      "10.000 TO, no batch, no storage location",
+      "LIPS",
+      "Holds the total.",
+      null
+    ],
+    [
+      "Split line 900001",
+      "5.000 TO, batch 2623029112, storage location PC88",
+      "LIPS-UECHA points back to 000010",
+      "Part of the total.",
+      null
+    ],
+    [
+      "Split line 900002",
+      "5.000 TO, batch 2630004639, storage location SELF",
+      "LIPS-UECHA points back to 000010",
+      "The rest, from a different place.",
+      null
+    ],
+    [
+      "Warning for whoever reads this data",
+      "Do not add the main line and the split lines together. You will double the quantity.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What SAP covers",
+      "Creating the delivery from a stock transport order, and returning the number, type, both plants, incoterm, division and movement type.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not",
+      "Duplicate protection, portal error codes, and the open question about which transaction the portal should imitate.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "What is actually true",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "RequestId / IsReplay",
+      "SAP will happily create a second delivery from a repeated request.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "SourceSystem / RequestedBy / CrmOrderCode",
+      "Tracing information, not delivery fields.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "PredecessorType / BusinessFlow",
+      "Our own way of describing the flow. SAP says the same thing with ReferenceSDDocumentCategory V.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message",
+      "SAP returns its own error format.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP fills in by itself",
+      "Shipping point, route, ship-to customer, incoterm, division, distribution channel, billing type, movement type and MRP area.",
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP will reject",
+      "A quantity larger than what is still open on the order.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Worth knowing",
+      "Batch eligibility is checked at goods issue, not when the delivery is created. A batch that looks fine now can still fail later.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "What it means",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "No duplicate protection",
+      "Has to be handled before the call reaches SAP.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Two different creation transactions",
+      "STO deliveries were created by VL10X in 2026 and by a custom transaction ZLE020 in 2024. Neither is the standard VL01N. Nobody has said which one the portal should behave like.",
+      "Functional/business + ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "An unexplained field on the delivery",
+      "LIKP-ZZEBELN held purchase order 5600073817, which is not the order the delivery was actually for. Until someone explains it, do not use it to find the predecessor.",
+      "ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Trade and Non-trade not traced",
+      "Same service, different predecessor and probably a different delivery type. Needs the same walkthrough the STO route got.",
+      "ABAP/SAP to trace",
+      null,
+      null
+    ],
+    [
+      "Service activation and roles",
+      "Nothing can be called until this is done.",
+      "Basis/security",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "Not activated in QS4 and no ",
+      "$metadata",
+      " has been fetched. Nothing on this sheet has been called.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Create a delivery from a test stock transport order and check the type is ZNL, the receiving plant and incoterm are right, and the movement type is 641. Then create a batch split and check the 9000xx lines appear under the main line.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Ask for more than the order has left and confirm SAP refuses. Try an order that is already fully delivered and confirm SAP refuses. Confirm a sales order predecessor is not accepted on the STO route.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "PILLAR DIFFERENCES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What differs",
+      "Trade",
+      "Non-trade",
+      "STO",
+      null
+    ],
+    [
+      "Predecessor document",
+      "CONFIRMED - sales order",
+      "CONFIRMED - sales order",
+      "CONFIRMED - stock transport order",
+      null
+    ],
+    [
+      "ReferenceSDDocumentCategory",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - V",
+      null
+    ],
+    [
+      "Delivery type (LIKP-LFART)",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - ZNL",
+      null
+    ],
+    [
+      "Ship-to party",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - the receiving plant as a customer, P5412",
+      null
+    ],
+    [
+      "Creation transaction",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - VL10X and a custom ZLE020 both seen",
+      null
+    ],
+    [
+      "Billing type it will produce",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - ZSTO",
+      null
+    ],
+    [
+      "Goods movement type",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - 641, into stock in transit",
+      null
+    ],
+    [
+      "How to read this table",
+      "CONFIRMED means we know it. STO-OBSERVED means we saw it on a stock transfer document and it may not hold for the other two. OPEN means nobody has checked. Do not copy an STO-OBSERVED value into an OPEN cell.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD-DIRECT for the create, with a CPI/T2 adapter for duplicate protection and error handling. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "Use this service for all three pillars. Before building: activate it, run one create from a sales order and one from a stock transport order, and settle which transaction the portal should imitate.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "QS4/700 read-only, 2026-08-16",
+      " - evidence/06_LIKP_9004953077, evidence/07_LIPS_9004953077, evidence/12_LIKP_0080019087.",
+      null,
+      null
+    ]
+  ],
+  "API-03 Invoice Create": [
+    [
+      "API-03 - Create Invoice / Billing Documents",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Orchestration - SIX-STAGE composition (stages A-F) - NOT one SAP API - SAP documents: delivery, shipment, shipment cost, material document, billing, e-document",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "v1.8 standard-first contract. The portal's single 'Generate Billing Documents' journey is NOT one SAP LUW and must not be specified as one.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade",
+      "CONFIRMED - the dispatch chain runs for Trade.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Non-trade",
+      "CONFIRMED - the dispatch chain runs for Non-trade.",
+      null,
+      null,
+      null
+    ],
+    [
+      "STO",
+      "CONFIRMED - the dispatch chain runs for STO.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What is shared",
+      "CONFIRMED - once a delivery exists, the same stages run. Which billing type, pricing and statutory documents apply is OPEN for Trade and Non-trade.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "After a DI is validated, perform storage-location/SPI selection, FIFO batch allocation, transporter/shipment capture, shipment-cost calculation, PGI, billing and statutory document generation, and report per-stage status.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Why this is not one call",
+      "SIX stages, A to F, commit independently. The approved document flow has independent SAP stages that commit separately. The 14 Aug session states the order as DI -> shipment -> shipment cost -> cost release -> PGI -> invoice (SRC-MTG-20260814-01 @12:28, @15:04). The client's own ZMM_SCRUM_SER_PO proves the multi-document pattern is achievable AND that it has no compensating rollback (D-030).",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICES / ROUTES AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Stage",
+      "Service / route",
+      "Protocol",
+      "Status",
+      null
+    ],
+    [
+      "A - Picking / batch split",
+      "API_OUTBOUND_DELIVERY_SRV;v=2",
+      "OData V2 function imports",
+      "Released, NOT activated",
+      null
+    ],
+    [
+      "B - Shipment, shipment cost AND COST RELEASE",
+      "Client LE-TRA / freight route - NOT YET IDENTIFIED",
+      "unknown",
+      "Three sub-steps per the 14 Aug sequence: create shipment, calculate shipment cost, RELEASE the cost. Release is a distinct step and is a precondition for PGI in that account. See API-04. No SEGW candidate exists.",
+      null
+    ],
+    [
+      "C - PGI",
+      "API_OUTBOUND_DELIVERY_SRV;v=2 PostGoodsIssue",
+      "OData V2 function import",
+      "Released, NOT activated",
+      null
+    ],
+    [
+      "D - Billing create",
+      "SD_CUSTOMER_INVOICES_CREATE",
+      "OData V2 function import",
+      "REGISTERED but application-internal - conditional on architecture approval",
+      null
+    ],
+    [
+      "E - Billing read-back",
+      "API_BILLING_DOCUMENT_SRV",
+      "OData V2 GET",
+      "Released, NOT activated. V2 has NO creatable entity set - read/cancel/PDF only; creation exists only on the OData V4 successor.",
+      null
+    ],
+    [
+      "F - e-Invoice / E-Way Bill",
+      "Existing DigiGST/EY eDocument route",
+      "provider adapter",
+      "EXISTING CLIENT ROUTE - installed/configured footprint observed, operational use NOT evidenced. See API-06/API-07.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION PER STAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Stage",
+      "Operation",
+      "Entity / action",
+      null,
+      null
+    ],
+    [
+      "A",
+      "PickOneItemWithBaseQuantity / PickAndBatchSplitOneItem / CreateBatchSplitItem / ConfirmPickingAllItems",
+      "A_OutbDeliveryHeader, A_OutbDeliveryItem. Batch-split operations exist ONLY in the _0002 generation.",
+      null,
+      null
+    ],
+    [
+      "C",
+      "PostGoodsIssue?DeliveryDocument=",
+      "Function import on the delivery. ReverseGoodsIssue is the documented reversal.",
+      null,
+      null
+    ],
+    [
+      "D",
+      "POST CreateBillingDocuments",
+      "Parameters: ReferenceSDDocument + ReferenceSDDocumentCategory + ReferenceSDDocumentItem; BillingDocumentReleaseRequested.",
+      null,
+      null
+    ],
+    [
+      "E",
+      "GET A_BillingDocument / A_BillingDocumentItem",
+      "Read-back of BillingDocument, AccountingDocument, amounts, cancellation indicators.",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES BY STAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Stage",
+      "Property",
+      "SAP field",
+      "Mandatory",
+      "Meaning"
+    ],
+    [
+      "A",
+      "DeliveryDocument",
+      "LIKP-VBELN",
+      "Yes",
+      "The validated DI."
+    ],
+    [
+      "A",
+      "DeliveryDocumentItem",
+      "LIPS-POSNR",
+      "Yes",
+      "Item to pick. Batch split creates sub-items (900001/900002 pattern observed on the STO flow)."
+    ],
+    [
+      "A",
+      "Batch",
+      "LIPS-CHARG",
+      "Yes",
+      "FIFO-selected batch. SAP revalidates live stock and eligibility."
+    ],
+    [
+      "A",
+      "ActualDeliveredQtyInBaseUnit",
+      "LIPS-LFIMG",
+      "Yes",
+      "Allocated quantity; the sum must equal the DI quantity. VERIFIED against the local QS4 SEGW extract of API_OUTBOUND_DELIVERY_0002 (SRC-SYS-20260814-01). PickOneItemWithBaseQuantity takes exactly four parameters: ActualDeliveredQtyInBaseUnit (Edm.Decimal 13,3, unit reference parameter BaseUnit), BaseUnit (Edm.String 3), DeliveryDocument (Edm.String 10), DeliveryDocumentItem (Edm.String 6). The earlier name QuantityInBaseUnit was wrong - it belongs to A_InbDeliveryDocFlowType, not to any picking operation."
+    ],
+    [
+      "A",
+      "BaseUnit",
+      "LIPS-MEINS",
+      "Yes",
+      "Base unit; it is the declared unit reference parameter for the quantity above. Edm.String(3)."
+    ],
+    [
+      "A - batch split variant",
+      "PickAndBatchSplitOneItem takes a DIFFERENT signature",
+      "LIPS-CHARG / LFIMG",
+      "Yes for batch split",
+      "VERIFIED in the same extract: Batch (Edm.String 10), DeliveryDocument, DeliveryDocumentItem, SplitQuantity (Edm.Decimal 13,3). NOT the base-quantity pair. This is the operation the client batch-split flow actually needs."
+    ],
+    [
+      "A",
+      "StorageLocation",
+      "LIPS-LGORT",
+      "Yes",
+      "Issuing storage location."
+    ],
+    [
+      "C",
+      "DeliveryDocument",
+      "LIKP-VBELN",
+      "Yes",
+      "PGI posts the goods issue and creates the material document."
+    ],
+    [
+      "D",
+      "ReferenceSDDocument",
+      "VBRP-VGBEL",
+      "Yes",
+      "The delivery being billed."
+    ],
+    [
+      "D",
+      "ReferenceSDDocumentCategory",
+      "VBRP-VGTYP",
+      "Yes",
+      "J = delivery."
+    ],
+    [
+      "D",
+      "ReferenceSDDocumentItem",
+      "VBRP-VGPOS",
+      "Yes",
+      "Delivery item."
+    ],
+    [
+      "D",
+      "BillingDocumentReleaseRequested",
+      "-",
+      "No",
+      "Release flag. Whether it yields the accounting document is UNPROVEN."
+    ],
+    [
+      "E",
+      "BillingDocument",
+      "VBRK-VBELN",
+      "Yes",
+      "Key for read-back."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES BY STAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Stage",
+      "Property",
+      "SAP field",
+      "Meaning",
+      null
+    ],
+    [
+      "A",
+      "DeliveryDocumentItem / Batch / ActualDeliveryQuantity",
+      "LIPS-POSNR / CHARG / LFIMG",
+      "Confirmed picking result.",
+      null
+    ],
+    [
+      "C",
+      "GoodsIssue material document",
+      "MKPF-MBLNR + MJAHR",
+      "NOT returned by the delivery header/item entity - see gap below.",
+      null
+    ],
+    [
+      "D",
+      "FunctionImportResult.BillingDocument",
+      "VBRK-VBELN",
+      "Created invoice number.",
+      null
+    ],
+    [
+      "D",
+      "FunctionImportResult.MessageType / MessageId / Message",
+      "-",
+      "SAP message ids; CPI must map them to stable portal codes.",
+      null
+    ],
+    [
+      "E",
+      "BillingDocument / AccountingDocument",
+      "VBRK-VBELN / A_BillingDocument.AccountingDocument",
+      "Accounting document is DIRECT on the released read service.",
+      null
+    ],
+    [
+      "F",
+      "IRN / EWayBillNumber",
+      "EDOCUMENT / /DIGIGST/OWARD_H-EWBNUMBER",
+      "Statutory identifiers from the existing route.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING - DOCUMENT IDENTIFIERS PRODUCED",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Stage",
+      "Document produced",
+      "SAP key",
+      null,
+      null
+    ],
+    [
+      "A",
+      "none - the delivery is modified in place",
+      "LIKP/LIPS",
+      null,
+      null
+    ],
+    [
+      "B",
+      "Shipment; shipment cost document; cost release (status change, no new document)",
+      "VTTK-TKNUM; VFKK/VFKP - route unidentified",
+      null,
+      null
+    ],
+    [
+      "C",
+      "PGI material document",
+      "MKPF-MBLNR + MJAHR (movement 641 observed on the STO flow)",
+      null,
+      null
+    ],
+    [
+      "D",
+      "Billing document",
+      "VBRK-VBELN (STO example: 1100012896, FKART ZSTO)",
+      null,
+      null
+    ],
+    [
+      "D/E",
+      "Accounting document",
+      "BKPF-BELNR via A_BillingDocument.AccountingDocument",
+      null,
+      null
+    ],
+    [
+      "F",
+      "IRN; E-Way Bill number",
+      "EDOCUMENT; /DIGIGST/OWARD_H-EWBNUMBER",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Covered",
+      "Picking, batch split, PGI and its reversal (stage A/C); billing read-back including accounting document (stage E).",
+      null,
+      null,
+      null
+    ],
+    [
+      "Conditionally covered",
+      "Billing creation (stage D) via SD_CUSTOMER_INVOICES_CREATE - a genuine create action, but application-internal, not a released integration API.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Not covered",
+      "Shipment, shipment cost and cost release (stage B). Statutory generation (stage F) is an existing route footprint, not a standard OData service and not evidenced in operation.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "Reality",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "RequestId / IsReplay",
+      "No replay guard on any stage. Repeating stage D creates a second invoice.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "ProcessId / ProcessStatus / Stages[]",
+      "No SAP equivalent. There is no SAP object that holds cross-stage process state. This is the orchestration handle and it lives outside SAP.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "SourceSystem / RequestedBy",
+      "Transport envelope.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message",
+      "Per-stage OData error payloads only; no unified portal code.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "BatchDetermination.SPI",
+      "No confirmed SAP field. Parked per client disagreement - do not raise as a finding.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "Shipment.* (transporter, LR/GR, vehicle, driver, pickup code)",
+      "Belong to the unidentified stage-B route. LIKP-ZZVEHICLE_NO and LIKP-ZZDRIVERMOB exist as delivery Z-fields (D-037) but are not a specified contract.",
+      "Functional/business + ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP derives",
+      "Material, quantity unit, business flow, Incoterm, sales area, shipping point, route and billing type from the delivery. Observed on the STO flow: FKARV=ZSTO, INCO1=FTB, ROUTE=P27356.",
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP revalidates",
+      "Live stock and batch eligibility before PGI. A stale batch selection must fail at PGI, not be trusted from the request.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Ordering constraint",
+      "The 14 Aug sequence is DI -> shipment -> shipment cost -> COST RELEASE -> PGI -> invoice (SRC-MTG-20260814-01 @12:28, @15:04). PGI must precede billing: without PGI there is no invoice (@14:11). Whether cost release is a hard SAP precondition for PGI or a business rule is NOT established.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "Detail",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Cross-stage process state",
+      "ProcessId, stage status, resume and partial-completion semantics have no SAP home.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Compensation / rollback",
+      "If stage D fails after stage C committed, SAP will not roll back the PGI. The client's existing ZMM_SCRUM_SER_PO orchestration has exactly this defect and commits its final stage without checking the previous result (D-030). Do NOT specify an ABAP call that pretends the chain is atomic.",
+      "CPI/T2 + architecture",
+      null,
+      null
+    ],
+    [
+      "Stage B route",
+      "Shipment and shipment-cost creation path unidentified.",
+      "Functional/business (LE), then ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Billing-create approval",
+      "SD_CUSTOMER_INVOICES_CREATE is application-internal. If architecture rejects it, validate the OData V4 billing successor or BAPI_BILLINGDOC_CREATEMULTIPLE and expose only the narrow missing command.",
+      "Architecture + ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Idempotency across stages",
+      "CPI/T2",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "API_OUTBOUND_DELIVERY_SRV;v=2",
+      "NOT activated. No ",
+      "$metadata",
+      " retrieved.",
+      null
+    ],
+    [
+      "SD_CUSTOMER_INVOICES_CREATE",
+      "REGISTERED in the QS4 Gateway catalogue. Not tested. Adoption gate: architecture permission to use an application-internal service.",
+      null,
+      null,
+      null
+    ],
+    [
+      "API_BILLING_DOCUMENT_SRV",
+      "NOT activated. No ",
+      "$metadata",
+      " retrieved.",
+      null
+    ],
+    [
+      "Statutory route",
+      "Existing and live, but the callable boundary is untraced.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Pick and batch-split one approved DEV delivery; PostGoodsIssue; create billing from the resulting delivery; read the billing document and its accounting document back.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Ineligible or insufficient batch rejected at PGI; billing attempted on an already-billed delivery must not create a duplicate; stale ETag rejected; stage-D failure after stage-C success must be observable as PARTIAL, not silently reported as success.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "PILLAR DIFFERENCES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What differs",
+      "Trade",
+      "Non-trade",
+      "STO",
+      null
+    ],
+    [
+      "Billing type",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - ZSTO",
+      null
+    ],
+    [
+      "Who is billed",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - the receiving plant, as a customer",
+      null
+    ],
+    [
+      "Pricing procedure",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - ZSTON",
+      null
+    ],
+    [
+      "e-Invoice required",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - raised, with GST",
+      null
+    ],
+    [
+      "Goods movement at PGI",
+      "OPEN",
+      "OPEN",
+      "STO-OBSERVED - 641",
+      null
+    ],
+    [
+      "How to read this table",
+      "CONFIRMED means we know it. STO-OBSERVED means we saw it on a stock transfer document and it may not hold for the other two. OPEN means nobody has checked. Do not copy an STO-OBSERVED value into an OPEN cell.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "Six-stage composition, A to F. STANDARD + CPI/T2 ADAPTER for stages A, C and E. EXISTING CLIENT ROUTE for stage F. PROVEN STANDARD-ODATA DISCOVERY GAP for stage B. RUNTIME-UNPROVEN throughout.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "CONDITIONAL COMPOSITION across six stages (A-F). Not one SAP API and must never be specified as one.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "sessions/2026-08-15-standard-api-discovery/CNF_STANDARD_API_MATRIX.tsv (API-03 rows); OUTBOUND_DELIVERY_DELTA.md; deliverables/CNF_STANDARD_API_SOLUTION_AND_TEST_PLAN.md; SRC-MTG-20260814-01; STO evidence ",
+      "QS4/700 read-only, 2026-08-16",
+      ".",
+      null
+    ]
+  ],
+  "API-04 Shipment Cost": [
+    [
+      "API-04 - Shipment Calculation",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Read - freight estimate for an existing DI - NO STANDARD ODATA SERVICE FOUND IN THE CATALOGUE SCREEN",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "v1.8 standard-first result. PROVEN STANDARD-ODATA DISCOVERY GAP - a discovery outcome, not an unfinished specification.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade",
+      "CONFIRMED - freight has to be estimated.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Non-trade",
+      "CONFIRMED - freight has to be estimated.",
+      null,
+      null,
+      null
+    ],
+    [
+      "STO",
+      "CONFIRMED - freight has to be estimated.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What is shared",
+      "CONFIRMED - the estimate is taken from the delivery. Whether the rates, routes and incoterms differ by pillar is OPEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Given an existing DI and a selected transporter, return a read-only freight estimate with amount, currency, rate basis, Incoterm, mode and the condition record used. SAP derives plant, destination, material, quantity, Incoterm and route; the caller does not control them.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Consumption point",
+      "Delivery-driven and consumed inside the billing workflow (v1.7 Overview). It is a read - it must not post a shipment-cost document.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE / ROUTE AND PROTOCOL - THE PROVEN RESULT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Standard OData",
+      "NONE. The full local SEGW catalogue was screened and API-04 produced ZERO candidate rows in CNF_STANDARD_API_MATRIX.tsv. That is the evidence, not an omission.",
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP fallback to verify",
+      "BAPI_SHIPMENT_COST_ESTIMATE - candidate fallback. Existence and suitability in THIS system are UNVERIFIED: it has not been located, inspected or executed. Verify in SE37 before relying on it.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Existing client route",
+      "A shipment/freight path exists in the landscape but is UNIDENTIFIED. Observed on the STO flow: delivery 0080019087 has a shipment successor 2100005093 (VBTYP 8), and deliveries carry route, transport group, shipping condition and transporter pricing (KALSP=ZLE001, KNUMP populated). So freight IS being priced somewhere.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "Undetermined until the route is identified.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Candidate operation",
+      "BAPI_SHIPMENT_COST_ESTIMATE - inputs to confirm in SE37; no OData entity exists.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Client objects to inspect",
+      "VTTK / VTTP (shipment), VFKK / VFKP (shipment cost), pricing procedure and condition records behind KNUMP.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Ruled out",
+      "No SEGW project in the 2,626-project catalogue exposes a shipment-cost estimate. LE-TRA has no released A2X estimate service in this release.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES - TARGET CONTRACT IF A NARROW ENDPOINT IS BUILT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "Meaning"
+    ],
+    [
+      "DeliveryDocument",
+      "LIKP-VBELN",
+      "CHAR(10)",
+      "Yes",
+      "The commercial context. Everything else is derived from it."
+    ],
+    [
+      "TransporterCode",
+      "forwarding-agent partner",
+      "CHAR(10)",
+      "Yes",
+      "Transporter selected on the fulfilment screen."
+    ],
+    [
+      "PricingDate",
+      "-",
+      "DATS(8)",
+      "No",
+      "Defaults to delivery date / current date."
+    ],
+    [
+      "ModeOfDispatch",
+      "LIKP-VSART",
+      "CHAR(4)",
+      "Derived / assertion only",
+      "Shipping type on the delivery - 01 observed. Do not let the caller control it."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES - TARGET CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Property",
+      "SAP source",
+      "Type",
+      "Meaning",
+      null
+    ],
+    [
+      "EstimatedFreight",
+      "BAPI result",
+      "CURR(13,2)",
+      "Read-only estimate.",
+      null
+    ],
+    [
+      "Currency",
+      "BAPI result",
+      "CUKY(5)",
+      "Document currency - INR observed on the STO flow.",
+      null
+    ],
+    [
+      "RateBasis",
+      "pricing",
+      "CHAR(20)",
+      "Per tonne, per trip or slab.",
+      null
+    ],
+    [
+      "Incoterm",
+      "LIKP-INCO1",
+      "CHAR(3)",
+      "FTB observed. Approved values FTP, FTB, EXW. Never caller-controlled.",
+      null
+    ],
+    [
+      "ConditionRecord",
+      "KNUMP / condition record",
+      "CHAR(10)",
+      "Pricing record used, for traceability.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Delivery context",
+      "LIKP-VBELN, ROUTE, TRAGR, VSBED, VSART, INCO1/INCO2, KALSP, KNUMP - all present and populated on real deliveries.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Shipment objects",
+      "VTTK-TKNUM observed as VBFA successor 2100005093 on delivery 0080019087.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Shipment cost",
+      "VFKK/VFKP - not yet read.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Coverage",
+      "ZERO. No released or registered OData service closes any part of this requirement.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "All of them",
+      "There is no standard contract to be absent from. RequestId, SourceSystem, RequestedBy, Status, MessageCode and Message would be envelope fields on any endpoint that is eventually built.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Must be derived, never sent",
+      "Plant, destination, material, quantity, Incoterm, route, mode of dispatch.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Must not happen",
+      "The endpoint must not create or post a shipment-cost document. It is a read.",
+      null,
+      null,
+      null
+    ],
+    [
+      "No-rate case",
+      "A missing rate or route must return a controlled no-rate result, not an exception.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "Detail",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Identify the freight engine",
+      "Confirm whether the client uses LE-TRA, TM, or a custom engine, and whether an existing callable route already answers this.",
+      "Functional/business (LE)",
+      null,
+      null
+    ],
+    [
+      "Verify the BAPI",
+      "First confirm BAPI_SHIPMENT_COST_ESTIMATE exists and is suitable in this system, then execute it in SE37 against an approved representative delivery and capture inputs, outputs and error behaviour.",
+      "ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Narrow endpoint",
+      "Build a thin non-posting endpoint ONLY if no callable existing route exists. Scope: accept DI + transporter + pricing date, derive commercial context, return amount/currency/rate basis/condition trace.",
+      "ABAP/SAP after functional confirmation",
+      null,
+      null
+    ],
+    [
+      "Shipment-document variability",
+      "Some STO deliveries have a shipment successor and some do not. Until that is explained, the estimate's dependency on a shipment document is undefined.",
+      "Functional/business (LE)",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData",
+      "Not applicable - no service exists to activate.",
+      null,
+      null,
+      null
+    ],
+    [
+      "BAPI",
+      "Existence and suitability UNVERIFIED. Not located, not inspected, not executed; no SE37 run has been performed.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "SE37 execution of BAPI_SHIPMENT_COST_ESTIMATE for a configured DI and transporter returning a plausible amount and currency.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Missing rate or unroutable destination returns a controlled no-rate result; the call creates no document; an unauthorised or non-existent delivery is rejected.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "PROVEN STANDARD-ODATA DISCOVERY GAP. RUNTIME-UNPROVEN. Not yet classified as PROVEN CUSTOM GAP - that requires both the existing freight route and the BAPI to be disproven as callable.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "(1) PROVEN STANDARD-ODATA DISCOVERY GAP - no credible released SEGW integration service closes this requirement. (2) An existing client freight route must still be IDENTIFIED. (3) BAPI_SHIPMENT_COST_ESTIMATE must still be VERIFIED in SE37 - existence and suitability unverified. (4) A narrow custom ABAP endpoint is justified ONLY if neither route proves callable.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "CNF_STANDARD_API_MATRIX.tsv contains ZERO rows for API-04 across the full catalogue screen. CNF_FULL_CATALOG_DISCOVERY_REPORT.md; solution plan section 3. STO delivery evidence ",
+      "QS4/700 read-only, 2026-08-16",
+      ".",
+      null
+    ]
+  ],
+  "API-05 Stock Avail": [
+    [
+      "API-05 - Stock Availability",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Read - GET - API_MATERIAL_STOCK_SRV - SAP object: material stock in account modification (MARD/MCHB level)",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "v1.8 standard-API contract. Supersedes the v1.7 ZCNF_STOCK_SRV draft. Book stock only.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade",
+      "CONFIRMED - the same stock read is needed.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Non-trade",
+      "CONFIRMED - the same stock read is needed.",
+      null,
+      null,
+      null
+    ],
+    [
+      "STO",
+      "CONFIRMED - the same stock read is needed.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What is shared",
+      "CONFIRMED - one read at material, plant and storage location. Whether any pillar needs a different stock type, plant scope or filter is OPEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Return live SAP system stock for every relevant product and storage location within a selected plant/depot, for physical-inventory reconciliation. Sole stock/physical-inventory read; posts no adjustments.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Explicit scope limits",
+      "This is BOOK STOCK. It is NOT ATP availability, NOT stock ageing, and NOT the DI-context batch determination that belongs to API-03.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_MATERIAL_STOCK_SRV",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2 - GET",
+      null,
+      null,
+      null
+    ],
+    [
+      "Rejected - API_PRODUCT_AVAILY_INFO_BASIC",
+      "Plant-level ATP for one material per call, no storage-location parameter and no entity sets. Answers a different business question. REJECT-WRONG-OBJECT.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Complementary - MMIM_STOCKINDATERANGE_SRV",
+      "Reports stock CHANGE between two dates (opening/closing/increase/decrease). It was promoted in discovery as the ageing source and the evidence REFUTES that. Useful only for material and storage-location descriptions.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "GET A_MatlStkInAcctMod",
+      null,
+      null,
+      null
+    ],
+    [
+      "Key",
+      "11-part key covering material, plant, storage location, batch, stock type and account-modification dimensions.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Paging",
+      "Entity sets are Pageable - ",
+      "$inlinecount",
+      ", ",
+      "$filter"
+    ],
+    [
+      "Grain",
+      "material x plant x storage location, with batch and inventory stock type where exposed.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "Meaning"
+    ],
+    [
+      "Plant",
+      "MARD-WERKS",
+      "CHAR(4)",
+      "YES",
+      "The selected warehouse/plant/depot. This is the business context and is mandatory."
+    ],
+    [
+      "StorageLocation",
+      "MARD-LGORT",
+      "CHAR(4)",
+      "No - filter",
+      "Optional. Omit to return all storage locations in the plant. Values observed on the STO flow include PC88, SELF, CLYC, RMYD."
+    ],
+    [
+      "Material",
+      "MARD-MATNR",
+      "CHAR(40)",
+      "No - filter",
+      "Optional product filter."
+    ],
+    [
+      "Batch",
+      "MCHB-CHARG",
+      "CHAR(10)",
+      "No - filter",
+      "Optional. Exposed on A_MatlStkInAcctMod."
+    ],
+    [
+      "InventoryStockType",
+      "-",
+      "CHAR(2)",
+      "No - filter",
+      "Which values are in scope requires MM confirmation."
+    ],
+    [
+      "$filter / $inlinecount / paging - - No Standard OData query options.",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Meaning",
+      null
+    ],
+    [
+      "Material",
+      "MARD-MATNR",
+      "CHAR(40)",
+      "Product number.",
+      null
+    ],
+    [
+      "Plant",
+      "MARD-WERKS",
+      "CHAR(4)",
+      "Warehouse/plant/depot.",
+      null
+    ],
+    [
+      "StorageLocation",
+      "MARD-LGORT",
+      "CHAR(4)",
+      "Storage location.",
+      null
+    ],
+    [
+      "Batch",
+      "MCHB-CHARG",
+      "CHAR(10)",
+      "Batch where batch-managed.",
+      null
+    ],
+    [
+      "InventoryStockType",
+      "-",
+      "CHAR(2)",
+      "Stock category dimension.",
+      null
+    ],
+    [
+      "MatlWrhsStkQtyInMatlBaseUnit",
+      "MARD-LABST and related",
+      "QUAN(13,3)",
+      "The book stock quantity. DIRECT coverage of v1.7 SystemQuantity.",
+      null
+    ],
+    [
+      "MaterialBaseUnit",
+      "MARA-MEINS",
+      "UNIT(3)",
+      "Unit - TO observed on this client's cement materials.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Book stock",
+      "MARD / MCHB via the A_MatlStkInAcctMod projection.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Storage locations are real",
+      "GDF, CUT, DMG, RDFR, STG named in v1.7; PC88, SELF, CLYC, RMYD observed on live STO documents.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "DIRECT",
+      "Material, plant, storage location, batch, stock type, quantity, base unit, paging. Seven of the v1.7 output groups map directly.",
+      null,
+      null,
+      null
+    ],
+    [
+      "NOT COVERED",
+      "MaterialDescription, StorageLocationDescription, StockAgeingDays.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "Reality",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Items[].MaterialDescription",
+      "Not on the stock entity. Serve from T2/Commerce master data or a separate material read.",
+      "Commerce/T1 or CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Items[].StorageLocationDescription",
+      "Not on the stock entity. Portal master data.",
+      "Commerce/T1",
+      null,
+      null
+    ],
+    [
+      "Items[].StockAgeingDays",
+      "NOT book stock and NOT available from any catalogue candidate. Must remain sourced from the existing ZMM5013-derived Datasphere D-1 feed unless architecture deliberately changes the contract.",
+      "Datasphere",
+      null,
+      null
+    ],
+    [
+      "RequestId / SourceSystem / RequestedBy",
+      "Transport envelope.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message / TotalCount / HasMore",
+      "OData ",
+      "$inlinecount",
+      " and error payload; portal shaping sits outside SAP.",
+      "CPI/T2"
+    ],
+    [
+      "SearchText / SortBy / SortOrder",
+      "Portal presentation concerns. ",
+      "$filter",
+      " can express simple filtering but free-text search and approved sort domains are not SAP responsibilities.",
+      "Commerce/T1 + CPI/T2"
+    ],
+    [
+      "PageSize / PageOffset",
+      "Map to standard OData paging, but the page-size policy is a caller concern.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Mandatory context",
+      "Plant must be supplied. An unbounded all-plant read is not the contract.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Stock category",
+      "MM must select which InventoryStockType values are included. Getting this wrong silently returns the wrong number - exactly the semantic failure mode the project guards against.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Not a reservation",
+      "This read does not reserve stock. Batch eligibility is revalidated at PGI inside API-03.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "Detail",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Stock-category decision",
+      "Which InventoryStockType values constitute the business's 'system stock'.",
+      "Functional/business (MM)",
+      null,
+      null
+    ],
+    [
+      "Descriptions",
+      "Material and storage-location descriptions come from master data, not the stock read.",
+      "Commerce/T1",
+      null,
+      null
+    ],
+    [
+      "Stock ageing",
+      "Stays on the Datasphere D-1 feed from ZMM5013. Do not attempt to serve it from this API.",
+      "Datasphere",
+      null,
+      null
+    ],
+    [
+      "Paging, caching, refresh throttling, portal aggregation",
+      "Not SAP fields and not SAP responsibilities.",
+      "CPI/T2 and Commerce/T1",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "NOT activated in QS4. No ",
+      "$metadata",
+      " retrieved. Property names are SAP-documented, not locally verified.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Filtered read for one plant with and without a storage-location filter; reconcile the returned quantity against MMBE/MB52 for the same material, plant and storage location.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Excluded stock types demonstrably absent or separately identified; invalid plant rejected; a large unbounded result pages correctly rather than truncating silently.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD-DIRECT for the core read; STANDARD + CPI/T2 ADAPTER for descriptions, paging and presentation. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "PRIMARY - conditional on activation, the MM stock-category decision, and representative filtered reads reconciled to SAP stock display.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "CNF_STANDARD_API_MATRIX.tsv API-05 rows (8 requirement rows, KEEP-PRIMARY); solution plan section 3; SYSTEM_OF_RECORD_MATRIX for the ageing route.",
+      null,
+      null,
+      null
+    ]
+  ],
+  "API-06 EWB Extension": [
+    [
+      "API-06 - E-Way Bill Extension",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Command - existing DigiGST/EY eDocument route - NOT a standard SEGW OData service",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "v1.8 standard-first result. No standard API is invented here. Disposition: EXISTING CLIENT ROUTE TO PROVE.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade",
+      "CONFIRMED - road consignments need an E-Way Bill.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Non-trade",
+      "CONFIRMED - road consignments need an E-Way Bill.",
+      null,
+      null,
+      null
+    ],
+    [
+      "STO",
+      "CONFIRMED - road consignments need an E-Way Bill.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What is shared",
+      "CONFIRMED - the eight-hour window and the fixed 24-hour extension are statutory rules. Whether the document population or provider handling differs by pillar is OPEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Extend one existing E-Way Bill. Eligible ONLY in the eight hours before Valid Upto; a successful extension adds exactly 24 hours. The caller never sends a duration.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Policy status",
+      "CONFIRMED business policy. Reject requests made earlier than eight hours before Valid Upto, and at or after Valid Upto. There is no after-expiry window.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL ROUTE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Standard OData",
+      "NONE. API-06 produced ZERO candidate rows in CNF_STANDARD_API_MATRIX.tsv across the full 2,626-project catalogue screen. Do not invent a standard SEGW API for this.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Existing route",
+      "SAP eDocument framework plus the third-party /DIGIGST/ GST add-on, with approximately 50 EY_* HTTP destinations in the landscape including extension operations.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Important distinction",
+      "/DIGIGST/ is a third-party add-on, NOT SAP Document Compliance (DRC). An earlier assumption that DRC was the statutory framework was wrong and has been removed from the project's beliefs.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "Provider HTTP via the configured destinations, invoked from ABAP. The exact callable entry point is untraced.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Known persistence",
+      "/DIGIGST/OWARD_H-EWBNUMBER holds the E-Way Bill number (D-017). EDOCUMENT is the framework object.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Known enhancement point",
+      "BADI_EDOCUMENT_IN_EWB. A BAdI is an enhancement point, NOT automatically a callable command - do not specify it as the API.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Still to trace",
+      "The supported class or function module that performs an extension, the destination actually used, and the persisted status field. This is the single blocking unknown.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES - VALIDATED BUSINESS INPUTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Property",
+      "Source",
+      "Type",
+      "Mandatory",
+      "Meaning"
+    ],
+    [
+      "EWayBillNumber",
+      "/DIGIGST/OWARD_H-EWBNUMBER",
+      "CHAR(12)",
+      "Yes",
+      "The E-Way Bill being extended."
+    ],
+    [
+      "CurrentPlace",
+      "provider payload",
+      "CHAR(40)",
+      "Yes",
+      "Place from which extension is requested."
+    ],
+    [
+      "CurrentStateCode",
+      "provider payload",
+      "CHAR(2)",
+      "Yes",
+      "State of the current place."
+    ],
+    [
+      "CurrentPincode",
+      "provider payload",
+      "NUMC(6)",
+      "Yes",
+      "PIN code of the current place."
+    ],
+    [
+      "RemainingDistance",
+      "provider payload",
+      "NUMC(5)",
+      "Yes",
+      "Kilometres still to travel."
+    ],
+    [
+      "ExtensionReason",
+      "provider payload",
+      "CHAR(2)",
+      "Yes",
+      "Statutory reason code."
+    ],
+    [
+      "ExtensionRemarks",
+      "provider payload",
+      "CHAR(100)",
+      "No",
+      "Explanation of delay."
+    ],
+    [
+      "TransitType",
+      "provider payload",
+      "CHAR(1)",
+      "Conditional",
+      "Required when the consignment is in transit rather than moving."
+    ],
+    [
+      "VehicleNumber",
+      "provider payload",
+      "CHAR(20)",
+      "Conditional",
+      "Required when the vehicle is replaced or movement resumes."
+    ],
+    [
+      "DeliveryDocument / BillingDocument",
+      "LIKP-VBELN / VBRK-VBELN",
+      "CHAR(10)",
+      "No - assertion only",
+      "Screen search references."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES - VALIDATED BUSINESS OUTPUTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Property",
+      "Source",
+      "Type",
+      "Meaning",
+      null
+    ],
+    [
+      "EWayBillNumber",
+      "/DIGIGST/OWARD_H-EWBNUMBER",
+      "CHAR(12)",
+      "Retained after extension.",
+      null
+    ],
+    [
+      "UpdatedValidUpto",
+      "provider response",
+      "TIMESTAMPL(21)",
+      "AUTHORITATIVE new validity. Must be returned by the provider and re-read - never computed locally by adding 24 hours.",
+      null
+    ],
+    [
+      "UpdatedVehicleNumber",
+      "provider response",
+      "CHAR(20)",
+      "Vehicle retained after extension.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "E-Way Bill number",
+      "/DIGIGST/OWARD_H-EWBNUMBER",
+      null,
+      null,
+      null
+    ],
+    [
+      "Framework object",
+      "EDOCUMENT",
+      null,
+      null,
+      null
+    ],
+    [
+      "Destinations",
+      "EY_* HTTP destinations, approximately 50 in the landscape, including extension operations",
+      null,
+      null,
+      null
+    ],
+    [
+      "Anchor documents",
+      "Billing document VBRK-VBELN; delivery LIKP-VBELN",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Coverage",
+      "ZERO standard OData coverage. A provider-route footprint is installed and configured in the landscape, so this is most likely an integration/tracing problem rather than build-from-nothing - but that is an inference from configuration, not from observed operation.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "RequestId / IsReplay",
+      "No standard contract exists. Replay protection matters here more than anywhere else: a duplicate extension is a duplicate STATUTORY submission.",
+      "CPI/T2 + ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "SourceSystem / RequestedBy",
+      "Transport envelope.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message",
+      "Provider response codes must be mapped to stable portal codes.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Eligibility rule",
+      "Accept only when CurrentTimestamp >= ValidUpto minus 8 hours AND strictly earlier than ValidUpto.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Duration rule",
+      "Each successful extension adds exactly 24 hours. Do NOT expose ExtensionHours in the request.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Authoritative time",
+      "Evaluate the window against the authoritative timestamp and timezone from the e-document record, not the caller's clock.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Success definition",
+      "Success is the provider's confirmed response and the persisted status - never a local assumption.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "Detail",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Trace the callable boundary",
+      "From the EY_* destination to the invoking class/FM/BAdI and the persisted e-document status. Blocking.",
+      "ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Provider request/response contract",
+      "Exact payload, error codes and retry semantics.",
+      "GSP/DigiGST integration owner",
+      null,
+      null
+    ],
+    [
+      "Narrow CNF command",
+      "Build ONLY if the existing implementation has no approved callable boundary. Must not create a competing GSP integration or bypass the installed framework with direct table updates or a raw HTTP client.",
+      "ABAP/SAP after tracing",
+      null,
+      null
+    ],
+    [
+      "Statutory duplicate protection",
+      "A replayed extension must not produce a second provider submission.",
+      "CPI/T2 + ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Licensing / commercial",
+      "Any claim about permitted use of the third-party add-on requires the commercial/licensing owner.",
+      "Commercial/licensing owner",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "INSTALLED / CONFIGURED ROUTE FOOTPRINT OBSERVED - eDocument framework objects, /DIGIGST/ tables and EY_* destinations exist in the landscape. Operational use is NOT proven: no runtime request or response has been captured. Callable entry point UNTRACED.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "One approved non-production extension request against a valid E-Way Bill inside the eight-hour window, with the provider response and persisted UpdatedValidUpto captured - only if test credentials and a valid document exist.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Request earlier than eight hours before expiry rejected; request at or after expiry rejected; replayed request produces NO second statutory submission.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "EXISTING CLIENT ROUTE. RUNTIME-UNPROVEN. Narrow PROVEN CUSTOM GAP only if no callable boundary exists.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "EXISTING CLIENT ROUTE TO PROVE.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "CNF_STANDARD_API_MATRIX.tsv contains ZERO rows for API-06; CNF_BUSINESS_SEARCH_DICTIONARY.tsv (DIGIGST, EDOCUMENT); D-017; 06_PREDICTIVE_SEGW_BAPI_IMPLEMENTATION_MAP.md; solution plan section 3.",
+      null,
+      null,
+      null
+    ]
+  ],
+  "API-07 Invoice Corr": [
+    [
+      "API-07 - Invoice Correction (transport / e-document details)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Command - existing DigiGST/EY eDocument correct/cancel/regenerate route - NOT a standard SEGW OData service",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "v1.8 standard-first result. Validated correction delta only. Disposition: EXISTING CLIENT ROUTE TO PROVE.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade",
+      "CONFIRMED - transport details can be wrong on any invoice.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Non-trade",
+      "CONFIRMED - transport details can be wrong on any invoice.",
+      null,
+      null,
+      null
+    ],
+    [
+      "STO",
+      "CONFIRMED - transport details can be wrong on any invoice.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What is shared",
+      "CONFIRMED - the Part A and Part B fields that can be corrected. Whether eligibility or regeneration behaviour differs by pillar is OPEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Correct ONLY the editable Part A / Part B transport details on an existing invoice, and return the e-Invoice and E-Way Bill outcomes separately.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Explicit non-scope",
+      "This is NOT a generic billing cancellation, NOT a price or quantity correction, and NOT a re-issue of the invoice. The older oversized correction payload is superseded.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL ROUTE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Standard OData",
+      "NONE. API-07 produced ZERO candidate rows in CNF_STANDARD_API_MATRIX.tsv across the full catalogue screen.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Existing route",
+      "SAP eDocument framework plus the /DIGIGST/ add-on correction / cancel / regenerate path, via the EY_* destinations.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "Provider HTTP invoked from ABAP. Exact callable implementation UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Explicitly forbidden",
+      "Do not directly update VBRK, EDOCUMENT or /DIGIGST/* tables. There is no justified BAPI_BILLINGDOC_* command for this requirement.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Anchor",
+      "Billing document VBRK-VBELN locates the e-document/provider record.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Known objects",
+      "EDOCUMENT; /DIGIGST/*; VBRK/VBRP.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Still to trace",
+      "The supported add-on action that performs a correction, and whether it cancels and regenerates either statutory document.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES - THE VALIDATED CORRECTION DELTA ONLY",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Property",
+      "Source",
+      "Type",
+      "Mandatory",
+      "Meaning"
+    ],
+    [
+      "BillingDocument",
+      "VBRK-VBELN",
+      "CHAR(10)",
+      "Yes",
+      "The invoice being corrected. UI 'Invoice Number' versus 'Document Number' mapping still to verify in SAP."
+    ],
+    [
+      "PartA.TransporterName",
+      "provider payload",
+      "CHAR(40)",
+      "When changed",
+      "Editable Part A transporter name."
+    ],
+    [
+      "PartA.TransporterId",
+      "provider payload",
+      "CHAR(20)",
+      "When changed",
+      "Editable Part A transporter identifier."
+    ],
+    [
+      "PartA.DistanceKm",
+      "provider payload",
+      "DEC(5,0)",
+      "When changed",
+      "Editable Part A journey distance."
+    ],
+    [
+      "PartB.TransportMode",
+      "provider payload",
+      "CHAR(10)",
+      "When changed",
+      "e.g. ROAD. Exact code list pending."
+    ],
+    [
+      "PartB.VehicleType",
+      "provider payload",
+      "CHAR(10)",
+      "When changed",
+      "e.g. REGULAR. Exact code list pending."
+    ],
+    [
+      "PartB.VehicleNumber",
+      "provider payload",
+      "CHAR(20)",
+      "When changed",
+      "Replacement or current vehicle number."
+    ],
+    [
+      "Contract rule",
+      "-",
+      "-",
+      "-",
+      "At least one Part A or Part B field must be supplied."
+    ],
+    [
+      "Dropped from v1.7",
+      "ReasonCode and Remarks are NOT in the validated design. Retain only if statutory processing proves them mandatory.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES - SEPARATE STATUTORY OUTCOMES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Property",
+      "Source",
+      "Type",
+      "Meaning",
+      null
+    ],
+    [
+      "BillingDocument",
+      "VBRK-VBELN",
+      "CHAR(10)",
+      "Invoice key used for the correction.",
+      null
+    ],
+    [
+      "CorrectionStatus",
+      "normalized",
+      "CHAR(12)",
+      "COMPLETED, FAILED or PARTIAL. Final domain pending.",
+      null
+    ],
+    [
+      "EInvoiceStatus",
+      "EDOCUMENT / provider",
+      "CHAR(40)",
+      "INDEPENDENT e-Invoice state. The validated UI distinguishes Pending-Error from Generated-Available-for-Cancellation.",
+      null
+    ],
+    [
+      "IRN",
+      "EDOCUMENT / provider",
+      "CHAR(64)",
+      "Current or regenerated Invoice Reference Number.",
+      null
+    ],
+    [
+      "AcknowledgementNumber",
+      "provider",
+      "CHAR(20)",
+      "Current or regenerated statutory acknowledgement.",
+      null
+    ],
+    [
+      "EWayBillStatus",
+      "/DIGIGST/OWARD_H",
+      "CHAR(40)",
+      "INDEPENDENT E-Way Bill state. Do NOT collapse it into EInvoiceStatus.",
+      null
+    ],
+    [
+      "EWayBillNumber",
+      "/DIGIGST/OWARD_H-EWBNUMBER",
+      "CHAR(20)",
+      "Current or regenerated E-Way Bill number.",
+      null
+    ],
+    [
+      "Updated* echo fields",
+      "provider response",
+      null,
+      "Transporter name/id, distance, transport mode, vehicle type and number retained after correction.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Invoice anchor",
+      "VBRK-VBELN / VBRP. STO example: 1100012896, FKART ZSTO, external reference XBLNR RJ2302001400.",
+      null,
+      null,
+      null
+    ],
+    [
+      "e-document",
+      "EDOCUMENT framework record linked to the billing document.",
+      null,
+      null,
+      null
+    ],
+    [
+      "E-Way Bill",
+      "/DIGIGST/OWARD_H-EWBNUMBER.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Unresolved",
+      "The UI 'Document Number' has no confirmed SAP/ODN/accounting meaning. XBLNR is a candidate worth checking.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Coverage",
+      "ZERO standard OData coverage. A correction-capable provider-route footprint is installed and configured; its operational use is not evidenced here.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "RequestId / IsReplay",
+      "No standard contract. A replayed correction must not produce a duplicate statutory submission.",
+      "CPI/T2 + ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "SourceSystem / RequestedBy",
+      "Transport envelope.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message",
+      "Provider codes mapped to stable portal codes.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "InvoiceNumber / DocumentNumber / InvoiceDate",
+      "Display fields whose SAP mapping is unverified; serve from the billing read-back once confirmed.",
+      "Functional/business + CPI/T2",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Eligibility",
+      "Correction is valid only while the e-document is in a state that permits it. The UI already distinguishes Pending-Error from Generated-Available-for-Cancellation - that distinction is a real precondition, not decoration.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Independence",
+      "e-Invoice and E-Way Bill outcomes are separate and must be reported separately. One may succeed while the other fails - that is the PARTIAL case.",
+      null,
+      null,
+      null
+    ],
+    [
+      "No silent regeneration",
+      "Whether 'Update Details' cancels and regenerates either statutory document must be established before build, not discovered in production.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "Detail",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Trace the callable implementation",
+      "Identify the supported add-on class/FM for correction. Blocking.",
+      "ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Cancel/regenerate semantics",
+      "Whether correction cancels and reissues the e-Invoice, the E-Way Bill, both or neither.",
+      "Functional/business + GSP/DigiGST owner",
+      null,
+      null
+    ],
+    [
+      "Document Number meaning",
+      "Resolve the UI label against a real SAP field.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "Narrow CNF command",
+      "Only if the existing route has no approved callable boundary, and with no duplicate statutory submission.",
+      "ABAP/SAP after tracing",
+      null,
+      null
+    ],
+    [
+      "Licensing / commercial",
+      "Any claim about permitted add-on use requires the commercial/licensing owner.",
+      "Commercial/licensing owner",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "INSTALLED / CONFIGURED ROUTE FOOTPRINT OBSERVED - eDocument and /DIGIGST/ objects exist in the landscape. Operational use is NOT proven: no runtime request or response has been captured. Callable implementation UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "One approved non-production correction changing a Part B vehicle number, with both statutory outcomes captured separately and the persisted e-document status re-read.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Correction attempted in an ineligible e-document state rejected; replayed correction produces NO duplicate statutory submission; a partial outcome (one statutory document succeeds, the other fails) is reported as PARTIAL and never as success.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "EXISTING CLIENT ROUTE. RUNTIME-UNPROVEN. Narrow PROVEN CUSTOM GAP only if no callable boundary exists.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "EXISTING CLIENT ROUTE TO PROVE.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "CNF_STANDARD_API_MATRIX.tsv contains ZERO rows for API-07; SRC-FIG-20260811-07; SRC-CPI-20260811-01; 06_PREDICTIVE_SEGW_BAPI_IMPLEMENTATION_MAP.md; solution plan section 3.",
+      null,
+      null,
+      null
+    ]
+  ],
+  "API-08 STO Orders": [
+    [
+      "API-08 - STO Orders (read)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Read - GET - API_PURCHASEORDER_PROCESS_SRV - reads MM purchase orders (EKKO/EKPO), S/4 to CPI to T2",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Replaces the v1.7 draft that assumed a ZCNF_STO_SRV service.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Pillars",
+      "CONFIRMED - STO only. This feed carries stock transport orders.",
+      null,
+      null,
+      null
+    ],
+    [
+      "How Trade/Non-trade equivalents reach the portal",
+      "OPEN - not settled by this workbook.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Send stock transport orders to T2 with their type, organisation, both plants, material, quantity, delivery date, status and a marker showing what changed since last time.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What this is not",
+      "This returns purchase orders only. Deliveries are API-09 and invoices are API-10. Keep the three apart.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_PURCHASEORDER_PROCESS_SRV",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2",
+      null,
+      null,
+      null
+    ],
+    [
+      "Why not MMIM_STO_SRV",
+      "We looked at it. It has no document type, no organisation fields, no status, no change marker and no paging, so it cannot answer the requirement.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "GET A_PurchaseOrder with ",
+      "$expand",
+      "=to_PurchaseOrderItem",
+      null
+    ],
+    [
+      "How to pick out STOs",
+      "$filter",
+      "=PurchaseOrderType eq 'ZP06', combined with item category PSTYP 7",
+      null,
+      null
+    ],
+    [
+      "Paging",
+      "Supported on all entity sets using ",
+      "$inlinecount",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES (QUERY)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "What it is"
+    ],
+    [
+      "PurchaseOrder",
+      "EKKO-EBELN",
+      "CHAR(10)",
+      "No",
+      "Ask for one specific order."
+    ],
+    [
+      "PurchaseOrderType",
+      "EKKO-BSART",
+      "CHAR(4)",
+      "Yes, always ZP06",
+      "This is what makes the read return STOs and nothing else."
+    ],
+    [
+      "SupplyingPlant",
+      "EKKO-RESWK",
+      "CHAR(4)",
+      "No",
+      "Filter by the sending plant, e.g. 1002."
+    ],
+    [
+      "to_PurchaseOrderItem/Plant",
+      "EKPO-WERKS",
+      "CHAR(4)",
+      "No",
+      "Filter by the receiving plant."
+    ],
+    [
+      "to_PurchaseOrderItem/Material",
+      "EKPO-MATNR",
+      "CHAR(40)",
+      "No",
+      "Filter by product."
+    ],
+    [
+      "PurchaseOrderDate",
+      "EKKO-BEDAT",
+      "DATS(8)",
+      "No",
+      "Date range."
+    ],
+    [
+      "LastChangeDateTime",
+      "EKKO-LASTCHANGEDATETIME",
+      "TIMESTAMP",
+      "No",
+      "Ask only for orders changed since a given moment. This is a real timestamp and it is filled in, so incremental reads work properly here."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "What comes back",
+      null
+    ],
+    [
+      "PurchaseOrder / PurchaseOrderItem",
+      "EKKO-EBELN / EKPO-EBELP",
+      "CHAR(10) / NUMC(5)",
+      "The order and line number.",
+      null
+    ],
+    [
+      "PurchaseOrderType",
+      "EKKO-BSART",
+      "CHAR(4)",
+      "ZP06.",
+      null
+    ],
+    [
+      "CompanyCode / PurchasingOrganization / PurchasingGroup",
+      "EKKO-BUKRS / EKORG / EKGRP",
+      "CHAR",
+      "1000, 1000 and 801.",
+      null
+    ],
+    [
+      "SupplyingPlant / Plant",
+      "EKKO-RESWK / EKPO-WERKS",
+      "CHAR(4)",
+      "1002 and 5412.",
+      null
+    ],
+    [
+      "Material / OrderQuantity / Unit",
+      "EKPO-MATNR / MENGE / MEINS",
+      null,
+      "The line detail.",
+      null
+    ],
+    [
+      "ScheduleLineDeliveryDate",
+      "EKET-EINDT",
+      "DATS(8)",
+      "The delivery date. It sits on the schedule line, not the item, so the read has to reach one level deeper.",
+      null
+    ],
+    [
+      "PurchasingProcessingStatus",
+      "EKKO-PROCSTAT",
+      "CHAR",
+      "02 on the order we looked at.",
+      null
+    ],
+    [
+      "LastChangeDateTime",
+      "EKKO-LASTCHANGEDATETIME",
+      "TIMESTAMP",
+      "Used to work out what changed since the last read.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Header",
+      "EKKO - EBELN, BSART, BUKRS, EKORG, EKGRP, RESWK, BEDAT, PROCSTAT, STATU, LASTCHANGEDATETIME",
+      null,
+      null,
+      null
+    ],
+    [
+      "Item",
+      "EKPO - EBELP, WERKS, MATNR, MENGE, MEINS, PSTYP",
+      null,
+      null,
+      null
+    ],
+    [
+      "Schedule line",
+      "EKET - EINDT",
+      null,
+      null,
+      null
+    ],
+    [
+      "Working out what is still open",
+      "ME2W shows delivered and invoiced quantities (MGLIEF and MGINV), so the outstanding amount can be worked out from them.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What SAP covers",
+      "13 of the 14 things v1.7 asks for, including the document type and a usable change timestamp.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not",
+      "One thing: the tidy status code described below.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "What is actually true",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "CorrelationId / SourceSystem / RequestedBy",
+      "Tracing information, not purchase order fields.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message / TotalCount / HasMore",
+      "OData gives a row count and its own error format. Shaping that for the portal happens outside SAP.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Items[].DocumentStatus",
+      "v1.7 wants a single tidy status. SAP has processing status, completeness status, and delivered versus invoiced quantities - but no one code. Somebody has to define how those combine.",
+      "Functional/business decides, CPI/T2 builds",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP fills in by itself",
+      "Purchasing organization and group, pricing, profit centre and tax classification.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Agree this before building",
+      "That ZP06 plus item category 7 is exactly the right set of orders - no more, no less.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "What it means",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "No agreed status code",
+      "The rule for turning SAP status into one portal value does not exist yet.",
+      "Functional/business decides, CPI/T2 builds",
+      null,
+      null
+    ],
+    [
+      "Change tracking and paging",
+      "How often to read, how big a page, how to resume.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Agreeing the order population",
+      "Confirming ZP06 plus PSTYP 7 is the right filter.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "Service activation and roles",
+      "Nothing can be called until this is done.",
+      "Basis/security",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "Not activated in QS4 and no ",
+      "$metadata",
+      " has been fetched. Nothing on this sheet has been called.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Read with the ZP06 filter and confirm known orders 5600084208 and 5600084209 come back with the right plants and quantities. Then read again using a change timestamp and confirm you only get what changed.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Confirm a non-ZP06 order does not appear. Confirm a user without rights to a plant gets no rows rather than an error revealing the data exists. Confirm paging returns each row once.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD-DIRECT for the read, with a CPI/T2 adapter for status and paging. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "Use this service. Before building: activate it and agree the status rule.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "QS4/700 read-only, 2026-08-16",
+      " - evidence/03_EKKO_sample, evidence/04_EKPO_5600084208, evidence/10_ME2W_1002_ZP06.",
+      null,
+      null
+    ]
+  ],
+  "API-09 STO Deliveries": [
+    [
+      "API-09 - STO Deliveries (read)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Read - GET - API_OUTBOUND_DELIVERY_SRV;v=2 - reads outbound deliveries (LIKP/LIPS), S/4 to CPI to T2",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Replaces the v1.7 draft that assumed a ZCNF_STO_SRV service.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Pillars",
+      "CONFIRMED - STO only. This feed carries deliveries raised against stock transport orders.",
+      null,
+      null,
+      null
+    ],
+    [
+      "How Trade/Non-trade equivalents reach the portal",
+      "OPEN - not settled by this workbook.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Send T2 the deliveries created against stock transport orders, with the link back to the order, quantity, both plants, goods issue status and document, and a marker showing what changed.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_OUTBOUND_DELIVERY_SRV;v=2",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2",
+      null,
+      null,
+      null
+    ],
+    [
+      "What you can read directly",
+      "A_OutbDeliveryHeader, A_OutbDeliveryItem and A_OutbDeliveryAddress2. Document flow and text can only be fetched one document at a time, not as a list.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "GET A_OutbDeliveryHeader with ",
+      "$expand",
+      "=to_DeliveryDocumentItem",
+      null
+    ],
+    [
+      "How to pick out STO deliveries",
+      "$filter",
+      "=DeliveryDocumentType eq 'ZNL'. We checked the model and this field can be filtered on, so this works as a single query.",
+      null,
+      null
+    ],
+    [
+      "Second check, not a substitute",
+      "ReferenceSDDocumentCategory eq 'V' only says the delivery came from a purchase order. Subcontracting, vendor returns and third-party deliveries would match it too, so it cannot be the only test.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Still to confirm",
+      "We have seen ZNL on two deliveries. Nobody has confirmed it covers every STO delivery and nothing else. Either check that, or agree to join back to purchase order type ZP06 instead.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Paging",
+      "Supported using ",
+      "$inlinecount",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES (QUERY)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "What it is"
+    ],
+    [
+      "DeliveryDocumentType",
+      "LIKP-LFART",
+      "CHAR(4)",
+      "Yes, always ZNL",
+      "The main way STO deliveries are picked out."
+    ],
+    [
+      "DeliveryDocument",
+      "LIKP-VBELN",
+      "CHAR(10)",
+      "No",
+      "Ask for one specific delivery."
+    ],
+    [
+      "ReferenceSDDocument",
+      "LIPS-VGBEL",
+      "CHAR(10)",
+      "No",
+      "Ask for deliveries against one purchase order."
+    ],
+    [
+      "ReferenceSDDocumentCategory",
+      "LIPS-VGTYP",
+      "CHAR(1)",
+      "No",
+      "V. Use it alongside the type, not instead of it."
+    ],
+    [
+      "Plant",
+      "LIPS-WERKS",
+      "CHAR(4)",
+      "No",
+      "Filter by supplying plant."
+    ],
+    [
+      "ActualGoodsMovementDate",
+      "LIKP-WADAT_IST",
+      "DATS(8)",
+      "No",
+      "Filter by goods issue date."
+    ],
+    [
+      "LastChangeDate",
+      "LIKP-AEDAT",
+      "DATS(8)",
+      "No",
+      "Ask for what changed. Note this is a date only, not a time - see the gap below."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "What comes back",
+      null
+    ],
+    [
+      "DeliveryDocument / DeliveryDocumentItem",
+      "LIKP-VBELN / LIPS-POSNR",
+      "CHAR(10) / NUMC(6)",
+      "9004953077, with lines 000010, 900001 and 900002.",
+      null
+    ],
+    [
+      "ReferenceSDDocument",
+      "LIPS-VGBEL",
+      "CHAR(10)",
+      "The stock transport order, 5600084208. There is no field called PurchaseOrder on a delivery - this is it.",
+      null
+    ],
+    [
+      "ReferenceSDDocumentItem",
+      "LIPS-VGPOS",
+      "NUMC(6)",
+      "000010.",
+      null
+    ],
+    [
+      "DeliveryDocumentType",
+      "LIKP-LFART",
+      "CHAR(4)",
+      "ZNL.",
+      null
+    ],
+    [
+      "Plant",
+      "LIPS-WERKS",
+      "CHAR(4)",
+      "1002, the supplying plant.",
+      null
+    ],
+    [
+      "ReceivingPlant",
+      "LIKP-WERKS",
+      "CHAR(4)",
+      "5412. On the header, not the line.",
+      null
+    ],
+    [
+      "Material / ActualDeliveryQuantity / DeliveryQuantityUnit",
+      "LIPS-MATNR / LFIMG / VRKME",
+      null,
+      "The line detail.",
+      null
+    ],
+    [
+      "HigherLvlItmOfBatSpltItm",
+      "LIPS-UECHA",
+      "NUMC(6)",
+      "Links a split line back to its main line. Only exists in version 2 of the service.",
+      null
+    ],
+    [
+      "Batch / StorageLocation",
+      "LIPS-CHARG / LGORT",
+      null,
+      "2623029112 in PC88, and 2630004639 in SELF.",
+      null
+    ],
+    [
+      "OverallGoodsMovementStatus / GoodsMovementStatus",
+      "LIKP-WBSTK / LIPS-WBSTA",
+      "CHAR(1)",
+      "C means the goods have gone.",
+      null
+    ],
+    [
+      "ActualGoodsMovementDate + ActualGoodsMovementTime",
+      "LIKP-WADAT_IST + SPE_WAUHR_IST",
+      "DATS + TIMS",
+      "13.08.2026 and 16:48:59. Two separate fields - whoever consumes this has to join them into one timestamp.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Header",
+      "LIKP - VBELN, LFART, VBTYP, VSTEL, VKORG, WERKS, KUNNR, WBSTK, WADAT_IST, AEDAT, CREATION_TS, CHANGED_TS",
+      null,
+      null,
+      null
+    ],
+    [
+      "Item",
+      "LIPS - POSNR, VGBEL, VGPOS, VGTYP, WERKS, MATNR, LFIMG, VRKME, UECHA, CHARG, LGORT, WBSTA, BWART",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What SAP covers",
+      "The delivery and its lines, the link back to the purchase order, both plants, material, quantity, batch splitting and goods issue status.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not",
+      "The goods issue document number in a list read, changes within the same day, and a single joined-up timestamp.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "What is actually true",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "CorrelationId / SourceSystem / RequestedBy",
+      "Tracing information, not delivery fields.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message / TotalCount / HasMore",
+      "OData gives a row count and its own error format.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Items[].PgiMaterialDocument",
+      "The goods issue document number is not on the delivery header or line at all, so a list read cannot return it. It can be reached one document at a time through document flow, or taken from EKBE, where we found 4918168243/2026. Getting it into a feed needs a separate call, a replicated copy, or a join outside SAP.",
+      "CPI/T2 and Datasphere; architecture decides",
+      null,
+      null
+    ],
+    [
+      "Items[].GoodsIssueDateTime",
+      "Has to be built from the separate date and time fields.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Items[].DeliveryStatus / GoodsIssueStatus",
+      "v1.7 wants tidy status words. SAP has single-letter flags and no agreed translation.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP fills in by itself",
+      "Receiving plant, ship-to customer, route, incoterm, billing type and movement type, all from the purchase order.",
+      null,
+      null,
+      null
+    ],
+    [
+      "The change marker is weaker here than elsewhere",
+      "The delivery tables hold a full timestamp internally, but the service only exposes a date. API-08 and API-10 both expose a proper timestamp. So for deliveries you cannot ask for what changed in the last hour - only what changed today. That matters for a feed the architecture calls real-time.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "What it means",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Goods issue document not in a list read",
+      "Needs a per-document call, a replicated copy, or a join outside SAP. This is an architecture decision.",
+      "CPI/T2 and Datasphere",
+      null,
+      null
+    ],
+    [
+      "Same-day changes cannot be requested",
+      "Whatever reads this has to cope with a date-level marker.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "No agreed status words",
+      "Somebody has to define them.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "Joining date and time",
+      "Small, but somebody has to do it.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Confirming ZNL covers everything",
+      "Two documents is not a population check.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "Service activation and roles",
+      "Nothing can be called until this is done.",
+      "Basis/security",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "Not activated in QS4 and no ",
+      "$metadata",
+      " has been fetched. Nothing on this sheet has been called.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Read delivery 9004953077 with its lines and check the type is ZNL, the link back to order 5600084208 is there, and the split lines and goods issue status look right.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Confirm a Trade or Non-trade delivery does not come back. Confirm a delivery that came from a purchase order but is not an STO does not come back either - that is the test that proves ZNL is the right filter. Then change a delivery and read again the same day, to see the date-level limit for yourself.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD-DIRECT for the read, with a CPI/T2 adapter for the goods issue document, change tracking and status. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "Use this service. The filter question is settled. The two gaps above need an architecture decision before anyone builds.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "QS4/700 read-only, 2026-08-16",
+      " - evidence/06_LIKP_9004953077, evidence/07_LIPS_9004953077, evidence/05_EKBE_5600084208.",
+      null,
+      null
+    ]
+  ],
+  "API-10 STO Invoice": [
+    [
+      "API-10 - STO Invoice (read)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Read - GET - API_BILLING_DOCUMENT_SRV - reads SD billing documents (VBRK/VBRP), S/4 to CPI to T2",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "v1.7 could not say what kind of document this was. We found one and it is an SD billing document.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Pillars",
+      "CONFIRMED - STO only. This feed carries invoices raised for stock transfers.",
+      null,
+      null,
+      null
+    ],
+    [
+      "How Trade/Non-trade equivalents reach the portal",
+      "OPEN - not settled by this workbook.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Send T2 the invoices raised for stock transfers, with links back to the order and delivery, the date, organisation, quantity, amount, currency, status and a change marker.",
+      null,
+      null,
+      null
+    ],
+    [
+      "The question v1.7 could not answer",
+      "Was the 'STO invoice' an SD billing document, an intercompany invoice, or a supplier invoice on the MM side? Nobody knew, and it blocked the whole sheet.",
+      null,
+      null,
+      null
+    ],
+    [
+      "The answer",
+      "An SD billing document. We found VBRK 1100012896: billing type ZSTO, an invoice, raised from the delivery, with accounting already posted. Net 105,625.00 INR plus 29,575.00 tax.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Why it is not intercompany",
+      "Both plants belong to company code 1000, so there are no two companies to bill between. It is an internal transfer that still raises a taxed invoice because Indian GST requires one.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Why it is not an MM supplier invoice",
+      "ME2W shows nothing invoiced on the MM side for that order.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_BILLING_DOCUMENT_SRV",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2",
+      null,
+      null,
+      null
+    ],
+    [
+      "Note",
+      "This service reads, cancels and prints. It cannot create an invoice - that belongs to API-03.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "GET A_BillingDocument with ",
+      "$expand",
+      "=to_Item",
+      null
+    ],
+    [
+      "Entity sets",
+      "A_BillingDocument for the header, A_BillingDocumentItem for the lines",
+      null,
+      null,
+      null
+    ],
+    [
+      "Paging",
+      "Supported using ",
+      "$inlinecount",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES (QUERY)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "What it is"
+    ],
+    [
+      "BillingDocumentType",
+      "VBRK-FKART",
+      "CHAR(4)",
+      "Yes, always ZSTO",
+      "Picks out stock transfer invoices."
+    ],
+    [
+      "BillingDocument",
+      "VBRK-VBELN",
+      "CHAR(10)",
+      "No",
+      "Ask for one specific invoice."
+    ],
+    [
+      "to_Item/ReferenceSDDocument",
+      "VBRP-VGBEL",
+      "CHAR(10)",
+      "No",
+      "Ask for invoices raised from one delivery."
+    ],
+    [
+      "to_Item/SalesDocument",
+      "VBRP-AUBEL",
+      "CHAR(10)",
+      "No",
+      "Ask for invoices linked to one purchase order."
+    ],
+    [
+      "BillingDocumentDate",
+      "VBRK-FKDAT",
+      "DATS(8)",
+      "No",
+      "Date range."
+    ],
+    [
+      "LastChangeDateTime",
+      "VBRK-LAST_CHANGE_DATE",
+      "TIMESTAMP",
+      "No",
+      "A real timestamp, so incremental reads work properly here - unlike deliveries."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "What comes back",
+      null
+    ],
+    [
+      "BillingDocument",
+      "VBRK-VBELN",
+      "CHAR(10)",
+      "1100012896.",
+      null
+    ],
+    [
+      "BillingDocumentType",
+      "VBRK-FKART",
+      "CHAR(4)",
+      "ZSTO.",
+      null
+    ],
+    [
+      "SDDocumentCategory",
+      "VBRK-VBTYP",
+      "CHAR(1)",
+      "M, meaning invoice.",
+      null
+    ],
+    [
+      "BillingDocumentDate",
+      "VBRK-FKDAT",
+      "DATS(8)",
+      "04.02.2024.",
+      null
+    ],
+    [
+      "CompanyCode",
+      "VBRK-BUKRS",
+      "CHAR(4)",
+      "1000.",
+      null
+    ],
+    [
+      "SalesOrganization / DistributionChannel / Division",
+      "VBRK-VKORG / VTWEG / VBRP-SPART",
+      null,
+      "1000, 99 and 10.",
+      null
+    ],
+    [
+      "PayerParty / SoldToParty",
+      "VBRK-KUNRG / KUNAG",
+      "CHAR(10)",
+      "P1010 - the receiving plant billed as a customer.",
+      null
+    ],
+    [
+      "TransactionCurrency / TotalNetAmount",
+      "VBRK-WAERK / NETWR",
+      null,
+      "INR and 105,625.00.",
+      null
+    ],
+    [
+      "to_Item/ReferenceSDDocument",
+      "VBRP-VGBEL",
+      "CHAR(10)",
+      "0080019087, the delivery.",
+      null
+    ],
+    [
+      "to_Item/SalesDocument",
+      "VBRP-AUBEL",
+      "CHAR(10)",
+      "5600000339, the stock transport order, sitting right on the invoice line. No second lookup is needed to connect an invoice back to its order. The property is called SalesDocument even though it holds a purchase order here, which is worth checking against the service model before relying on it.",
+      null
+    ],
+    [
+      "to_Item/BillingQuantity",
+      "VBRP-FKIMG",
+      "QUAN(13,3)",
+      "42.250 TO.",
+      null
+    ],
+    [
+      "to_Item/Plant",
+      "VBRP-WERKS",
+      "CHAR(4)",
+      "1002, the supplying plant.",
+      null
+    ],
+    [
+      "BillingDocumentIsCancelled",
+      "VBRK-FKSTO",
+      "CHAR(1)",
+      "Shows whether the invoice has been cancelled.",
+      null
+    ],
+    [
+      "AccountingDocument",
+      "A_BillingDocument.AccountingDocument",
+      "CHAR(10)",
+      "The accounting document. On our example it had already posted.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Header",
+      "VBRK - VBELN, FKART, VBTYP, FKTYP, FKDAT, BUKRS, VKORG, VTWEG, KUNRG, KUNAG, WAERK, NETWR, MWSBK, RFBSK, XBLNR",
+      null,
+      null,
+      null
+    ],
+    [
+      "Item",
+      "VBRP - POSNR, VGBEL, VGPOS, VGTYP, AUBEL, AUPOS, AUREF, FKIMG, WERKS, MATNR, SPART, PSTYV",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What SAP covers",
+      "Header and lines, the links to both the delivery and the order, amounts, tax, currency, cancellation, the accounting document, and a proper change timestamp.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not",
+      "Tidy status words, and confirmation of how Indian GST is handled on these documents.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "What is actually true",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "CorrelationId / SourceSystem / RequestedBy",
+      "Tracing information, not invoice fields.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message / TotalCount / HasMore",
+      "OData gives a row count and its own error format.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Items[].InvoiceStatus",
+      "v1.7 wants one tidy status word. SAP has several separate flags and no agreed translation.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP fills in by itself",
+      "The payer and sold-to from the plant's customer record, the ZSTON pricing procedure, the tax, and the accounting document.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Worth knowing",
+      "Both plants sit in company code 1000, so this is an internal transfer that still raises a taxed invoice. If a future transfer crosses company codes, this sheet does not describe it.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "What it means",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "The purchase order link needs checking",
+      "VBRP-AUBEL clearly holds the order, but the service calls that property SalesDocument. Confirm it really is the same field before building on it.",
+      "ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "How Indian GST is handled",
+      "Which fields carry it, and what the external reference number on the invoice means.",
+      "Functional/business (SD and Tax)",
+      null,
+      null
+    ],
+    [
+      "What cancelling an invoice does",
+      "The business expects cancelling to put the document back to the delivery stage. Nobody has confirmed SAP behaves that way.",
+      "Functional/business, then ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "No agreed status words",
+      "Somebody has to define them.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "Service activation and roles",
+      "Nothing can be called until this is done.",
+      "Basis/security",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "Not activated in QS4 and no ",
+      "$metadata",
+      " has been fetched. Nothing on this sheet has been called.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Read invoice 1100012896 with its lines and confirm the type is ZSTO, the delivery link points to 0080019087, the order link points to 5600000339, and the accounting document is there.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Confirm an invoice of another type does not come back. Confirm a cancelled invoice is clearly marked as cancelled rather than appearing as a live one.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD-DIRECT for the read, with a CPI/T2 adapter for status. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "Use this service. The question of what kind of document this is has been answered. Before building: confirm the purchase order link and how GST is handled.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "QS4/700 read-only, 2026-08-16",
+      " - evidence/16_VBFA_VBELV_0080019087, evidence/19_VBRK_1100012896, evidence/20_VBRP_1100012896, evidence/13_T001K_1002, evidence/14_T001K_5412.",
+      null,
+      null
+    ]
+  ],
+  "API-11 Create STO PO": [
+    [
+      "API-11 - Create STO Purchase Order",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Command - POST - API_PURCHASEORDER_PROCESS_SRV - creates an MM purchase order (EKKO/EKPO)",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Replaces the v1.7 draft that assumed we would build a ZCNF_* service for this.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Pillars",
+      "CONFIRMED - STO only. Trade and Non-trade start from a sales order, which this API does not create.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Create the stock transport order used by the STO journey and return its number. Trade and Non-trade do not use this command.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What happens next",
+      "The purchase order this creates becomes the predecessor for API-02, which creates the delivery against it.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_PURCHASEORDER_PROCESS_SRV",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "POST A_PurchaseOrder, sending header, item and schedule line together in one call",
+      null,
+      null,
+      null
+    ],
+    [
+      "Entity sets",
+      "A_PurchaseOrder, A_PurchaseOrderItem, A_PurchaseOrderScheduleLine",
+      null,
+      null,
+      null
+    ],
+    [
+      "Navigation",
+      "to_PurchaseOrderItem, to_PurchaseOrderScheduleLine",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "What it is"
+    ],
+    [
+      "CompanyCode",
+      "EKKO-BUKRS",
+      "CHAR(4)",
+      "Let SAP derive it",
+      "1000 on the order we looked at. SAP can work this out from the plant. If the caller sends it and gets it wrong, the order still posts - it just means the wrong thing."
+    ],
+    [
+      "PurchaseOrderType",
+      "EKKO-BSART",
+      "CHAR(4)",
+      "Yes",
+      "ZP06. We checked this against the system: 22,378 ZP06 items exist for plant 1002, so this is the real type."
+    ],
+    [
+      "PurchasingOrganization",
+      "EKKO-EKORG",
+      "CHAR(4)",
+      "Yes",
+      "1000."
+    ],
+    [
+      "PurchasingGroup",
+      "EKKO-EKGRP",
+      "CHAR(3)",
+      "Yes",
+      "801."
+    ],
+    [
+      "SupplyingPlant",
+      "EKKO-RESWK",
+      "CHAR(4)",
+      "Yes",
+      "1002. This is the field that makes it a stock transport order rather than an ordinary purchase order."
+    ],
+    [
+      "to_PurchaseOrderItem/Plant",
+      "EKPO-WERKS",
+      "CHAR(4)",
+      "Yes",
+      "5412 - the plant receiving the goods. It cannot be the same as the supplying plant."
+    ],
+    [
+      "to_PurchaseOrderItem/Material",
+      "EKPO-MATNR",
+      "CHAR(40)",
+      "Yes",
+      "000000000015000177, 'SC NT OPC43 PP 50KG'."
+    ],
+    [
+      "to_PurchaseOrderItem/OrderQuantity",
+      "EKPO-MENGE",
+      "QUAN(13,3)",
+      "Yes",
+      "10.000."
+    ],
+    [
+      "to_PurchaseOrderItem/PurchaseOrderQuantityUnit",
+      "EKPO-MEINS",
+      "UNIT(3)",
+      "Yes",
+      "TO."
+    ],
+    [
+      "to_PurchaseOrderItem/PurchaseOrderItemCategory",
+      "EKPO-PSTYP",
+      "CHAR(1)",
+      "Yes",
+      "7, the stock transfer item category."
+    ],
+    [
+      "to_PurchaseOrderItem/RequirementTracking",
+      "EKPO-BEDNR",
+      "CHAR(10)",
+      "Do not send yet",
+      "One of two candidates for the v1.7 RequisitionNumber. This field held 2352 on the order we looked at."
+    ],
+    [
+      "to_PurchaseOrderItem/PurchaseRequisition",
+      "EKPO-BANFN",
+      "CHAR(10)",
+      "Do not send yet",
+      "The other candidate. v1.7 maps here, but it was empty on the order we looked at. The business has to say which one it means before either is used."
+    ],
+    [
+      "to_PurchaseOrderItem/RequisitionerName",
+      "EKPO-AFNAM",
+      "CHAR(12)",
+      "Optional",
+      "'Saurabh'."
+    ],
+    [
+      "to_PurchaseOrderScheduleLine/ScheduleLineDeliveryDate",
+      "EKET-EINDT",
+      "DATS(8)",
+      "Yes",
+      "The date the goods are wanted."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "What comes back",
+      null
+    ],
+    [
+      "PurchaseOrder",
+      "EKKO-EBELN",
+      "CHAR(10)",
+      "The order number, e.g. 5600084208. This is what API-02 needs next.",
+      null
+    ],
+    [
+      "PurchaseOrderItem",
+      "EKPO-EBELP",
+      "NUMC(5)",
+      "00010.",
+      null
+    ],
+    [
+      "PurchaseOrderType",
+      "EKKO-BSART",
+      "CHAR(4)",
+      "ZP06.",
+      null
+    ],
+    [
+      "SupplyingPlant / Plant",
+      "EKKO-RESWK / EKPO-WERKS",
+      "CHAR(4)",
+      "1002 and 5412.",
+      null
+    ],
+    [
+      "OrderQuantity + Unit",
+      "EKPO-MENGE / MEINS",
+      "QUAN / UNIT",
+      "The quantity SAP accepted.",
+      null
+    ],
+    [
+      "LastChangeDateTime",
+      "EKKO-LASTCHANGEDATETIME",
+      "TIMESTAMP",
+      "A full timestamp, e.g. 20260813110751.9448590. Good enough to drive an incremental feed.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Header",
+      "EKKO - BUKRS, BSART, EKORG, EKGRP, RESWK, KALSM, LASTCHANGEDATETIME",
+      null,
+      null,
+      null
+    ],
+    [
+      "Item",
+      "EKPO - WERKS, MATNR, MENGE, MEINS, PSTYP, BEDNR, AFNAM, WEPOS, LFRET, INCO1, BERID, J_1BNBM",
+      null,
+      null,
+      null
+    ],
+    [
+      "Schedule line",
+      "EKET - EINDT",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What SAP covers",
+      "Everything needed to create the order: header, item and schedule line, both plants, product, quantity, unit, delivery date, purchasing group and requisitioner.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not",
+      "Duplicate protection, portal-friendly error codes, and the two contract problems below.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "What is actually true",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "RequestId / IsReplay",
+      "SAP has no idea a request is a repeat. Send the same payload twice and you get two purchase orders. Something outside SAP has to stop that.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "SourceSystem / RequestedBy",
+      "Useful for tracing, but not fields on a purchase order. Carry them in headers.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message",
+      "SAP returns its own error format. Turning that into stable codes the portal can branch on happens outside SAP.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "ShippingType",
+      "There is nowhere to put it. No shipping type field is filled on EKKO or EKPO - it lives on the delivery instead (LIKP-VSART was 01). Move it to API-02, let SAP derive it, or drop it.",
+      "Functional/business + Commerce/T1",
+      null,
+      null
+    ],
+    [
+      "RequisitionNumber",
+      "Two possible homes with different meanings, and one purchase order is not enough to choose. EKPO-BANFN is what v1.7 assumes and it was empty; EKPO-BEDNR held 2352. Check more orders, then have the business say which it means.",
+      "Functional/business, then ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP fills in by itself",
+      "Purchasing organization, the ZSTO pricing procedure, profit centre, incoterms, MRP area and the India HSN code (J_1BNBM was 25232910).",
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP will reject",
+      "Supplying and receiving plant being the same, a quantity of zero or less, and a unit that does not match the material.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "What it means",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "No duplicate protection",
+      "Has to be solved before the call reaches SAP.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "ShippingType has no home",
+      "Someone has to decide where it goes.",
+      "Functional/business + Commerce/T1",
+      null,
+      null
+    ],
+    [
+      "RequisitionNumber undecided",
+      "Neither candidate is settled.",
+      "Functional/business, then ABAP/SAP",
+      null,
+      null
+    ],
+    [
+      "Confirm ZP06 and PSTYP 7 are the whole population",
+      "We saw them; nobody has confirmed they are the only ones in scope.",
+      "Functional/business (MM)",
+      null,
+      null
+    ],
+    [
+      "Service activation and roles",
+      "Nothing can be called until this is done.",
+      "Basis/security",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "Not activated in QS4 and no ",
+      "$metadata",
+      " has been fetched. Nothing on this sheet has been called. That is true of every sheet in this workbook.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Create one test order with header, item and schedule line in a single call, then open it in ME23N and check the type, both plants and the quantity.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Send the same plant as source and destination and confirm SAP refuses. Send an unknown material and confirm SAP refuses. Send the same request twice and confirm you get two orders - that is what proves duplicate protection has to live outside SAP.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD-DIRECT for the create, with a CPI/T2 adapter for duplicate protection and error handling. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "Use this service. Before building: activate it, decide where ShippingType goes, settle RequisitionNumber, and run one create in DEV.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "QS4/700 read-only, 2026-08-16",
+      " - evidence/03_EKKO_sample, evidence/04_EKPO_5600084208, evidence/10_ME2W_1002_ZP06.",
+      null,
+      null
+    ]
+  ],
+  "API-12 Update DI Qty": [
+    [
+      "API-12 - Update DI Quantity",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Command - PATCH - API_OUTBOUND_DELIVERY_SRV;v=2 - changes a quantity on a delivery line (LIPS)",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      "Deliberately narrow: quantity only, on a delivery that has not gone yet.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "APPLIES TO",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Trade",
+      "PROVISIONAL - expected to apply, not checked.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Non-trade",
+      "PROVISIONAL - expected to apply, not checked.",
+      null,
+      null,
+      null
+    ],
+    [
+      "STO",
+      "STO-OBSERVED - the delivery we examined was a stock transfer one.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Why we call it provisional",
+      "Nothing we found restricts this to one pillar, but nothing confirms it either. Treat shared use as an assumption to test, not a decision already made.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "1. BUSINESS REQUIREMENT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 requirement",
+      "Change only the quantity on an open delivery, before batches have been chosen. If the quantity changes, batches have to be chosen again.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What this is not",
+      "A general edit. Nothing else on the delivery can be changed through this.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "2. ACTUAL SERVICE AND PROTOCOL",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Service",
+      "API_OUTBOUND_DELIVERY_SRV;v=2",
+      null,
+      null,
+      null
+    ],
+    [
+      "Protocol",
+      "OData V2, using If-Match so two people cannot overwrite each other",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "3. OPERATION / ENTITY / ACTION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Operation",
+      "PATCH A_OutbDeliveryItem",
+      null,
+      null,
+      null
+    ],
+    [
+      "Entity set",
+      "A_OutbDeliveryItem",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "4. REQUEST PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "Mandatory",
+      "What it is"
+    ],
+    [
+      "DeliveryDocument",
+      "LIKP-VBELN",
+      "CHAR(10)",
+      "Yes",
+      "Which delivery."
+    ],
+    [
+      "DeliveryDocumentItem",
+      "LIPS-POSNR",
+      "NUMC(6)",
+      "Yes",
+      "Which line. This is not settled yet - the quantity sits on the split lines (900001, 900002) rather than the main line 000010, and v1.7 does not say which the portal should target."
+    ],
+    [
+      "ActualDeliveryQuantity",
+      "LIPS-LFIMG",
+      "QUAN(13,3)",
+      "Yes",
+      "The new quantity. We checked the service model and this field can be changed, so this is the right one to send."
+    ],
+    [
+      "If-Match header",
+      "-",
+      "-",
+      "Yes",
+      "Stops the change going through if someone else has edited the delivery since you read it."
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "5. RESPONSE PROPERTIES",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "OData property",
+      "SAP field",
+      "Type",
+      "What comes back",
+      null
+    ],
+    [
+      "DeliveryDocument / DeliveryDocumentItem",
+      "LIKP-VBELN / LIPS-POSNR",
+      null,
+      "The line that was changed.",
+      null
+    ],
+    [
+      "ActualDeliveryQuantity",
+      "LIPS-LFIMG",
+      "QUAN(13,3)",
+      "The quantity SAP accepted.",
+      null
+    ],
+    [
+      "ETag",
+      "-",
+      "-",
+      "A new marker, needed if you want to change the same line again.",
+      null
+    ],
+    [
+      "Effect on batches",
+      "LIPS-CHARG",
+      null,
+      "Whether SAP clears the batch choice or refuses the change is not established, and it matters.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "6. SAP FIELD / OBJECT MAPPING",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Item",
+      "LIPS - VBELN, POSNR, LFIMG, VRKME, CHARG, UECHA, WBSTA",
+      null,
+      null,
+      null
+    ],
+    [
+      "Header status",
+      "LIKP - WBSTK, CREATION_TS, CHANGED_TS",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "7. STANDARD COVERAGE",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "What SAP covers",
+      "The quantity field can be changed - we confirmed that in the service model.",
+      null,
+      null,
+      null
+    ],
+    [
+      "What it does not",
+      "Which line to target, what happens to batches, and how the If-Match check behaves in practice.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "8. v1.7 FIELDS ABSENT FROM THE STANDARD CONTRACT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "v1.7 field",
+      "What is actually true",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "RequestId / IsReplay",
+      "Repeating a change is less dangerous than repeating a create, but it still needs controlling.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "SourceSystem / RequestedBy",
+      "Tracing information.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Status / MessageCode / Message",
+      "SAP returns its own error format.",
+      "CPI/T2",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "9. DERIVATIONS AND VALIDATIONS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "There is a real window",
+      "Delivery 9004953077 was created at 11:08 and changed at 11:19, so deliveries genuinely are edited between creation and goods issue.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Two different cut-offs, do not mix them up",
+      "The business rule is before batches are chosen. The system limit is later - once goods have gone (status C) nothing can change. A delivery can have batches chosen and still not have gone, and that gap is exactly where the batch rule matters.",
+      null,
+      null,
+      null
+    ],
+    [
+      "SAP will reject",
+      "A quantity larger than what is still open on the purchase order.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "10. GENUINE CUSTOM / ORCHESTRATION GAPS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Gap",
+      "What it means",
+      "Owner",
+      null,
+      null
+    ],
+    [
+      "Which line to target",
+      "Main line or split line. Has to be decided and tested.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "What happens to batches",
+      "Whether SAP clears them or refuses, and whether the reset is SAP behaviour or a portal rule.",
+      "Functional/business",
+      null,
+      null
+    ],
+    [
+      "How If-Match behaves",
+      "Needs proving.",
+      "ABAP/SAP and CPI/T2",
+      null,
+      null
+    ],
+    [
+      "Service activation and roles",
+      "Nothing can be called until this is done.",
+      "Basis/security",
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "11. ACTIVATION / RUNTIME STATUS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Status",
+      "Not activated in QS4 and no ",
+      "$metadata",
+      " has been fetched. Nothing on this sheet has been called.",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "12. REQUIRED TESTS",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Positive",
+      "Change the quantity on a delivery where batches have not yet been chosen, and confirm it is accepted. Then do the same on one where batches have been chosen, and record whether SAP clears them or refuses.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Targeting test",
+      "Run the change against the main line and against a split line, and record which SAP accepts. This is what settles the open question above.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Negative",
+      "Try changing a delivery after the goods have gone and confirm SAP refuses. Try with an out-of-date If-Match value and confirm SAP refuses. Try more than the order has left and confirm SAP refuses.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "13. DISPOSITION",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Classification",
+      "STANDARD + CPI/T2 ADAPTER. RUNTIME-UNPROVEN.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Final disposition",
+      "This is the right service and the right field. Before building: decide which line to target and find out what happens to batches.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Evidence",
+      "QS4/700 read-only, 2026-08-16",
+      " - evidence/06_LIKP_9004953077, evidence/07_LIPS_9004953077.",
+      null,
+      null
+    ]
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "PostingDate": "/Date(1787616000000)/",
+  "DocumentDate": "/Date(1787616000000)/",
+  "GoodsMovementCode": "01",
+  "MaterialDocumentHeaderText": "CNF API TEST",
+  "to_MaterialDocumentItem": [
+    {
+      "Material": "000000000017035056",
+      "Plant": "1022",
+      "StorageLocation": "FKGU",
+      "GoodsMovementType": "101",
+      "QuantityInEntryUnit": "2",
+      "EntryUnit": "EA",
+      "PurchaseOrder": "5600084239",
+      "PurchaseOrderItem": "00010"
+    }
+  ]
+}

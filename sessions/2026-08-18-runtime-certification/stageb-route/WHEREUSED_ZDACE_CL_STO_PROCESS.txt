@@ -1,0 +1,33 @@
+﻿ANSWERING|Use of a Type -> Yes (include components)
+RESULT_TITLE|Where-used Class/Interface ZDACE_CL_STO_PROCESS (14 Hits)
+SBAR|
+  Classes/Interfaces
+  Short Descript.
+  ZDACE_CL_STO_PROCESS
+  Private Section
+  ADD_MESSAGES
+  Add Messages
+  COMMIT_LUW
+  Commit LUW
+  CONSTRUCTOR
+  DELIVERY_CHANGE
+  Delivery Change
+  DELIVERY_PGI
+  Delivery PGI
+  ROLLBACK_LUW
+  Rollback LUW
+  RUN_WEIGHT_IN
+  Weight In Process
+  RUN_WEIGHT_OUT
+  Weight Out Process
+  SHIP_COST_CRT
+  Shipment Cost Create
+  SHIP_DOC_CHG
+  Shipment Document Change
+  SHIP_DOC_CRT
+  Shipment Document Create
+  Public Section
+  Program
+  Short description
+  MZACE_WEIGHMENT_I_FORM
+  Include MZACE_WEIGHMENT_I_FORM

@@ -1,0 +1,1421 @@
+# 17 Aug - translate (English)
+duration: 01:40:31  |  language: hi-IN  |  turns: 1418
+
+[00:00:01] S9: Actually, there are four, Bharat, there are four, shipment costs are also released.
+[00:00:01] S1: It happens.
+[00:00:09]      Okay.
+[00:00:10]      So, there are four in total.
+[00:00:16]      Hello.
+[00:00:17] S6: Yes, yes, shipment. But you can do one thing, you can trigger it only on shipment cost release. Cost document means that then
+[00:00:17] S9: Yes, yes, Shivan does one thing.
+[00:00:23]      Mani.
+[00:00:24] S6: Correct, yes, like if the shipment cost document, the costing document is created, and the costing is released, then we can trigger the call. So that one call will be saved. Brother, the number is not going to change on the release. It is being released, so we can give the final on that only. So just do this much, Bharat, the shipment cost number, post-release, just put a bracket, this much. So that we, one call, like once, what happens is that the shipment cost, first shipment is created, right? Then shipment cost document is created, and that cost document that is
+[00:00:54]      It gets released. So, the number you were looking at that day, the number that was made as 20 something.
+[00:01:00]      We will push that when our shipment costing document is released.
+[00:01:05] S5: It will also come in the points written above. It will come. Yes, yes, yes. It will also be added to this.
+[00:01:08] S6: Yes, yes, yes.
+[00:01:12]      Okay?
+[00:01:15]      Hello
+[00:01:16] S1: So this that was just now Shwet, come here, in this room. So this that is in Guntur, come to Guntur Shwet, come to your place. You have to decide whether it will run in parallel or one by one, I have no idea about that. No, it cannot run in parallel, right?
+[00:01:17] S6: Come here, in this room.
+[00:01:21]      Come to Guntur, Shobhandu, sit with us.
+[00:01:25]      Yes.
+[00:01:30]      No, it can't run parallel, right? It will only run sequentially.
+[00:01:33] S9: It will run sequentially, not in parallel, it depends on each other.
+[00:01:38] S6: These will be sequential, not parallel. One activity will be completed, like first your shipment document will be created, that will go, after the shipment document, the shipment costing document will be created, the costing document will be released. All these activities will happen one after another. First
+[00:01:54] S9: Until you know the shipment document, even in parallel, even though until you don't know about the shipment number, how will you create the shipment constant?
+[00:01:54] S6: When the shipment document
+[00:02:02]      No, that won't happen. This is a water flow process. When one is complete, then the second process will be initiated.
+[00:02:03] S9: So what are you getting?
+[00:02:07]      Yes, and sequentially also, but you can't proceed with all the data in one sequence. You have to proceed one by one only.
+[00:02:15] S6: Correct.
+[00:02:16] S9: Because when your shipment number comes, then that number you have to pass for the shipment cost clearance.
+[00:02:24]      That one time payload you
+[00:02:24] S1: We needed help with designing because in UI there is only one create invoice call. In that, we have to put four calls now. So, will it be four in SAP by putting one call? No, it won't happen, it won't happen, it won't happen.
+[00:02:35] S9: It won't happen, it won't happen.
+[00:02:37]      See, to do it, you know, what Hemant ji was saying, that we can proceed with that automation which is already currently running. But what is in that is that error handling will not be possible. Error handling, the student will not get the event. There, a problem arises. Happy path is fine. So let's say
+[00:02:37] S1: See, look.
+[00:02:46] S6: But what is in that is that
+[00:02:49]      Varun Handling
+[00:02:56] S9: The shipment number has been created, but it's not being created further due to some reason.
+[00:03:00] S6: Even if it is being made, even then if your status, what is this, it is made in very quick succession. From a shipment document to shipment cost release, it happens very quickly. So suppose this shipment document is gone, the cost is not gone, then there will be a mismatch of the document, then you will have to apply some reprocessed traders or get a separate job that reprocesses unsent documents again, so that will be a problem, that's why what you are saying is that
+[00:03:30]      If you send a call to SAP and process the entire background, that part will become a little difficult to process, given the volume and given the status synchronization.
+[00:03:04] S9: Yes, yes.
+[00:03:15] S7: It will cost ₹10000 for the document.
+[00:03:42] S1: So then it should be kept in SCPI actually. SCPI will get a call to create an invoice and SCPI will in turn call three SAP calls, four SAP calls.
+[00:03:50] S9: I am saying S.A.P.C.P.I.
+[00:03:53]      How will this happen? No, this is a Union Party.
+[00:03:53] S4: It's not like that.
+[00:03:55] S3: This will go individually, three, three will go there as well. How will it go individually? How will three link with one?
+[00:04:02]      No, it doesn't happen at all.
+[00:04:02] S1: No, it doesn't happen. It will be low, right? This will be work flow, high flow in SCTI. First, he will do PGI. After PGI success, he will do shipment number. No, no, no.
+[00:04:11] S9: No, no, no.
+[00:04:12] S3: No, no, no, no, no, upside down, upside down.
+[00:04:12] S9: No, no, no, you wrote it backwards.
+[00:04:15] S1: Did you write 'total'?
+[00:04:16] S3: Finally, PGI.
+[00:04:17] S9: First shipment number, then shipment cost, then shipment cost, then placement.
+[00:04:19] S3: Speak in reverse order. First shipment cost, number of PGI. No, no, first shipment.
+[00:04:26] S9: The treatment number is written. The treatment has been approved.
+[00:04:28] S3: The shipment will be approved, right?
+[00:04:30] S9: Release, right?
+[00:04:31] S3: Yes, it will release, meaning.
+[00:04:32] S9: Yes.
+[00:04:33] S1: There is a treatment number.
+[00:04:35] S9: Cost, cost series, cost series.
+[00:04:39] S1: No, no.
+[00:04:40] S9: Why it is important, why it is important.
+[00:04:41] S1: Important.
+[00:04:43] S5: No, not create invoice, PGI, PGI is remaining, PGI is first.
+[00:04:44] S9: No, no, PGI is remaining. PGI is there first, then invoice is there.
+[00:04:47] S1: Okay, okay.
+[00:04:50]      It's okay now, right?
+[00:04:51] S9: Yes, AC.
+[00:04:53] S1: So actually, these five calls are being made.
+[00:04:57] S7: During investigation.
+[00:04:59]      Delivery.
+[00:04:59] S1: Delivery bill.
+[00:05:02] S7: The delivery has already been done, right?
+[00:05:03] S9: No, no, delivery and change delivery.
+[00:05:04] S7: Create delivery and change delivery, both. Create and change delivery.
+[00:05:11] S5: Yes, bring it.
+[00:05:12] S7: So, does the shipment number and system cost duration take time? No. It happens immediately.
+[00:05:15] S5: No, immediately quick succession.
+[00:05:17] S7: It happens immediately, so it can happen on a single call.
+[00:05:19] S9: How are you?
+[00:05:20] S7: When the MPA calls, the function model they are calling, when it creates the system shipment number, it will immediately call for
+[00:05:28] S9: How will he know which answer number to pass? He needs input, right?
+[00:05:33] S7: He is bringing the input, right? Like, he is bringing the input.
+[00:05:35] S9: I have brought it to create a shipment number. Payload, you have passed that. Shipment cost, do shipment. You have put all the payloads sequentially.
+[00:05:45]      Now it is processing the shipment number first initially. The shipment number that will be created, that number will generate, that number will be passed in the shipment cost creation. Yes, so that's it. So the system will get to know.
+[00:05:54] S7: Yes, so that's the same.
+[00:05:56]      System free function is available.
+[00:05:58]      It will fall into place.
+[00:05:59] S9: Yes, then the code will have to be written.
+[00:06:00] S7: Yes, that code is written here.
+[00:06:02] S6: Father.
+[00:06:05]      What are we doing? Actually, in SMP, all these activities are happening in a preparation process. But we have to see that the data of the activities happening in SMP, we have to send it to the CNF portal.
+[00:06:20] S7: No, before even we send that, we will keep it consolidated. When we have this call, a function module, a function module will go and do these three or four steps.
+[00:06:30] S6: No, you look at it like this.
+[00:06:33] S7: Okay. Now pass this.
+[00:06:35] S6: Yes, now what is it that the very first call will be
+[00:06:40] S9: Yes.
+[00:06:47] S3: Synchronous.
+[00:06:48] S7: Stop, it's raining here. If you do it like this, it will take a lot of time.
+[00:06:49] S3: Wait.
+[00:06:50]      Bold Raj.
+[00:06:53] S6: Now, what is the architecture? Here, like, there is a list, in this, there is a pending order.
+[00:06:59]      Okay? In this pending order list, an order number one, two, three is visible. I will select this as a CNF and create its DI. So, when I put in the create DI event from here, what will it do? It will pick up this order and create its delivery. Okay? What will go into the sync pack? This sync delivery number will come. It's a sync call. So, from here, it takes the payload, taking this order, what response back did we give? This is a request.
+[00:07:16] S7: The delivery number will come.
+[00:07:25] S6: This is the response. What is coming in this response? Divide number.
+[00:07:29] S5: This is the design number.
+[00:07:30] S6: Date.
+[00:07:31] S5: Quantity.
+[00:07:33] S6: Quantity.
+[00:07:33] S7: It will come easily.
+[00:07:34] S6: Which is okay, right? Now this happened. After this, this is number one. What happened second? Modify or change delivery. Okay? Now what happens in modified DI is that they give four or five inputs. Like we are putting in that, that we are putting in batch. Along with putting in batch, we are putting in transporter information. And what else are we putting in now?
+[00:07:35] S7: Vigilance.
+[00:07:47]      Quantity will be there.
+[00:07:57] S6: We are giving.
+[00:07:57] S9: Look at the dash, LR number, LR date.
+[00:07:58] S1: Look at the base.
+[00:08:00]      LR number, LR date.
+[00:08:02] S6: Best LR.
+[00:08:03] S9: All the oils are taken out.
+[00:08:05] S1: Vehicle number, meaning quite a lot of vehicle numbers, then your transporter.
+[00:08:06] S9: Vehicle number.
+[00:08:08]      Sir, your transporter
+[00:08:11] S6: Transporter, we put all these details in and send them back. When we send these details back, DI.
+[00:08:18] S7: Same DIP jack will be available.
+[00:08:18] S6: So, at that time, we know that in the request
+[00:08:22]      This DI number that was created earlier, why? Because what you see in the list is the DI, and this was requested. Now what is the response? The response is the primary DI number that was returned.
+[00:08:24] S7: Correct
+[00:08:31]      Primary D.I. number.
+[00:08:32] S6: Yes, so we are not taking anything in response because this has been updated, right? So this is just DI updated.
+[00:08:38]      The same DI number will come. The same date will come. And the status will come that it is an okay code. This is the code field that has changed. Okay. Now, the next step in the CSF portal, these three things are not there. That is, the creation of your shipment document.
+[00:08:43] S7: Correct
+[00:08:44]      This is the four-field switch that has been changed.
+[00:08:57] S6: Your shipment costing document and cost release.
+[00:09:01] S7: Yes
+[00:09:01] S6: And PGI, this is not a step, not a step. It is directly saying create invoice.
+[00:09:02] S9: PGI, this is any
+[00:09:04] S7: It is not a step.
+[00:09:06] S9: This is straightforward.
+[00:09:08]      There isn't even an invoice, right?
+[00:09:09] S7: No, he says.
+[00:09:10] S6: Hey.
+[00:09:10] S9: Hey.
+[00:09:12] S7: GN Voice
+[00:09:12] S9: It is in number one.
+[00:09:14] S6: Cream.
+[00:09:14] S7: No no, today for this project for CNF, there is a... I am talking about the portal. So in the CNF portal, we are talking about it.
+[00:09:17] S6: I am talking about the portal, which is in the request portal. So now the third step, the portal, the CNF portal, it triggers create invoice. So when the create invoice comes, the create invoice will come to some DI number. DI is the same as above. Taking this DI, what will it do first? It will create a shipment document. Shipment document is created. Now this shipment document will go forward, its costing document will be created, costing will be released, GI will be done, after that invoice
+[00:09:47]      It will be available. Okay? This invoice will be synced responsibly.
+[00:09:30] S7: D.I.K. number. D.I.K. number.
+[00:09:36]      Will make a shipment.
+[00:09:37]      Correct.
+[00:09:47]      The invoice will be created. Okay?
+[00:09:52]      This whole process takes about twenty to thirty seconds normally. For the total process.
+[00:09:56] S6: Yes, for the total process. Yes, every response will come with invoice number, invoice date, invoice quantity. This has reached back. So, the precursor events of number three are four. Shipment document, costing document, costing release, and PGI. Now, you think that if we put all four in a sequence, okay? Suppose
+[00:10:17] S7: Whether it happened or not.
+[00:10:18] S6: This happened, this happened, it's stopped here, the invoice won't be made. So the invoice won't be made, and we won't even know where we stopped because the person at the portal, who is sitting there to see if my invoice is made or not, he has no visibility whatsoever be the case, that this happened, this happened, this happened, or this happened, what's left. Okay? So that's why we were breaking it into parts, that in the request response session, this this happened and that document.
+[00:10:20] S7: So, the inverse will not be formed.
+[00:10:36]      Hmm hmm, okay.
+[00:10:42]      So that poor person will get your call, right? Your call will be much bigger.
+[00:10:44] S6: Call.
+[00:10:45]      It will increase more. But these are all standard APIs. So we are not doing anything with it. Normally, we do this. We are doing it in SAP. We are doing it in SAP.
+[00:10:50] S7: Normally, we do this. We are doing it in this process. We are doing it in this way. We do this in four as well. Meaning, your point is absolutely correct. Suppose the system loaded. It broke in the hub. It got shipped. Then it couldn't return.
+[00:11:02] S6: Now what to do then? Then a separate job will have to be assigned, which will look at the status of the unprocessed document, that okay, in this one, what happened is that my document was not made, the shipment document, so this will create a shipment document. In the other one, the shipment document, the background job, the background job will be created, which will take it specially. Then the cost was not made, then the cost was made, so it was not released, if it was not released, then GI is stuck. So to do all of these, then we have to assign another job. If the job is not running, then another job has to be assigned for it. Then there is job monitoring, now what is this, it will become a critical job. This will be a problem. Okay, this
+[00:11:32]      This is not ours. No, what is in this is that you are necessitating additional manpower in a way, why? For monitoring. And these are critical events.
+[00:11:12] S7: Yes, yes.
+[00:11:14]      Background job, a background job will be created that will take you happily.
+[00:11:23]      And there is a job.
+[00:11:25] S9: If it doesn't work, then we have to bring another job for him.
+[00:11:30] S7: This will be a problem.
+[00:11:31] S9: This, this is not our approach, this is not.
+[00:11:41] S7: Correct.
+[00:11:43]      So, can you break two events in just two minutes?
+[00:11:45] S6: We won't be able to do it even in two events, the reason being that this is the precursor. Meaning, this is the starting event. One, you say this, this is two A, meaning three.
+[00:11:55]      3A, 3A is this, 3B is this, 3C is this, and 3D is this. Now, even if we break it down,
+[00:12:04]      So this is the problem. You, I understand your point is that you separate the shipment document, and merge the costing document and costing release. In fact, we were just talking about this. So this part, we will move it to three instead of one, four, two, and three because he doesn't care about this, the CNF, that my costing document that has been made has been released, it is relevant for that. If the costing document is made and lying there, it is of no use to him because GI will not happen. After the costing document is made, the cost will be released.
+[00:12:34]      Only then GI will happen. So we can merge these two calls. So instead of four, it will become three. That point we were telling Bharat just now. Give me a minute or two. One will remain, this is imperative.
+[00:12:13] S7: So this
+[00:12:44] S1: It is imperative.
+[00:12:47] S7: Instead of five, instead of five, it will be four three.
+[00:12:47] S1: Instead of five,
+[00:12:48] S6: It will become four three. Correct, correct. Now, instead of four, it will become three, not five because after this, e-invoice and e-way will also come, we keep that separate. But here, shipment document would be one call, shipment costing creation, costing document creation and costing document release would be one. We will group these two and make them one, and when this cost is released, only then it will go. Then, as soon as GI happens, we, yes, as soon as the issue happens, we will send an update, and after this happens, an invoice will be created.
+[00:12:50] S9: Three instead of four.
+[00:12:56] S7: It's different.
+[00:13:10]      PG, yes, PG, yes, it starts from Bhoskote.
+[00:13:17]      PG and Invest can't be clubbed. That is a one-step method, a one-step change.
+[00:13:19] S3: That is a one-step job.
+[00:13:23]      No, PGI invoice is yours.
+[00:13:25] S6: An accounting document will also be generated in the PGI. Okay? And an accounting document will also be generated in the invoice. The PGI invoice should not or cannot be clubbed. It should be kept separate.
+[00:13:27] S7: Hmm.
+[00:13:34] S3: The transaction code is different, right?
+[00:13:36] S6: Transaction means, these transactions are different for everyone. The thing is that what is being achieved by breaking this and this? I mean, these two are fine, logical grouping seemed to be happening, but GI and invoice may not be a logical group. In the same group. So this part can be in three instead of four, but we won't be able to do less than that.
+[00:13:36] S4: The meaning of the report is that the transaction
+[00:13:57] S9: I shouldn't even do it, I mean, not recommended because today everyone is liking Happy Kwath. Right now the volume is also increasing. When you want to streamline the process, then that is a correct approach.
+[00:14:03] S6: The volume is also increasing now, our
+[00:14:07]      Want to streamline.
+[00:14:10] S7: So, it will be three, it will be three.
+[00:14:11] S6: will be made. Now this is made, GI is done, after that invoice is made, so in the invoice you are sending invoice number, sending invoice quantity, sending invoice date, right? Along with whatever all these are until the old ones, so the document flow that he had created, Figma, just quickly show that document flow Figma.
+[00:14:30] S3: I will answer, I had one or two questions.
+[00:14:32] S6: Yes, we will sit down after completing it once. So, are we clear up to here?
+[00:14:33] S3: The teachers should sit.
+[00:14:36] S9: It will go into the document flow.
+[00:14:39] S6: Now look at this, what's here? Yes, go a little to the right side, left side, Bharat, left side.
+[00:14:50]      So look, what have they shown? This just needs to be repositioned, your GI will come later, right before the invoice, GI will come. Okay, so first your order, after the order, delivery, after delivery, shipment document number, after shipment document, shipment costing document, after that GI, after GI, your invoice, after invoice, e-invoice, after e-invoice, e-way bill.
+[00:14:52] S7: Yes.
+[00:15:09]      noise
+[00:15:15] S6: Okay?
+[00:15:18] S7: So, I think Varun, you are listening, right?
+[00:15:18] S6: Hello.
+[00:15:22]      Yes, okay.
+[00:15:22] S7: Yes, okay.
+[00:15:23] S3: I will get this done, this drain support. Okay.
+[00:15:23] S4: I will get this done.
+[00:15:25] S6: Okay.
+[00:15:25]      So this will remain. Now, let's do it up to here. What will you do now?
+[00:15:30] S3: Now tell me one thing, when you say that Happy Go Path, is it that I clicked on the invoice and everything happens automatically? Is that what you're saying? So I'm saying that if we directly hit the invoice API and you, that information is stored on different tables, whether it's in the KNVV table or any table. So, just based on that invoice number, can't I get data from those tables and display it, or can I get it checked?
+[00:15:58] S9: How can I get it done? A person can get everything done.
+[00:16:00] S3: Yes. I will write it in the code. If I write it in the code of the same API that when this document is generated, go to those respective tables where the shipment is being updated. If it is not equal to blank when passed, then it means my response is okay.
+[00:16:02] S9: If I am one
+[00:16:16]      I am telling you, you can do anything to do it.
+[00:16:17] S3: Yes.
+[00:16:19]      Hmm.
+[00:16:20] S9: But it does not mean that he is a correct bowler.
+[00:16:22] S6: No, no, this is not logical at all, man. It's not logical, it's not logical. Let's talk about this. What you are saying is, the invoice, you are saying in the payload of the invoice, okay? Basically, what is it? Where is the API of the invoice or API being called? Is it being called in SAP? It's just a program. Okay? What will it do? It will create an invoice. What does it need to create an invoice? DI. As soon as you put DI in the payload and call that program, it will come out through that same error. What will you do?
+[00:16:23] S9: It's not logical, and it's not logical either.
+[00:16:27]      Then that
+[00:16:36] S7: Absolutely.
+[00:16:49] S3: What will you do? That's what I want to understand in today's date, that today when you make a DI, you change the DI, you give SP zero one etc. by changing it, okay? After that what step do you take? After that directly you
+[00:17:00] S9: It becomes our own, that program means inside the PCI.
+[00:17:02] S3: Meaning, inside the PGI, the steps, sorry, inside VL zero two N, as soon as you save, all of this gets created, and the invoices go separately to be made.
+[00:17:07] S9: They were doing everything.
+[00:17:10]      No, no, nothing.
+[00:17:11] S3: Then, I mean, I want to see that same thing in the system once.
+[00:17:14] S9: See, that work is happening within the asset.
+[00:17:16] S3: Yes, but these tables also need to be updated.
+[00:17:17] S9: If you come from outside, you have to understand a lot of things. Suppose my interface breaks in between. So how will we handle those cases?
+[00:17:26] S3: Sir, that is a different thing.
+[00:17:27] S9: No, no, that's not a separate thing. This is part of the interface.
+[00:17:29] S3: That interface breaking thing is a connection.
+[00:17:32] S7: No, I think he is saying that if it is happening in standard. Yes. It is happening in standard.
+[00:17:36] S3: Yes.
+[00:17:37] S9: No, no, yours.
+[00:17:38] S3: No, that
+[00:17:39]      No, no, yours.
+[00:17:40] S7: It has to be standard, right? Currently, the standard current that you are creating with the PGI, is the invoice automatic? No, sir. No, the invoice is automatic.
+[00:17:40] S3: It's happening, right?
+[00:17:46]      No, sir.
+[00:17:46] S9: This.
+[00:17:48]      It also has the same thing written on it. Oh man, that
+[00:17:49] S3: Hey man, understand all that technically. So, they are saying that in today's date, we are automatically creating things inside SAP. So, it means that somewhere in Bhabhi, it is written in standard Bhabhi, right? It is written in standard Bhabhi, enhanced in that place inside the screen, that I will save, on save, this action should be performed.
+[00:17:57] S4: It is written in the rest, right?
+[00:18:07] S3: So I am also saying the same thing, and where is that written? Is it written on the invoicing, on the copy, or is it written on the copy of VL02N?
+[00:18:14] S9: Write it down, okay, VL02M, VL02M.
+[00:18:15] S3: No, no.
+[00:18:17]      So this means we are currently playing in BLDI itself. So after that, the invoice is being made separately. The invoice is not being made from there. For the invoice, we have to go to BF01.
+[00:18:29] S8: They don't open any screen after the screen.
+[00:18:32] S3: So, involved.
+[00:18:33] S7: No, he is saying.
+[00:18:35]      So, he is calling Bapi.
+[00:18:36] S3: Get the BL02M1 invoice done as well.
+[00:18:36] S8: Get the BL02M1 invoice called as well.
+[00:18:39] S6: The rest is being called, sir, so in this also.
+[00:18:40] S7: The rest of the calls are happening, sir. So, make the rest of the calls on this as well.
+[00:18:42] S9: So, I am explaining the same thing. See, first of all, see where you are coming from. You are coming from some other interface. Let it come, let it come.
+[00:18:42] S6: Voice, voice.
+[00:18:45]      See, you.
+[00:18:50] S7: Let it be, let it be.
+[00:18:51] S9: So it is not that I have to follow the same approach.
+[00:18:55] S7: No, no, I am not saying that.
+[00:18:56] S9: No, I am not saying that. It's not right, sir. It's not meant that. You have to understand that the negative parts also. That if a negative case happened, how will he handle it? He will also understand. Okay, I understand.
+[00:19:03] S7: Okay, we will go if suppose in the current case.
+[00:19:07] S6: The brain fails, it fails in the current case as well.
+[00:19:08] S7: The brain fails. It fails in the current case as well.
+[00:19:11]      Even in the current case, it is failing. But it is happening within SAP. His point is happening within SAP. It might still be happening within SAP, it might still be failing. So that is a process to follow.
+[00:19:11] S6: It also happens in that case.
+[00:19:13]      SAP is happening. His point is happening within SAP. It must be happening within SAP even now. It must be failing even now.
+[00:19:20] S9: He is a person, right? He sits and watches the service, gets it fixed himself. He calls us at twelve or one o'clock at night.
+[00:19:22] S6: The CM himself sits and gets it fixed.
+[00:19:24] S7: Call us.
+[00:19:25] S6: You have to eat properly.
+[00:19:26] S7: If we pay this much, then
+[00:19:28] S5: Yes, simple.
+[00:19:29] S6: We pay this much.
+[00:19:32] S9: If you believe that it is user dependent then you can proceed with this way. If you want that it is streamlined, no interventions required until unless the exception cases, then you have to proceed with the correct.
+[00:19:32] S5: If you believe that it is user dependent then you can
+[00:19:36]      If you want it to be streamlined, no interventions are required unless there are exception cases, then you have to proceed.
+[00:19:44] S3: Okay, I agree with this point of yours.
+[00:19:47]      Sir, is it?
+[00:19:47] S7: You can write excession. Sir, you can write excession.
+[00:19:49] S3: I am saying the same thing, I agree with you on this point. It is possible that there might be an error in this. I am not going into automation. I will write three APIs.
+[00:19:55] S9: Yes, in that.
+[00:19:56] S1: I will write the API.
+[00:19:58] S3: That's where the error occurred, then how will I fix it?
+[00:19:58] S6: In this.
+[00:20:00]      Then I
+[00:20:01] S9: That's what I'm saying, then he will get an event-like experience.
+[00:20:04] S3: Exactly. That's what I'm asking, it will just show 'unticked' here, it will show a cross on it that this event did not happen. Okay? But in the current event that is going on, what will happen is that after completing the system, it will show the status that these three did not happen or these two did not happen, then we have to repush it.
+[00:20:22]      Or whoever calls him and says, calls him and says, in today's date, this is it, this is your overall part. That if you don't make an invoice once or for any reason, then it is not in the hands of the CNF. Even in today's date.
+[00:20:23] S4: Will he call him and tell him?
+[00:20:37] S3: Hey man, this
+[00:20:37] S6: Oh man, if we go to do this, then our businessman will go crazy to take the call. But even in today's date, this is not there. No, no man, even in today's date, this problem is not there. I used to work by logging in.
+[00:20:43] S3: He will go crazy if he takes the call, but even in today's date, it's not happening.
+[00:20:45] S9: What happens today, in today's date, we have guided him so much. I have informed him that this is happening, click here and the work will be done. I have given training to 3200, 3500 customers, meaning 3500 of our CFA agents, I have given training, I have come sitting down. And I have trained so much, I know that 50,000, 50 types of issues come up for us. That is trained, the user has written it manually. That if this comes, press this, the work will be done, if this comes, press this. Apart from that, issues don't come at all.
+[00:21:15]      He tells us, that is practical.
+[00:21:15] S6: This tells us that it is not possible.
+[00:21:18] S9: It happened like this, I did it like this.
+[00:21:18] S3: It has been trained in SAP. It has been trained. It has been trained in SAP. Now, but if an error occurs somewhere here, we haven't written its provision yet.
+[00:21:20] S9: I have become trained. I have become trained like this too.
+[00:21:26]      I didn't write the provision. That's what I'm saying. That's not even a part of it.
+[00:21:28] S3: He is not even a part of this, he is not even a part of this.
+[00:21:30] S9: I will have to do it, right? Now, if I have to do that, then I will get the screen.
+[00:21:31] S3: Now that has to be done, so it's a screen design. That line has to be changed.
+[00:21:33] S9: That is not my concern. My concern is that the system should design properly.
+[00:21:36] S3: Should you design?
+[00:21:38] S6: Screen design is there, but will this system be made according to the business or will the business run according to the system?
+[00:21:41] S3: But sir,
+[00:21:43]      Your point is absolutely correct. But this designing that was being finalized, they have given it to us as finalized.
+[00:21:49] S9: No, no, see, have you ever signed off on this?
+[00:21:52] S3: Yogesh ji, do we have the final one?
+[00:21:55] S9: You must have heard, if you take a sign-up, that your process should handle all the cases. You will say, man, it didn't happen, you go and... No, no, what you're saying is absolutely right. It means it means...
+[00:21:57] S3: Yes.
+[00:22:05]      No no, you are absolutely right. It means we are doing the same work twice. Once, once we sat with Yash and did the designing.
+[00:22:09] S9: Once
+[00:22:11]      Don't do it. Oh man, you are going in the wrong way, in the wrong direction. That is the problem. First, our requirement is that we equip the CFA agent in our T2 to proceed with the invoicing.
+[00:22:24] S3: Now, Deepak, take it.
+[00:22:25] S6: Deepak, right? I am calling.
+[00:22:26] S9: So if it doesn't happen there, how will you do the event call? Yes, I am with you, sir. My work is
+[00:22:28] S3: Yes, I am with you, sir. My job is to give you the solution and to be with you.
+[00:22:33] S7: Look, this is with you.
+[00:22:34] S3: But the problem is that, sir, you understand this thing, if any issue comes up in this event, then that cross will keep getting applied further. How to reactivate that cross?
+[00:22:43] S6: It won't go further, right? Yes, I mean, it will stop there. Why, suppose your shipment costing document is created and not released. Then it will show the status in this, right? It will show the cross that it wasn't created.
+[00:22:44] S3: Yes, I mean, it's not that.
+[00:22:49]      So in this, it will show the status, right? It will show the cross that it wasn't made at all. Meaning, it means this didn't go forward.
+[00:22:54] S6: Correct.
+[00:22:55] S3: Now, to send this further, to re-initiate this particular document flow further, we didn't do that here.
+[00:23:02] S9: I will have to do it, right?
+[00:23:02] S7: Don't get deceived.
+[00:23:04] S9: It's a beautiful process, man.
+[00:23:04] S3: Okay.
+[00:23:05]      Exactly sir, I am with you. I am saying that this is being made for this reason. To make user life easy.
+[00:23:09] S9: Logistics, etc., will be done there. To make user life easy. How many users are there? How many users are there? We are dead as of today.
+[00:23:16] S3: Sir, I am with you, I am with you.
+[00:23:17] S1: Tell me one thing, Yogesh ji, how many times does an error occur? Look, man, look, once
+[00:23:21] S9: Look man, look, if you make a mistake even once, then it's a mistake.
+[00:23:22] S6: There is one event in a day, and the event is that you, I mean, in a day, completely... I have seen this.
+[00:23:29] S9: I have seen that at least four thousand calls come in our logistics during the day. Do you understand four thousand calls? One person says, sir, do mine first, do mine first, will that happen?
+[00:23:40] S7: No, no, in this case it will be handled easily. Suppose an error occurs somewhere, right? Reprocess it. A button will be given there. Reprocess. No, it will be checked what the current status is. Meaning, what is the current status of what has been sent? If that is an error, then that error will have to be fixed by someone, otherwise.
+[00:23:44] S9: Reprocessed there.
+[00:23:46] S6: This is Pushpa.
+[00:23:51]      If there is an error, then that error needs to be fixed.
+[00:23:55] S3: Will I have to give a report right here in front of it? Will I have to give a code? Where the explanation of that error will come, I mean. That's it, that's it.
+[00:23:58] S7: Will have to give.
+[00:24:02] S9: Oh, it's already in the over. From the cross, from the cross, it's a dot ball, right? In that, as you bowl the over, it will tell you. So, it will showcase that error. Moving forward, moving forward.
+[00:24:05] S3: What is that?
+[00:24:09] S7: He will tell him.
+[00:24:12]      It will move forward, it will move forward, what is it, it will rectify it.
+[00:24:15] S9: No, no.
+[00:24:15] S1: No, no.
+[00:24:17] S9: Super.
+[00:24:17] S1: We are discussing, but hasn't all this account been done? No, no, man, it hasn't been done.
+[00:24:20] S9: No, no, no, I didn't hit him, I don't know what happened. So Deep, Deep, I had asked him.
+[00:24:21] S3: No, no, I am not like that.
+[00:24:23] S1: So Deep, Deep, I had asked you.
+[00:24:27] S9: I asked Deep this, how does the user get to know what is the exact issue on this? Tell me below, here in red, so you told me that if there is an error in it, if you hover, it will showcase that error, right? Yes, it's covered below, right?
+[00:24:43] S3: Yes, this is also below, this is our cupboard.
+[00:24:46] S9: I mean, if it comes here, then it's over.
+[00:24:46] S3: If it comes here, then it's over. Okay.
+[00:24:50] S9: I discussed it, I know. Okay. Now the question is that let's say an error occurred in the e-invoice. You already have provisions to correct that e-way bill e-invoice error. But before that, let's say an error occurred in the shipment number, a cross came, an X came. So how will you be correcting that?
+[00:24:52] S3: Okay.
+[00:25:08] S4: Sir, we are currently doing this through CNF Logic Secondary Logic.
+[00:25:11] S9: No, I mean, in every case, even if the UAN was not found or there was some other reason.
+[00:25:17] S6: Technical errors can also happen, right? Interface errors can happen, network can happen, anything can happen.
+[00:25:22] S9: The button is thinking that we have to throw them.
+[00:25:24] S6: In that case, we should trigger it from here, right? Let's say there is some data error, understand. Right. In that case, you have to go to the secondary, it will do it. Okay? But if this error is a synchronization error, the system sent it, it didn't update here, or the system didn't send it, or there is a network issue, anything. So all these cases should not go to the secondary logic logistic person, right?
+[00:25:47] S4: So sir, our business requirement rating, no no, that's understandable. In that, these cases, we know, as much as we know, we correct this.
+[00:25:49] S6: No, no, I understand that.
+[00:25:55]      In which there will be a function part. This, this part will be yours as part of system development design, you as a partner or you as a system integrator, you tell that we can tackle all these things by this way. Okay? The function will tell you its requirement that I have to push this data from here, these should be my processes. Now the process has not happened, if it has not happened due to technical reasons, then the function person will not be penalized for this, right? Why should the call go to him?
+[00:26:25]      Why would he take 2 hours, 1.5 hours? Right? So that part is for us.
+[00:25:56] S4: Thank you.
+[00:25:57] S7: This part will be from the technical point of view.
+[00:26:03] S5: In design.
+[00:26:28]      This is your expertise, basically. You have consulted.
+[00:26:33] S6: You have consultant.
+[00:26:34] S5: Consulting.
+[00:26:35] S6: Consulting and you are from SDL, sir.
+[00:26:35] S5: Consulting and you
+[00:26:36] S9: Yes.
+[00:26:38] S3: Connect everything with expertise, sir.
+[00:26:40] S6: No, no, no, man, it's not like that here.
+[00:26:40] S3: Here.
+[00:26:42]      Everything will then be connected with expertise.
+[00:26:43] S9: Then the matter will be resolved. So what is the purpose? To save the license. Everything is expiry, yes. Yes, so it should be available, cover.
+[00:26:46] S3: Everything is expired, yes.
+[00:26:47] S6: Yes, so you should connect with Kabal, you should connect with expertise, that is what Hivex is getting paid for. No, no.
+[00:26:52] S9: Expect.
+[00:26:53] S3: No, not from the side of Hivex, it should connect from the other side as well.
+[00:26:55] S6: So, when people are saying, we are the ones telling, we are telling. This is the fourth level of phone feeding.
+[00:26:56] S9: Whenever we are telling, we are telling.
+[00:27:00] S3: Yes, yes sir, I don't know, the spoon-feeding is happening.
+[00:27:02] S9: I don't know that scoop thing is not because
+[00:27:03] S6: It is, it is, I am being very open and candid on this platform and in fact I am saying it everywhere, this is spoon-feeding.
+[00:27:11] S3: What sir, what spoon-feeding is in this, sir, I didn't understand.
+[00:27:13] S6: If you have to tell each of the puppies one service, then isn't this spoon-feeding?
+[00:27:18] S3: Otherwise, we are saying we will find our own.
+[00:27:19] S6: They had brought it, the effigy that we saw, what did they bring?
+[00:27:23] S3: No, no, one second.
+[00:27:23] S6: No, no, one second. We are explaining things at each level, even in SD. One is the complete level.
+[00:27:28] S3: Sir, I can debate on this too, but please do it logically, don't argue. No, no.
+[00:27:30] S6: Do it, man, do it. Have a logical debate, don't argue.
+[00:27:35]      Absolutely, debate logical arguments.
+[00:27:35] S3: Arguments, that will depend, right? I am saying right now that we will stray from the point. Right now, we will focus on this. We will do that too, if there is free time sometime. I don't have free time.
+[00:27:43] S6: I don't have free time. I have plenty of work to do. I don't have time for all this, sorry, for the debate and all that. If you have time, you can do it.
+[00:27:52] S3: So sir,
+[00:27:53]      If you feel like we have to tell you.
+[00:27:56] S6: Absolutely.
+[00:27:57] S3: If we are not able to do it, then sir, what is this thing? I don't know what agreement you had with the SOW, I also know that. Okay. Secondly, you had this design done, right sir?
+[00:28:03] S6: So we will read and come.
+[00:28:04]      What happened?
+[00:28:08] S3: When you got this design done, you said that if there is any error in rectification, what would be the process for rectification?
+[00:28:14] S0: What will happen for rectification? What will the rectification issue be for? Rectify what CNF can do.
+[00:28:19] S3: Like, suppose this comes across.
+[00:28:21]      The invoice was not created for any reason.
+[00:28:24]      So then what will be the next meaning after that? What will the CNF agent do in that case?
+[00:28:28] S0: If the vehicle number is not correct, then what is the vehicle number error? I had said that, right? What is the error? What error is it throwing? It could be master data.
+[00:28:32] S3: Error, anything can happen.
+[00:28:35]      It could be master data or some wrong entry has been made. Yes.
+[00:28:39] S0: One second, yes. If it's master data, it won't reach this stage; it will stop at the first stage. If, in case, it's master data. What does master data mean? No root, no price, no this, no that. These are all the things inside master data. If there is some issue inside it, it will stop at the first stage; it won't do anything further.
+[00:28:47] S3: Yes.
+[00:28:58]      Correct.
+[00:28:59] S0: Secondly, within these stages, this
+[00:29:00] S1: You understand, if an error comes from here, if an error comes in the statement number, then what will we do?
+[00:29:04] S3: If it is in the shipment number.
+[00:29:05] S1: It is on the statement number.
+[00:29:05] S0: It is on the shipment number, right?
+[00:29:07]      He will throw a share of the shipment like that.
+[00:29:08] S1: Like, it will throw an error, the shipment number. That is not the shipment number.
+[00:29:11] S0: Yes, so that error, that error will be visible here, that's what happened.
+[00:29:15] S3: If it is visible, then what will the CNF agent do after that? I wanted to ask this.
+[00:29:18] S0: If it is in the hands of the CNF to fix it, then it will fix it. If it is in his hands.
+[00:29:22] S3: How will a person fix it here? I mean, how will they do it?
+[00:29:25] S0: It depends on the error type, right? If the vehicle number is entered incorrectly, then there is a problem in the e-way bill, right?
+[00:29:32] S3: The new way of doing things hasn't been created yet, right, sir?
+[00:29:33] S1: No, this is not a matter of the heart.
+[00:29:35] S6: Now you come here, come on, come on, I'll tell you. Bharat, one minute, one minute, Yogesh, wait a second. What will we do? Bharat, one second, one second, Bharat, one second, just one second. Give me just one second. This is, the error is that SAP pushed data for the shipment document number, or the shipment costing has been released, SAP pushed it, but it hasn't been updated here. Technical, pure technical error. 503 error, your response is 503 error. Okay, 503 error, now tell me, what will the function do and why secondary logistics what will it do? That should be here.
+[00:29:35] S0: Now you come here, come on, come on, I'll tell you. Bharat, I'll tell you. Bharat, one minute, one minute.
+[00:29:40]      What will you do?
+[00:29:55] S7: 503 is remaining. In your response, 503 is remaining.
+[00:30:01] S9: What will he do if he is not enrolled in this?
+[00:30:05] S0: No, no, what are you saying?
+[00:30:06] S9: I am saying this. If the data transfer didn't happen on a technical basis, then it must be some kind of process mechanism, some kind of something, a reprocess button, or something.
+[00:30:06] S6: I am saying this.
+[00:30:15]      Data came from SAP. The process is running perfectly. There is no problem with the master data. What we did was, we put all the details in the delivery, vehicle details, transport details. After that, we further processed it. The shipment document was also created. After the shipment document, the shipment costing document was created, the costing document is released, that also happened, and SAP sent the trigger to the portal. Somehow there was a network problem, a receiver problem, a CPI issue, and the shipment costing document was not updated here. So, the shipment
+[00:30:45]      The crossing you are seeing here, this one ending with four, four, five, three, you will see a cross in its place, okay? Now, if you see that cross, then we are saying that for these types of technical issues, which are purely technical snags, there should be an option here to receive a request response, rather than
+[00:31:02] S0: It is triggering.
+[00:31:02] S6: Yes, rather than CNF, it should be involved with secondary logistics, that now what will he do in this? He will look and say the document is made, now what will you do? Right?
+[00:31:13] S7: This is a part of your
+[00:31:14] S6: Your design, error handling, correct, your error handling.
+[00:31:15] S7: What is the name of the leader?
+[00:31:19] S3: No, if we talk about PGI, that in PGI stock, no, no, stock is not available in PGI.
+[00:31:21] S6: Anyone, anyone.
+[00:31:24]      Okay, there are two types of errors, technical function.
+[00:31:24] S7: Okay, there are two types of errors.
+[00:31:26] S3: No, no, I'll give an example. Like, sir, you gave an example, I'm giving one too. While doing it in PGI, he didn't get stock, the COGS entry wasn't generated. Okay? If the COGS entry isn't generated, he'll say, 'Brother, here, it can, the document cannot be posted.' And then, yes, there will be a stock issue, whatever the error is. And if you look at it like this, if there are as many line items, in those line items, where there's no stock, it shows. Now, what is that?
+[00:31:40] S0: Yes.
+[00:31:42]      That is also there.
+[00:31:49]      Hey, no, no, no, friend, it will have a heading of an error, right? Now, let me give you a simple example, brother. Yes, yes, yes. When we book an order, we enter all the details. After that, when we save it, it shows an error in red below: 'Route not available, price does not exist.' It gives a different type of error, a specific error, right, because of which it is inside the error. So, the error that is here, note down that error, how many possible errors there were before. Okay. Inside that, there will be a few things that
+[00:32:19]      That is only functionally possible. It cannot happen without involving the secondary team. Or it cannot happen without involving the company's person. This is one thing. And the second error is that you sent everything correctly. You did not get its posting done correctly. It may happen that sometimes it happens that even after pressing OK, we have to press OK again to do it.
+[00:31:52] S3: Yes.
+[00:31:54]      Yes, yes, yes.
+[00:32:07] S6: They give specific rates, right?
+[00:32:09]      Correct.
+[00:32:21] S5: Yes.
+[00:32:25] S6: It cannot happen.
+[00:32:39] S3: It gets delayed, this is called a delay process.
+[00:32:42] S0: Sometimes, yes.
+[00:32:43]      If that error can be managed via this portal, you give a functionality error. If it cannot be managed, nobody is saying you to develop that. Within which, within which there is functional involvement. That there is no root. That there is no stop. That however many there can be, how many functional type errors there can be, tell them, give them the list.
+[00:32:51] S2: Yes.
+[00:33:01] S7: Yes, yes.
+[00:33:04] S9: Pollution means normally, like a stock, your invoice, GST.
+[00:33:07] S0: No no sir, GST loan, we have it somewhere or the other, yes speak.
+[00:33:11] S9: No, I am saying it's a waste of time.
+[00:33:12] S0: The list of errors, you see,
+[00:33:13] S9: It's not possible, we will give you what is coming frequently. Now, I also know about the frequently coming one. The thing is, I
+[00:33:16] S0: Yes. The thing is, I am again, see I am saying I am not getting into technical discussions. But the thing that cannot be managed here, throw that SAP error here. The error that can be managed from here, that's why we created this screen, right, so that your error is being created where it is being created.
+[00:33:23] S7: Yes, yes.
+[00:33:37]      I mean, I mean, see, there is a functional issue. Exactly, the error that you see in red below, you will see it clearly. And that you can send it to our internal SL guy, whatever the process is.
+[00:33:37] S3: Meaning.
+[00:33:50] S0: No, no, it won't be sent. Okay, whatever the process is, whatever the process is.
+[00:33:51] S7: Okay, whatever the process is, whatever the process is.
+[00:33:54] S0: Send it, send it means then then the CNF agent will coordinate with the logistics. Okay, but but
+[00:33:58] S7: Okay, but suppose that error didn't occur, but there are so many layers in the middle of the integration, it can occur anywhere.
+[00:34:06] S6: This is very much normal when you are starting with three systems.
+[00:34:06] S0: Hey, when your three systems start, this is a very critical issue, error handling. Okay? This this this is going to be a big part of this error handling. So what to do, talk once and close it, rather than discussing like this, like this, like this. First, you tell the genesis, how many types of errors are there? One will be the issue of antipyretic, one will be on which CNF can fix what. What things can CNF fix? That will be one.
+[00:34:12] S7: Hmm, okay.
+[00:34:32] S6: Non-food, we categorize it like that, it's a second categorization.
+[00:34:33] S0: The second categorization is that which does not have any role of CNF inside. Yes. Inside which, inside which CNF has no role, then you, a CNF's backend portal is coming. That error with the same message that inside this, CNF, CNF has no role but this is stuck here. This is torn because of whatever reason. Okay, you can show that same error there.
+[00:34:37] S6: There is no control. Yes, and that function, yes.
+[00:34:56] S0: I am just saying that discuss it and do it, rather than saying this is yours, this is mine.
+[00:35:00] S7: No no brother, they were discussing the same thing. Services are not available. Services are not available. So two thousand rupees.
+[00:35:03] S3: It is available.
+[00:35:06]      So what are you saying, where to show this, sorry, where to show that word?
+[00:35:09] S0: The backend portal, show it here.
+[00:35:10] S4: From where we are going to manage those responsibilities.
+[00:35:12] S0: Hey friend, you will show it here, right?
+[00:35:13] S3: Here, you
+[00:35:15]      Yes, yes, yes.
+[00:35:16] S0: Here, the error that SAP is throwing, you will show that here. SAP, which has nothing to do with CNF. It is along with this that the admin portal of CNF, where you are showing how to manage access. The control you are using, right? Yes, the admin screen. Admin screen. Show the error inside that. That's what we were talking about for OMS today.
+[00:35:18] S3: Yes, yes.
+[00:35:21]      Yes.
+[00:35:30]      Yes, the user admin screen, the user admin screen.
+[00:35:35]      Normally, what happens is that when these kinds of errors come up, a small report also comes out. Based only on the delivery number, this is the error, this is its error, this is its error, they give a button ahead of it for repush. The place where it got stuck, it will be repushed from there.
+[00:35:50] S0: So, it's like this, we got an integration.
+[00:35:53] S3: Now, what is the problem? What is the problem? If you are saying, again, you are saying there was a problem in getting the information back, meaning you got stuck. Anything. Okay, right? Now there is a response. But my button will trigger the API response, API again, but it will go there and see, it is already done. Brother, the process has already happened like this. While returning, while bringing its response, it burst. It didn't update at all, so will my this trigger go to do that process again, whether it is shipment cost or something.
+[00:36:23]      It doesn't happen.
+[00:35:59] S0: Anything.
+[00:36:21] S6: There is a shipment cost, something like that. Yes, it happens. It doesn't happen. Services are available in SAP by doing Get Status. You can also get the document status. But I
+[00:36:28] S3: But in which case do I have to take the status, what is in which case, how will I know technically?
+[00:36:32] S6: You will have to handle this.
+[00:36:33] S7: So you will have to handle that.
+[00:36:34] S3: I told you about the function.
+[00:36:35] S9: Meaning.
+[00:36:36] S3: I mean, no, no, no, if mine, like I did, now I got this technical issue in the response time, in the response.
+[00:36:44]      There could be some technical issue.
+[00:36:46] S9: No, there are no technical issues like that. There is nothing. Sir, you, I
+[00:36:47] S7: There is nothing.
+[00:36:48] S3: Sir, you, I, you.
+[00:36:49] S0: There won't be any error if you are not getting it from CPI, CPI anyway. Friends, friends, friends, brother, one second, if you are reaching a consensus, then phone a friend, man. Call a friend and ask the ACP people, KD or ask someone, how best, hey brother, I am not saying anything wrong, you are right, you are right, I am not saying this. I am saying that if you are not reaching a consensus, if there is no confusion, rather than discussing this, that, this, that, this, that, or
+[00:37:19]      Ask Martin Sir.
+[00:36:52] S3: Yes, yes.
+[00:36:52] S9: Friends, friends, friends.
+[00:37:03] S7: Yes, yes.
+[00:37:21] S0: First thing, if there is no answer, then take SAP's phone-a-friend service. You have SAP's, right? I have the answer.
+[00:37:29] S3: I have the answer. If you want to listen, I can do it. This is the answer.
+[00:37:34] S9: Brand new basic.
+[00:37:35] S3: Okay, right? See, this is this.
+[00:37:35] S9: Okay.
+[00:37:35] S7: No, no, see, see, this is this this you have handled in. Okay, you tell me, you tell me, you please tell me. So you are asking questions, you know, I am telling you.
+[00:37:39] S3: Okay, you tell me, you tell me, you tell me, please tell me.
+[00:37:41]      So you are asking questions, you know, where errors happen, right?
+[00:37:43] S0: Give it to everyone. Yes. Give it back after your other projects are finished.
+[00:37:44] S3: Yes.
+[00:37:48] S0: They gave the access card to these people.
+[00:37:49] S3: Thank you so much.
+[00:37:51]      Okay, what happens in this case, sir? When we repush, right, then the number that is ready, first of all, I will get its table checked in the status. In this table
+[00:38:02] S0: One one sorry yes, I'll just take a one or two second break, I'm going back, I won't sit here. In today's time, we have managed CRM very well. If, let's say, there is a CA dealer of ours or a sales officer, whoever it is, if he requests for a ledger and if it is thrown from the front, from the next side, error, meaning from the SAP side, then that button gets disabled. For five minutes, the button gets disabled, correct? Look at that. So, in that way, a little bit, in that way.
+[00:38:32]      We have already in that way, in the entire landscape, so today we also do error handling in CRM. So if someone gives a request and a response doesn't come from the front, it is possible that a document has been created in SAP, it got stuck in the middle, this is one possibility. Or someone may not have gone to create a document in SAP itself. Correct, okay. In either of the cases, how to manage this error, you can disable the button for 5 minutes, 10 minutes, or whatever it is. At the same time, you can give that error to the admin portal that an error has occurred here, whatever has occurred, in that
+[00:39:02]      You have to sit down and decide something, it won't happen like that. So, some stop-gap arrangement has to be kept in between. They handled it very well in CRM. That button gets disabled for 10 minutes.
+[00:38:17] S7: I request for this.
+[00:38:25] S6: 5 minutes, 5 minutes.
+[00:38:30]      We are already handling the entire landscape in that way.
+[00:38:44] S5: Yes, yes, yes.
+[00:38:48] S3: Correct.
+[00:39:03] S5: It will have to be done, it won't be possible in this.
+[00:39:12] S3: Thank you.
+[00:39:13] S0: So that we don't have to make multiple requests.
+[00:39:14] S1: Multiple requests cannot be made.
+[00:39:15] S0: Multiple requests were not made.
+[00:39:17] S7: That is for.
+[00:39:18] S3: It's coming, it's coming, it's coming. It's coming, sir, it's coming, 100%.
+[00:39:18] S0: It's coming, it's coming, it's coming.
+[00:39:20] S1: 100%. I, I'll summarize it. See, we need to change this a little bit. The problem is we are generating an invoice number and showing it directly to the CNF user. So that becomes synchronous. In synchronous, error handling becomes a little bit tricky because all this is going step by step. So ideally, we should run an async process in which we run all these calls, and error handling will be better than that, and I mean, if I have to repair the process and trigger it again, I can do that too.
+[00:39:50]      There, we will show the message to the CNF user, 'The invoice generation is in progress, please come back later.' We will show it like that. And at every stage gate, again, I was talking about stage gates inside this. If there is some error, then this stage gate that we are creating new to send PGI and all the things, we will paste the error inside it. So that error will also be visible, and then...
+[00:39:59] S7: I was also talking about the stage wave inside this. If some error comes
+[00:40:12] S1: Because it is an async business process, it can be retriggered again. So that will be our solution to do it.
+[00:40:20] S3: No, in addition to what Bharat is saying, we can also do this, that if there is a technical error in the response right now, if I see an SAP number somewhere in our backend, somewhere in our payload, then I will not send it back at all. I will get a query written from my place in the code itself, that first go and check if this field is equal to blank in the payload, the response that is coming. If it is blank...
+[00:40:43] S6: You didn't get a response, right? Then what to do? You didn't get a response at all. It didn't reach the CPI.
+[00:40:45] S3: Sir.
+[00:40:46] S9: Got the CD.
+[00:40:48]      Kamal ji, I am saying this. No, multiple chain chain multiple. That is your functional or technical can manage it, that is not the question. Problem, see, one is the handling part, second is that let's say your interface has gone down.
+[00:40:50] S3: No, multiple chairs, chairs are multiple.
+[00:41:04] S7: Sameer.
+[00:41:05] S3: It is possible, it is possible, absolutely, absolutely.
+[00:41:05] S7: It could be.
+[00:41:06] S9: Absolutely, absolutely.
+[00:41:07]      So what will you do in that case? How will you synchronize your data? Synchronize it basically.
+[00:41:12] S1: We will run the async process.
+[00:41:15] S9: Yes, he is saying it right, he is saying it right.
+[00:41:16] S1: He is saying it right, he is saying it right. The dashboard will remain, this is one thing.
+[00:41:18] S6: It will be there, this thing, until when my process happened, after which it is pending, and in that, select this and that, and you get it done.
+[00:41:24] S9: By doing that, you will bring the data in bulk and update it. Otherwise, what will happen if the AC does it?
+[00:41:29] S7: If it does AC, will you keep AC on both sides, meaning you have sent it to SAP now? Then in reverse, after a while, will you send data to Commerce from SAP?
+[00:41:39] S1: I, I, I, my screen is visible, I, I am three.
+[00:41:41] S7: Yes, yes.
+[00:41:42] S3: Yes, that's what I want.
+[00:41:46] S1: Hello?
+[00:41:46] S3: Yes, it is visible. Your audible and screen is visible.
+[00:41:47] S7: Yes, it is visible.
+[00:41:49] S1: Yes, so this is a business process, async. As soon as CNF agent creates an invoice, the async business process will start. This is in hybrid. What will the business process do? It will have steps. First step is create
+[00:42:08]      Okay, right, you are right.
+[00:42:09] S6: Right, right, write the shipment document, shipment document.
+[00:42:13] S1: Yes, there will be a create shipment. The create shipment will go and trigger SAP, right? Now, every step when I am calling SAP's API, it is triggering my P1 again. So what will this do? When SAP triggers back to P1.
+[00:42:31]      It will return.
+[00:42:34]      Shipment number. Else error. Otherwise, I will store the error in the high grace, it will stop right there, my business process will exit.
+[00:42:41]      Tomorrow, I have to get it repaired from here again. There is a provision in I-Bills which says repair business process. So, with these steps, he will create the shipment again, then it will be successful, he will come back, and then he will move forward again. So, every step you can repair. That is only for technical errors. That is for technical errors.
+[00:42:55] S7: That is true, that is only for technical errors, that is for technical errors.
+[00:42:59] S6: That is for technical. Correct. Yes, this is non-functional. Non-functional. Integration, technical, whatever it is.
+[00:43:00] S9: Yes, this is.
+[00:43:03]      Integration technical, whatever it is, Bharat. So Bharat, let's say your step one didn't happen, you cannot proceed with the step two. That rule you need to define in that your high bridge.
+[00:43:14] S7: Explain this, let him do it, then it will be difficult to understand.
+[00:43:14] S9: Understood?
+[00:43:15] S1: Let it do, it will function. That which is high-bridge, that is called a repair business process.
+[00:43:20]      What does the repair business process do? It retriggers from the step it's stuck on. This step gets retriggered. This becomes successful, then it will go to step two.
+[00:43:25] S9: Hmm, this is quite easy.
+[00:43:32]      So this
+[00:43:32] S1: So, we will schedule this conjo now here.
+[00:43:35] S9: Hmm, just who says what.
+[00:43:36] S1: Once a day we will schedule a con job. So vice versa, vice versa.
+[00:43:39] S9: So it will be vice versa, vice versa. Bharat, it will be vice versa. The rate is yours and mine. So...
+[00:43:49] S7: Yes, so it's down like this, right? So then, so then it's repair, right?
+[00:43:52] S9: Even then, it's a technical error.
+[00:43:54] S3: Then it is technical, right?
+[00:43:57] S7: I didn't find that, so I didn't find it. It is there in commerce.
+[00:43:57] S9: I met him, so I met him, it is there in commerce.
+[00:44:01] S3: That's a win-win situation for us.
+[00:44:01] S1: It's a win-win situation.
+[00:44:02] S7: No, no, it is there in commerce, even if it is repasted, you have to retrigger that.
+[00:44:03] S1: It is there in commerce.
+[00:44:06] S7: But it's technical right now, we'll go to the functional later. You do it, complete it.
+[00:44:11] S1: Yes, so all these, now here is the shipment cost. In step two, what will step three be? My create PGI will be. What will step four be? My create invoice will be.
+[00:44:21]      And here, this will be my success. This ends my business process where my invoice will come. And at whatever level it fails, it will reprocess from that level.
+[00:44:27] S6: And at whatever level it fails, it will be reprocessed from that same level, right? Repair means it will be done. Repair happens from there. Okay.
+[00:44:31] S7: It happens in a different way.
+[00:44:33] S1: Yes, correct. On every single step, the SAP trigger is being back to T1. So, on every step, I am getting a notice on T1 about what all is happening inside SAP. So this is the case, suppose. Wait, wait, wait here now.
+[00:44:42] S7: So this is the case. Suppose, wait, wait, wait here, wait, wait, wait. Now suppose here in step two you are dependent on SAP to fix this issue. There is some data issue.
+[00:44:54] S6: No.
+[00:44:55]      Listen, we are talking about only non-functional technical things. That part also comes under functional errors. First, Bharat, correct me, you are only talking about this technical thing, right?
+[00:44:58] S7: Only non-functional technical things.
+[00:45:04]      Okay, okay.
+[00:45:11] S1: I am talking about technical aspects. The code that you have, we will have to resolve the error code etc. ourselves. Maybe like that. The functional one will be dependent, right? It's user-dependent. We cannot do that here. We will not run that business process. We will not repair it.
+[00:45:17] S3: The functional one, they will be dependent, right? They are user dependent.
+[00:45:24] S7: So you won't do that, but if you are not capturing that error, that will be an asynchronous call, right?
+[00:45:31] S5: No, no, no, no.
+[00:45:34] S7: Rules, that.
+[00:45:34] S1: I am capturing the error everywhere. Here, the error is being captured everywhere, that error is being updated in T1. If there is any such error that I am not able to fix here.
+[00:45:36] S7: Okay, okay.
+[00:45:40]      Hmm hmm.
+[00:45:44] S1: I will identify with an error code. Here, the document flow that you have, this one, here you will see something like this: Non-functional error in SAP cannot do anything, you will see something like that here.
+[00:45:54] S6: Hmm hmm hmm.
+[00:45:56]      No, in this, sir, you will have to do this, right?
+[00:45:57] S1: You will have to do it, right? Then you will have to send a message like this, if this is a functional error, right? Please
+[00:46:00] S6: Then you will have to put a message like this, if this is a functional error, please contact Secondary Logistics for further resolution or a meaningful message like this will go for that error. The specified code for the functional error that will come. But for this, you give me a
+[00:46:04] S4: There is a full secondary.
+[00:46:14] S3: Correct. But for this, you give me a list, Sudhanshu ji, give me a list of functional errors, I will get it put in the back end here. If I get this, then it is a functional error for me.
+[00:46:25] S9: You will have to do handling in that, you can't just do hardcore, it will take about 4 hours. Do you have a standard error?
+[00:46:28] S3: You have the list of standard error code functional, right?
+[00:46:31] S9: You have to handle the system.
+[00:46:33] S3: Oh brother, you must be getting so many emails about what kind of functional error it is. That's what they are saying right now. What is Yash's name?
+[00:46:37] S9: That's what they are saying right now. What is Yash's name? We will give it at a classified level. You give it, yes, whatever comes out, that will be added.
+[00:46:42] S3: You give one, yes, whatever comes out, we will add it.
+[00:46:45] S9: No, no, that's why I'm telling you, this is not like adding or deleting the screen errors and all.
+[00:46:52] S7: Correct.
+[00:46:53] S9: The system has to pass that correct error.
+[00:46:55] S3: Sir, how will the system know if it is functional or non-functional?
+[00:46:58] S9: I am getting written messages that what is my custom message.
+[00:46:58] S3: Right?
+[00:47:00]      Yes, tell me.
+[00:47:02] S7: Bharat, Bharat, now Kamal is saying that how will a person be able to handle.
+[00:47:10] S3: Not Kant, what is the system? System Kantable.
+[00:47:12] S7: System cardable. Then there, then that means you have not understood. No no, wait wait.
+[00:47:16] S3: That technical, well yes, it can be completed.
+[00:47:19] S7: That that that means what Varad ji said that the error handling that you get in commerce through a technical, that you understood? Yes, that. Now you understood how today how the system is defining?
+[00:47:21] S3: Hmm
+[00:47:26]      Yes, that's how you understood how today.
+[00:47:29]      Yes, I know that, but functionally, has there been any error other than this?
+[00:47:33] S7: Other than that, it is functional.
+[00:47:36] S3: Anything can happen. Yes. Bharat. Yes. Yes, Bharat, speak. Exactly my point, he will speak. Yes, speak Bharat. Yes Bharat, you speak.
+[00:47:38] S7: Yes, Bharat Bhoj.
+[00:47:41]      Yes, correct.
+[00:47:44] S1: Yes, so now we have to change this screen. So, this pop-up that you have, we won't be able to show it because this is a business async process that needs to be run. To do proper handling. So, the invoice number you are showing in this pop-up, not this one, only this one will be created. The second one. Processing invoice, please check back again in a while.
+[00:48:04] S4: Okay.
+[00:48:06] S1: Because this, see, this has become complicated now, and it is complicated because of multiple. I am saying from day one that it is complicated. We cannot do this. This, you know, has to be run as a single business process. That is the only way out.
+[00:48:10] S3: I am saying from day one that it is complicated.
+[00:48:17] S5: That is the way out.
+[00:48:21]      Okay.
+[00:48:24] S6: Okay, what is its dashboard designing? Will you show it now, Bharat? Do you need some time for that?
+[00:48:31] S1: Whose dashboard, whose?
+[00:48:32] S6: Once this is async, then a dashboard will be created for it, right?
+[00:48:37] S9: I have a culture.
+[00:48:38] S6: And
+[00:48:38] S1: No, this is the dashboard, right? Here, not in this one, in this one, there is document flow, right?
+[00:48:40] S6: Yes, not in this, not in this.
+[00:48:42]      Correct, correct, but you won't be able to accommodate in this, right? You need to redesign this. Redesign means you'll have to accommodate it a little bit.
+[00:48:50] S1: I mean, if you hover here, you will see an error. Maybe there will be a small button here where you will speak, otherwise that too. One minute, Bharat, I am showing some error message here, right?
+[00:48:57] S3: Hey, hey, I am something.
+[00:49:00]      That's right. You are absolutely right.
+[00:49:02] S6: No, but what is in this, now your three steps because you are doing this async and you are saying business process. Business process consists of three step processes. From shipment documents to PGI, it was a three-step process, correct?
+[00:49:18] S1: Five steps are done. Four steps.
+[00:49:20] S6: Whatever four steps, for invoice creation, let's go with four steps. Okay? Now, the four steps that are there, go back once. In the same document flow.
+[00:49:30]      Now, what is it here that this processing one, will it keep showing?
+[00:49:36] S4: No, this will be visible after a while, as soon as you finish it, then it will be visible.
+[00:49:39] S7: Then it will be finished.
+[00:49:40] S6: No, when suppose I, as a CFA, clicked on create invoice, okay? So what you are going to do, on create invoice, your one business process is triggered. Business process consisting of three or four steps. Okay? Shipment document, shipment costing document, costing document release and invoice. So these four of yours, shipment cost, before that shipment document, after this PGI and invoice, these four will remain round.
+[00:50:06] S4: Yes, until this process is happening, until then, as soon as it appears on the screen, if the process is happening at that time, then we will show the processing. If it is refreshed and completed, then it will show 'processed' here, meaning a green tick will appear.
+[00:50:16] S6: Hmm, okay, so where will the repair option go then?
+[00:50:20] S1: We are doing the repair part through a con job, right? We are doing it in the backend. This one here, this backend is happening through a con job.
+[00:50:27] S7: Suppose a user, I mean, oh no, that is okay. It's running in the backend. You are doing it in the backend. But suppose a user wants to repair it, then you have to select it and give a button. No, the ground job once a day.
+[00:50:28] S1: I mean, oh no, that is okay. You are doing it in the backend.
+[00:50:36]      After doing that, give a button.
+[00:50:37]      No, there is an option from the clone job. That is, of course, within it. Right, one is our error code. On the error code, yes, that's what I said.
+[00:50:39] S7: That is, of course, within that.
+[00:50:43] S9: On the error code, yes, that's what I was saying, error code plus.
+[00:50:45] S1: So, how is that? So, that has to be shown. Non-functional SAP error.
+[00:50:47] S9: So, it will have to be shown.
+[00:50:52] S1: We will repair this.
+[00:50:53] S7: Hmm, okay, perfect.
+[00:50:55] S1: There is an error code, which is SAP Functional Error.
+[00:50:59] S6: Okay.
+[00:50:59] S1: So we can't do anything about it, it's an error in SAP itself.
+[00:51:04]      Right? So, we will not repair that. Correct. For this, you will pass on a message. Please do that, then you can go to someone in SAP and fix it.
+[00:51:06] S6: Correct. So, for this, you will pass on a message.
+[00:51:11]      Correct, so let's talk about this non-functional first, go back once. So, the non-functional thing, now the first one, okay? In this, whatever repair will be, this repair, whatever is at a particular frequency, 10 minutes, 15, whatever it is, you will apply that, right?
+[00:51:24] S9: It will go in bulk. Yes, meaning collected all the, no, once a day.
+[00:51:26] S6: Collected all these. No, once a day is going to be too much time.
+[00:51:31] S4: That will move.
+[00:51:31] S6: 10 minutes, 10 minutes.
+[00:51:32] S1: I write it four times, I write it like that. No, no, I don't write it like that.
+[00:51:35] S4: No, no, every minute.
+[00:51:36] S6: 10 to 15 minutes would be the maximum because your entire processing is
+[00:51:40] S1: This screen will be completely changed. I will tell you what the screen has become. Will we get so many errors?
+[00:51:41] S3: It will be completely changed. I will tell you what the screen has become.
+[00:51:45] S9: Yes, absolutely, man, let's assume and proceed.
+[00:51:45] S6: Yes, yes, absolutely, absolutely. Assume and proceed. Until you see a period of six months, Bharat, you see, there will be a bit of a stabilization phase. In this, there will be a lot of initial teething issues.
+[00:51:54] S9: This will be like a variable, Bharat, so that will be decided based on that scenario.
+[00:51:58] S1: How much is the regular one?
+[00:52:01] S6: So this non-functional error has occurred, in this, the cron job will repair it. The functional error, here you will have to give a meaningful message that you know, contact secondary logistics for further resolution of this issue or something like that.
+[00:52:14] S1: No, no, you will give the error message, sir. No, we will give the error message. We will pass the error message correctly.
+[00:52:16] S6: No, we will give that.
+[00:52:21] S9: So, Bharat.
+[00:52:22] S1: Bharat, SAP will return this final.
+[00:52:23] S9: Yes, so SAP will pass the correct error message and based on that you have to display and even though in the notification or kind of disclaimer it will be that you have to connect, you have to connect with the secondary logistics.
+[00:52:37] S6: That will have to be concatenated. See, the messages of a standard SAP are something like this. Message class, message number, and then comes the deficit of stock SL in this. Okay? Now, this message is
+[00:52:48] S1: Which is, we will do the airport next. Yes, we will do the airport next.
+[00:52:50] S6: Yes. Error code mapping plus concatenate your this line or whatever we will do finally, that mapping. Okay.
+[00:52:57] S0: We will finalize that.
+[00:52:58] S1: Okay, okay.
+[00:53:00] S4: So Bharat, just for my understanding, we are handling the error message in this right now, and do we need to do anything else?
+[00:53:07] S3: I'll tell you. Bharat, go to that screen once. Yes, one second, this entire screen will change. Because in this screen, what you want to see, right, what their concept is, functionally, that at which step I need to go and retrigger the repair one. That in normal cases, when in STO cases, how it works, I'll tell you. That when we make something, when you make this DL etc., then here your DL number comes. DL number has come. On this, we will give hyperlink. When hyper
+[00:53:37]      If you give the link, a screen will open. Okay? Steps will appear on that screen. Oh no no no, this screen
+[00:53:41] S1: Oh no no no, this screen will remain like this. Oh man, Bharat, one second man. The screen will remain like this, why will this screen change?
+[00:53:44] S3: Oh man, Bharat, one second, man.
+[00:53:47]      Oh man, excellent match.
+[00:53:48] S6: The clean will be like that, just those steps, moving them back and forth. No, no, the steps will also remain.
+[00:53:51] S3: No, no, no, it's not like that. What will happen inside it? Bharat, one minute, man, I'm explaining something on the board. Wait, two minutes. I'll tell you. What happens in that is, what I have done is, in other places, I mean, in many places, STF process is implemented. Here, there are stages on the left side, on the right side. And here, there are push buttons. What is a push button? It will show a tick green, tick green, tick green, which is this one. That is by going to individual because what do you have to do? What will the user do? He will repush it from anywhere, right? If he
+[00:54:21]      He has an error somewhere here. And he repushed it from here and repaired it, so it can get stuck on this and also on this. So this individual one, there it is of execute, there every one who was saying asynchronous, it runs asynchronous but keeps ticking on the right side. So the user is confident that my this process is done, this is done, this is done. Now I will take it to the end and the invoice will be created and after that EV bill.
+[00:54:44] S4: But the user is getting to know here, right?
+[00:54:46] S3: Hey Baba, but this tick that you have, it's giving only one.
+[00:54:49] S4: Where am I giving it? Hey, the push button... I'm not giving the push button, right? That's what I was explaining, sir, that it automatically turns off.
+[00:54:50] S3: Okay, there is a push button, but it's not giving a push button.
+[00:54:52] S8: I will buy it.
+[00:54:53] S3: That it automatically
+[00:54:55]      How will you give it in asynchronous?
+[00:54:57] S4: If it's the first one, it will be applied to the second one; if the second one passes, it will be applied to the third one.
+[00:55:01] S3: Hey Baba, on what will it be applied?
+[00:55:02] S1: It's a repair job, right, wherever it is. So where is the repair job?
+[00:55:04] S3: So, where is the repair job, how is the user?
+[00:55:06] S4: Wherever you get stuck, the system will know, right? Wherever the error is coming. One minute, one minute.
+[00:55:06] S9: Wherever
+[00:55:07]      It will be, right, wherever the theater is. One minute, one minute. So, if you look at our SAP system, the design we have done is the same as what Kamal is saying.
+[00:55:16] S4: Correct.
+[00:55:17] S9: Yes, what happens in that is, let's say you have a stuck shipment number, let's say. So after that, the shipment cost will come, shipment release, then PGA, then invoice. So all four steps you need to proceed with that.
+[00:55:30]      Let's say you have first time attempt for repair that, might be initially the shipment number correctly successfully generated but still few more recommend not proceed. So the tick mark will proceed that yes, I mean tick mark, what to show, you can see that, I mean I am just processing.
+[00:55:48] S3: Meaning, what happens is, it will go inside the individual DL, that screen will open, and it will keep ticking.
+[00:55:52] S9: That is also a design, make it.
+[00:55:52] S6: That is the design. You guys tell me, show us the prototype by internally aligning it, what prototype we will see.
+[00:55:58] S3: Yes, yes, yes. You understood, right, what I am now. Sir, that's why I am saying, no, no, don't show it. That's why I am saying, just once, for half an hour, if you get any such HD process reviewed, all these bubbles of mine will be gone. Otherwise, these bubbles...
+[00:56:00] S9: Yes, I will take it out.
+[00:56:10] S6: Otherwise, these bubbles, sorry sir, this, this.
+[00:56:12] S3: Sir, I can't do this. I need the SCL team for the last time. This thing was discussed internally as well.
+[00:56:17] S9: Come, this thing is also discussed inside.
+[00:56:19] S6: Sit down.
+[00:56:21] S7: So then, continue this tomorrow, after looking at it once.
+[00:56:23] S9: No, no, it's okay. It is not shop stubble. No, mine is shop stubble.
+[00:56:25] S3: No, I don't have a sure stopper, but I, I, otherwise questions like this will keep coming to me.
+[00:56:30] S9: Questions will keep coming to me. No, see, it totally depends on you how you want to display. We will explain you the process. Okay, okay, just let me walk through it once. You decide. This sir is inside too, right now.
+[00:56:37] S3: Okay, okay, just give me a walk-through in the SAB once.
+[00:56:40]      Sir, this was also discussed inside just now, a little bit in front of you, please help a little.
+[00:56:44] S6: Okay, we will do that, but let's continue this thing now. Let's continue.
+[00:56:47] S3: Let's move on, let's move on.
+[00:56:49] S6: So Bharat, up to here it's fine. On this part, we are agreeing that you will async it in this way. The rest is not async. This part is async, correct?
+[00:57:00] S1: Yes, yes, this is not the only thing because it has multiple calls. Otherwise, sir, it's a single process, right? The voice number will never be visible to the customer, so we'll have to change this. This will never come, this one. This will be the pop-up, or this one. Second and third.
+[00:57:04] S3: The rest is a single process, right?
+[00:57:09] S6: Yes
+[00:57:15]      What is this third one? Okay, okay, alright.
+[00:57:16] S3: Under maintenance, okay. What you were saying was technical.
+[00:57:21] S6: Okay. Now next.
+[00:57:24] S1: I'll go to the other agenda. Let's talk about the state because we have already made so much. Now the state is very important.
+[00:57:26] S6: No, this is one.
+[00:57:32] S1: So now, the current invoice, this is an invoice document called a stage gate. So now, inside T1, we will have to put two new stage gates. One is the shipment number and one is the shipment cost number stage gate. Otherwise, if we have to merge within this, then we will have to show it appropriately here, but I don't know how to merge.
+[00:57:50] S6: Not two, three. Where is GI in this?
+[00:57:51] S1: Where is GI in this?
+[00:57:53] S9: EJ, EJ will also remain, right?
+[00:57:54] S6: There will be three, right? How will two work? Because you are taking GI along with shipment and shipment costing, right, in the invoice stage gate, so you need three here, right?
+[00:58:06] S1: Right. Three new people will have to be made then. New stage gates will come. What I am telling is new stage gates will be entered into.
+[00:58:09] S6: Yes
+[00:58:14]      Okay. Who did you talk to about this? Did you talk to the head office?
+[00:58:18] S1: Now, after the process is ready, the stage that will be late is currently running.
+[00:58:19] S7: Now, all these processes need to be ready first.
+[00:58:21]      Yes
+[00:58:22] S6: It is still going on, even who told them?
+[00:58:25] S7: Okay, tell them from the takeout, right, Naman ji?
+[00:58:28] S5: This is God.
+[00:58:29] S1: This will be the shipment cost number.
+[00:58:30] S5: And this is also a number, right? When was the invoice placed?
+[00:58:33] S1: There will be one.
+[00:58:34] S5: Yes, yes, yes, yes.
+[00:58:38] S1: So much, okay, they have been given development access, these drains will have to be built.
+[00:58:39] S7: And they have been given development access.
+[00:58:42] S9: No, no, one minute, Bharat, that payload guy, you don't know him.
+[00:58:44] S6: The payload one is not much better.
+[00:58:46] S5: Yes.
+[00:58:48] S6: Okay, Tecno.
+[00:58:49] S9: Yes, it has been done. We had also given the payload.
+[00:58:49] S6: Yes, yes, it has been done.
+[00:58:52] S7: It happens.
+[00:58:53] S8: You didn't let it run, that's why.
+[00:58:54] S5: The same ones, right?
+[00:58:55] S9: Yes, that's what you said.
+[00:58:56] S8: Very beautiful.
+[00:58:57] S7: What I am going to do now, whatever we do, whatever APIs are created, we will write down the APIs once. How many APIs? No, exactly.
+[00:59:05] S3: No, exactly, this has to be written. He is absolutely right. How much change will come, how much is the repair one, how much is the actual create one.
+[00:59:08] S7: How much change?
+[00:59:14] S3: Because we are not picking up any data from SAP, master data. We are not picking up any of this from the DSP server or from T1. This is confirmed. Sir, you this
+[00:59:16] S6: Master card.
+[00:59:21]      Before doing this development, you will give the FSR and all that, right? So in all that, you...
+[00:59:25] S5: So as of now, your invoice goes into T1 only when the e-way bill, e-invoice is ready. Correct. Before that, e-invoice... Okay, e-way bill and e-invoice...
+[00:59:33] S3: Okay, the e-way bill and e-invoice are made together. When the invoice is made, it's made automatically.
+[00:59:36] S5: It automatically becomes.
+[00:59:37] S6: They were already there.
+[00:59:39]      Sir, one minute, one minute, one minute.
+[00:59:41] S8: I want to speak.
+[00:59:45] S3: Yes, yes, yes.
+[00:59:45] S6: This is a good point that has been made because now
+[00:59:47] S5: Because until the e-way is not built, it is not possible to go.
+[00:59:49] S9: Sir, you remember.
+[00:59:51]      Plus, even if the accounting entry has been done, even if it hasn't been done, it doesn't go.
+[00:59:56] S6: Yes, I mean look, accounting, I mean, the invoice will be there only when the accounting is done. Right? So this is fine. But this this point is a very good point because what we are thinking, the invoice one. Create invoice. Create invoice. So without saying create invoice, create invoice.
+[00:59:57] S9: Yes, yes, yes.
+[01:00:00]      Yes.
+[01:00:09] S5: That is, that is from T1 to you.
+[01:00:12] S9: You will never find that in a career. He will always be successful.
+[01:00:18]      Because his e-way billing invoice hasn't been created, so he didn't even go there.
+[01:00:20] S7: So, to develop them completely. Sir, that's why I am not moving forward because you
+[01:00:21] S3: Sir, that's why I am not moving forward because you were stuck on the invoice, my next question is coming.
+[01:00:25] S7: My next question is coming up.
+[01:00:27] S9: Yes.
+[01:00:29] S3: Look at that.
+[01:00:29] S7: Okay, right?
+[01:00:30] S6: No, no.
+[01:00:30] S3: Mahesh, Mahesh ji's name is.
+[01:00:31] S9: Hemanth ji.
+[01:00:33] S3: Hemant ji.
+[01:00:35]      Hemant ji, Hemant ji, and you.
+[01:00:36] S6: Now, the biggest problem in this is that how many times have we seen that our DG GST gets stuck, so even if your invoice has been created, the other person should not see the invoice either, why? Because your stage gate is the same as the e-invoice and e-way bill, and why is it dependent?
+[01:00:42] S9: It gets stuck.
+[01:00:46]      But the next one
+[01:00:52]      And that is a change gate on the dependent.
+[01:00:54] S6: Yes, and who is that dependent? One second.
+[01:00:55] S1: What is the government?
+[01:00:56]      The one who comes here, this one, there is another stage gate involved.
+[01:00:59] S6: No no, one minute, one minute, Bharat, one second, Bharat, one second, let me brief you on what we are doing here. The problem will arise here, suppose the SAP invoice is also made, the accounting document was generated, the SAP invoice is also made.
+[01:01:00] S1: One second.
+[01:01:11] S9: So, it is kept in the cockpit.
+[01:01:11] S6: It got stuck in the cockpit and there, this routing program of ours, or let's say anything, there is a problem with the VST, the response didn't come. So even, sorry, the e-invoice wasn't made. Now that the e-invoice wasn't made, the stage gate wasn't completed for it. So for you, the CNF won't even see the invoice number, and it will sit and keep querying what happened.
+[01:01:15] S9: What, suppose there is any problem with GST.
+[01:01:31]      It is possible, it is possible.
+[01:01:33] S6: And this is a very frequent case, and this, well, an e-invoice has also been created. I say, well, another one has been created, an e-invoice has been created, a problem has occurred in the e-way. Even then, you got stuck, you won't see anything. So, in that case.
+[01:01:40] S8: Hello
+[01:01:42] S7: So, in that case.
+[01:01:43] S8: Yes, yes, yes.
+[01:01:44] S6: Yes, in that case.
+[01:01:44] S7: In that case.
+[01:01:45] S8: What happens in today's date?
+[01:01:46] S7: So this is for, this is for trade, right? This is for trade.
+[01:01:47] S6: This is for, this is for trade, right? This is for trade.
+[01:01:50] S8: No, then change the design a little.
+[01:01:51] S6: It will have to be changed because what is being made today is discrete. Like the three steps that we made there, we made them together, both three together. What we have is, the three steps that are written on the board right now, they became one.
+[01:01:51] S7: It will have to be changed.
+[01:01:56] S9: They made one, they put all three together.
+[01:02:00]      Yes, yes, it is happening.
+[01:02:01]      It happened. It was like that once. It was like that once. It was the same thing. It was said. For trade, for non-trade, apply. That's why I designed it like this. Now later they added that they will take the same number.
+[01:02:05] S6: That's how it is.
+[01:02:08] S7: For trade, for non-trade, we have applied. We have designed it like this.
+[01:02:15]      Only related to CNA will be transferred.
+[01:02:18]      Only related because this is designed for trade and non-trade. The current process is.
+[01:02:23]      Yes.
+[01:02:23] S9: This is a separate one, right?
+[01:02:25] S7: What Hemant Ji is saying now, right?
+[01:02:27] S9: It is of trade.
+[01:02:27] S7: Trade or non-trade?
+[01:02:28] S6: No, just now, if this is the stage gate of T1, then we are going to face the same problem in OMS as well, right? Then I think we need to think of a solution that caters to that as well. Because this is a common problem, it will come to this as well, right now everyone wants CNA, everyone wants shipment.
+[01:02:42] S7: Everyone needs a CNA, everyone needs a shipment.
+[01:02:44] S6: Now, obviously, why shouldn't we think so discreetly? I mean, my point is that we should think for OMS as well as for CNF.
+[01:02:45] S7: Why us?
+[01:02:54] S8: In OMS, you need a separate shipment. I need a separate statement for banking. Then we have RCA.
+[01:02:57] S6: Then we have, then we have to think in that direction.
+[01:03:00] S7: The whole thing changed a little.
+[01:03:01] S6: Okay, yes. So we think accordingly, if it has to introduce a new stage gate, this is the time to do it.
+[01:03:07] S3: Absolutely right. 100%.
+[01:03:10] S6: Okay, now you guys tell me, then we will brief Bharat.
+[01:03:10] S7: Now, now.
+[01:03:14] S9: No, I am saying, like, suppose right now, right now what is
+[01:03:15] S5: Like, suppose now, now what is there, if you route the shipments through T1, then you will be putting extra load on the ship.
+[01:03:18] S9: If you
+[01:03:23] S7: Okay, that is one.
+[01:03:23] S9: That is one, that is one. Second is that your invoice is a separate entity, meaning invoice creation plus accounting, that is one.
+[01:03:32]      Many times the invoice is created but the accounting is not done. Then also there is a problem, so because of this, invoice plus accounting becomes one. E-bill e-invoice becomes one. If we assume this, then that makes the solution of this. That your invoice is created but the e-bill is not, then there will be an error method.
+[01:03:38] S5: Yes
+[01:03:48] S7: But anyway, the car won't move forward if this invoice isn't being made, then it moves forward.
+[01:03:53] S9: Filling the vehicle is a different matter. It fills the vehicle, it fills the water. It fills, it fills everything.
+[01:03:55] S7: It feels different, it feels heavy, it feels like water.
+[01:03:58] S6: Yes, show that. Legally you are right, legally you are right. Without e-way, the vehicle cannot come.
+[01:03:59] S9: Legally, you are right.
+[01:04:03] S7: Without e-waste.
+[01:04:04] S9: Even the car doesn't come. Oh listen man. That's a different thing, that depot's story is different, they will not give the comment on this one. Rather, if they bring this, how many depots will come. Listen, first the thing is that there, until all three things are done, until you know from T1 that the invoice is not made. You trigger money every 10 minutes even though you will not get back.
+[01:04:06] S6: Yes, that.
+[01:04:13] S7: If we bring this, how much will it be?
+[01:04:27] S5: Because
+[01:04:28] S9: Until unless it will not corrected. So we are proposing that invoice plus accounting, if it has been successfully done in SAP, you have to trigger in T2. Through S4 or T1, then you have to trigger to T2.
+[01:04:41] S7: 202.
+[01:04:43]      From business four to four, okay, we will decide.
+[01:04:44] S9: They will decide whether to make a correction in T1 or send T2 directly to S4, that will decide. Second is e-way bill and e-invoice, that is one set.
+[01:04:55]      That is the next step.
+[01:04:56] S6: That will become a business process, which in its terminology, they are Bharat's.
+[01:04:59] S9: He already made it, right?
+[01:05:00] S6: Yes, that's a business process that he created, the S-link one. Stage Gate, call it Stage Gate, call it a business process, which will have two steps: e-way, sorry, e-invoice, and an e-way.
+[01:05:03] S9: It was an airbag, it was a stage gear.
+[01:05:07]      Dwaye, sorry.
+[01:05:11] S7: So first, people write. They write the entire API. If you want, Bharat, if you want to write in this, then write. I mean, process-wise, create, which we saw yesterday and the day before, how many
+[01:05:21] S6: Bharat, Bharat, can you hear me? Bharat, can you hear our discussion?
+[01:05:24] S1: It's a little audible, but I'm having a little difficulty inside.
+[01:05:28] S6: Okay, we will tell you, look.
+[01:05:31]      Now what is the problem is that Hemant ji has made a very good point in this, that this stage gate in T1, which you call a kinvoi. Okay?
+[01:05:43]      This happens when your e-invoice and e-way bill are completed.
+[01:05:48] S7: Complete.
+[01:05:49] S6: Okay? Right. Now, that process won't happen here. Why? Because the stage we have created now was a four-step one. So, our business process is saying this, the business process event you were talking about defining, the four-step one: shipment document, shipment costing document, costing release, and invoice. Despite this being successful, you will not see the invoice in T1 because its e-invoice and its e-way bill have not been created. Okay? Right. One point. The second point is this.
+[01:06:19]      It happens that if we, we have observed many times here that because of any reason, what's were we
+[01:06:25] S0: Because of the ideal.
+[01:06:28] S3: Which one?
+[01:06:29] S0: I need to give this to you right now.
+[01:06:30] S3: So, it's the same as what you were doing in between when we were doing that. Let's go outside and talk once.
+[01:06:35] S6: Because of any reason whatsoever be the case, whenever we Digi GST, this is our solution that we have taken from EY, which works like SVP and connects us to our government portal for IRN generation, for QR code and for link generation. Despite everything being correct, many times this case fails and e-invoice is not generated. So in that case, it will remain stuck until the e-invoice is generated. And rather if e-invoice is generated
+[01:07:05]      It also got updated, and if the same problem occurs in the e-way, then your invoice document will not be updated in T1, and on the CNF portal, it will not see anything about what happened, how far it has been created, and how far it has not been created. Okay, so for that, it's the same thing that either the invoice is completed or nothing has happened at all. Okay, so it will sit in binary itself, between zero and one.
+[01:07:27]      Okay? Now this problem is coming up. If you think about this problem, then OMS will also have to face this same problem if this same stage gate is raised. Why? Because there won't be visibility in that either. Up till the last level where E is completed.
+[01:07:41] S9: No, so we change the stage in T1, suppose the invoice...
+[01:07:45] S1: So here, we will have to install new stage gates. We will have to break three, meaning if there is any tension, then we will not show it to the customer.
+[01:07:47] S6: Will have to break.
+[01:07:48] S9: Three, meaning if there is any concern, then they don't show it to the customer. No, showing is different. No, I can't hear.
+[01:07:51] S1: This is different.
+[01:07:55] S6: No, I am not able to hear, Bharat. One second, one second. I am not able to hear. Wait a minute, Bharat ji is saying something.
+[01:07:56] S9: One second, one second.
+[01:08:01]      I am saying that in today's date, it is not visible in T1 because it is a single stage.
+[01:08:08]      I'll split it into two, invoice plus accounting becomes one, and e-way bill e-invoice becomes one. So, showing that is different. E-way bill e-invoice, showing or not showing in T1 and T2, that is different. But if we segregate into two parts, then purpose will solve, right? From T1.
+[01:08:25] S6: So, you mean this invoice document that you are talking about, invoice document will basically parts invoice document, if I talk about this one, then we should consider this as an ideal completion when the invoice is generated for the SIP and its accounting document, the accounting statement is C, it was posted, accounting, okay? That's the flow.
+[01:08:30] S9: Basically, parts.
+[01:08:44] S7: That should flow actually. That should actually flow.
+[01:08:45] S6: That should actually be correct. That should be the nature of a parcel. Yes, that should be one stage gate. Okay? Another stage gate would be related to compliances, which includes your e-invoice and e-way. These two should become one stage gate together. If these are completed, then your invoicing-related staging is completed. Like that. Now, in the presentation layer, meaning what we are consuming in the app, that is something which we need to decide, that we should show in the app only when both stage gates are in T1.
+[01:09:15]      Only show it in the app once it's complete. Right? Internally, even if the invoice data comes and sits in T1, we shouldn't make it visible from there until e-invoice and e-way are created. Right?
+[01:08:46] S7: That should be a partial nature.
+[01:09:01]      It is happening.
+[01:09:15] S5: Complete.
+[01:09:26] S7: So, if you don't want to do visual, then don't take it at all. I mean, why should, why should we take those data? No, that needs to be seen in the video.
+[01:09:32] S6: No, that's why it needs to be shown in T2 as well. Correct. It needs to be shown in T2 as well, and in your OMS as well. Akshay, tell me a little.
+[01:09:36] S8: It will be useful in the OMH, in the SLA. Later, when the SLA calculation happens, there will be a SLA breach.
+[01:09:37] S5: It will be useful in that. Later, when the SLA calculation happens, the SLA will be breached.
+[01:09:46] S8: Yes, so
+[01:09:46] S9: Okay.
+[01:09:47] S6: Okay, that is, I mean, you, that is okay, that's a valid point, but when you look at this.
+[01:09:48] S9: No, no, you.
+[01:09:49] S7: It's a joke, it's a point.
+[01:09:51] S9: I am giving money here to bring it in T1. So I will make another T1, meaning via route, and also make a way for T2. Look, this is temporary.
+[01:09:59] S7: Look, this is temporary. When our OMS is done, everything will move via T2. Everything will move via T2. So obviously, it's only temporary.
+[01:10:04] S9: Move ahead, everything will move ahead.
+[01:10:08] S8: So, I am saying the same thing that they are saying, that eventually all these stage gates will go from T2. So, they bring these two stage gates to T2, and out of them, they will send only one to T1 later.
+[01:10:18] S6: Correct, correct. So, to send it to T1, meaning what you are saying, in T1 you don't have to send this one, but the other new stage gate that you are creating, rather this one. Yes, correct, correct, correct. So you will branch, let's say this is called S, so you will branch S1 to T1. Yes, T1, correct.
+[01:10:25] S7: That's how it is.
+[01:10:28] S8: Yes, correct, correct.
+[01:10:34]      T1. Correct. In T1, I can decide that I have to. So in that case, it will be ideal. In this case, the logic of T1 will not be tampered with. The whole app, I mean, will be made.
+[01:10:37] S7: In that case, it will be ideal.
+[01:10:41] S6: Minor change, logic, minor change should happen because you are changing the entire stage gate, so you will have to put some changes in that stage gate according to the payload. Yes, put it. But it will not be as big of a change, it will become small.
+[01:10:52] S8: It will become a small frame.
+[01:10:54]      I think that is your concern, right? Because that T2, T1 has a different logic.
+[01:10:58] S5: Point means yes, no point.
+[01:10:59] S6: No, someone is very good, sir.
+[01:11:01] S5: Sir, wherever it is needed, we will go there and bring it back. So, a little bit of this architecture
+[01:11:05] S6: So, the architecture people will have to write this down.
+[01:11:06] S7: You will have to write this down first, whatever API calls are happening, from the order to the meeting that was held yesterday or the day before.
+[01:11:07] S5: Whatever was there before.
+[01:11:09]      From the order to
+[01:11:11] S6: Yes, the arrow will change in the architecture that we created. Akshay, listen to Bharat, you listen Bharat, the architecture diagram that was created, right?
+[01:11:13] S7: Even in that, that arrow will change.
+[01:11:22] S6: Yes, yes, we will have to do this change in that as well.
+[01:11:28] S1: We are putting new stage gates inside T1, so T1 is not there.
+[01:11:31] S7: No, no, this is mine.
+[01:11:33] S6: No, no, I
+[01:11:34] S7: No, I understand.
+[01:11:36] S8: No, they didn't listen to me. Bharat, we are saying this.
+[01:11:40] S9: It has arrived.
+[01:11:40] S1: That's the sound.
+[01:11:41] S8: I mean, we are saying that eventually all these stage gates will go via T2, right?
+[01:11:48] S1: Yes, yes.
+[01:11:49] S8: So, should I keep them in T2 and send the same stage gate in T1 that they still need today because this split of invoice document, we are splitting into two stage gates. T1 does not need it. So, should I send the same in T1 that is final for me, in which actually I am updating the invoice document and going. So, what Sudhanshu is saying is that they should be floated from T2 itself. Stage gates.
+[01:12:17] S1: And how is this? This whole record of orders, deliveries, invoices is in T1. We are bringing it from T1. So those, those, all these stage gates are linked to the record, right? So this record is not in T2. These are all in T1. How can we create a stage gate here? Either we will have to do the whole thing here.
+[01:12:32] S7: Superb.
+[01:12:36] S8: So this message, the CNG can take this will actually, how quickly we have to take the CNG live, I mean, isn't it like a two-week, two-month difference, a three-month difference? So we do it with this, on this.
+[01:12:38] S7: This will
+[01:12:46] S9: There is a three-month difference.
+[01:12:48]      The problem is also that today you will come from T1 road. Tomorrow, let's say you had to connect with the escrow, then that time you have to change the connections. That will happen, that is planned, that is planned. We will do it, but either you have to do it today or tomorrow. That is up to the question that
+[01:12:59] S7: He will do it, right?
+[01:13:08] S3: Gopesh ji, you can never go with 100%. Otherwise, I will keep a 10% variation.
+[01:13:10] S8: I am 10%.
+[01:13:12]      Meaning, nowadays.
+[01:13:12] S9: Whether to do it today or tomorrow, you have to take a call.
+[01:13:16] S8: So, look, for an interim period, for an interim period, we have OMS, which is your T2 instance.
+[01:13:22]      There is no OMS role in that, only routing is going on. You can go live with this, right? Okay, when you go live with CNM, only go live with the router so that it is built up on this. Right now, they are saying so much T1, T2, all these touch points.
+[01:13:25] S9: Routing.
+[01:13:35] S1: Yes, speak, speak.
+[01:13:35] S9: Wherever there is a touch point, we have to understand it from there.
+[01:13:41] S8: Yes, yes.
+[01:13:42] S7: Yes, speak.
+[01:13:42] S8: That's what I'm saying, so it's better to just take it with routing in OMS.
+[01:13:47] S7: What are you saying? Yes, speak.
+[01:13:49] S1: Yes, I am saying that Stage Gate doesn't change anything in T1. They let all these Stage Gates remain. What we will do. But yes, it is that this e-way bill and e-invoice will come only then the invoice will come, so they let that dependency remain, they take it as it is. We add extra attributes inside it.
+[01:13:50] S7: Look, sir.
+[01:14:06] S6: No, but then
+[01:14:06] S1: If there is some error, then it will send it already.
+[01:14:10] S3: This is so much.
+[01:14:11] S6: No, but Bharat, the problem in this case is this, right? No, no, listen, Bharat, listen. Bharat, in this one second, the problem in this case is that the CNF doesn't have visibility. After the DI modification and in between invoice creation, it won't know what is happening to it. Yes.
+[01:14:11] S1: Bharat, that's why the problem is this, right? No, no, listen.
+[01:14:28] S9: No, not in that, not in this.
+[01:14:29] S1: No, so there is a way, there is a way to find out. I am telling you how to find out.
+[01:14:31] S9: What is it? I am telling you, how do you do it?
+[01:14:35] S1: If you look at my mail, I have added all the extra attributes. So, one of my attributes is saying shipment number. If the shipment number is not generated, then it means the invoice number etc. is not here, it is on the stage. The shipment number has arrived, it has value, if the shipment cost number is not there, then it is stuck here. So, by looking at attribute values, I can always make out which stage my document is on.
+[01:14:35] S9: Okay.
+[01:14:41]      This shipment.
+[01:14:42]      If the shipment number
+[01:14:45]      Invoice number.
+[01:14:48]      Shipment
+[01:14:56]      No, no, no.
+[01:14:57] S6: What is the document proof?
+[01:14:59] S1: I don't need to modify the stage.
+[01:15:02] S8: No, Bharat, Bharat, this biggest, one of the biggest issues in this stage gate that MNG has confirmed. This stage gate is triggered only when the invoice is successful, it is not triggered in failure.
+[01:15:13] S1: Yes, brother.
+[01:15:15] S8: Yes, so then the whole game is over, right?
+[01:15:15] S6: Then the whole game is over, right? Then it's binary, right? For that, after DI, after modified DI, he won't know anything until the invoice. If it's successful, only then will it be visible. That's the second thing.
+[01:15:17] S8: It will be done.
+[01:15:21]      Yes, thank you.
+[01:15:24] S3: So that's why, the one I was telling you about, that one.
+[01:15:27] S1: It's going on like this. It's going on like this in the management portal, right? So how are you managing now? Now the dealer needs
+[01:15:28] S3: It's still going on like this.
+[01:15:34] S7: The dealer needs it.
+[01:15:34] S6: Dude, this information is not the dealer's, right? This link is not the dealer's relevance. But the CNF needs dispatch information, right? It will tell from time to time that this was my pending order. The CNF also has a TAT, right? How will that poor guy do it? I understood.
+[01:15:52] S8: If the dealer doesn't get an order, the dealer will hang up the call. The poor guy is in CNN.
+[01:15:55] S3: They are going to rely a lot on CNF.
+[01:16:00] S1: Then we will have to put it in, we will have to put it in.
+[01:16:03] S3: No, to me.
+[01:16:04] S6: No no, do this, look Bharat, there is no need to take any upfront call. Let us think through. Right? Let's think a little and understand.
+[01:16:11] S3: Let's think about it for error handling. This is not an error. This is for error handling. For the process and all. Whatever changes are there.
+[01:16:13] S6: This is not an error, this is an error.
+[01:16:16]      We will take two hands.
+[01:16:17]      Whatever changes, let us think through what are the pros and cons of each approach.
+[01:16:21]      Let us not rush through that we just have to do this, but we will do it thoughtfully.
+[01:16:25] S3: But I said this thing well, that whatever we have to do, we should do it keeping OMS in mind. That will be very, very practical.
+[01:16:30] S6: It will be very, very practical, right? It's practical for us, for them, for everyone, why should we do it? I also agree with them.
+[01:16:32] S3: This is for everyone.
+[01:16:34]      I am also agreeing and saying to him.
+[01:16:37]      But for me, this sudden e-way bill and e-invoice, I, we come to that, I felt we were just discussing the invoice, so suddenly e-way bill, e-invoice happens everywhere. That until this happens, the invoice is not valid. Now, e-way bill and e-invoice, do people manually go and make your e-way bill, or does it get made on its own?
+[01:16:58] S6: It is available.
+[01:17:00] S3: So this means that the invoice, the e-way bill and the invoice, all that information is populated together. Currently.
+[01:17:08] S7: It's different, it's absolutely different.
+[01:17:08] S8: This.
+[01:17:09] S3: Absolutely, it makes. How is it inside SAB now?
+[01:17:11] S7: Who makes the U-bill? Who makes the U-bill?
+[01:17:13] S3: I don't know how you are getting it through API. It is created through API.
+[01:17:15] S7: How is it getting generated through API? It is generated through API. Through API. We are calling to, we are calling to.
+[01:17:20] S3: API, have you kept any ASP partner? Yes.
+[01:17:22] S7: It is kept. So this is a different process altogether. It is made in the invoice system. Then a
+[01:17:24] S3: Okay.
+[01:17:27]      Sir, I understood. I have the same question, maybe by tomorrow, with Yogesh ji, whoever they arrange the meeting with. Once I get through the day walk, but my concern is just that, it means we can't show the invoice number like you said, until then, even if the e-way bill and INN number can't be generated. So, it means before the invoice, we were doing three steps, now five have been added.
+[01:17:28] S7: The rates are different. To me, I
+[01:17:50]      This is the, this is, this is asking you to design. You have been asked to design this.
+[01:17:52] S5: Design.
+[01:17:54]      To check. We just told you that there is a group of five types. After this, we will show you.
+[01:17:55] S3: I also myself
+[01:17:57]      That there is a group of steps.
+[01:18:00]      Yes, so that means we were doing three, now we have become five.
+[01:18:01] S5: We were doing three, now we are five.
+[01:18:02] S7: We were doing three just now, meaning it was a design, a system design like that. You have been told to show five because of the visibility.
+[01:18:08] S5: Sir, you already had that many, only five. You are showing them somewhere differently. Yes, I mean, right?
+[01:18:10] S7: So, let's do it tomorrow.
+[01:18:12] S3: Yes, I mean, we weren't even discussing that thing.
+[01:18:14] S5: It was discussing that when you go to show it on the third page of the invoice, it won't show anything. It will either show the DA or the invoice EV bill. That was my point. That's why it came to my mind that when you are in the invoice payload, when you are here discussing the invoice payload. Yes.
+[01:18:20] S3: Absolutely.
+[01:18:21]      Will it be visible?
+[01:18:28]      Yes, yes.
+[01:18:30] S5: So when your invoice number also goes here, along with the invoice number, your invoice number plus... We keep Hemant ji for such a valid point.
+[01:18:36] S6: That's a very valid point, that's why we keep Hemant Ji.
+[01:18:38] S3: Yes.
+[01:18:39] S5: These three were together.
+[01:18:40] S3: No, this is valid. Look, the rest, I mean, what was here, man, it was about to be done, man, in this.
+[01:18:41] S5: Remaining.
+[01:18:44] S6: I was about to call, man.
+[01:18:48] S3: So, Janshu ji, the water is long.
+[01:18:49] S6: It is long.
+[01:18:53] S3: Man, I miss your tea a lot, man.
+[01:18:53] S6: Dude, your tea.
+[01:18:56] S3: Thank you.
+[01:19:00] S6: No, it's okay, let's give Akshat a little bit of a touch and do it properly by understanding. So, in the consideration of MS, no, no, I mean, in the consideration of MS, plus we should see that we introduce additional touch points only when the bear, meaning everything can be done without it. Right? Otherwise, the more integrated extra there will be, the more maintenance or part that is, this whole retrigger will have to be seen, so that part one
+[01:19:01] S3: Yes, sir.
+[01:19:03]      And property.
+[01:19:07] S5: This is a little bit.
+[01:19:15]      The more the integrator is extra, the more it will be.
+[01:19:18]      Yes, yes.
+[01:19:19]      This is all retail.
+[01:19:23] S7: One Bharat, tomorrow, whatever process you have, the order creation, DI, and whatever has been discussed, please create and send it in an Excel sheet. How much UPI for order creation and for DI, for shipment, whatever has been discussed so far.
+[01:19:37] S2: Sir, let me discuss it once from the SAP. Yes sir, from an SAP standpoint, I have done all the research in full quality. So, like this API that we had put in the create invoice architectural, the create invoice had a lot of simplification. So sir, in this, like you people...
+[01:19:40] S7: From the AC.
+[01:19:42] S0: Yes sir, like this.
+[01:19:55] S9: You people have
+[01:19:58] S8: So, you are unsharing the screen, right?
+[01:20:04] S3: Show me the ice once, the ice. Are you on a call? No, I am not on a call. Let's turn on the call now.
+[01:20:10] S7: Sonu Bhaiya is coming, I have to invite him, I have to come, send this document.
+[01:20:11] S6: will have to be invited. You will have to come and give the document. Send this document. It won't be concluded so quickly right now. First, we will call Bharat and Akshay and talk to them about what the proposal is in the CLF, considering the OMS. We will understand that later. Only after that will we take the call.
+[01:20:27] S7: Process and pay calls. Give that too, give that too. So that it will be easy for us to take calls too. Whether to keep different calls or single calls.
+[01:20:33] S1: So, the money will come later, that's why you have taken their timeline, their timeline.
+[01:20:34] S7: Because the money will come later, that's why you
+[01:20:38] S6: No, I didn't get it to open. What to do?
+[01:20:39] S1: What?
+[01:20:42]      Let's decide on the timeline. This is the timeline for this and that is the timeline for that. Because if you order
+[01:20:47] S6: You see the plan, see the project plan that Amit Ji has given, in that
+[01:20:51] S7: Look at the plan, it's almost going parallel with it.
+[01:20:56] S6: You are seeing that the CNF and its OMS are almost parallel. There is almost no difference of more than a quarter.
+[01:21:02] S3: Yes
+[01:21:03] S6: So this, this that was there, right, in the last meeting that also happened, Bharat, you saw it, right? Two tracks are running almost together. Don't consider it too much of an overlap.
+[01:21:18]      Look at that in that.
+[01:21:21] S8: Meaning, this is the best.
+[01:21:23] S6: That's it, man. That's the reason being that you will be saved from reversal. Not just ours. Look, development is also a cause to the organization, right? Why would we increase the technical burden?
+[01:21:23] S8: That's it, man.
+[01:21:35] S3: Exactly. In this also, in this also, Sudhanshu has said that if minor changes have to be made in the screen, then we can do it now, man. Let's finish it now. It's not like showing this thing here, just moving it up and down. And how that, like they are saying in SME, it's happening here, it's happening with the same method.
+[01:21:36] S6: Exactly.
+[01:21:38]      in this also
+[01:21:55]      So bring it. For the mockup, you people should face that a little. Mockup is different. This architecture is a little different.
+[01:21:56] S8: For mock-up, so today's mock-up is different, here also the architecture is different.
+[01:22:01]      But it is painted.
+[01:22:02] S6: Tell me, Bharat, this is my view, man.
+[01:22:05] S3: No, no, your view is correct, the architecture is not finalized yet.
+[01:22:08] S1: No, I will talk to Akshay once. Yes. After aligning the plan a little, then okay, okay. We will tell you.
+[01:22:12] S6: Okay, okay.
+[01:22:14]      Okay, okay.
+[01:22:15] S2: Sir, let me discuss SAP Reality with you once, and the APIs built around it.
+[01:22:20] S1: This is not Corona, it's just Portiwal.
+[01:22:22] S6: Get this joined first.
+[01:22:27] S3: But Raju ji, its impact, our current development, we will make it FS and give it TS. Which we will then...
+[01:22:34] S6: Absolutely, it will increase, absolutely.
+[01:22:35] S3: No, no, we can start that, right? That's parallel.
+[01:22:38] S6: Look, if you are talking about Spartacus, you can do it. If you are talking about DSP, you can do it. Views, etc., but if you are talking about this, that this transaction has happened, then you will have to stop. This is the last, the last task. You can do that, just.
+[01:22:40] S3: If you want to do it, you can.
+[01:22:44]      Yes, yes, yes.
+[01:22:46]      If you
+[01:22:47]      This transaction has happened. This is the last one, the last task.
+[01:22:53]      Meaning, they start creating a login screen, they do all that, right?
+[01:22:56] S6: They do all that.
+[01:23:01]      Hey, there is nothing, come sit down.
+[01:23:10] S8: Hey, what are you doing?
+[01:23:14]      It gets added right there.
+[01:23:20] S1: This Karan, Karan's, otherwise should I present your, your document to me?
+[01:23:23] S2: Yes, yes.
+[01:23:26]      No sir, that one didn't come. I'll give one more document once.
+[01:23:31]      It is ₹1200.
+[01:23:41] S1: Otherwise, send Karan, he can present, right?
+[01:23:43] S9: Okay, let's get it joined.
+[01:24:09] S5: Migrant summating equals to 9.
+[01:24:14] S6: I will share the pain.
+[01:24:17]      This is what they call experience, Sahab Pritam Singh Ji.
+[01:24:23]      Wasn't that Lakshman? The book, this fire, comes before 15 seconds.
+[01:24:23] S5: Lakshmi
+[01:24:24] S9: Food
+[01:24:31]      No, I will change it.
+[01:24:34] S6: No, it's difficult, man. Look at this thing, according to the owners.
+[01:24:37] S9: Today you do it or tomorrow you have to do it.
+[01:24:38] S6: I have a phone call.
+[01:24:43]      Exactly, that's the point.
+[01:24:44] S9: Okay, I can, I think I can directly.
+[01:24:44] S1: Yes, yes.
+[01:24:46] S9: First we will go from T2, then from there we will break the patch, then we will come to T1.
+[01:24:51]      Yes, yes.
+[01:24:54]      It's best to approach only one, that will be long term for both.
+[01:24:56] S6: It will be lockdown for both, yes.
+[01:25:00]      If there is a delay of one or two weeks in this, then it is better, right? Yes, that is much better.
+[01:25:05] S9: Once, I mean, once it happened.
+[01:25:07] S2: Sir, so from the beginning, if you, I will tell you about submit me and create DI later, but what we are discussing today is related to create invoice. So currently, in what I have found, the third API split into six different categories. Picking batch split, shipment cost, shipment shipment cost and cost release. Then PGI, then billing create create, billing read back, this involves invoicing. And then e-invoice e-way billing which is
+[01:25:37]      This is handled by DG GST EY portal, which I haven't seen complete yet, the evidence is not complete.
+[01:25:09] S9: If you
+[01:25:44] S2: So sir, in this
+[01:25:44] S6: So sir, what is the e-mailing read back in this? What is this e-mailing read back?
+[01:25:48] S2: Sir, this is its, this is the read file, the invoice number that is in it.
+[01:25:53] S9: It is released for invoice accounting.
+[01:25:56] S2: So this, this thing, this API exists for that. So it has three services. One API which...
+[01:26:02] S6: One minute, one minute, e-billing read back, how is it here?
+[01:26:06] S2: It's not E, sir, that E means A B C D E, meaning this. Okay, okay. Billing read back. Okay, okay, alright. Billing create and billing read back.
+[01:26:09] S6: Okay, okay. Billing Green, man. Okay, okay, alright.
+[01:26:15] S2: This is not even available.
+[01:26:15] S6: This is not even available. They call it an invoice read.
+[01:26:18] S9: Noise.
+[01:26:18] S2: Yes sir, look here, this is the billing read back.
+[01:26:21] S6: Okay, okay, okay, my bad, sorry.
+[01:26:22] S2: So currently sir, like we were just discussing about stage B, shipment, shipment cost and cost release. So it has one API and it has three BAPIs in it. BAPI is for cost release, one more
+[01:26:37] S5: Number cost will be there.
+[01:26:39] S2: Yes.
+[01:26:40]      And somewhere.
+[01:26:41] S5: Mention it somewhere, ma'am.
+[01:26:43] S2: Yes sir, I have done it in my own way.
+[01:26:47]      Bapi cost shipment cost estimate.
+[01:26:48] S6: Shipment cost estimate.
+[01:26:51] S2: Yes sir. This one is for cost estimate, but I haven't found the cost release details for it yet. I had searched.
+[01:26:58] S6: Open AC 37, open it, show the light.
+[01:27:01]      Did you check by putting in the payload? No sir, payload.
+[01:27:03] S2: No sir, pay.
+[01:27:04] S9: There is no copy of this, you have to put a tick inside it, release it.
+[01:27:08] S2: Hmm
+[01:27:09]      Yes sir, so I mean, from what I have done from above, in the research.
+[01:27:13]      So sir, like this, there is no need for three API calls in this, meaning the most efficient way is one API for all the three methods. In which there is an option of rollback because currently also how it is present that you shipment or shipment cost somewhere an error comes. So that error is displayed and after that the method does not work further.
+[01:27:35]      So that is how it takes place, and it will require ABAP coding, minimal, to discuss how to handle errors, meaning how to reflect errors. It will throw standard errors. It will throw standard errors, and we can directly reflect it. If it is split into three APIs, then the responsibility for error handling will come into the CPI.
+[01:27:42] S6: How to reflect the error. It will throw a standard error. It will throw a standard error and we will, yes, CBI will directly
+[01:27:55] S2: And that will be a bit of an issue.
+[01:27:57] S6: Now do one thing, whatever you are telling, in whatever babies are going on inside this, give them a sample data. Create a test directory in the babies. Okay? Create a test directory.
+[01:28:06] S3: Okay.
+[01:28:08]      Can you make it? Yes, it will be made, it does test direct, right? That was a beautiful saree, I didn't know.
+[01:28:09] S6: Yes, it will be made, right? It does test direct, right? That was a single, such a saree, we told them. Yes, we tell them, right?
+[01:28:15] S2: Once.
+[01:28:16]      Sir, I haven't even done the entire dev, it will be done in quality.
+[01:28:18] S6: It needs to be done, it will be done in quality.
+[01:28:20] S9: In such a condition, the problem is that the rest of the place is saved by making a test screen. Correct. So what is it that when this
+[01:28:26] S6: So, the thing is, when he calls, he will also find out.
+[01:28:30]      And you will also see the standard error handling, what messages are being thrown in it.
+[01:28:35] S9: So, the Bhagwat matters have already been discussed.
+[01:28:39] S5: It's done.
+[01:28:41] S6: And you don't even have to fill it. Now, like, you are poor.
+[01:28:43] S5: It is made.
+[01:28:45]      What is it?
+[01:28:45] S6: What is it? Where is your cloud screen? Tell me.
+[01:28:50]      This is it, okay, this is it, alright? Shipment create, this is it. Hold this.
+[01:28:55]      Okay. First, look at the very old list, okay. Don't go into the standard, first look at the custom. Now, one second, just think about the approach I'm telling you. Yes, that's also there. Now what is this? This is the shipment included.
+[01:29:01] S9: Sir
+[01:29:03]      Yes.
+[01:29:08]      A2 only, A2 only, look, A2 only. The one below, just below this.
+[01:29:12] S6: This one. Automation of A2 cells, okay? Now this is it. In this, you have import, what is importing? Call function this, exporting this, this is importing this, look at this. Okay? Now it will be visible here what all this is, okay? Now open the other screen.
+[01:29:14] S9: Yes, okay.
+[01:29:22]      Commitment, okay, now it will be visible here.
+[01:29:28]      This is the same coffee paste, right?
+[01:29:30] S6: Exactly, so what is it that the hard work will be saved.
+[01:29:33] S9: He knows, he is a friend.
+[01:29:34] S6: Yes, and they went here.
+[01:29:35] S9: Okay, alright.
+[01:29:37] S6: Okay? In the tree, here you keep mapping that thing. Okay? Looking from there. What is the import parameter? Take this in a tabular view. This tree structure is taken. Here
+[01:29:40] S9: They are there.
+[01:29:43]      Okay?
+[01:29:43] S7: Looking from there.
+[01:29:44] S9: Yes.
+[01:29:51] S6: Look at this code. Okay? What all are you passing? Keep adding them here and save a test directory. Okay? Then the effort will be saved.
+[01:29:52] S7: Correct direction.
+[01:29:55] S5: Keep adding and save.
+[01:30:00]      will go
+[01:30:00]      This is Y.
+[01:30:02] S9: Yes.
+[01:30:02] S2: Yes sir, this discovery also happened through this, I mean, not exactly this process but
+[01:30:02] S6: This.
+[01:30:07]      Do it like this.
+[01:30:09] S8: So, so now, but we will do business, we will use standards. But these are all standards. We are using Z.
+[01:30:14] S2: Sir, it is standard.
+[01:30:15] S6: Hey, I am telling you all this, where it was used in standard Z, what was its import structure, okay? And how?
+[01:30:16] S2: No, these are all standard, these are all.
+[01:30:18] S8: Okay, okay.
+[01:30:20]      Was it done? Yes, okay.
+[01:30:22] S9: They say, so one condition, so they will save their hard work.
+[01:30:23] S6: So, they will save their hard work, right?
+[01:30:25] S2: No sir, anyway, in 2626 services, I first found 400 candidates, and then
+[01:30:25] S6: No, sir.
+[01:30:26]      So anyway,
+[01:30:28] S9: In the condition services, I first found 400 candidates, and then
+[01:30:33] S2: Out of those, in the last total, there are six services that cover all the APIs. So I had also automated all of them to a great extent.
+[01:30:34] S9: In total, there are six services that cover all the APIs.
+[01:30:38] S6: I had also automated all of that. So now, show me by running the payload. Then we can comment.
+[01:30:44] S2: Sir, in that, our SCG, the services you are talking about, in that, the time that is there.
+[01:30:48] S6: Which is the standard IPA.
+[01:30:49] S2: That will be done, but now that Dev has arrived, I will do it in that.
+[01:30:53]      And sir, its
+[01:30:53] S6: Sir, its
+[01:30:54] S9: You get data by loading it, right?
+[01:30:57] S2: Yes, the sample data is present. In this, sir, let me share this with you. This is the entire API.
+[01:30:57] S8: Sample
+[01:31:04] S6: No, what will we do with this, tell me? What what will we do?
+[01:31:04] S2: No, it is written on this.
+[01:31:07] S8: You operate the payload and do the posture. How does the payload work? No, I will do all those tests.
+[01:31:10] S2: No, I will do all that testing. But it's not a question. Yes sir, all these standards have been met, meaning the APIs that are being discussed right now.
+[01:31:19] S6: No, then show me the business process. First, put it in and run it, then you will know what post has been done and what hasn't.
+[01:31:19] S2: Business process etc.
+[01:31:24] S9: And one thing, let's do one thing, there are two things, one is the Odida services one. So activate Odida service for the Nigo Net, for example. And after that, what we will do is, the one you mentioned, we will test with that one. Then when it comes to Bapi in the system, we create a test directory in Bapi and get a document posted.
+[01:31:37] S4: It is a header.
+[01:31:46] S9: That will give confidence that yes, our business is running, is running.
+[01:31:48] S1: It is going on.
+[01:31:50] S2: Those two processes will be completed tonight.
+[01:31:52] S9: I want, means you want that kind of person.
+[01:31:55] S1: One, one, one, a little bit, sorry.
+[01:31:59] S9: Hello.
+[01:31:59] S1: Hello
+[01:32:02] S9: Yes, it's a very good meal.
+[01:32:05] S1: Yes, yes, are we now saying that all those APIs will be called together, which Siddharth is not doing right now.
+[01:32:09] S6: Not now, not now.
+[01:32:10] S9: Not now, once it's confirmed, once the principle is changed, then we will confirm whether we can do it together or not.
+[01:32:11] S2: No, no, I mean
+[01:32:20] S5: So Bharat ji, this is a Made in Germany product. So until you try it yourself, you can't commit to this S.O.P.
+[01:32:31]      Those Germans, what do they make, and what comes at that time, I don't know.
+[01:32:36] S9: The people of India have made it something else.
+[01:32:37] S5: Made it. I don't even get carrots, so how did you make this?
+[01:32:41] S9: The Indians, the Indians will make something else, I want to learn.
+[01:32:47] S5: This is a very common thing, tell me. What did the Germans do? Look at this, wherever it was used.
+[01:32:47] S6: It is available in the same way.
+[01:32:51]      It is very easy to fill with it wherever it has been used.
+[01:32:56] S5: Okay, their documents were also written like that. Sir, the method I was using just now...
+[01:32:57] S2: Sir, the method I was doing just now, the one you showed, from that, name-wise, first I automated and extracted all the candidates name-wise. Then I deep-dived into 40, and 12 and six matching services came out, which includes all the processes. And after that, every process was also automated, meaning through user scripting, and this list, the Excel file, is very accurate.
+[01:33:01] S5: Showed those sentences.
+[01:33:24] S6: No, no, look, there is no denial on that, there is no issue on that. But we will be able to comment when you will post the payload. So, do that and show it. Meaning, make a big O.
+[01:33:32] S8: Meaning.
+[01:33:33] S9: One by one, one by one, we will take out the stuff, right? Plus, the Odisha service, we will post them one by one. And then we will proceed in that sequence. Like the entire scenery OTC. Like what you did first.
+[01:33:45] S6: So, what you did was, first you posted a delivery from Create DI, okay? The delivery is done, then we will modify it, then this BAPI shipment create, we will create a shipment document from it, of that. Okay? And then the one with the change, we will apply that, the change one, then we will release it from the cost estimate BAPI. Then we will move forward with the invoice one that you have created, customer serve invoice, so what is this, the whole sequence will be known. That is a real-time application. You this guidance
+[01:34:11] S3: We have to work under your guidance.
+[01:34:13] S2: Sir, with the basis, I will need activation in that because that is my thing, right? It's GD, right?
+[01:34:17] S9: It is JD, right?
+[01:34:18] S3: Yes, Sudhanshu ji, you just have to guide in this way.
+[01:34:19] S2: Raju Ji.
+[01:34:21] S9: No, there is one more thing in this, even its changes, that is via through S4 only.
+[01:34:23] S3: And Sudhanshu ji.
+[01:34:25]      Then
+[01:34:28] S2: Okay sir
+[01:34:30]      Its entire structure, I mean, from the very top, I got all the references for DG GST and EY, but its clear...
+[01:34:31] S8: Complete.
+[01:34:36]      Its clear that
+[01:34:38]      If you want to get something activated to do, then get it done.
+[01:34:41] S2: Yes, no, today I will send you the list of services, it will get activated based on that.
+[01:34:44] S6: It gets activated from the basis. As soon as the access was given, they will give it immediately like that. Just give the list that is made.
+[01:34:59] S3: Sorry, I apologize.
+[01:35:01] S6: If not, then we will get it done from there.
+[01:35:03] S3: You didn't ask one thing, that punishment.
+[01:35:07] S6: What to do, man? Now this will be famous, that will be deleted.
+[01:35:07] S3: Information will come from there, and it will be taken care of.
+[01:35:13] S2: From here, sir
+[01:35:14] S6: The one that will go into the CPM.
+[01:35:14] S3: The one that will go into the CBI.
+[01:35:17] S6: He is Harinderbhai, who is doing it?
+[01:35:19] S3: Later, if you write the whole code, then that thing will remain.
+[01:35:22] S6: He is there. Let's talk to Dheeraj clearly that if he is there, then tell him clearly that no, a lot of time is being wasted.
+[01:35:26] S3: Time is being wasted.
+[01:35:28]      Now, in everything, I mean
+[01:35:30] S6: Okay, this is done.
+[01:35:30] S3: Okay. This Udaan app of yours, the information that goes into the Udaan app, in K1, do you send it through the CPI itself, like, right? So, do they encrypt it first, then decrypt it, or do they just send it directly like that?
+[01:35:36] S6: In the event.
+[01:35:39]      It is happening.
+[01:35:43]      No, this has the standard one taken, right?
+[01:35:45] S3: Okay, so it means we don't have to write any encryption or anything like that, right? Okay.
+[01:35:49] S6: That these are their places.
+[01:35:50] S3: Yes, no, no, he does that, but sometimes it also happens that outside, somewhere, in bank transfers etc., he has to write that.
+[01:35:57] S5: That is different.
+[01:35:58] S9: There are methods. Yes, there are methods.
+[01:35:58] S3: Yes, there are methods. I am asking if it is good for us if we don't write it, then which one should we write?
+[01:36:03] S9: But you suggest that as an advisory, you should suggest that.
+[01:36:04] S3: Like, whatever he says, he will do.
+[01:36:08] S6: He is a character.
+[01:36:10]      However the ad comes, we will do as we say. Okay, Bharat Sir.
+[01:36:14] S2: Pura
+[01:36:15] S3: Thank you, sir, for your time.
+[01:36:17] S1: Thank you.
+[01:36:18] S6: Bharat, Bharat sir, when will he sit? When will you tell Akshay?
+[01:36:24] S1: What are you saying?
+[01:36:24] S8: No no no no, first you and I will sit, Bharat. Tomorrow, the first, tomorrow the first, we both will sit.
+[01:36:28] S9: Siddharth will be ready, right?
+[01:36:31] S8: No no, that is different. That is for architecture, for architecture. I and Bharat sit, first half. Bharat ji.
+[01:36:32] S3: Architecture.
+[01:36:36]      Bharat, just be on the line, man. You drop it, you get your access work done.
+[01:36:37] S8: You drop it.
+[01:36:40] S6: So, regarding tomorrow's statement, we will discuss this first. Sir, the one that is kept for the morning, right? So, we will discuss this, what will be your time frame presentation after the internal alignment, please tell us that because we will proceed based on that. That is going to be. Call him. You cut it, describe it.
+[01:36:41] S2: Sir, I am the one who has applied it.
+[01:36:51]      Sir, please tell us because we will proceed based on that.
+[01:36:55] S3: No no, I am calling him. You cut it, describe it. Bharat, I am calling.
+[01:36:58] S6: Bharat
+[01:37:00]      This is the situation.
+[01:37:03] S3: Okay, you go and get your access card.
+[01:37:05] S0: Yes.
+[01:37:15] S3: For me, today's call, they say, right, time waste, my time is wasted.
+[01:37:19] S8: For you, right? But our group is correct. The discussion happened, so. And its clarity was also received.
+[01:37:22] S3: Meaning.
+[01:37:24]      Hey, let me tell you, these things should not be shown. And if you use any standard puppy in this, then take it.
+[01:37:30] S8: Will do, right?
+[01:37:31] S2: The saree is standard, sir.
+[01:37:32]      Everything is standard, from PSA onwards.
+[01:37:32] S9: Everything is standard.
+[01:37:34] S2: Quite substandard.
+[01:37:34] S3: Sir, first of all, make sure you give me the confidence that the API standard that you are shouting about, sir, I am showing that.
+[01:37:41] S2: Sir, I was showing that.
+[01:37:42] S3: No, you are not understanding, man. First, listen to the whole thing. They have already said standard API, they are saying that you couldn't even find the standard API. In that, yes, we need your help. I didn't even know what the meeting is for, standard. They were telling, see Now listen to me. No, no, listen to me, let me complain once. You have 10 fields in the standard API. By using those 10 fields By sending data, is my MeeGo being generated further? Please clarify this.
+[01:37:55] S5: Now listen to my words.
+[01:38:00]      Yes.
+[01:38:10] S8: No, that's what needs to be checked. This was not possible before this.
+[01:38:12] S2: This was not possible before this.
+[01:38:15]      He couldn't do this before, before today.
+[01:38:23] S5: It is getting cleaned now.
+[01:38:26] S2: In the last Friday, I customized these.
+[01:38:30]      No sir, last last, if you remain under commit, then yes sir, but listen once, I showed them the entire custom list on Friday. And sir, in two days, I showed the entire standard list, all with you, with all contacts, with all the things.
+[01:38:31] S3: If you remain under committed, then yes sir, it will be better.
+[01:38:41]      For you, for you.
+[01:38:42] S2: So sir, in the end, it was completely theirs, I mean.
+[01:38:47]      I will do a little bit of that.
+[01:38:52] S5: Okay.
+[01:38:52] S3: Okay. Good job. Very good work. They will have to be brought to earth. They are all getting stuck. This is especially this guy.
+[01:38:52] S9: Good job. Very good.
+[01:39:01] S3: Okay, go.
+[01:40:18] S6: Now we
+[01:40:30] S7: Did you get any call?

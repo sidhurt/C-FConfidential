@@ -1,0 +1,10 @@
+﻿SCOPE|Function Module: SD_SCDS_RELEASE|pressing Select All
+FM|SD_SCDS_RELEASE
+RESULT_TITLE|Function Builder: Initial Screen
+SBAR|Function Module SD_SCDS_RELEASE not found in selected search area
+NO_GRID|dumping labels
+  Function Module
+  SD_SCDS_RELEASE
+   Display
+   Change
+   Create

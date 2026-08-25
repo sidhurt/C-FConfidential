@@ -1,0 +1,15 @@
+﻿SESSION|QS4/700 located at connection[1] session[0]|user=QNOVATE8
+SELFIELD|ctxtI1-LOW=STFRE_K
+TABLE|DD07T
+TITLE|Data Browser: Table DD07T Select Entries          8
+SBAR|
+ALV|rows=8|cols=9
+HDR|DOMNAME	DDLANGUAGE	AS4LOCAL	VALPOS	AS4VERS	DDTEXT	DOMVAL_LD	DOMVAL_HD	DOMVALUE_L	
+ROW0|STFRE_K	D	A	0001	0000	Nicht relevant f�r Kontierung				
+ROW1|STFRE_K	D	A	0002	0000	nicht kontiert			A	
+ROW2|STFRE_K	D	A	0003	0000	teilweise kontiert			B	
+ROW3|STFRE_K	D	A	0004	0000	vollst�ndig kontiert			C	
+ROW4|STFRE_K	E	A	0001	0000	Not relevant for account assignment				
+ROW5|STFRE_K	E	A	0002	0000	Account assignment not completed			A	
+ROW6|STFRE_K	E	A	0003	0000	Account assignment partially completed			B	
+ROW7|STFRE_K	E	A	0004	0000	Account assignment fully completed			C	

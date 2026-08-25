@@ -1,8 +1,10 @@
 # SAP API Dossier — C&F Agent Interface
 
+> **SUPERSEDED IMPLEMENTATION BASELINE — retained for historical evidence.** Part A's defect register and Part B's process reasoning remain useful. Part C's proposed `ZCNF_*` service portfolio is retired by the 2026-08-15 full SEGW catalogue and Tier-A evidence. Do not use it as the build plan. Current implementation direction: `deliverables/CNF_STANDARD_API_SOLUTION_AND_TEST_PLAN.md`.
+
 **Owner:** Siddharth (SAP backend / ABAP)
 **Date:** 2026-07-29
-**Status:** Design baseline. No DEV access, no formal assignment. Nothing here is built or system-verified.
+**Status:** Historical design baseline; not the current implementation plan.
 **Purpose:** Consolidate the client-supplied technical specification and the meeting-derived process model into a single proposed SAP-side API set, with every blocker named.
 
 ## How to read this document
@@ -98,7 +100,7 @@ IDs are citable. Severity: **Blocker** = will not compile or will not run; **Cri
 | S-13 | 4 | `gm_code = '01'` (GR for purchase order) combined with `mvt_ind = 'B'` (delivery note) and an **outbound** delivery number located via `vbtyp_n = 'J'`. The reference model is internally inconsistent and collides with unresolved Q-004. |
 | S-14 | 8 | `BAPI_BILLINGDOC_CANCEL1` with no IRN cancellation-window handling and no E-Way Bill linkage — despite e-Invoice and E-Way Bill being major walkthrough topics. Cancelling a billed document that already carries an IRN has consequences this design does not represent. |
 | S-15 | 7 | GSP JSON is built by string interpolation of free-text input (`IV_REASON_REMARKS`, CHAR100). An embedded quote or backslash breaks or injects into the payload. Should serialize a typed structure via `/ui2/cl_json`. |
-| S-16 | 7 | GSP bearer token stored as a plain column in `ZCNF_GSP_CONFIG` and `SELECT`ed into a local variable. A Z-table is not secure credential storage. This also puts GSP credential ownership inside ABAP — explicitly **outside** scope per `ROLE_BOUNDARIES.md`. |
+| S-16 | 7 | GSP bearer token stored as a plain column in `ZCNF_GSP_CONFIG` and `SELECT`ed into a local variable. A Z-table is not secure credential storage. This also puts GSP credential ownership inside ABAP; implementation ownership remains unresolved. |
 | S-17 | 7 | Synchronous outbound HTTP inside an OData request — no timeout, no retry, no circuit breaker, no `receive` exception handling. A slow GSP blocks a Gateway work process. |
 
 ### Major
@@ -140,7 +142,7 @@ IDs are citable. Severity: **Blocker** = will not compile or will not run; **Cri
 
 ## B.1 Evidence caveat
 
-The four 28 July recordings and the meeting summary are **not present in this repository**. Every claim in this Part is second-hand via reconciliation in `meetings/2026-07-28-design-walkthrough.md`, and disputed terms cannot be re-adjudicated from this repo alone. Session 3 is flagged as heavy crosstalk with lower evidentiary confidence. The BRD (`SRC-BRD-001`) and CPI workbook (`SRC-CPI-001`) have never been ingested by anyone.
+The four 28 July recordings and the meeting summary are **not present in this repository**. Every claim in this Part is second-hand via reconciliation in `meetings/2026-07-28-design-walkthrough.md`, and disputed terms cannot be re-adjudicated from this repo alone. Session 3 is flagged as heavy crosstalk with lower evidentiary confidence. The BRD (`SRC-BRD-001`) and CPI workbook (`SRC-CPI-001`) have never been ingested into this repository. The 10 Aug meetings report that project members have BRD access; obtain the approved, versioned original before using it as evidence.
 
 ## B.2 The operational spine
 
@@ -232,13 +234,13 @@ Stated as decisions with reasons, so they can be challenged individually.
 
 ### `ZCNF_MASTER_SRV` — reference data
 
-| API | Entity set | Op | IF | Candidate source | Blockers |
-|---|---|---|---|---|---|
-| A-01 | `PlantSet` | GET | new | T001W / `I_Plant` | Q-007 depot system of record |
-| A-02 | `StorageLocationSet` | GET | new | T001L / `I_StorageLocation` | Q-023 selection timing |
-| A-03 | `MaterialSet` | GET | new | MARA/MAKT, `BAPI_MATERIAL_GET_DETAIL`, `API_PRODUCT_SRV` | **Q-021** brand/grade derivation |
-| A-04 | `TransporterSet` | GET | IF-017 | LFA1 / partner functions / `API_BUSINESS_PARTNER` | Q-007 source, partner function |
-| A-05 | `ReasonCodeSet` | GET | new | customizing tables | Q-021, S-32 |
+| API  | Entity set           | Op  | IF     | Candidate source                                         | Blockers                         |
+| ---- | -------------------- | --- | ------ | -------------------------------------------------------- | -------------------------------- |
+| A-01 | `PlantSet`           | GET | new    | T001W / `I_Plant`                                        | Q-007 depot system of record     |
+| A-02 | `StorageLocationSet` | GET | new    | T001L / `I_StorageLocation`                              | Q-023 selection timing           |
+| A-03 | `MaterialSet`        | GET | new    | MARA/MAKT, `BAPI_MATERIAL_GET_DETAIL`, `API_PRODUCT_SRV` | **Q-021** brand/grade derivation |
+| A-04 | `TransporterSet`     | GET | IF-017 | LFA1 / partner functions / `API_BUSINESS_PARTNER`        | Q-007 source, partner function   |
+| A-05 | `ReasonCodeSet`      | GET | new    | customizing tables                                       | Q-021, S-32                      |
 
 No business state. Safest possible first slice — proves source selection, filters, pagination, auth, error contract, correlation and CPI connectivity with zero posting risk.
 
@@ -337,7 +339,7 @@ Phases A and B require no functional answers at all beyond environment facts. **
 
 ## C.6 Explicitly not in this scope
 
-Per `ROLE_BOUNDARIES.md`, recorded so it is not absorbed silently: frontend/UI, iFlow construction, Datasphere modelling, Basis parameters and roles, functional sign-off, **GSP credential ownership**, production postings. FleetX integration (D-006) has no assigned owner — that is a question, not an inheritance.
+Ownership is not yet assigned for frontend/UI, iFlow construction, Datasphere modelling, Basis parameters and roles, functional sign-off, **GSP credential ownership**, production postings, or FleetX integration (D-006).
 
 ## C.7 Blocker summary
 
@@ -369,7 +371,7 @@ Ranked by how many proposed APIs each one gates.
 | `SRC-MTG-20260728-01..04`, `-SUM` | 28 July design walkthrough | Second-hand via reconciliation; originals not in repo |
 | `SRC-SID-20260729-01` | DI = delivery, DI No. = delivery number | Verified (D-007) |
 | `SRC-CONTEXT-001` | Prior architecture and document summaries | Partial |
-| `SRC-BRD-001`, `SRC-CPI-001` | BRD, CPI interface workbook | **Never ingested** |
+| `SRC-BRD-001`, `SRC-CPI-001` | BRD, CPI interface workbook | **Not ingested here.** BRD team access reported on 10 Aug; controlled original still pending. CPI workbook remains absent |
 
 ## What would invalidate this document
 

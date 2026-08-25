@@ -1,0 +1,30 @@
+﻿INPUT|C_REFOBJ_RANGE[1]|VBTYP=8|REBEL=0000001001
+INPUT|I_FKART|0001
+PRE_EXEC|I_OPT_COMMIT=X
+PRE_EXEC|C_REFOBJ_RANGE=1 Entry
+POST_EXEC|title=Test Function Module: Result Screen
+POST_EXEC|sbar=
+  lbl[0,0] = 'Test for function group'
+  lbl[29,0] = 'V54C'
+  lbl[0,1] = 'Function module'
+  lbl[29,1] = 'SD_SCDS_CREATE'
+  lbl[0,2] = 'Case-sensitive'
+  lbl[0,4] = 'Runtime:'
+  lbl[16,4] = '3,043,997 Microseconds'
+  lbl[2,7] = 'Import parameters'
+  lbl[34,7] = 'Value'
+  lbl[2,9] = 'I_OPT_PACKAGE_SIZE'
+  lbl[34,9] = '1'
+  lbl[2,10] = 'I_OPT_LOG_SAVE'
+  lbl[34,10] = 'X'
+  lbl[2,11] = 'I_OPT_COMMIT'
+  lbl[34,11] = 'X'
+  lbl[2,12] = 'I_FKART'
+  lbl[34,12] = '0001'
+  lbl[2,13] = 'I_PRSDT'
+  lbl[2,14] = 'I_BUDAT'
+  lbl[2,17] = 'Changing parameters'
+  lbl[34,17] = 'Value'
+  lbl[2,19] = 'C_REFOBJ_RANGE'
+  lbl[37,19] = '1 Entry'
+  lbl[19,20] = 'Result:'

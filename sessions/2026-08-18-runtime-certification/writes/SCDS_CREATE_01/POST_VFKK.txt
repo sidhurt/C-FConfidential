@@ -1,0 +1,4 @@
+﻿TABLE|VFKK
+TITLE|Data Browser: Table VFKK: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

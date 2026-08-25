@@ -1,0 +1,8 @@
+GET /sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/ HTTP/1.1
+X-System: QS4
+X-Client: 700
+X-User: QNOVATE8
+X-Executed-Via: /IWFND/GW_CLIENT via SAP GUI scripting
+X-Captured-Local: 25-08-2026 12:14:47
+X-Status: 200 OK
+# no credentials, cookies or CSRF tokens handled or stored by this harness

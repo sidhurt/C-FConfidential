@@ -1,0 +1,313 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_BILLINGDOC_CANCEL1",
+    "functionGroup": "VBRK",
+    "remoteEnabled": true,
+    "releaseStatus": "Released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "BILLINGDATE",
+        "associatedType": "BF_DATM1EB",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Value date",
+        "structureFields": []
+      },
+      {
+        "parameter": "BILLINGDOCUMENT",
+        "associatedType": "BAPIVBRKSUCCESS-BILL_DOC",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Number of the Billing Document to be Canceled",
+        "structureFields": [
+          {
+            "field": "REF_DOC",
+            "position": "0001",
+            "dataElement": "VGBEL",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC_ITEM",
+            "position": "0002",
+            "dataElement": "VGPOS",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_DOC",
+            "position": "0003",
+            "dataElement": "BILL_DOC",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_DOC_ITEM",
+            "position": "0004",
+            "dataElement": "BILL_DOC_ITEM",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_VALUE",
+            "position": "0005",
+            "dataElement": "BAPINETWR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_VALUE",
+            "position": "0006",
+            "dataElement": "BAPITAX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0007",
+            "dataElement": "WAERS",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY_ISO",
+            "position": "0008",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_VALUE_ITEM",
+            "position": "0010",
+            "dataElement": "BAPINETWR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_VALUE_ITEM",
+            "position": "0011",
+            "dataElement": "BAPITAX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GRO_VALUE_ITEM",
+            "position": "0012",
+            "dataElement": "BAPIGRVAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "NO_COMMIT",
+        "associatedType": "BAPI_NCOMT",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "COMMIT control at BAPI interface",
+        "structureFields": []
+      },
+      {
+        "parameter": "TESTRUN",
+        "associatedType": "BAPIVBRKTESTRUN-TESTRUN",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Test Run ('X'), Update Run (' ')",
+        "structureFields": []
+      }
+    ],
+    "EXPORT": [],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRETURN1",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table of Error Messages Entered",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "SUCCESS",
+        "associatedType": "BAPIVBRKSUCCESS",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table of Successfully Processed Documents",
+        "structureFields": [
+          {
+            "field": "REF_DOC",
+            "position": "0001",
+            "dataElement": "VGBEL",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC_ITEM",
+            "position": "0002",
+            "dataElement": "VGPOS",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_DOC",
+            "position": "0003",
+            "dataElement": "BILL_DOC",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_DOC_ITEM",
+            "position": "0004",
+            "dataElement": "BILL_DOC_ITEM",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_VALUE",
+            "position": "0005",
+            "dataElement": "BAPINETWR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_VALUE",
+            "position": "0006",
+            "dataElement": "BAPITAX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0007",
+            "dataElement": "WAERS",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY_ISO",
+            "position": "0008",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_VALUE_ITEM",
+            "position": "0010",
+            "dataElement": "BAPINETWR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_VALUE_ITEM",
+            "position": "0011",
+            "dataElement": "BAPITAX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GRO_VALUE_ITEM",
+            "position": "0012",
+            "dataElement": "BAPIGRVAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "SIMULATION_ONLY",
+    "request": {
+      "BILLINGDOCUMENT": "<DEV billing document>",
+      "TESTRUN": "X",
+      "NO_COMMIT": "X",
+      "BILLINGDATE": "<YYYYMMDD>"
+    },
+    "successEvidence": "RETURN has no E/A message for an approved cancellable DEV invoice; no cancellation is committed."
+  }
+}

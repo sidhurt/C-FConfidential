@@ -1,0 +1,3 @@
+ROLLNAME	DDLANGUAGE	AS4LOCAL	AS4VERS	DDTEXT	REPTEXT	SCRTEXT_S	SCRTEXT_M	SCRTEXT_L
+FBGST	D	A	0000	Gesamtstatus der Frachtberechnung des Transports	FB	Ges.FraBer	Ges.Frachtber.	GesStatus Frachtber.
+FBGST	E	A	0000	Overall status of calculation of shipment costs for shipment	SC	Ov.Shp.Co.	OvSts.ShCostCal	OvSts.ShipCostCalc.

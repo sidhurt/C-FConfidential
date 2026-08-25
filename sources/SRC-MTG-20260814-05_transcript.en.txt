@@ -1,0 +1,910 @@
+# 14aug_5 - translate
+duration: 56:49  |  language: hi-IN  |  turns: 1064
+
+[00:00] S3 : No, I was saying that because if you are coming from that route and it's not there, then that is...
+[00:02] S2 : And if they are coming from the route itself,
+[00:05] S5 : No no, what we were talking about is that it will go public, right? The URL, if you call, that URL is exposed publicly to because DSP is also public and this is also public.
+[00:15] S3 : S4.
+[00:17] S5 : Which S4 is not on public?
+[00:17] S4 : This is not on S4 Public.
+[00:21] S3 : This is commerce.
+[00:22] S6 : Yes.
+[00:23] S3 : Is it public now? Yes. No. It is public, still.
+[00:25] S6 : So, what are you restricting?
+[00:26] S4 : You are restricting.
+[00:27] S3 : Okay. The URL is public, right?
+[00:29] S6 : So, directly.
+[00:29] S4 : So, they don't take direct calls.
+[00:30] S5 : You can come, right? You'll have to come through CPI.
+[00:31] S6 : Actually, its API is not public.
+[00:31] S5 : Like that. SAP also recommends that you do it with this only because it is trustworthy.
+[00:37] S3 : It might be a secured way.
+[00:38] S6 : Meaning, we should talk to SAP once. That you do the white listing between commerce and them.
+[00:42] S3 : No, we were saying, right, that yes, we'll get a connector, so then the connectivity will be smooth, and then there is a heat cost that will not come more on that.
+[00:51] S4 : Yes, you can do that, but the problem is that you either keep it through a dedicated tunnel.
+[00:56] S3 : Yes, both of them.
+[00:56] S4 : Both of them have high fees.
+[00:57] S6 : Yes, I am saying the same thing, we will talk to SAP, Commerce SAP.
+[00:59] S5 : Do that, it will come in CPI, it will come in CPI. We will waste time, we will do that. But it will come in CPI.
+[01:07] S6 : Okay, then it's fine. Now that you know, then we don't have anything, then why should we mess it up?
+[01:08] S3 : So then nothing, then we
+[01:10] S5 : Why? Because how will you do troubleshooting? How will you do hair handling?
+[01:13] S3 : That won't happen, all that won't happen.
+[01:14] S6 : So look, you have error handling versus cost, both things together. No, so we have to see everything. This is, yes, this is.
+[01:17] S4 : No, we have to see everything. This, yes, this error handling will become important, man, how will we do it then?
+[01:22] S6 : Then tomorrow the business will be fine. Then you have another alternate solution. Then alternate solution, it's not like error handling is not a solution. There is no alternative to cost. Error handling is always there.
+[01:23] S5 : It will be fine.
+[01:24] S1 : Then you, then alternate solution.
+[01:30] S5 : No no, for for invoice, right? We are discussing only for invoice, right? So how much will be our transaction, for example?
+[01:36] S3 : Yes, it is STO.
+[01:36] S5 : Yes. The entire store will be visible, the entity. We will take the entire package for the store. DI, boys.
+[01:41] S3 : Di, man, look at everyone, in each transaction, ten were coming, we were getting hit now.
+[01:46] S2 : For each transaction, 10 hits or 1500 transactions are there.
+[01:51] S3 : Entire competition, OTC cycle, 10-in.
+[01:53] S5 : How much?
+[01:54] S3 : How much is the transaction?
+[01:54] S2 : How much is this?
+[01:56] S3 : You said 1500 to 2000, right?
+[01:57] S5 : It is ₹2000.
+[01:58] S2 : 1500 transactions are there, and this creation is
+[01:58] S3 : Favorite transactions, updates, no updates.
+[02:04] S4 : Okay, and this creation is live.
+[02:06] S2 : ₹15000, right? ₹15000 will be the count. ₹15000 is not the bill. ₹15000, that's the count from.
+[02:08] S3 : It is less than ₹15000.
+[02:10] S4 : It is not the same.
+[02:14] S5 : Lakhs, 2000 only for invoice.
+[02:16] S2 : One day, I understand, we can understand.
+[02:17] S3 : Yes, sir. So, if you multiply 1500 by 10, it becomes 15000, right? 15000 for one day.
+[02:20] S5 : It has become 15000.
+[02:21] S2 : 10 years means, like, suddenly it happened.
+[02:24] S5 : It got hit. This, this should be done because you people should go to live transactions later. But the one who is calling, the one who is checking, stocks availability and stock change, that needs to be done. That is always absolutely real-time. Absolutely needed. That is needed. There is no compromise either. If there is a compromise in that, then the whole thing is this.
+[02:24] S3 : It got hit. They are doing what they are checking. Availability and stock change, that is real time. That is always absolutely real time. Absolutely needed. That is needed. If you compromise on that, it will completely shake you.
+[02:44] S5 : Approach this.
+[02:46] S3 : Okay, thank you.
+[02:48] S6 : No, no, I am asking.
+[02:49] S5 : You know, in this
+[02:49] S3 : You can do it on this too, I mean, it's okay.
+[02:51] S5 : If you can do it on this, that is okay.
+[02:52] S3 : I was doing that, but the game crashed.
+[02:53] S5 : Similar to current options. Yes, what is it?
+[03:00] S3 : Current understanding, you can give a 10-minute interval that it happened in the last 10 minutes. Now you tell me there is a collection, then I will say, man, I want to see it in real time.
+[03:01] S5 : Yes, okay.
+[03:10] S3 : It is like that, right?
+[03:11] S5 : If we take it from here, there will be a long-term problem.
+[03:15] S3 : Long term long term No, there is another way that we were thinking of, processing in batches. Instead of single single, you process in batches with a one-minute interval, half a one-minute minimum, meaning process in batches with a one-minute interval.
+[03:31] S6 : Pick up the whole phone.
+[03:32] S3 : Hold and push, hold push, hold push. That means it might be a little costly. It might be quite costly.
+[03:37] S6 : It can be done, it can be done with quite a lot of cost too.
+[03:39] S5 : How is it?
+[03:40] S6 : In one minute, however many minutes there are in a day, that many coins will come.
+[03:40] S3 : In a minute, in a day. Yes, suppose that, but your, I mean, the operation that happens, right, that happens at 10 AM. In the day, between 2 to 4, then in the evening, that also changes, the background also changes.
+[03:52] S5 : That will also change, the background will also change.
+[03:55] S3 : No, I mean, it's like, at that time, people will work more. The rest is
+[03:58] S0 : It doesn't work.
+[03:59] S5 : The rest is fine.
+[04:05] S0 : Yes, that's how it is, you have to push it.
+[04:05] S5 : That's what used to happen, and push it. Everyone did that, someone says, do it now. One minute, one minute.
+[04:08] S4 : Because everyone says. One minute, one minute, let's clear this concept a little bit. Only the creation that happens, that counts for digital access, not the change. So if we create a delivery, like create delivery, then whatever we are doing, that is being counted in the delivery change, right? What you
+[04:26] S5 : which you Hmm
+[04:28] S4 : If you are doing that, it is in delivery change, so digital access is not considered in change. Only creation of document, the sale document is considered 1:1. Okay? So this we, delivery create is one, as much as you have changed, that will not be considered, after that invoice create will be considered. Invoice create is also one to one or one to one or point to sale.
+[04:48] S6 : But digital excel is not there.
+[04:49] S5 : Digital access.
+[04:51] S6 : Hits, hits.
+[04:53] S5 : Wait, no no.
+[04:53] S6 : Does internal access come only when you try to access SAP outside SAP?
+[04:58] S5 : No no no no. This is outside. There is a flash. This will be applied. First, this lab...
+[05:01] S3 : First, this definition was given. It was given first. That is an old definition, 2017. Today is 2036.
+[05:04] S5 : And in 2036, it is API.
+[05:08] S4 : Yes, okay.
+[05:09] S5 : He is talking about how much the number of repayment calls will increase. He is saying the STO will increase by fifteen thousand. If DI, STO creation...
+[05:15] S3 : Everything is available.
+[05:16] S4 : What does it mean?
+[05:17] S5 : Fifteen thousand.
+[05:17] S3 : We are considering a transaction of ten, meaning fifteen hundred per day.
+[05:22] S5 : ₹1500, okay.
+[05:23] S3 : 10 hits are coming on one transaction.
+[05:27] S5 : That's D.I.
+[05:28] S3 : 10 hits are coming. Not this, 10 hits. To complete the entire OTC cycle, I will hit the ACP 10 times. Roughly. I am considering it as an average. It can be more, it can be less, one or two.
+[05:38] S4 : I am assuming. If we consider an average of 10, then 15, this will come. The scale will keep happening because new depots keep opening every day, operations will increase, so this will increase, this volume will increase.
+[05:42] S3 : If we consider an average of 10, then 15.
+[05:53] S5 : After this, we will count how much is being paid and how many calls are happening. After this, first this.
+[05:58] S1 : If the SOW points keep increasing, then that will also be counted in the warehouse.
+[06:01] S3 : Yes, LBP, BTST, there are many.
+[06:04] S0 : There are many. So I think this STO and the BGO screen, they are all related. No, but S O W
+[06:09] S3 : No, but SOW and all to the warehouse, you will take the savings at the SOW point only.
+[06:11] S1 : And also, I mean, warehouse.
+[06:16] S0 : Yes.
+[06:18] S1 : CFA is not there, it will be on CFA from now on.
+[06:19] S2 : No, it is not.
+[06:28] S1 : The STO discussion is pending. The STO is less, so the plant person also looks into it. As soon as they increase, that plant person will tell us.
+[06:29] S3 : 700, so like that.
+[06:31] S0 : So how is this STO discussion pending? It works with DSP and SAP.
+[06:39] S3 : No, because he is dispatching that plant.
+[06:41] S1 : Yes
+[06:42] S3 : What are you thinking about OMS?
+[06:42] S1 : What are you thinking about OMS and telling me? Because if you still want to go inside this, then you
+[06:44] S2 : Automatic.
+[06:45] S0 : Because if you still see this inside it, right?
+[06:50] S4 : We will see the STU relation here later.
+[06:52] S2 : So, that's all.
+[06:53] S0 : Correct. He is still there, he is still there.
+[06:55] S4 : Yes, they are not enabling it right now, but they will do it later.
+[06:59] S0 : It is not being done, it is not being done. We are creating a PO order there.
+[07:04] S4 : Hmm, in C.
+[07:05] S0 : In CNM, in scope.
+[07:06] S4 : Okay.
+[07:08] S5 : Okay.
+[07:09] S0 : He can walk, so I am telling you about that screen and what we are showing, they are all related.
+[07:13] S2 : Hmm
+[07:14] S0 : Because we are originating from here, it will originate from here within the OMS as well, via the command center. So everything is hybrid. So, until the entire high bridge is done, I think SAP should start pushing to high bridges so that our services remain aligned. That our source of truth should then be the high bridge itself, that we have to take it from there and not go anywhere else.
+[07:33] S5 : No, that's why we took that call that we will give it to you. For the stock, or move forward and show it once. We have to do it ourselves because we will need it in real-time from here as well, and we don't have to go like that.
+[07:49] S4 : When you make it, you made the STO, you delivered the STO. Then the invoice for the STO was done and the dispatch was issued.
+[07:54] S5 : Invoice, invoice, same process. It came out.
+[07:57] S4 : Receive key and receiving key here.
+[07:57] S6 : Received, received. After Mego.
+[08:09] S1 : I will move forward.
+[08:10] S5 : Move forward, show me.
+[08:11] S1 : Sir, this list appears, whatever STO is pending, its list appears on that warehouse. For example, and then as soon as you click on this, it directly appears to you that, firstly, if you have taken a partial amount earlier, that is, if 40 tons were coming, I have taken 20 tons earlier, then at which place have you taken 20 tons, okay? And the remaining 20 tons, at which storage locations do you want to take how much of each? You will enter this and if you confirm, then your MRF
+[08:37] S0 : No, one minute, one minute, go to the previous screen. So this data, this whole thing, which storage location is assigned to the plant, that is coming to us from DSP. We are displaying that here. The inward quantity above is coming from MATDOC.
+[08:48] S5 : You want to say it, want to say it.
+[08:51] S0 : No, in this, this is a scientific concept.
+[08:52] S6 : Yes, sciatica.
+[08:53] S5 : Okay, fine.
+[08:54] S6 : It is not light.
+[08:54] S5 : Like.
+[08:55] S0 : Yes, this is coming from DSP.
+[08:57] S5 : Yes, it's on-site.
+[08:59] S6 : But that, that is real time, right?
+[09:03] S0 : Which one?
+[09:04] S6 : Which keyboard?
+[09:05] S4 : How much inward have you taken before?
+[09:07] S0 : That's a MacDock, right? That MacDock is pulling from 30 minutes in our near real-time. Inside that, that information is inward quantity.
+[09:14] S4 : But man, I don't understand, when the MacDock is 30 minutes, near real-time, then what will you do by keeping it real-time? Then everything will either go wrong. Yes, then it's going to be a mismatch.
+[09:23] S3 : It will happen.
+[09:27] S4 : You know, if I take another inward before half an hour, then I won't see this quantity, and I'll think, man, I'll take only 20 inwards. Correct. Suppose I have taken 10 here, then that quantity should be 10, right? Then you won't see that.
+[09:43] S0 : That won't even be visible. Yes, I mean, you are right because this has been partially taken.
+[09:48] S4 : Either you go for real time, then go completely real time, or you go with near real time, then keep it completely near real time for 30-30 minutes. Don't keep this hybrid approach that this one is real time.
+[09:49] S0 : Either look, either you go. So we will have to bring that mat dog, MRM, actually in real-time. Ideally, it should be like that.
+[10:07] S4 : You won't even realize how much inward I took.
+[10:12] S5 : Which screen, which one? This, this number.
+[10:13] S4 : This, this number two is on the screen.
+[10:15] S5 : Okay, here.
+[10:16] S4 : How much am I taking here right now? You are prompting me to take 20, correct? And if I have already taken 18 out of 20, then I will only take two, right? And if this isn't visible here, then I'll put in 20 directly.
+[10:30] S0 : Yes, meaning
+[10:31] S4 : And he won't let me take it.
+[10:32] S0 : If you do it before the half-hour gap, then that problem can happen.
+[10:34] S4 : Yes, so this can happen, right? Why Yogesh? Tell me.
+[10:38] S0 : Just one approach.
+[10:40] S4 : So, so in that way.
+[10:40] S0 : No, for me, STU Orders and Matdock, yeah, it's a completely different entity. That's what I mean. I am taking this inward into my depot.
+[10:48] S4 : You mean, look at the inward as well, if you are taking inward, then take inward with reference to the dispatched quantity, right? Your 50 tons is made, the same was dispatched from the plant, and I am slowly inverting it, okay, I did 10, I did 40. So I didn't see the old one at all, if.
+[11:07] S0 : That is it. In this, one solution I can do is, all transactions which we are initiating from iBridge, I am also keeping a record of them. So as you are saying, earlier
+[11:16] S4 : So, will you cash in all the hybrids then?
+[11:18] S0 : No, I am storing it.
+[11:18] S4 : Store it. Store it. And when will you purchase it?
+[11:22] S0 : Right now, I am not using it because everything I am taking, but if this case is there, I can use that data inside it.
+[11:27] S4 : No, you will use it, when will you purge it?
+[11:30] S0 : Purse every quarter, I will purchase.
+[11:32] S6 : That was my clock.
+[11:33] S0 : That is mine.
+[11:35] S4 : You can do it by going to the front.
+[11:35] S0 : You can do it in any job. Meaning, we have a requirement for audit log, not just odd transactions, even if I am creating a DII, I am keeping its log with me.
+[11:47] S4 : So what will happen with that?
+[11:48] S0 : That will reduce the error. I know that it has been adjusted.
+[11:50] S6 : No, no, but here it's the same story, it's only in high bridge again.
+[11:55] S1 : Did anyone receive from SAP before?
+[11:56] S0 : Yes, it will be done. That is, that is. If someone has done it with SAP, then it will be a mess.
+[11:59] S6 : If someone like this
+[12:02] S3 : It needs to be kept synchronized properly. So here, you did the transaction twice, and there you found out you only had to do one, then there was a reversal, and you didn't even give the concept here.
+[12:05] S0 : Yes. That's it. Then this also has to be brought in real-time.
+[12:17] S3 : Now, keep real time, man.
+[12:19] S6 : This is completely real-time.
+[12:21] S3 : No, there is a reason, right? I mean, that
+[12:21] S0 : The reason is, you know, like
+[12:23] S3 : Brother, there is a simple way, there is no such simple way.
+[12:24] S0 : That's right.
+[12:25] S6 : Brother, there is a simple way, there is a simple way to sweep the SCPI. Otherwise, what will happen is that its ROI will cost so much that
+[12:28] S5 : It shows how to sweep the SCPI.
+[12:32] S3 : We'll see, we calculated it roughly, like a rough estimate. Now that every call is going, it's roughly ₹1 crore 44 lakh. If we reduce it from here, then there's an overall burden of ₹40 lakh from here. This is to apply.
+[12:36] S6 : Now that every call is going through, then
+[12:49] S5 : No, now money.
+[12:50] S3 : It was a rough picture, right?
+[12:52] S5 : Look, brother.
+[12:53] S1 : Right.
+[12:53] S3 : It's hot, I don't know if it's less.
+[12:57] S1 : Our investment is ₹35 lakh, ₹36 lakh. He said, more spices than chicken, less water.
+[12:59] S3 : He said, don't bring more spices than chicken, it will be less. Okay, I mean, the cost is not, so they even do this.
+[13:11] S1 : I mean,
+[13:14] S5 : So then, they would have done this too. If I do this every 5 minutes, it still won't happen.
+[13:21] S3 : In 5 minutes, it means, man, one or two cases can come, that's the thing.
+[13:26] S6 : Yes, he will refuse anyway later, right?
+[13:28] S0 : So, as much as
+[13:29] S3 : He will let us do it until it is available. Yes, until then, yes, but yes, this is the thing.
+[13:29] S6 : Yes, yes, yes. Yes, until then, yes, but yes, don't do this until he lets you do it, and at that time, he might have some other intention. It's a case that could get stuck.
+[13:39] S5 : Now, the last case is on 2 metric tons.
+[13:40] S6 : It's getting stuck. This is 18 and two, that's it.
+[13:43] S3 : Look, my point is, wherever the stock is, wherever the price is, it should at least be kept in real-time.
+[13:43] S5 : That is absolutely
+[13:50] S0 : So, this is also a type of transaction that happened. Yes, the stock is getting updated from this.
+[13:52] S1 : The stock is getting updated. So, this is L time.
+[13:54] S5 : How much is this transfer, how much will this transfer be for the day?
+[13:57] S3 : It's not as much as it is when dispatched, it's 1500.
+[13:59] S0 : Means ₹15000.
+[14:00] S5 : Meaning ₹15000.
+[14:02] S0 : No, 15.
+[14:02] S3 : No, 1500. 1500. Add 1500. Your total is 16500.
+[14:04] S0 : I will do it from the side.
+[14:10] S1 : And this will keep increasing, sir. The number will keep increasing.
+[14:14] S3 : It will increase, it will increase, that's a different thing. Right now, we have one more minute.
+[14:15] S1 : It will increase.
+[14:17] S0 : But I had one more question, we are saying it can also be done through SAP. Now, the CNF agent to whom we give access to this, we will snatch their SAP access, right? So then how will he do it?
+[14:26] S1 : Yes, but then The secondary logistic, the person who is sitting on top of it.
+[14:30] S0 : So he won't do it, he will have to refuse him.
+[14:33] S3 : Hey, that's the problem too, look.
+[14:34] S5 : He will do that, when will he do it? When, in case of exception. Yes, in case of exception.
+[14:38] S3 : Yes, there is no exception, man. It happens, it happens. Here, you always only talk about creation. Who will do the cancellation? After doing the cancellation,
+[14:40] S5 : It keeps happening.
+[14:45] S6 : It will work in both ways, right? It will work in both plus and minus. Now, we are just seeing that it is being made.
+[14:49] S3 : Now, movement is just something we are seeing, it keeps happening. There is no type in this. I mean, normally what happens is, you have to do muddle to muddle movement or storage location, restore location, plant to plant, stop all that. If you make these rules, then it will run perfectly. Otherwise, it will move from here to there, and from there it will be stopped. It will keep throwing arrows. The inventory will keep running like this.
+[14:56] S2 : Location, location, location. It will work perfectly, otherwise it will be straight from here.
+[15:05] S5 : Girls, like, told him. It will be done. The inventory will keep running like this. For the inventory, this is for checking. I will do asynchronous every one minute instead of synchronous, then it will work for you all.
+[15:17] S3 : Yes, this can be done.
+[15:18] S0 : One minute, sir, I mean, because do it in real time. One minute.
+[15:21] S5 : No, no, no.
+[15:22] S3 : No, no, there is a difference in asynchronous, right?
+[15:22] S0 : No, no, there is a difference in asynchronous.
+[15:24] S5 : And I mean, two calls were made.
+[15:24] S3 : There is no coming and going, meaning it's just a way to go.
+[15:28] S5 : But if it fails somewhere, if the indication fails somewhere, it doesn't come.
+[15:32] S3 : No, no, mine.
+[15:33] S6 : What is the meaning of going, does it count two messages? Is it like that? Because response.
+[15:35] S5 : Yes, two minutes. SCP. Yes
+[15:38] S3 : Activity is looting a lot, man.
+[15:38] S6 : Activist is looting a lot, man, a terrible looting.
+[15:40] S5 : No, no, but what is needed in this? If you use the standard.
+[15:40] S3 : But there is a catch in this.
+[15:45] S5 : Like the standard of commerce. Of S.P.A. also. The standard of S.P.A. and the standard of S.P.A. So we will move forward with that money.
+[15:47] S3 : SEB also has a lot of
+[15:52] S6 : Oh no, wait a minute. That HTTP case works. Whether you synchronize it or asynchronous it, the response is always going to come to me. It's going to come, it's going to come. Okay. So it always counts only one message.
+[15:58] S5 : Coming, coming. Okay. If your value is coming in payload, apart from technical 202.
+[16:05] S3 : That's fine, it's allowed up to there. Apart from that, additional information or charge to cost for us.
+[16:09] S5 : Meaning, if a response code is coming, then it's fine. Apart from that, pay whatever you are sending.
+[16:16] S6 : Hey brother.
+[16:17] S3 : This is the game, man.
+[16:18] S5 : SCPI is very amazing.
+[16:19] S3 : Not CBI, not SBI, I mean, what is it? No, but if you use the standard then.
+[16:21] S5 : No, but if you use the standard, you don't have to pay. If you have the standard component of e-commerce to check this.
+[16:27] S3 : What is the standard? Ask them, they will tell you. There is nothing like that. If you go to see it like this.
+[16:28] S6 : Ask them, they will tell you.
+[16:30] S5 : Yes, yes. Yes
+[16:32] S3 : If you go to see this one, when we are saying that the cost of four fifteen has to be brought to four, then we have to keep it synchronous always. If we have to keep it synchronous, then money is being spent on both.
+[16:42] S5 : No, no, they are saying that if you use the API of a standard object, then its
+[16:43] S6 : No, they are saying that if you use the API of a standard object, then it doesn't have a cost.
+[16:47] S3 : But in standard, our requirement should also be sufficient, right?
+[16:50] S5 : It should be a surprise. Yes, no, that discussion is still going on, right?
+[16:52] S2 : It's just going on, right? Yes, 100 needs 100 fits, right.
+[16:53] S5 : Yes
+[16:57] S2 : That much input has to be created there. Save it and return it.
+[17:00] S5 : No, if there is 100 in the standard, will it work if you disable the standard?
+[17:06] S0 : I want to buy this in the same standard.
+[17:08] S3 : They are trying the same thing, but they are telling me the same thing.
+[17:09] S0 : There, they are telling me the same thing, there are 100-150 inputs or something.
+[17:13] S3 : No no, so input, it's not like that, look, I have used so many things, right. It's not like you have to fill up all of them. It's mandatory that only we need to be mandatory.
+[17:19] S0 : Mandatorily, that only we need to be. How much will be mandatory?
+[17:23] S2 : Sir, I am pooling.
+[17:24] S5 : Let him do it, let him do it, but this is fine, move forward, let's move forward.
+[17:28] S1 : So, please check out this Migo one, sir, here.
+[17:30] S3 : Otherwise, this is real.
+[17:31] S0 : It has to be done at the right time, right?
+[17:31] S5 : Hey, eat the samosa.
+[17:33] S3 : That's fine, we'll finalize the approach separately. But its cancellation last time
+[17:37] S5 : Last time it was finalized, it was remembered well in real time. Because it was concluded.
+[17:42] S3 : Sir, Madam.
+[17:44] S2 : Load pressure. No, no, sir.
+[17:45] S6 : Sir, it will be needed.
+[17:47] S2 : No, it's okay, that load. No, let's look at that later, once.
+[17:49] S6 : No, let's throw that aside too. Let's calculate cumulatively once how
+[17:52] S2 : As of now that particular user is creating SAP transaction. In SAP, they are saying again, just like your Invox's node is shifting, this Invox's node is also shifting.
+[18:01] S5 : Same shift.
+[18:02] S2 : So, when your inverting load shifts, it will be different.
+[18:06] S5 : Going into commerce.
+[18:07] S2 : On the commerce side, well, this is your
+[18:10] S3 : It will shift.
+[18:10] S5 : Meaning it will reduce, it will reduce.
+[18:11] S3 : Reduce, reduce.
+[18:12] S2 : Yes, yes.
+[18:12] S5 : So, for this, I am getting a new server, right?
+[18:15] S2 : Yes, you are taking it. For this, sir, commerce is also a service.
+[18:15] S5 : For this, there is a new server, Commerce also has a new server.
+[18:18] S2 : SAP's load.
+[18:19] S5 : Comfort.
+[18:20] S6 : They are talking about SAP's road.
+[18:20] S2 : Talking about the road of S.A.P.
+[18:22] S0 : Yes, there was a need for SAP.
+[18:24] S2 : Load, what is considered, yes, like user-wise load, right?
+[18:25] S5 : It needs to be reserved.
+[18:27] S6 : No, no, it doesn't load SAP, it's also the API cost.
+[18:28] S5 : No, no, that's also there. What is the cost of API? No, no, both are there, both are there.
+[18:32] S3 : So, like that.
+[18:32] S6 : So, the load of the SIP is not that much. The load of the SIP is a little less.
+[18:33] S5 : The load of the AC is not that much. The load of the AC is a little less or more. That's why there is no tension, the load will be reduced. The load of the AC is not that much. Only the major thing is which is the API.
+[18:37] S6 : The load is broken.
+[18:40] S3 : The user load will decrease.
+[18:41] S6 : Yes, sir.
+[18:43] S5 : One means the normal order, the trade non-trade order, this order that we saw in the morning, whatever API call is happening for that order, similarly for the STO also, the same API call will happen. Yes, yes. Exactly, exactly.
+[18:54] S3 : Yes, yes, exactly, exactly.
+[18:57] S5 : Whatever pay call is happening for the order, it's the same for the STO as well.
+[19:01] S3 : No, no, the number is less.
+[19:03] S6 : The number is less. This is Migo. Migo, Migo, Migo. This Migo, Migo is also very less. It will be less for Migo. Look, show me one. Single API. Look at Migo, one API is there. In the first listing. Then one API came here, stayed here, and one last API. Three APIs, that's it.
+[19:04] S5 : It will be for me, it will be for me.
+[19:06] S3 : It will be less for the Google.
+[19:07] S5 : This is the length.
+[19:09] S3 : Look at this.
+[19:16] S5 : It is given. Hmm hmm.
+[19:21] S6 : Create and submit.
+[19:23] S3 : After this, we will sit and write. How much, how much, 100? How did it become three?
+[19:24] S5 : After this, we will sit and write.
+[19:27] S6 : What is this?
+[19:28] S5 : How much?
+[19:29] S1 : So good. You will pull the temperature too, right? If inward quantity is taken first.
+[19:36] S3 : So, it is already available with you, right? So, that is available with you. It's on delivery, right? As much as the delivery needs.
+[19:42] S6 : If there is one API, then this list has come up to be extracted.
+[19:46] S3 : That which will be taken out as pending. Two, two, right?
+[19:46] S6 : Will remove pending, yes, one, two. And and one this inward quantity, not this one.
+[19:51] S3 : It's just two, right? This one, this one. So, are you bringing that baby along too? It's just two, right?
+[19:55] S6 : And then the third one that I submitted.
+[19:58] S2 : This is the quantity of
+[19:58] S1 : Bring the inward quantity that they are talking about along with the first list you are extracting.
+[20:02] S0 : No, that is deliveries and invoices, right sir? This is your metodone.
+[20:05] S1 : Meltdown, you are right, yes, we can bring it with this.
+[20:08] S3 : No sir. You will be able to do the pending work only on that basis.
+[20:12] S6 : Then, then, then.
+[20:14] S0 : But you won't find the storage location in that. Which storage location? No, you will decide that, right?
+[20:16] S3 : No, you will decide that, right? I will put it in, where do I have to take the respect inside.
+[20:20] S0 : No, this is already inverted, that's the value.
+[20:23] S3 : Sir, you are getting confused. I don't know where to get the goods in the outbound. I know this, I know the depot. There are 10 locations, I will take it from there if I want to.
+[20:25] S0 : In Outbound, I
+[20:34] S3 : I am the owner of the depot. So, in the depot, he will decide that based on transactions, he will decide which location he wants to be receptive to.
+[20:40] S6 : So what he what he is saying, take it once. Here, the list is coming. Okay.
+[20:48] S3 : Is there quantity here?
+[20:49] S6 : Here is the quantity here.
+[20:50] S0 : Yes, that's it.
+[20:50] S1 : Everything will be visible here, dispatch was given, inward has been taken this much, pending is this much.
+[20:54] S0 : Okay.
+[20:54] S6 : So, it is written, brother.
+[20:55] S0 : There is no storage location here, right? Which storage location?
+[20:58] S1 : But against this,
+[20:59] S6 : When it's inverting, then what is the storage location of this? This is so simple.
+[21:03] S3 : No, the user will decide, the CFA will decide. To unload the goods in the GD.
+[21:07] S6 : No, no, that's happening later. You are saying something different. Then again, all this comes on the screen.
+[21:08] S0 : It's happening later. That is after submit Meeco. Before that, I will know, the user will decide here.
+[21:13] S6 : The user will decide here. Here, right? What we are talking about is that I have already taken how many, which game, which storage location to take.
+[21:15] S3 : Here, right?
+[21:20] S1 : Which game?
+[21:22] S3 : Why is this visible?
+[21:23] S2 : Why show that? Why show that?
+[21:24] S6 : Yes, so I am saying the same thing, don't show this, it's just that why is it needed, I mean, the child is not that much.
+[21:27] S1 : Why is it even needed, I mean?
+[21:29] S2 : The teacher has said that we have said
+[21:29] S1 : The teacher said, "Hey, where did we take it?"
+[21:31] S3 : It is given, 20 tons. You have to take 20 and complete the transaction of 20.
+[21:32] S1 : First, you have to take 20 and complete the 20 transaction. You will have to show that. That's right. You will just say that 20 transactions have been taken out, diversion has also been taken out.
+[21:37] S3 : It has been taken down in diversion. Okay, in that, a very big question comes up here now. In today's date, he sees MB 52. From that, he gets to know that, that what is my stock saying today? What is opening, closing, closing is visible, meaning what is today's stock. That is visible, it has become plus minus. So when he goes to do it tomorrow, where will he see it? He doesn't see the stock anywhere in your place.
+[22:05] S1 : No, right? The visibility is completely gone now. Sir, one can see it from here, from the dashboard.
+[22:06] S3 : So sir, one thing is that Yes, so it's a good stock. The whole stock is available right now. Yes, so just looking at this, then there's no need for it there.
+[22:12] S1 : Yes, so that's it. So, after seeing this, he went there. No, I just unloaded the goods from that particular STO, it's not like I know about it.
+[22:19] S0 : I have that particular one.
+[22:22] S3 : will do
+[22:23] S0 : On the dashboard.
+[22:24] S1 : Sir, if he finds out that I have already taken 20 tons of goods, let's say you are working on it, okay? I have told the diversion, if I have the diversion.
+[22:25] S5 : I already did it.
+[22:32] S3 : We are not doing it on one transaction, on two transactions. We don't do it.
+[22:34] S5 : No, no.
+[22:38] S2 : You are thinking that I
+[22:38] S3 : Yes, yes, yes. But it should be done.
+[22:42] S2 : There is a transaction of 50, I am asking for 25 and this is of 25.
+[22:44] S0 : Yes.
+[22:45] S3 : I am saying MADDS of 25 and
+[22:48] S0 : No, no, it's not like that. I am saying, sir.
+[22:48] S1 : No, no, it's not like that. Next, so I am saying, sir, yesterday he unloaded the diversion in the goods transfer, of 20 tons. He unloaded it in this. I unloaded it, of 20 tons, and I also took the trans-shipment of 2 tons. It happens a lot. On that, yes, on that transaction. Why did you take it?
+[22:52] S3 : There is no divergence in the transformer.
+[22:55] S5 : Birth deity.
+[22:56] S0 : I didn't.
+[22:57] S5 : I took a 20-ton one and also took a 2-ton one for the transshipment.
+[23:01] S2 : Yes, on that transaction.
+[23:03] S5 : Because I want to take it and do it.
+[23:05] S1 : I can take it on the same, on multiple storage locations, and on one.
+[23:09] S5 : And one.
+[23:10] S2 : Mostly, you have to be there at the same time.
+[23:10] S3 : You had to go at that very moment.
+[23:12] S1 : Yes, but it's not like I have to take all the goods at once. I was getting a goods worth 40 tons today, suppose in the evening I took 20 tons today, and I said that I will do the other transaction for 20 tons tomorrow. So when I have taken it here, I should know in what situation I took these 20 tons.
+[23:13] S3 : It's not like that. What to create? I was asking for 40 minutes today. I am telling you. For that.
+[23:29] S2 : Okay, okay, okay.
+[23:30] S5 : Three, four.
+[23:31] S1 : In what was that taken?
+[23:32] S2 : So that was taken, so that sir, basically that is like, if you show each one then, yes, so that's it.
+[23:37] S1 : Yes, so that's it, so now the matter is ahead of that, but even today he doesn't see it, today he says in his session that we need this visibility, we didn't even give it before.
+[23:39] S2 : But
+[23:40] S3 : He doesn't see. It wasn't even given before. It was visible over there, right, that yours came here. But it didn't come for a particular rescue, right sir?
+[23:47] S1 : He didn't come for that particular STO, right sir? He didn't come for that particular STO, right?
+[23:50] S5 : That particular
+[23:52] S3 : Show the record, but we are saying that even today I watch MB52, I mean I watch MB52.
+[23:53] S1 : But we are saying like this.
+[23:56] S5 : We watch MB 52, but the main screen is not working.
+[23:58] S3 : Main screen, even today, I had told you about this batch before, but this is to give general knowledge.
+[24:03] S6 : But this goes to another screen, another report, to give general knowledge.
+[24:06] S5 : On the screen.
+[24:08] S3 : No, it doesn't show here batch-wise, right? This one that doesn't show here, yes, that's the problem. He understands from the batch that, man, this lot of goods has arrived. So, I had given this pistol work before. That's why he's saying it.
+[24:09] S0 : It doesn't look match-wise, right?
+[24:11] S6 : It's not visible here.
+[24:15] S0 : Okay, yes.
+[24:22] S6 : Yes.
+[24:23] S5 : One minute.
+[24:24] S6 : I am speaking. One bag for one day.
+[24:27] S5 : We are taking the data of stock availability in real-time. This is a real-time call.
+[24:32] S0 : So, what they are showing on the dashboard is a real-time call.
+[24:34] S5 : This is not a small field, this is a very big, I mean, the request response is big. The calculation is happening in real-time.
+[24:39] S3 : The photo is also coming.
+[24:41] S0 : They are not bringing photos from there.
+[24:41] S5 : The photo, the photo, we are getting the photo, it's stuck in the photo.
+[24:44] S2 : You can do one thing, you can do one thing. Like how our current outstanding is, like when he presses the check current outstanding button, you can refresh it there. Calls, the person who
+[24:56] S3 : Want.
+[24:56] S2 : Needed.
+[24:58] S3 : He is saying it right. That's a very good way to save it.
+[24:58] S2 : That is one way to save it.
+[25:01] S0 : No, no, no, I'll tell you.
+[25:02] S3 : I'll tell you. We said, like, suppose you are bringing the last update from DSP, okay? You bring all the data from DSP. You wrote here last, last updated at 12 o'clock, let's say. If you want to say now what is status, click on button. So give us and take the data, refresh. He also runs the report, right?
+[25:07] S5 : Okay. And at 12:00 PM. That's a better idea. That was your plan, right? Or is there any other difference?
+[25:24] S1 : Sir, you. When you press the button, it will start playing.
+[25:27] S5 : Yes, that's right.
+[25:28] S3 : No, no, after the last 10 minutes, take it back to 10 minutes. Yes, yes, yes. Hey, can you do it? No, no, you'll have to do it.
+[25:30] S0 : No, no.
+[25:33] S5 : Yes, yes, yes. No, no, no, you will have to fight.
+[25:37] S1 : It won't happen. If it happens like this, then for 10 minutes, such a business is not possible.
+[25:37] S6 : So then, 10 minutes.
+[25:39] S3 : It's not that fast, right? No, if
+[25:41] S1 : It's not that close, is it?
+[25:43] S5 : No, if he doesn't do it, then the system will shut down.
+[25:45] S3 : It's not FMCG, right friend, that when I mean, I'm hitting here, hitting there. No, no.
+[25:50] S0 : No no, we can do this same thing in cash as well, right, at the API level. This API level is cash in, right, at one time. Meaning, on the dashboard, this data that is available for the stock, it should be cash. It should be real-time on the invoice. The cash should be done here.
+[26:02] S3 : Actually, align, align, align with you. And should I give you the button, man?
+[26:06] S6 : You are talking about the refresh button. I am normal. You do it anyway. If you talk about a normal new person, he doesn't need anything.
+[26:10] S5 : If you talk to the right person, give them something, then like this.
+[26:13] S3 : No, no, it's not that useless, there are many tasks after that.
+[26:14] S0 : It's not that useless, there are many tasks after that.
+[26:17] S5 : Bring it in the event.
+[26:17] S0 : It's in the dashboard, we can cash it from the dashboard, right? Look, for 5 minutes.
+[26:24] S4 : Yes, she is leaving 5 minutes early, so yes.
+[26:26] S0 : First of all, yes, you can put a catch of 5-10 minutes here.
+[26:28] S4 : So, don't place requests repeatedly before 5 minutes. Give the button. Do the cashing. Give the button. That button will only be enabled after 5 minutes. Your refresh or check stock.
+[26:30] S0 : Hello, and This is.
+[26:33] S6 : This button itself is enabled. This idea is good.
+[26:41] S3 : This is good, we also did it in the outer studio.
+[26:43] S6 : This is for the ledger.
+[26:44] S4 : We do that for the ledger, right? Off-sending and that flight, how much is it, Hemant ji?
+[26:47] S6 : That is 5 minutes.
+[26:49] S3 : Outstanding 5 minutes, 5 minutes.
+[26:50] S4 : It is of 5 minutes. Refresh, last refresh will be written.
+[26:52] S3 : Yes, correct.
+[26:53] S4 : No good.
+[26:53] S6 : Brother, write down when the last data was.
+[26:55] S4 : Yes, last. Fresh, fresh, fresh.
+[26:55] S3 : What refresh?
+[26:57] S5 : Whatever it is.
+[26:58] S3 : It is date so and so time.
+[26:59] S5 : Time, just.
+[27:00] S3 : And if you want, you can click on refresh, it will happen automatically.
+[27:03] S5 : And he can't even refresh more than
+[27:06] S3 : 10 times already, like that kind of rules.
+[27:09] S5 : But take one refresh, 10 minutes later, 10 minutes later, perfect.
+[27:09] S3 : But take one refresh, then it will be clear. Any such rule will have to be applied.
+[27:14] S5 : Then it will have to be installed. Otherwise, what will happen is that users keep trying to install it, so that is getting up. Oh, but there isn't that much time either.
+[27:15] S6 : It will be available.
+[27:18] S3 : What's up, so that is getting up. Hey, but he doesn't even have that much time. I'm telling you the truth. He doesn't have that much time, he has to do duty from 8:00 AM to 8:00 AM. In that, he has to eat for four hours, do this, drive the car. He also has to call the contact. It's not like he will only stay in the refresh room, man.
+[27:34] S4 : No, but it's okay, whatever restrictions they put in these 5 minutes, the last refresh on this, on this time, that data is coming from DH.
+[27:39] S3 : That data must be coming from DHP. No, no.
+[27:41] S0 : No no, this is not even more important than DSP, sir. We will cash this at the API level itself.
+[27:43] S3 : Sir, this. No no, what I am saying is, initially the data will load in DSP through DSP of any every one hour interval, whatever intervals. And after that, let's say click on button, it will send to SAP and take the data.
+[28:01] S5 : This is not from DSP, this is from DSP.
+[28:03] S0 : They are not taking data from the DSP.
+[28:04] S5 : So, you will get real-time in the stock, right?
+[28:04] S3 : I will tell you in real time. I told you the same method. You bring the data in bulk in every half-hour interval. So your call saving is saved. Now suppose I am not working every five hours in half an hour, I don't work. My way of working is 10:00, 12:00, 4:00, 6:00. So why am I doing this and giving you a button and
+[28:23] S2 : It's 12:00, 4:00.
+[28:28] S0 : No, for what use case are you saying this? Are you saying it in general or for stock availability?
+[28:33] S3 : I am talking about CFA. What is the proposal for CFA?
+[28:35] S0 : If not all, then for all.
+[28:37] S5 : Yogesh, he is an island, Yogesh, he is an island.
+[28:42] S3 : I mean, you can do that.
+[28:44] S5 : No, no, that's right.
+[28:45] S3 : Thought it.
+[28:46] S5 : Move forward, move forward. I am not saying anything. Hey, just one thing for me.
+[28:46] S3 : I am not saying otherwise.
+[28:48] S4 : That Vivo one, Vivo.
+[28:49] S5 : For you.
+[28:49] S4 : Discussion was done.
+[28:50] S3 : That one.
+[28:51] S4 : Because one approach is my view, keep one approach, half here, no, half there.
+[28:54] S3 : Half of it doesn't come here. No, that has to be kept in real-time. It's getting hit three times now.
+[29:00] S4 : Three times.
+[29:01] S3 : One was this one, this is Rita's.
+[29:01] S5 : One is this one. Yes.
+[29:05] S3 : The second one is coming, this one.
+[29:06] S5 : That data that will come for the first time, it will come only once, right? I will do it.
+[29:10] S0 : I'll do it. In this, in this, this is the question, right? No, the question is that in inward quantity, because we are showing quantity storage location-wise, we have to make a call. Previous, previous.
+[29:12] S3 : For inward, right? No. Previous, previous one.
+[29:21] S0 : Yes. If we don't show this storage location, then this data is available to us here as well, the same thing we can do. So this call will be saved. If we don't have to show the storage location.
+[29:30] S3 : May I suggest one thing? If you don't mind. Go to your main screen where the sticker is visible. No, no, further back, further back. Those pictures, right?
+[29:37] S0 : Yes, this one.
+[29:41] S1 : Okay, this one on the dashboard.
+[29:41] S3 : Okay, dashboard. Yes, this one. Can we do a detailed one here, like if we want to show it batch-wise?
+[29:48] S1 : Then it will be too much for the dashboard. No, I mean, show it.
+[29:50] S3 : No, I mean, if you can show it, then its purpose gets solved.
+[29:52] S2 : So, from that, its purpose
+[29:55] S3 : I need to find out, I had a batch of 50 tons that was dispatched, out of which I have taken 10 tons in GDF, 5 tons are in my STG, now where should I take 15 tons? So I can take a call that, hey, this is the status here, I'll take it here now, like this. I have done this transaction like this.
+[30:14] S1 : But sir, when we give him information
+[30:14] S0 : The call has been connected, right? The call has been connected anyway.
+[30:17] S1 : And it feels like that anyway.
+[30:17] S0 : And it is already happening, right?
+[30:19] S3 : No no, I am bringing it in bulk, man. I am not cutting the invoice every five or six minutes. My invoice is cut once in half an hour or once in fifteen minutes, once in ten minutes. That also forms at that frequency, meaning it forms at that time whenever the cover comes. If it were a plant, it would be understood that the plant owner is sitting continuously. He won't get up from the seat. Look, if you do it here, then that will become a call for you.
+[30:47] S0 : One minute, go back to the screen. Yes, no, you have to go to this screen. So when we cut the invoice, we also have the solar location with us, right?
+[31:01] S1 : We attach it to that invoice.
+[31:02] S0 : It takes, right?
+[31:04] S1 : The batch number will be on that invoice, right?
+[31:05] S3 : Batch number is there, what is the location?
+[31:07] S0 : There is also a storage location. No, no, that location
+[31:08] S3 : No, no, it's of that plant, it's of that plant, it's of that plant.
+[31:10] S6 : And this will not happen here. That's why it is disconnected from this screen and the screen.
+[31:12] S0 : It won't happen here, it won't happen here. Yes, correct, you are saying it right. So then, if you need the storage location there, you will have to make a call. If you take it out from there, the call will be saved. Take it out.
+[31:28] S3 : You called, oh call, save it, it's not the agenda, man. This is here, no, no, everything is given by God. Oh, here.
+[31:31] S2 : What is this? No, no, God's.
+[31:37] S3 : Money is coming towards the water. Oh man, that is not the concern of, see, the solution that we are creating should be in such a way that everything can work, be user-friendly, and be scalable. Meaning, now we will give the solution, then he will say, man, before this, I had taken the work. That you can't have the visibility.
+[31:59] S2 : Right.
+[32:00] S3 : See, I gave 50 tons, in 50 tons I hit three Migos, 10 10 10, still 20 tons are remaining. I don't know where the first 10 tons are coming from. This is the problem, the last Just the previous one is being detected, the one before that won't be detected.
+[32:17] S0 : Come back to the screen. So, give that in the dashboard.
+[32:19] S3 : So, give it in the dashboard, give it to everyone.
+[32:21] S0 : So, so keep this, I mean this call is important, this one.
+[32:25] S3 : This call is not important, that's what I am telling you.
+[32:27] S0 : It is not.
+[32:28] S3 : It's not important, tell me where I took the first 10 turns.
+[32:33] S1 : Sir, you can sit there.
+[32:33] S0 : So, it shows the entire history. It shows the entire history. It shows the entire history. Not just one, it will show the entire history. Until now, I
+[32:35] S1 : Show the entire history. How many have I taken so far, and where is it included?
+[32:42] S3 : If I do 10 transactions of 50 tons, then 10 times.
+[32:44] S1 : Not 10 times, the bifurcation of 10 will be visible there.
+[32:44] S0 : Not 10 times, 10. Can you see this arrow?
+[32:49] S1 : Yes.
+[32:49] S0 : If it remains collapsed, it won't be visible; as soon as it expands, it will be fully visible.
+[32:52] S1 : Okay, fine.
+[32:55] S0 : So, everything is coming.
+[32:57] S3 : That's what I was concerned about there.
+[32:59] S0 : If you multiply this, then there is no confusion.
+[33:04] S1 : No, I am just showing this here, sir, inward quantity.
+[33:07] S0 : But here also, there are two entries, see.
+[33:08] S1 : Yes, that's what I am saying.
+[33:09] S0 : Here also, there are two entries.
+[33:10] S3 : No, I cannot see. What is the problem?
+[33:15] S0 : No, one is a GDX one, one is a short one.
+[33:17] S3 : Okay, owner.
+[33:22] S6 : Okay, Sudhanshu, is it clear?
+[33:24] S4 : Wait a second. Just two things, this is fine, you this this then for this, you are calling real-time, right? This will increase. No, but I have to say that, I mean, that then
+[33:34] S3 : Suppose I want to see which Migo it was. Which one? For delivery, they have marked 10 Migos in this delivery. Which Migo number are these two showing?
+[33:44] S1 : So, go and check the reports, completed with MRM.
+[33:46] S2 : Completed M.R.M.
+[33:47] S3 : They go to see in the MRI.
+[33:48] S1 : Let's go and see.
+[33:51] S6 : And you can also link it.
+[33:53] S3 : Yes, you can do the linkage, then it's fine.
+[33:53] S1 : Yes.
+[33:56] S6 : They haven't done that anywhere.
+[33:58] S3 : Because, I mean, I
+[33:58] S1 : Okay, meaning
+[33:59] S3 : Just understanding from a user point of view.
+[34:01] S4 : I asked.
+[34:02] S1 : Hmm, okay.
+[34:05] S4 : Okay, what are you showing below? Total inward 20/20?
+[34:08] S1 : That what you put there, you have put all 20, it's not like you left something out. 12 plus, I mean 22 by 20 cannot happen, it's validation.
+[34:13] S3 : Leave it. 12 plus means 22.
+[34:16] S4 : Okay, that's 12 and 18.
+[34:19] S1 : We had to take 20, you did 20.
+[34:22] S3 : Totality match.
+[34:27] S2 : 20 by 20.
+[34:27] S3 : Okay, twenty. Yes, it is.
+[34:30] S4 : So what is the third call?
+[34:32] S1 : The third one, we will do when we submit, when we submit, we will take the form.
+[34:35] S3 : Samyak. Dude, these people, you know, even with MRN, they take one, one, four, four, five, five, they can even take two, they can even take one. So, the hit will increase like that, meaning from A, meaning if I assume one delivery, the average comes to two. So if you multiply two by three, six, then this becomes your one hit.
+[34:47] S2 : Anyway.
+[34:59] S3 : And 1500, how much is it? 90. No, if you look at it from a point of view, then it means they are increasing.
+[35:05] S2 : Yes.
+[35:06] S5 : He will write, right? I will write after this. First, do this. We will do the heat separately.
+[35:09] S3 : We will do the heat exercise separately.
+[35:13] S0 : Let's move forward. I think these two main processes have been discussed and discovered. Now, I think the STO one is more important.
+[35:22] S1 : Don't do this, invoice manager.
+[35:23] S0 : They talk about STO, that's what I would say.
+[35:32] S4 : Now, it will create its services and show the complete payload, how it will be. If you want to use the standard, then at least that part will be saved in the standard. Time frame development and all of this.
+[35:43] S3 : Time, yes.
+[35:44] S5 : No, there is no problem in the iPay call.
+[35:46] S3 : No, it won't play, right? It should be standard everywhere, throughout the entire cycle.
+[35:52] S5 : Yes, so they will make CPR also, they are making it, right? So, they will make this in commerce as well.
+[35:57] S4 : So then, look, create DI is standard. There is no issue with that. Money won't be saved. Okay? No, money
+[36:02] S3 : Money will not be saved at all. No, money won't be saved, that's what I'm saying.
+[36:06] S4 : Create DI one, no, create DI, only the first call of create DI in which we are making empty delivery, that is totally standard. Okay, there is no problem in that. Its CPI, which is iFlow, that can also be completely standard. There is not going to be any expense in that.
+[36:13] S5 : That's great too. It can be a lease standard. We will check and do it, but the change
+[36:20] S4 : We will do it. But the change that is there. The whole game is there. There, definitely, there is no change, meaning we can't do that. It will definitely be applied there. This is in change.
+[36:29] S5 : We will change this, we will not let the money be spent.
+[36:33] S4 : Create DI is standard, completely standard.
+[36:37] S6 : So, if chains are given, then anyway its occurrence will be less.
+[36:39] S5 : When you want to change, just
+[36:40] S4 : The one they are putting in, right? Sorry, the one they are putting in, what do you call it, quantity and that batch and transporter, that part, that part, that is our customer.
+[36:42] S5 : If there is a change. Quantity. Transporter, transporter, everything is given.
+[36:51] S2 : He is our customer. I had put it on. It doesn't happen every day. Hey, you change it every time.
+[36:58] S6 : So you will change every time? First you will create, then you will change every time?
+[37:02] S2 : So, on the screen of the real 02N.
+[37:03] S4 : Hey, VL02 is standard, right? I am looking at what the custom field is. One minute, one minute, Yogesh, everything we are entering in this is going into the standard field, right?
+[37:05] S5 : I am seeing that. First.
+[37:13] S4 : 0 to 0 to M, they were putting in these three or four things.
+[37:15] S3 : Custom means it's not appended in the standard, it's in the table itself. It's not a separate table for that. I mean, we can append it, we just allow it like that.
+[37:24] S4 : Absolutely, absolutely, you can read it. So, all of that is going back to the same place, right? So, I don't think that this will also go to the standard.
+[37:32] S5 : Okay, alright, we will check the quality.
+[37:34] S4 : Yes, of change. That API will definitely be different from create, but it will be standard.
+[37:41] S6 : It should come in standard.
+[37:45] S5 : So, the standard service, that is, STO will also be standard.
+[37:45] S4 : Centered service that is STO. STO's also, yes, what we told them.
+[37:52] S3 : How much is it?
+[37:53] S5 : So if that's the case, then we will invest money.
+[37:55] S4 : We just need to see that there is no throttling in the system. That these repeated calls that are coming, do not throttle the system.
+[38:01] S3 : Handling, handling and your, you know, from a skill point of view, you have to understand that, you know, today you have designed it, later you realized it's not right and then you have to return it, that won't happen.
+[38:14] S4 : It handles the volume.
+[38:15] S3 : Hmm, volume dependent.
+[38:16] S4 : And this is not async, this is sync communication. This request was made here, so the response is also coming at the same time for the number. Whether it's a delivery number, whether it's an invoice number, shipment, whatever all the numbers are, they are coming immediately. So there shouldn't be any lag in that, that's the thing. Now if it's standard, then I expect it to be very quick unless we... This has to be made and seen once.
+[38:34] S0 : This is made in one way.
+[38:35] S3 : Yes, try it once. If it doesn't work well once, then try it once. Try it once. It doesn't come in three minutes.
+[38:37] S0 : Sir, it's going well.
+[38:38] S4 : Try doing one, try doing one. Yes, in the custom one, it can be custom, but yes, if we don't innovate in the standard one, then it will work perfectly. It works great, absolutely.
+[38:42] S3 : Yes, in the custom one, it can be custom, but yes, in the standard one, we Hey, it's going great, absolutely.
+[38:52] S4 : So then, what does Yogesh say, what is that? What doesn't need to be made?
+[38:55] S3 : What?
+[38:56] S4 : What, don't tell me the limit? Don't tell me the limit, brother. Don't tell me the limit, make it absolutely standard.
+[38:58] S3 : I don't know, I don't know everything. The standard is very good, I mean, I told them I did two or three integrations. I did the standard, it worked so well, you don't need to touch it, you don't face any issues.
+[39:14] S4 : Until now, whatever services you are seeing, whether it is create DIA, change DIA, or submit, this is Migo. This is standard. Up to create invoice, Migo, up to create invoice, it is standard.
+[39:24] S3 : Everything is standard anyway.
+[39:25] S0 : If it is like that, then mostly they don't have real time.
+[39:28] S5 : No, that only will confirm once it is in development, you show me. It shows fully chargeable and unchargeable. If it is standard and chargeable, then it is useless.
+[39:37] S4 : It is known.
+[39:38] S5 : So, I know that.
+[39:39] S4 : There is a report from the S.L.P., right? The S.L.P. has given a report on that.
+[39:42] S0 : And they won't get production, right?
+[39:44] S5 : No, no, it's a different matter.
+[39:45] S3 : Hey, Suvendu doesn't tell, he doesn't tell. I will tell in the evening. I will tell. He also gets it on the screen.
+[39:51] S6 : He sits like a CFO, how much money is going. Architecture, you can make anything.
+[40:00] S3 : Put it in, put it in, put it in.
+[40:00] S4 : Put it in, put it in, put it in. They will tell, they will tell. The SAP guy had sent it like that. Yes, yes.
+[40:11] S0 : Okay, let's move on. So this, this is exactly like that of ours.
+[40:14] S6 : So, Migo is clear, right? Yes. Yes, yes. Three. Okay. After this, the visibility...
+[40:16] S4 : Yes, yes, three. Okay, after this. I will tell the team clearly when they show it to me with the payload, by posting it. Okay? Then we will agree. Right now we are just discussing, the discussion is in progress. This is the status for everyone. No one will go and say that we have concluded. Okay?
+[40:33] S5 : APA dispersion in progress.
+[40:34] S4 : Yes, it's an intro.
+[40:36] S1 : To Kamal Sir.
+[40:37] S4 : Yes. Yes, he is very used to sitting on a hot griddle, get him up beforehand, okay?
+[40:40] S5 : Wa Alaikum Wa Rahmatullahi.
+[40:42] S3 : We communicate, man. I mean, I didn't sit with him.
+[40:44] S4 : I mean, you guys should keep him seated, not just sitting around here and there.
+[40:47] S5 : I mean, it's not on the call right now, so I don't know what happened.
+[40:50] S4 : Yes. He will go tomorrow and jump the gun. Yes. Yes, it's done, this is just concluded, the development is done now.
+[40:56] S3 : Make a load, there are two loads, right? I mean, without... No, no, there's no load.
+[40:58] S4 : Absolutely. No, no, don't load. Oh wow! Yogesh will say this, man, don't give a load, what to give?
+[41:05] S3 : Down there.
+[41:06] S4 : He explained that.
+[41:14] S3 : Come on, man, quickly. So this, this is
+[41:15] S0 : So this, this is like our non-trade trade, but this is all STO. The process is exactly the same. So now, a new one can also be made from here. By the way, a new STO is also being made completely. So this is the screen for making a new one, but there is only warehouse-to-warehouse transfer. It's not from the plant, right? But come to the previous screen here. So, we are concluding this data, it will come from SAP, right? SAP will push it, no? Yes, and this same, I mean, I am assuming this entire data with order, deliveries, and invoice is what I need for MeeGo as well.
+[41:48] S5 : What about the entire Pan India?
+[41:51] S0 : Yes.
+[41:52] S5 : From ₹3.5.
+[41:54] S0 : This is an event-based push, right? As soon as the STO is formed in the SCP, this will be a push to T2.
+[41:57] S5 : As soon as the STO was formed, the SCP was formed. Okay, yes, yes, yes, yes, right, right.
+[42:03] S0 : Right? I cut the DI from here, sent it to SAB, SAB will push back the same DI. I cut the invoice from here and sent it to SAP. Everything will happen. Even if I make it straight like this, it will be straight.
+[42:15] S6 : Suppose, yes, so why didn't we get it pushed from the ACP?
+[42:18] S0 : If someone made it straight from such a background.
+[42:20] S6 : Yes, otherwise like that. No, that has to be brought. No, that has to be brought, but is there any possibility Sudhanshu that when I have made a DI from here. Then will SAB also go and make a DI? Don't send SAB back. Is there a way?
+[42:21] S5 : No, that has to be brought.
+[42:31] S4 : Is there a way? Gold.
+[42:33] S2 : No, no.
+[42:34] S5 : No, no, it's good.
+[42:34] S6 : If it's the same, then it's the same.
+[42:34] S5 : Which one will you buy?
+[42:37] S2 : Yes, yes, yes.
+[42:38] S6 : One is using it from there and
+[42:40] S2 : I mean, hey, listen, one by one. I pressed some buttons, success happened, failure happened, I didn't realize.
+[42:40] S6 : Hey, listen to it one by one. No, he is not talking about getting a response. The response will come immediately. I told him to make a DI, so he will make a DI and return it, saying that this DI number has been created. Okay, fine. What he is saying is that in today's date, when a DI is created against an order at the plant level, so as a stage gate, we push it, right? So he is saying that I have already made the DI, now give me a return as well.
+[42:47] S5 : No, he is not talking about getting a response. Yes, that's it.
+[43:08] S4 : No, why take that back? Put it in request and response mode, whether the delivery we made was successful or not. If it was successful, then the delivery number, delivery date.
+[43:09] S6 : Yes, it is.
+[43:18] S5 : He will do that. Next, when the data comes, there is no control. Now we have to put control. I mean, suppose we create a DI, again that DI will trigger.
+[43:24] S4 : Sit down.
+[43:29] S5 : It is available.
+[43:29] S6 : It is wrong.
+[43:30] S5 : It is ₹500.
+[43:31] S0 : Go away, man. It must be lying in front of me here.
+[43:32] S5 : It must be lying in the room in front.
+[43:34] S6 : I understand, I understand, look, as of today, suppose, let's leave it for now, an STO is not being formed here, now an STO is being formed in SAP, in SAP. So you pushed the order here in Tintu. Now, the DI has been cut in SAP, so you pushed that DI here. So what does this mean? You have written an event there, that as soon as the DI is formed, push an event.
+[43:41] S4 : Okay. Correct, because it's a discrete system, it doesn't know when the delivery has been made, sir. Exactly, exactly. What quantity is being made, that's why we are doing something. But when the request is originating from this, then it knows that I want to make this much quantity of delivery. I am making it at this time, on this date. The response is being given to it by SAP itself, that yes, it's made. Yes. Then why do we again Yes, so no.
+[43:51] S6 : Isn't it? Exactly, exactly. We are doing something for the quantity we need. Yes. Yes, so they didn't send it, that's what I'm saying. They didn't send it, they didn't send it, he's saying.
+[44:10] S5 : No brother, no brother, I am saying that you will have to control yourself.
+[44:12] S6 : Then we have to put a control at the SAP side that that DI should not be returned.
+[44:15] S5 : Yes, yes.
+[44:15] S4 : That mother.
+[44:16] S6 : First part.
+[44:17] S4 : This is fine. But if it's being created in SAP, okay? From where the request didn't originate, it can be created in SAP as well. If it's created in SAP, then we will send it. If the source is SAP, okay? Then we will send it. If it's not, if a post is being created in SAP, then we will distribute it.
+[44:18] S6 : Isn't it?
+[44:20] S5 : Yes, okay, here. Yes, it will be saved. Okay. So how to use it? So how to use it? They use this. Easily, easily, easily. You will use it. Easily, easily. When you pass, I had told you this. When you pass, then you can write T1 of that system. You will know that whenever you
+[44:36] S6 : These people will apply control here.
+[44:39] S4 : Excuse me, I have done this. No, one second, brother. We order the interface, okay? When we order the interface, the PO type, which is called BSA RT, what is that? Interface, you must have seen it somewhere, right? PO type. You, okay, like this.
+[44:48] S6 : An extra field is available.
+[45:01] S0 : Like what's happening in Udaan right now, Udaan is sending orders. Is it going on like this?
+[45:03] S4 : Is this what's going on? Is the SAP system running? Yes, it is running.
+[45:09] S2 : As a phone, sir, when I take orders, commerce comes. They give the order number.
+[45:12] S3 : Yes, tell me.
+[45:16] S2 : But one, your order, because when it is being created, right? We cannot identify the...
+[45:27] S5 : We can't edit it easily.
+[45:28] S4 : No, no, I'll tell you, the source is identified, look, it happens like this. Suppose it's coming from Udaan, right? So you're saying that an order was created in SAP and an order came from Udaan, so how do we find out which one was created in SAP and which one from Udaan?
+[45:40] S5 : Right? This is what it is.
+[45:43] S4 : Let's take any number. It's written in CRM, right?
+[45:45] S5 : It is written in Hoshiare, right?
+[45:47] S6 : Yes, there is one CRM and reference.
+[45:50] S4 : What happens in this is that if you go here and look at the order data, this PO type, this PO type is the differentiator. If this comes, then this CRM order is passed in the payload. So this comes and sits in this PO type, it tells you that this is my order coming from Uran.
+[45:54] S5 : This is pure.
+[46:07] S0 : So here, the company's OMS order.
+[46:09] S5 : No, this is a good point.
+[46:12] S2 : But now we can change this order to SAP.
+[46:16] S4 : can do
+[46:17] S2 : Right? Yes. So for that, we will have to apply it. That I am saving this. That will be triggered for you. In that case, you basically, if you have applied this that when this, whose CRM order number it is, then it cannot be triggered back there.
+[46:33] S4 : No, in that case, Hemant ji, what will happen? When it's being created from this, from the interface, then it's created. No, one minute. When it's created from the interface, it will always take from the face user. When you are changing, you will change from the dialogue user. Okay? So, on what will your check be applied? Not on this. You should first see that yes, if the PO type DSART field is equal to CRM and the last modified type, the user type, if that is the dialogue user, then... Push it. Okay, right? Not the other way around. I mean, like a dialogue user, you are changing, you are changing, you are changing. We are all dialogue users. We are changing which order has come from CRM. So, we have to push it, right? So, we will control not the user name but the user type, that this is my dialogue user. And you will easily get that. Like, what is your ID?
+[46:38] S2 : So, it happened.
+[47:27] S4 : No, it's okay.
+[47:28] S6 : Put it in the queue.
+[47:29] S4 : Yes
+[47:30] S6 : Quinoa two
+[47:33] S5 : Whatever is said.
+[47:33] S4 : Oh, not now, man. Now you won't be able to give it the whole day, brother, there's even less.
+[47:37] S0 : No, I have kept it on request.
+[47:38] S5 : No, no, I, I, understand, you, I at 4:00, there is a tax pending on me, DSP. Look here.
+[47:44] S2 : Look here. Yes sir, I understand sir. Now, what happens inside it is like, like your
+[47:45] S5 : Yes sir, yes sir, yes sir. Yes.
+[47:51] S2 : Like, the API for changing the order source, we have given it to him, like Bangalore SSP etc. There, like, even in that, you still get the system user.
+[47:52] S5 : Like the order that we Yes, yes, yes.
+[47:58] S0 : Yes.
+[48:04] S2 : Four. Updation. In that, what happens is that my update is not even doing the SC lag. But now its
+[48:12] S4 : But. It is an update.
+[48:15] S2 : It's an updation that should affect my some third-party system. Therefore, controlling it is a little difficult for us.
+[48:22] S4 : No, what is this? How to explain it?
+[48:24] S2 : It is in Bawar One. From there, we created and provided the G Pay for the source change.
+[48:25] S4 : Yes. Okay.
+[48:28] S2 : It is happening from the water source.
+[48:30] S4 : Correct.
+[48:31] S2 : Right, it's in the CRM. The CRM that you are talking about, that was the type. Ultimately, what is happening is that the change is happening through the SA admin. We have set a condition that the SA admin should not know the system users.
+[48:43] S4 : Okay, okay. This is a great exception. It won't be visible in commerce. It's a very good exception. If someone else is doing it. No, no, no, no, no one else is doing it. He is saying it right. The order was created from the system user. After the system user created it, what were we saying, that if we changed it, we changed it from the dialogue user. Now that we changed it from the dialogue user, we can identify whether the user was a dialogue or a system. So, we will push it back, trigger the event again. But their point is that in some of our cases The order is shifting. Source X was there, we changed it to Source Y, meaning Plant X was there, we changed it to Plant Y, and that happens with Bangar One. From another system, so that will also be taken by the system user, so in that case, this check will fail.
+[48:44] S2 : In that case, I won't see it in commerce.
+[48:48] S6 : If someone else is partying.
+[48:52] S5 : It was created. It was a system. So, you should try it once.
+[49:26] S6 : Yes, so you will have to apply a specific CRM user check. Okay. You give the CRM a specific user. Yes, then the CRM, the CRM
+[49:29] S5 : Okay.
+[49:30] S4 : Give CRM a specific user.
+[49:34] S2 : Otherwise, it means.
+[49:34] S6 : This is Hindu.
+[49:34] S5 : We will give it, if this user idea comes, then the work will continue, so the work will be finished.
+[49:38] S6 : Enough, enough.
+[49:38] S5 : So, we can make them dedicated users, I mean.
+[49:41] S2 : Yes, I mean that.
+[49:41] S5 : There was also a plan to do it in OEM because we don't know what the order is.
+[49:44] S2 : Manage that. That one thing.
+[49:47] S4 : Yes, they should make dedicated users, and also create dedicated PO types. I think that would be better too.
+[49:47] S2 : So I dedicated it.
+[49:52] S6 : It will be made of Q type, and a new one of OEM will be made, right?
+[49:54] S2 : That will be new, right? They told you that, right? That will be new.
+[49:57] S6 : That will be new, OMCCO will be made in this.
+[49:59] S4 : Right, then we can control. If we have two parameters, this one too, and peptidine too, then we can do it. Okay.
+[50:05] S2 : Okay.
+[50:11] S5 : How much has it become now?
+[50:11] S4 : Now what is left? Now let's park it here.
+[50:13] S1 : Now, with me, there are no transactions, only visibility.
+[50:16] S4 : No, no.
+[50:17] S0 : No, this side is also there, right?
+[50:18] S1 : Invoice management and e-way bill extension.
+[50:21] S4 : We will do that tomorrow, we will do that Monday. Yes, until then, let him bring it once, submit and create DI. Create DI, change DI, and this goods movement, submit me go, show any two of these three properly, while paying the payload in the system, okay? The access that was needed has been given. Right?
+[50:22] S5 : Oh, it's happening, it's happening. And this zip is available, right?
+[50:40] S4 : Yes, it was given.
+[50:41] S5 : Sir, I will have to go home and work. VPN access, VPN access. I am sending a mail in this.
+[50:41] S3 : I have to go home and work.
+[50:43] S4 : VPN, VPN, let's see further. Yes, you won't find it like that. That's the MAC address and all. Hey Deep, get it for me, man, I know everything.
+[50:49] S1 : You won't find it. It has a MAC address, etc. I am watching.
+[50:54] S4 : Give it to me, I will approve it, it will be available.
+[50:57] S1 : It will be available.
+[50:59] S4 : Shall we go? Now, is everything okay with you, Hemant ji? Yes, sir. Shall we go?
+[50:59] S5 : Shall we go? Yes, sir.
+[51:04] S4 : You too, man. Now tell him to give the proper status.
+[51:08] S5 : Properly, that. Let him start the discussion on Monday about what all has happened.
+[51:13] S4 : Who? Oh no, then that will go half and half. Let Bharat do it. Now he will say something somewhere, say something to Yash, and say something to the warden sir, then Yash will get angry.
+[51:14] S5 : Oh no, brother, then that will go half and half. He will say something to Yash.
+[51:22] S2 : There is a sign-up call too, right? Yes, that will be scheduled, brother.
+[51:32] S4 : Okay, bring it up to speed, whatever discussion has happened.
+[51:34] S2 : Whatever discussion has happened. Yes. In the post-final, just need to take Mahesh's input, that's all.
+[51:40] S4 : Yes, so that's the thing.
+[51:40] S6 : Those fields are being saved and
+[51:42] S4 : So, you know in the field. Okay, but we will look at that once. Hemant ji, I need a little view of that. Yes, yes, 100%.
+[51:43] S2 : Okay, but that too, we once
+[51:48] S6 : Yes, 100%.
+[51:49] S5 : Sir, we need one more example in all of this. Yes, let's give them one example.
+[51:51] S6 : Yes, get them an exam.
+[51:53] S5 : Bhuvanibandha Mala Rai.
+[51:56] S6 : From Raipur, RSD, from RSD, RSD, then from RSD, end customer, so that's it. So tell them, don't sit idle, come immediately, we also have it, that is also there.
+[51:58] S4 : Okay, tell them, don't sit idle, come immediately, our developer is also there, they can also do it.
+[52:05] S6 : Okay. Meaning, one order, one order from Raipur to RSD, RSD to RSD, RSD to customer.
+[52:06] S4 : Okay, okay. RSD, RSD, RSD.
+[52:12] S6 : That means primary, secondary, and then finally, in the middle, that Khadi.
+[52:16] S2 : You will get it from the 1040 Aurangabad plant.
+[52:20] S6 : This is from the plant.
+[52:21] S5 : Now they are saying that there are only two STOs.
+[52:21] S6 : Now they are saying that only two STOs have been ordered.
+[52:24] S2 : It is lying there. You will get it in the remaining, right? This is the season of the market.
+[52:25] S6 : This is the season for the market. How much is this? This is not the season.
+[52:27] S2 : How much? You are talking about delivery. You ask.
+[52:29] S1 : You are talking about delivery, you ask.
+[52:32] S6 : Yes, yes.
+[52:34] S2 : Yes, from 1040, your one zero
+[52:35] S6 : From 1040, your one, the order type, its transfer, its
+[52:38] S0 : The order type of this, its transfer, its
+[52:43] S6 : And they are not becoming heroes in the series.
+[52:45] S0 : It should be a uniball engine.
+[52:47] S6 : Stock transfer process.
+[52:50] S0 : This is the secret.
+[52:54] S1 : Its uses are not known.
+[52:56] S5 : Yes.
+[52:56] S1 : It will take time, right?
+[53:00] S5 : That's different. First, you will do the viewer grade, first stage, what will you do? View grade work. Yes, you will view grade, identify, and bring it from the corner. Two things.
+[53:07] S6 : Yes, yes.
+[53:10] S5 : Holi Covid
+[53:11] S2 : Yes, for that thing too.
+[53:11] S6 : Even for that thing.
+[53:13] S2 : Yes, so first.
+[53:14] S6 : So, first the order will be made.
+[53:15] S2 : Yes, great.
+[53:15] S5 : No, no, the sequence is going on, the sequence. The sequence has to be made, it's an order. You will do it, three hundred. I will do it now. I will do it in the merit.
+[53:17] S6 : I want to get this made, what will you do?
+[53:20] S2 : I am completely fine now.
+[53:22] S1 : Yes.
+[53:22] S6 : I want to identify, I want to identify the first key, then you have to take a second test.
+[53:26] S5 : So, the problem is with the price.
+[53:26] S1 : So, the problem is that
+[53:28] S0 : That I document it.
+[53:28] S6 : That I document in it.
+[53:30] S1 : I will check the flow and also check my mapping to see if it is happening.
+[53:30] S0 : Taking the photo, I
+[53:31] S5 : Mapping.
+[53:32] S0 : One minute, one minute.
+[53:33] S5 : Now a little more, hey hi Ravi.
+[53:34] S0 : A little more. Hey, hi Ravi. Hi Ravi. Are you able to hear us?
+[53:35] S1 : Are you able to hear us?
+[53:38] S5 : Hemant ji.
+[53:40] S0 : Yeah, yeah. Suvendu is with me. Yes, Suvendu is with you.
+[53:43] S5 : Okay, I also want that other one.
+[53:46] S1 : New sheet will be created. New big information, we will put it on the mail page.
+[53:51] S3 : This is correct. This is a racket.
+[53:55] S5 : So, we will write it in this Excel and then post it.
+[53:57] S1 : Okay.
+[53:59] S5 : So, I am saying that Varad stays ready, man. Varad is ready. He stays ready immediately.
+[54:09] S6 : Because of that, this project is coming out here.
+[54:12] S5 : We are connected in the wrong way.
+[54:14] S6 : Okay.
+[54:15] S5 : Delta rate. What do you know? Oh, it's just a matter of getting used to it. In voting. Yes, okay, listen.
+[54:20] S3 : Yes, okay, listen.
+[54:25] S5 : Okay.
+[54:26] S3 : Okay, okay.
+[54:26] S5 : So to give a background to everyone, see. The objective of the meeting is that we are starting a new project, okay. So for this new, I hope I am audible to everyone, right? Listen. So, today we are starting a new project. So, even there are a lot we are talking about development environment, okay. So, today we are starting a new project. We want that all the controls, all the discipline, all the governance should be in place considering production movement should happen in a smooth way.
+[55:01] S6 : Then
+[55:02] S5 : Considering the dependency should not be much. If there is any dependency, that should be highlighted. Also, the naming convention should be followed. So there are currently, today, Sales is via invited Sales, Sales is the DSP expert who is supporting currently SL from Let us be a part of you, okay. And Rabi and Varad is with me for doing the developments related to this new project.
+[55:19] S6 : And this. Supporting current SL from
+[55:33] S5 : Now I hope I am clear, the context is clear to everyone, right? Now, now in the development environment, so we have, there are a lot many space, space available. So because this particular project is highly dependent on SFP S4QA space. Because there are a lot of tables, maximum data that space is coming from.
+[56:05] S2 : No, they will give it.
+[56:08] S5 : No, they will give that, that is the container. SAP, SQ, QA, that space. We are getting a lot of data, 100% of data from SAP and keeping it there in that space.
+[56:11] S2 : Whatever happened.
+[56:20] S3 : Just this much, absolutely.
+[56:21] S5 : Now, today this is a new project. We want to create a different separate space for this one so that... So that the new views which will be getting created. should get created in this view with a reference to that SAP S4 QA space. And whatever the data that will come in future from commerce to...

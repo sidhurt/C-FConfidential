@@ -1,0 +1,2 @@
+C:\Users\sidmy\Downloads\shree-cement-cnf-agent-cowork-20260729T062834Z-1-001\shree-cement-cnf-agent-cowork\sessions\2026-08-18-runtime-certification\scripts\qs4_se16_read.vbs(21, 1) Microsoft VBScript runtime error: Permission denied: 'GetScriptingEngine'
+

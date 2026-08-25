@@ -14,3 +14,19 @@ desktop.ini
 
 # Logs
 *.log
+
+# Scratch / one-off investigation artifacts (not curated evidence)
+tmp/
+.codex-spreadsheet-read/
+*.prescrub
+
+# Editor workspace
+.obsidian/
+
+# Raw meeting audio - large binaries, kept out of git deliberately.
+# Transcripts under sources/ are the committed record.
+sources/audio/
+
+# Credentials must never be committed. Placeholders only.
+*password*.txt
+*login*.txt

@@ -1,0 +1,1189 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_OUTB_DELIVERY_CHANGE",
+    "functionGroup": "V50I",
+    "remoteEnabled": true,
+    "releaseStatus": "Not released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "CHANGE_DECENTRAL",
+        "associatedType": "DE_V50AGL_CHANGE_DECENTRAL",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Change Initiated by Decentral WMS",
+        "structureFields": []
+      },
+      {
+        "parameter": "DELIVERY",
+        "associatedType": "BAPIOBDLVHDRCHG-DELIV_NUMB",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Inbound Del. Number",
+        "structureFields": [
+          {
+            "field": "DELIV_NUMB",
+            "position": "0001",
+            "dataElement": "VBELN_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GROSS_WT",
+            "position": "0002",
+            "dataElement": "BRGEW_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_WEIGHT",
+            "position": "0003",
+            "dataElement": "NTGEW_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNIT_OF_WT",
+            "position": "0004",
+            "dataElement": "GEWEI",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNIT_OF_WT_ISO",
+            "position": "0005",
+            "dataElement": "GEWEI_ISO",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUME",
+            "position": "0006",
+            "dataElement": "VOLUM_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT",
+            "position": "0007",
+            "dataElement": "VOLEH",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT_ISO",
+            "position": "0008",
+            "dataElement": "VOLEH_ISO",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOOR",
+            "position": "0009",
+            "dataElement": "LGTOR",
+            "checkTable": "T30B",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0010",
+            "dataElement": "INCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0011",
+            "dataElement": "INCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROUTE",
+            "position": "0012",
+            "dataElement": "ROUTE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIP_COND",
+            "position": "0013",
+            "dataElement": "VSBED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_PRIO",
+            "position": "0014",
+            "dataElement": "LPRIO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNLOAD_PT",
+            "position": "0015",
+            "dataElement": "ABLAD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_BLOCK",
+            "position": "0016",
+            "dataElement": "LIFSK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMSV",
+            "position": "0017",
+            "dataElement": "INCOV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0018",
+            "dataElement": "INCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0019",
+            "dataElement": "INCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILLOFLADING",
+            "position": "0020",
+            "dataElement": "BOLNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "HEADER_CONTROL",
+        "associatedType": "BAPIOBDLVHDRCTRLCHG",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Control Data Confirmation Header Data",
+        "structureFields": [
+          {
+            "field": "DELIV_NUMB",
+            "position": "0001",
+            "dataElement": "VBELN_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GROSS_WT_FLG",
+            "position": "0002",
+            "dataElement": "KZBRG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_WT_FLG",
+            "position": "0003",
+            "dataElement": "KZNTG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUME_FLG",
+            "position": "0004",
+            "dataElement": "KZVOL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_DATE_FLG",
+            "position": "0005",
+            "dataElement": "KZLFD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOCK_FLG",
+            "position": "0006",
+            "dataElement": "KZTOR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_DEL",
+            "position": "0007",
+            "dataElement": "LIKP_DEL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCO1_FLG",
+            "position": "0008",
+            "dataElement": "KZINCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCO2_FLG",
+            "position": "0009",
+            "dataElement": "KZINCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROUTE_FLG",
+            "position": "0010",
+            "dataElement": "KZROUTE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIP_COND_FLG",
+            "position": "0011",
+            "dataElement": "KZVSBED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_PRIO_FLG",
+            "position": "0012",
+            "dataElement": "KZLPRIO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNLOAD_PT_FLG",
+            "position": "0013",
+            "dataElement": "KZABLAD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PICK_DATE_FLG",
+            "position": "0014",
+            "dataElement": "KZKODAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TRSP_DATE_FLG",
+            "position": "0015",
+            "dataElement": "KZTDDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOAD_DATE_FLG",
+            "position": "0016",
+            "dataElement": "KZLDDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GDSI_DATE_FLG",
+            "position": "0017",
+            "dataElement": "KZWADAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SIMULATE",
+            "position": "0018",
+            "dataElement": "LE_DLV_SIMULATE_CHG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_LOCK",
+            "position": "0019",
+            "dataElement": "NO_SP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SPLIT_DONE_FLG",
+            "position": "0020",
+            "dataElement": "SPLIT_DONE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_BLOCK_FLG",
+            "position": "0021",
+            "dataElement": "KZLSP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_CHANGE_OFF",
+            "position": "0022",
+            "dataElement": "V50AGL_DLV_CHANGE_OFF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOV_FLG",
+            "position": "0023",
+            "dataElement": "KZINCOV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCO2_L_FLG",
+            "position": "0024",
+            "dataElement": "KZINCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCO3_L_FLG",
+            "position": "0025",
+            "dataElement": "KZINCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "HEADER_CONTROL_SPL",
+        "associatedType": "/SPE/BAPIOBDLVHDRCTRLCHG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Control Data Outbound Del. Header Level",
+        "structureFields": []
+      },
+      {
+        "parameter": "HEADER_DATA",
+        "associatedType": "BAPIOBDLVHDRCHG",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Change Header Data in Outbound Delivery",
+        "structureFields": [
+          {
+            "field": "DELIV_NUMB",
+            "position": "0001",
+            "dataElement": "VBELN_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GROSS_WT",
+            "position": "0002",
+            "dataElement": "BRGEW_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_WEIGHT",
+            "position": "0003",
+            "dataElement": "NTGEW_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNIT_OF_WT",
+            "position": "0004",
+            "dataElement": "GEWEI",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNIT_OF_WT_ISO",
+            "position": "0005",
+            "dataElement": "GEWEI_ISO",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUME",
+            "position": "0006",
+            "dataElement": "VOLUM_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT",
+            "position": "0007",
+            "dataElement": "VOLEH",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT_ISO",
+            "position": "0008",
+            "dataElement": "VOLEH_ISO",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOOR",
+            "position": "0009",
+            "dataElement": "LGTOR",
+            "checkTable": "T30B",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0010",
+            "dataElement": "INCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0011",
+            "dataElement": "INCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROUTE",
+            "position": "0012",
+            "dataElement": "ROUTE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIP_COND",
+            "position": "0013",
+            "dataElement": "VSBED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_PRIO",
+            "position": "0014",
+            "dataElement": "LPRIO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNLOAD_PT",
+            "position": "0015",
+            "dataElement": "ABLAD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_BLOCK",
+            "position": "0016",
+            "dataElement": "LIFSK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMSV",
+            "position": "0017",
+            "dataElement": "INCOV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0018",
+            "dataElement": "INCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0019",
+            "dataElement": "INCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILLOFLADING",
+            "position": "0020",
+            "dataElement": "BOLNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "HEADER_DATA_SPL",
+        "associatedType": "/SPE/BAPIOBDLVHDRCHG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Change Outbound Delivery Picking Data Header Level",
+        "structureFields": []
+      },
+      {
+        "parameter": "SENDER_SYSTEM",
+        "associatedType": "TBDLS-LOGSYS",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Logical System",
+        "structureFields": []
+      },
+      {
+        "parameter": "TECHN_CONTROL",
+        "associatedType": "BAPIDLVCONTROL",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Technical Control Data",
+        "structureFields": []
+      }
+    ],
+    "EXPORT": [],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "COLLECTIVE_CHANGE_ITEMS",
+        "associatedType": "/SPE/BAPIOBDLVCOLLCHGIR",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Quantity change request: Item segment",
+        "structureFields": []
+      },
+      {
+        "parameter": "CWM_ITEM_DATA",
+        "associatedType": "/CWM/BAPIOBDLVITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "BAPI Communication Structure: Addition for CWM",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXTENSION1",
+        "associatedType": "BAPIEXTC",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Data Container (Unstructured)",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXTENSION2",
+        "associatedType": "BAPIEXT",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Data Container (Structured)",
+        "structureFields": []
+      },
+      {
+        "parameter": "HANDLING_UNIT_HEADER",
+        "associatedType": "BAPIDLVHDUNHDR",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Handling unit header data",
+        "structureFields": []
+      },
+      {
+        "parameter": "HANDLING_UNIT_ITEM",
+        "associatedType": "BAPIDLVHDUNITM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Handling Unit Item",
+        "structureFields": []
+      },
+      {
+        "parameter": "HANDLING_UNIT_SERNO",
+        "associatedType": "BAPIDLVHDUNSERNO",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Handling Unit Serial Numbers",
+        "structureFields": []
+      },
+      {
+        "parameter": "HEADER_DEADLINES",
+        "associatedType": "BAPIDLVDEADLN",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Change Dates in Outbound Delivery Header",
+        "structureFields": []
+      },
+      {
+        "parameter": "HEADER_PARTNER",
+        "associatedType": "BAPIDLVPARTNERCHG",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Delivery: Partner Change",
+        "structureFields": []
+      },
+      {
+        "parameter": "HEADER_PARTNER_ADDR",
+        "associatedType": "BAPIDLVPARTNADDRCHG",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Change Partner Address in Outbound Delivery",
+        "structureFields": []
+      },
+      {
+        "parameter": "ITEM_CONTROL",
+        "associatedType": "BAPIOBDLVITEMCTRLCHG",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Control Data Confirmation Item Data",
+        "structureFields": [
+          {
+            "field": "DELIV_NUMB",
+            "position": "0001",
+            "dataElement": "VBELN_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_ITEM",
+            "position": "0002",
+            "dataElement": "POSNR_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CHG_DELQTY",
+            "position": "0003",
+            "dataElement": "LIANP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DEL_ITEM",
+            "position": "0004",
+            "dataElement": "LIPS_DEL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUME_FLG",
+            "position": "0005",
+            "dataElement": "KZVOL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_WT_FLG",
+            "position": "0006",
+            "dataElement": "KZNTG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GROSS_WT_FLG",
+            "position": "0007",
+            "dataElement": "KZBRG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CNTRY_OF_ORIGIN_FLG",
+            "position": "0008",
+            "dataElement": "KZCOO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "ITEM_DATA",
+        "associatedType": "BAPIOBDLVITEMCHG",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Change item Data in Outbound Delivery",
+        "structureFields": [
+          {
+            "field": "DELIV_NUMB",
+            "position": "0001",
+            "dataElement": "VBELN_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_ITEM",
+            "position": "0002",
+            "dataElement": "POSNR_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL",
+            "position": "0003",
+            "dataElement": "MATNR18",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BATCH",
+            "position": "0004",
+            "dataElement": "CHARG_D",
+            "checkTable": "MCH1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HIERARITEM",
+            "position": "0005",
+            "dataElement": "HIPOS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "USEHIERITM",
+            "position": "0006",
+            "dataElement": "HIEVW",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_QTY",
+            "position": "0007",
+            "dataElement": "LFIMG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_QTY_IMUNIT",
+            "position": "0008",
+            "dataElement": "LGMNG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FACT_UNIT_NOM",
+            "position": "0009",
+            "dataElement": "UMVKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FACT_UNIT_DENOM",
+            "position": "0010",
+            "dataElement": "UMVKN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONV_FACT",
+            "position": "0011",
+            "dataElement": "UMREFF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GROSS_WT",
+            "position": "0012",
+            "dataElement": "BRGEW_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_WEIGHT",
+            "position": "0013",
+            "dataElement": "NTGEW_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNIT_OF_WT",
+            "position": "0014",
+            "dataElement": "GEWEI",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNIT_OF_WT_ISO",
+            "position": "0015",
+            "dataElement": "GEWEI_ISO",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT",
+            "position": "0016",
+            "dataElement": "VOLEH",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT_ISO",
+            "position": "0017",
+            "dataElement": "VOLEH_ISO",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_UNIT",
+            "position": "0018",
+            "dataElement": "VRKME",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_UNIT_ISO",
+            "position": "0019",
+            "dataElement": "ISOCD_VRKME",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BASE_UOM",
+            "position": "0020",
+            "dataElement": "MEINS",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BASE_UOM_ISO",
+            "position": "0021",
+            "dataElement": "MEINS_ISO",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DEL_QTY_FLO",
+            "position": "0022",
+            "dataElement": "LFIMG_FLO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_QTY_ST_FLO",
+            "position": "0023",
+            "dataElement": "LGMNG_FLO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STOCK_TYPE",
+            "position": "0024",
+            "dataElement": "MB_INSMK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAL_TYPE",
+            "position": "0025",
+            "dataElement": "BWTAR_D",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_EXTERNAL",
+            "position": "0026",
+            "dataElement": "MGV_MATERIAL_EXTERNAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_GUID",
+            "position": "0027",
+            "dataElement": "MGV_MATERIAL_GUID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_VERSION",
+            "position": "0028",
+            "dataElement": "MGV_MATERIAL_VERSION",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INSPLOT",
+            "position": "0029",
+            "dataElement": "QPLOS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUME",
+            "position": "0030",
+            "dataElement": "VOLUM_15",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STK_SEGMENT",
+            "position": "0031",
+            "dataElement": "SGT_SCAT16",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_SEGMENT",
+            "position": "0032",
+            "dataElement": "SGT_RCAT16",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_LONG",
+            "position": "0033",
+            "dataElement": "MATNR40",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STK_SEG_LONG",
+            "position": "0034",
+            "dataElement": "SGT_SCAT40",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_SEG_LONG",
+            "position": "0035",
+            "dataElement": "SGT_RCAT40",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CNTRY_OF_ORIGIN",
+            "position": "0036",
+            "dataElement": "HERKL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PIK_QTY_WH_BU",
+            "position": "0037",
+            "dataElement": "PIKMG_WH_BU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "ITEM_DATA_DOCU_BATCH",
+        "associatedType": "/SPE/DOCUBATCH_DLV_ITEM_STY",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Assigned Documentary Batches per Delivery Item",
+        "structureFields": []
+      },
+      {
+        "parameter": "ITEM_DATA_SPL",
+        "associatedType": "/SPE/BAPIOBDLVITEMCHG",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Change Outbound Delivery Picking Data Item Level (SPE)",
+        "structureFields": []
+      },
+      {
+        "parameter": "ITEM_SERIAL_NO",
+        "associatedType": "BAPIDLVITMSERNO",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "BAPI Delivery Serial Numbers Item",
+        "structureFields": []
+      },
+      {
+        "parameter": "ITEM_STATUS_SPL",
+        "associatedType": "/SPE/BAPIOBDLVITEMSTAT",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Outbound Delivery Item Statuses",
+        "structureFields": []
+      },
+      {
+        "parameter": "NEW_ITEM_DATA",
+        "associatedType": "BAPIOBDLVITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Outbound Delivery Item",
+        "structureFields": []
+      },
+      {
+        "parameter": "NEW_ITEM_DATA_SPL",
+        "associatedType": "/SPE/BAPIOBDLVITM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Outbound Del. Item Fields / Service Parts Management",
+        "structureFields": []
+      },
+      {
+        "parameter": "NEW_ITEM_ORG",
+        "associatedType": "BAPIOBDLVITEMORG",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Outbound Delivery Item Organizational Units",
+        "structureFields": []
+      },
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRET2",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Return Parameter",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARAMETER",
+            "position": "0011",
+            "dataElement": "BAPI_PARAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROW",
+            "position": "0012",
+            "dataElement": "BAPI_LINE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FIELD",
+            "position": "0013",
+            "dataElement": "BAPI_FLD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SYSTEM",
+            "position": "0014",
+            "dataElement": "BAPILOGSYS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "SUPPLIER_CONS_DATA",
+        "associatedType": "BAPIOBDLVITEMSUPCON",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Outbound Delivery Vendor Consignment Stock",
+        "structureFields": []
+      },
+      {
+        "parameter": "TEXT_HEADER",
+        "associatedType": "BAPIDLVTXTHDR",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Delivery Text Header",
+        "structureFields": []
+      },
+      {
+        "parameter": "TEXT_LINES",
+        "associatedType": "BAPIDLVTXTITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Delivery Text Lines",
+        "structureFields": []
+      },
+      {
+        "parameter": "TOKENREFERENCE",
+        "associatedType": "BAPITOKENREFERENCE",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Reference of CSL Token",
+        "structureFields": []
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "INTERFACE_CAPTURED_NOT_EXECUTED",
+    "request": "<build from exact interface below using approved DEV test data>",
+    "successEvidence": "Inspect RETURN/BAPIRET* and business document state."
+  }
+}

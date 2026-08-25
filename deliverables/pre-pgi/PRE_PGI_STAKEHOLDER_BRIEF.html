@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Pre-PGI Findings and Recommendation</title>
+<style>
+/* ============================================================
+   Pre-PGI document design system
+   Print target: A4, Chromium headless
+   ============================================================ */
+
+@page { size: A4; margin: 18mm 16mm 16mm 16mm; }
+
+* { box-sizing: border-box; }
+
+:root {
+  --ink:      #15191E;
+  --ink-soft: #4A555F;
+  --ink-mute: #77848D;
+  --primary:  #0F4C5C;
+  --primary-l:#1B6E82;
+  --accent:   #B3402A;
+  --gold:     #8A6A00;
+  --green:    #2A6049;
+  --rule:     #DCE4E8;
+  --rule-soft:#EDF2F4;
+  --surface:  #F6F9FA;
+  --surface-2:#EEF4F6;
+}
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.2pt;
+  line-height: 1.58;
+  color: var(--ink);
+  margin: 0;
+  hyphens: none;
+}
+
+p { margin: 0 0 9pt 0; orphans: 3; widows: 3; }
+strong, b { font-weight: 600; color: var(--ink); }
+em, i { font-style: italic; }
+
+/* ---------- Cover ---------- */
+.cover { page-break-after: always; }
+.cover-band {
+  height: 7mm; background: var(--primary);
+  margin: 0 -16mm 14mm -16mm;
+}
+.cover-kicker {
+  font-size: 8.5pt; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--primary-l); font-weight: 700; margin-bottom: 8mm;
+}
+.cover h1 {
+  font-size: 33pt; line-height: 1.1; font-weight: 300;
+  color: var(--primary); margin: 0 0 6mm 0; border: 0; padding: 0;
+  letter-spacing: -0.01em; page-break-before: auto;
+}
+.cover h1 b { font-weight: 700; }
+.cover-sub {
+  font-size: 13pt; line-height: 1.45; color: var(--ink-soft);
+  font-weight: 300; margin-bottom: 14mm; max-width: 145mm;
+}
+.cover-meta {
+  display: table; width: 100%; border-top: 1.5pt solid var(--primary);
+  border-bottom: .5pt solid var(--rule); padding: 5mm 0; margin-bottom: 12mm;
+}
+.cover-meta div { display: table-cell; width: 25%; padding-right: 6mm; vertical-align: top; }
+.cover-meta .lbl {
+  font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 700; display: block; margin-bottom: 1.5mm;
+}
+.cover-meta .val { font-size: 10.5pt; color: var(--ink); font-weight: 600; }
+
+.headline {
+  background: var(--primary); color: #fff; padding: 8mm 9mm;
+  margin-bottom: 8mm;
+}
+.headline .lbl {
+  font-size: 8pt; letter-spacing: .16em; text-transform: uppercase;
+  opacity: .72; font-weight: 700; display: block; margin-bottom: 3mm;
+}
+.headline p { font-size: 13.5pt; line-height: 1.45; font-weight: 300; margin: 0; color: #fff; }
+.headline p b { font-weight: 600; color: #fff; }
+
+.cover-note {
+  font-size: 9pt; color: var(--ink-mute); line-height: 1.5;
+  border-left: 2.5pt solid var(--rule); padding-left: 5mm;
+}
+
+/* ---------- Contents ---------- */
+.toc { page-break-after: always; }
+.toc h2 { border: 0; margin-top: 0; }
+.toc-grid { display: table; width: 100%; }
+.toc-row { display: table-row; }
+.toc-row > div { display: table-cell; padding: 2.6mm 0; border-bottom: .5pt solid var(--rule-soft); vertical-align: top; }
+.toc-num { width: 14mm; color: var(--primary-l); font-weight: 700; font-size: 9.5pt; }
+.toc-ttl { font-size: 10pt; }
+.toc-ttl span { display: block; font-size: 8.5pt; color: var(--ink-mute); margin-top: .6mm; }
+
+/* ---------- Headings ---------- */
+h1 {
+  font-size: 19pt; font-weight: 300; color: var(--primary);
+  margin: 0 0 7mm 0; padding: 0 0 3mm 0;
+  border-bottom: 2pt solid var(--primary);
+  page-break-after: avoid; page-break-before: always;
+  letter-spacing: -0.005em;
+}
+h1.nobreak { page-break-before: auto; }
+h1 .h1num {
+  display: inline-block; min-width: 11mm; font-weight: 700; color: var(--primary-l);
+}
+h2 {
+  font-size: 12.5pt; font-weight: 600; color: var(--primary);
+  margin: 9mm 0 3.5mm 0; page-break-after: avoid;
+}
+h2 .h2num { color: var(--primary-l); font-weight: 700; margin-right: 2.5mm; }
+h3 {
+  font-size: 10.4pt; font-weight: 700; color: var(--ink);
+  margin: 6mm 0 2.5mm 0; page-break-after: avoid;
+}
+h4 {
+  font-size: 9.6pt; font-weight: 600; color: var(--ink-soft);
+  margin: 5mm 0 2mm 0; page-break-after: avoid; font-style: italic;
+}
+
+/* ---------- Code ---------- */
+code {
+  font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
+  font-size: 8.8pt; background: var(--surface-2); color: #0B3A46;
+  padding: .4mm 1.2mm; border-radius: 1.5pt; white-space: nowrap;
+}
+pre {
+  font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
+  font-size: 8.4pt; line-height: 1.5; background: #0E2A33; color: #D7E6EA;
+  padding: 5mm 6mm; margin: 4mm 0; border-radius: 2pt;
+  page-break-inside: avoid; overflow: hidden;
+}
+pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+pre .c { color: #7FA8B4; }
+pre .hi { color: #F2B441; font-weight: 600; }
+pre .ok { color: #7FD1A8; }
+
+/* ---------- Tables ---------- */
+table {
+  border-collapse: collapse; width: 100%; margin: 4mm 0 6mm 0;
+  font-size: 9.1pt; page-break-inside: avoid;
+}
+thead { display: table-header-group; }
+th {
+  background: var(--primary); color: #fff; text-align: left;
+  padding: 2.4mm 3mm; font-weight: 600; font-size: 8.6pt;
+  letter-spacing: .02em; border: 0;
+}
+td {
+  border-bottom: .5pt solid var(--rule); padding: 2.2mm 3mm;
+  vertical-align: top; line-height: 1.45;
+}
+tbody tr:nth-child(even) td { background: var(--surface); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.compact { font-size: 8.7pt; }
+table.compact td, table.compact th { padding: 1.8mm 2.4mm; }
+
+/* ---------- Callouts ---------- */
+.box { padding: 4.5mm 5.5mm; margin: 5mm 0; page-break-inside: avoid; border-radius: 2pt; }
+.box p:last-child { margin-bottom: 0; }
+.box .tag {
+  display: block; font-size: 7.6pt; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 2mm;
+}
+.box-key  { background: #FDF8E7; border-left: 3pt solid var(--gold); }
+.box-key .tag { color: var(--gold); }
+.box-warn { background: #FDF3F0; border-left: 3pt solid var(--accent); }
+.box-warn .tag { color: var(--accent); }
+.box-good { background: #EFF6F2; border-left: 3pt solid var(--green); }
+.box-good .tag { color: var(--green); }
+.box-quote {
+  background: var(--surface); border-left: 3pt solid var(--primary-l);
+  font-size: 10.6pt; line-height: 1.5; font-weight: 300; color: var(--ink-soft);
+}
+
+/* ---------- Pills / status ---------- */
+.pill {
+  display: inline-block; font-size: 7.6pt; font-weight: 700; letter-spacing: .04em;
+  padding: .5mm 2mm; border-radius: 6pt; white-space: nowrap;
+}
+.pill-yes { background: #DCEFE4; color: var(--green); }
+.pill-no  { background: #FBE3DE; color: var(--accent); }
+.pill-warn{ background: #FBF0D2; color: var(--gold); }
+.pill-mute{ background: var(--surface-2); color: var(--ink-mute); }
+
+/* ---------- Timeline ---------- */
+.timeline { margin: 5mm 0 7mm 0; page-break-inside: avoid; }
+.tl-row { display: table; width: 100%; }
+.tl-time {
+  display: table-cell; width: 20mm; font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 8.6pt; color: var(--primary-l); font-weight: 700; padding: 1.6mm 0;
+  vertical-align: top;
+}
+.tl-mark { display: table-cell; width: 8mm; position: relative; vertical-align: top; padding-top: 1.6mm; }
+.tl-dot {
+  width: 2.6mm; height: 2.6mm; border-radius: 50%; background: var(--primary);
+  display: block; margin: 1mm auto 0 auto;
+}
+.tl-dot.hi { background: var(--accent); width: 3.4mm; height: 3.4mm; margin-top: .6mm; }
+.tl-line { border-left: 1pt solid var(--rule); height: 100%; position: absolute; left: 3.7mm; top: 4mm; bottom: -2mm; }
+.tl-body { display: table-cell; padding: 1.6mm 0 1.6mm 2mm; vertical-align: top; border-bottom: .5pt solid var(--rule-soft); }
+.tl-body .t { font-weight: 600; font-size: 9.6pt; }
+.tl-body .d { font-size: 8.6pt; color: var(--ink-mute); }
+
+/* ---------- Chain diagram ---------- */
+.chain { margin: 5mm 0; page-break-inside: avoid; }
+.chain-node {
+  border: .8pt solid var(--rule); border-left: 3pt solid var(--primary);
+  padding: 3mm 4mm; margin-bottom: 0; background: #fff;
+}
+.chain-node.bad { border-left-color: var(--accent); background: #FEF7F5; }
+.chain-node .n { font-weight: 700; font-size: 9.6pt; }
+.chain-node .m { font-size: 8.6pt; color: var(--ink-mute); }
+.chain-arrow { text-align: center; color: var(--ink-mute); font-size: 11pt; line-height: 1; padding: 1.5mm 0; }
+
+/* ---------- Stat bar ---------- */
+.statbar { margin: 5mm 0 7mm 0; page-break-inside: avoid; }
+.statbar .bar { height: 9mm; width: 100%; display: table; border-collapse: collapse; }
+.statbar .seg { display: table-cell; vertical-align: middle; text-align: center;
+  font-size: 8.2pt; font-weight: 700; color: #fff; }
+.statbar .legend { display: table; width: 100%; margin-top: 2.5mm; font-size: 8.4pt; }
+.statbar .legend > div { display: table-cell; }
+.statbar .sw { display: inline-block; width: 3mm; height: 3mm; margin-right: 1.5mm; vertical-align: -.3mm; }
+
+.bignum {
+  font-size: 34pt; font-weight: 200; color: var(--accent); line-height: 1;
+  letter-spacing: -0.02em;
+}
+.bignum-l { font-size: 9pt; color: var(--ink-mute); letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+
+/* ---------- Misc ---------- */
+ul, ol { margin: 0 0 9pt 0; padding-left: 5mm; }
+li { margin-bottom: 2mm; padding-left: 1mm; }
+.meta { font-size: 8.4pt; color: var(--ink-mute); line-height: 1.5; }
+.rule { border: 0; border-top: .5pt solid var(--rule); margin: 7mm 0; }
+.two { display: table; width: 100%; }
+.two > div { display: table-cell; width: 50%; vertical-align: top; }
+.two > div:first-child { padding-right: 5mm; }
+.avoid { page-break-inside: avoid; }
+.newpage { page-break-before: always; }
+
+</style>
+<style>
+  body { font-size: 11pt; line-height: 1.62; }
+  table { font-size: 9.8pt; }
+  th { font-size: 9.2pt; padding: 2.8mm 3.2mm; }
+  td { padding: 2.6mm 3.2mm; }
+  h1 { font-size: 20pt; }
+  h2 { font-size: 13pt; margin-top: 10mm; }
+  h3 { font-size: 11pt; }
+  .box { padding: 5mm 6mm; }
+  .box p { font-size: 10.6pt; }
+</style>
+</head><body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="cover-band"></div>
+  <div class="cover-kicker">SAP integration track · findings and recommendation</div>
+  <h1>Pre-PGI:<br>What We Found<br>in Your SAP System</h1>
+  <div class="cover-sub">What happens between delivery and goods issue, which parts of it can actually be called from outside SAP, and why we recommend one interface rather than three.</div>
+
+  <div class="cover-meta">
+    <div><span class="lbl">Systems examined</span><span class="val">DS4 / 200<br>QS4 / 700</span></div>
+    <div><span class="lbl">Date</span><span class="val">18 Aug 2026</span></div>
+    <div><span class="lbl">Changes made</span><span class="val">None</span></div>
+    <div><span class="lbl">Basis</span><span class="val">Live system reads<br>only</span></div>
+  </div>
+
+  <div class="headline">
+    <span class="lbl">Recommendation</span>
+    <p>The pre-PGI span — shipment, shipment cost, cost release — should be <b>one API call</b>, not three. Not for elegance: because <b>four of the six steps have no callable SAP interface at all</b>, so custom development is required either way.</p>
+  </div>
+
+  <div class="cover-note">
+    Every figure and document number in this document is a live read from your system. Nothing is estimated.
+  </div>
+</div>
+
+<!-- ============ CONTENTS ============ -->
+<div class="toc">
+  <h1 class="nobreak">Contents</h1>
+  <div class="toc-grid">
+    <div class="toc-row"><div class="toc-num">1</div><div class="toc-ttl"><b>How this was established</b><span>Access, evidence standard, tools</span></div></div>
+    <div class="toc-row"><div class="toc-num">2</div><div class="toc-ttl"><b>What SAP actually does before PGI</b><span>Six steps, a real chain, what your status fields mean</span></div></div>
+    <div class="toc-row"><div class="toc-num">3</div><div class="toc-ttl"><b>What is callable, and what is not</b><span>Services, BAPIs, internal functions, the verdict</span></div></div>
+    <div class="toc-row"><div class="toc-num">4</div><div class="toc-ttl"><b>What we found that is not currently known</b><span>10,496 stranded documents · cost type · the PGI question</span></div></div>
+    <div class="toc-row"><div class="toc-num">5</div><div class="toc-ttl"><b>Comparison with the v1.8 specification</b><span>Corrections needed and the gap we can now close</span></div></div>
+    <div class="toc-row"><div class="toc-num">6</div><div class="toc-ttl"><b>Our recommendation</b><span>One API — and the conditions we state with it</span></div></div>
+    <div class="toc-row"><div class="toc-num">7</div><div class="toc-ttl"><b>What remains open, and what we need</b><span>Questions, the test-data blocker, the decision we need</span></div></div>
+    <div class="toc-row"><div class="toc-num">8</div><div class="toc-ttl"><b>Summary</b><span>Seven findings and their consequences</span></div></div>
+  </div>
+</div>
+
+<!-- ============ 1 ============ -->
+<h1><span class="h1num">1</span>How this was established</h1>
+
+<h2><span class="h2num">1.1</span>Systems, access and what was touched</h2>
+<table>
+<thead><tr><th>System</th><th>Client</th><th>Access</th><th>Changes made</th></tr></thead>
+<tbody>
+<tr><td>DS4 — development</td><td>200</td><td>Write-authorised</td><td><span class="pill pill-mute">None</span></td></tr>
+<tr><td>QS4 — quality</td><td>700</td><td>Read-only</td><td><span class="pill pill-mute">None</span></td></tr>
+</tbody></table>
+<p>No document was created, changed, posted or reversed in either system. Our findings come from reading your service definitions, your function-module interfaces, your repository index and your existing documents.</p>
+
+<h2><span class="h2num">1.2</span>What we treated as evidence</h2>
+<p>We separated what is <i>proven</i> from what is <i>assumed</i>, because that difference decides how much weight this can carry.</p>
+<table>
+<thead><tr><th style="width:50%">We treat as proven</th><th>We do not</th></tr></thead>
+<tbody>
+<tr><td>A live response from your system, with its status recorded</td><td>A service appearing in a catalogue</td></tr>
+<tr><td>An interface read directly from the system</td><td>A sample payload generated from that interface</td></tr>
+<tr><td>A document chain traced field by field</td><td>Two timestamps close together, assumed to be one transaction</td></tr>
+<tr><td>A true row count</td><td>A partial sample treated as the whole population</td></tr>
+</tbody></table>
+<div class="box box-key">
+<span class="tag">Two distinctions we apply throughout</span>
+<p><b>Callable is not the same as supported.</b> A function can be technically callable while SAP makes no commitment to keep its interface stable across upgrades. Three of the interfaces here are in that category.</p>
+<p><b>A successful technical response is not business authorisation.</b> It proves the service is reachable — nothing about whether the business operation will succeed.</p>
+</div>
+
+<h2><span class="h2num">1.3</span>The tools used</h2>
+<table>
+<thead><tr><th style="width:34%">Tool</th><th>What it told us</th></tr></thead>
+<tbody>
+<tr><td>Gateway Client</td><td>Which OData services are live, and their exact contracts</td></tr>
+<tr><td>Service Builder (SEGW)</td><td>The design-time catalogue your specification was built from</td></tr>
+<tr><td>Function Builder (SE37)</td><td>Real interfaces, support status and remote-call flags for every BAPI in scope</td></tr>
+<tr><td><b>Where-Used analysis</b></td><td><b>The decisive tool</b> — it found what actually performs each step, and who calls it</td></tr>
+<tr><td>Data browser and dictionary</td><td>What your data actually looks like, and what your status fields really mean</td></tr>
+</tbody></table>
+
+<!-- ============ 2 ============ -->
+<h1><span class="h1num">2</span>What SAP actually does before PGI</h1>
+
+<h2><span class="h2num">2.1</span>The six steps</h2>
+<p>The portal shows one action. SAP performs <b>six independently committed steps</b>. Each is a separate database commit — once one completes, it cannot be undone by a rollback.</p>
+<table>
+<thead><tr><th style="width:6%">#</th><th style="width:30%">Step</th><th style="width:26%">Stored in</th><th>Proof it completed</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Shipment created</td><td><code>VTTK</code> / <code>VTTP</code></td><td>Shipment number</td></tr>
+<tr><td>2</td><td>Cost document created</td><td><code>VFKK</code> / <code>VFKP</code></td><td>Cost document number</td></tr>
+<tr><td>3</td><td>Calculated</td><td><code>VFKP</code></td><td>Calculation status complete</td></tr>
+<tr><td>4</td><td>Account assigned</td><td><code>VFKP</code></td><td>Account assignment complete</td></tr>
+<tr><td>5</td><td>Settled / transferred</td><td><code>VFKP</code> + Materials Management</td><td>Freight PO and service entry created</td></tr>
+<tr><td>6</td><td>Goods issue (PGI)</td><td><code>MKPF</code> / <code>LIKP</code></td><td>Material document, movement 601</td></tr>
+</tbody></table>
+
+<h2><span class="h2num">2.2</span>A real completed chain from your system</h2>
+<p>Delivery <code>9004953084</code>, 17 August 2026:</p>
+
+<div class="timeline">
+  <div class="tl-row"><div class="tl-time">10:26:23</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Delivery 9004953084 created</span><br><span class="d">Route E36881</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:28</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Shipment 1100605471 created</span><br><span class="d">Carrier 0013000730 · 484 KM · vehicle HR55AZ3800</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:28</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Cost document 1100608871 created and calculated</span><br><span class="d">7,460.00 INR</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:30</div><div class="tl-mark"><span class="tl-dot hi"></span></div>
+    <div class="tl-body"><span class="t">Cost settled into Materials Management</span><br><span class="d">Freight PO 6000105831 · service entry 1003382363</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:31</div><div class="tl-mark"><span class="tl-dot hi"></span></div>
+    <div class="tl-body"><span class="t">Goods issue — material document 4918168265</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:32</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Billing 1108024764</span></div></div>
+</div>
+
+<div class="box box-key">
+<span class="tag">Two seconds</span>
+<p>Shipment created to cost settled took <b>11:11:28 to 11:11:30</b>. This is a fast sequential chain, not a long-running process that needs external checkpoints between steps.</p>
+</div>
+
+<h2><span class="h2num">2.3</span>What your status fields actually mean</h2>
+<div class="box box-warn">
+<span class="tag">A correction that matters</span>
+<p>The field <code>VFKK-STFRE</code> has been understood as the “cost release” status. Read from the SAP dictionary, it is the <b>account assignment</b> status. And <b>blank means “not relevant”, not “not done”</b> — so a blank field never indicated a missed step.</p>
+</div>
+<table>
+<thead><tr><th style="width:22%">Field</th><th>What it really means</th></tr></thead>
+<tbody>
+<tr><td><code>STBER</code></td><td>Calculation status</td></tr>
+<tr><td><code>STFRE</code></td><td><b>Account assignment</b> status</td></tr>
+<tr><td><code>STABR</code></td><td><b>Transfer / settlement</b> status</td></tr>
+</tbody></table>
+<p>There is <b>no release field</b> on the cost document header. What the business calls “cost release” is technically the <b>transfer of freight cost into Materials Management</b> — which is why completing it produces a freight purchase order and a service entry sheet.</p>
+
+<h2><span class="h2num">2.4</span>How the documents link</h2>
+<div class="box box-warn">
+<span class="tag">Correction</span>
+<p>It has been recorded that the cost document number equals the shipment number. <b>It does not.</b></p>
+</div>
+<table>
+<thead><tr><th>Cost document</th><th>Actual shipment</th></tr></thead>
+<tbody>
+<tr><td>1100608871</td><td>1100605471</td></tr>
+<tr><td>2100005093</td><td>2100005099 — <i>not</i> 2100005093</td></tr>
+</tbody></table>
+<p>The number ranges are similar enough to look interchangeable. Any reporting or reconciliation built on “cost document equals shipment” will silently produce wrong results.</p>
+
+<!-- ============ 3 ============ -->
+<h1><span class="h1num">3</span>What is callable, and what is not</h1>
+
+<h2><span class="h2num">3.1</span>The OData services</h2>
+<p>Seven services are live in your development system and all return their contract successfully.</p>
+<table>
+<thead><tr><th style="width:44%">Service</th><th>Serves</th></tr></thead>
+<tbody>
+<tr><td><code>API_MATERIAL_DOCUMENT_SRV</code></td><td>Goods receipt</td></tr>
+<tr><td><code>API_OUTBOUND_DELIVERY_SRV</code> <b>v2</b></td><td>Delivery create, picking, goods issue, delivery reads</td></tr>
+<tr><td><code>API_BILLING_DOCUMENT_SRV</code></td><td>Billing read-back</td></tr>
+<tr><td><code>API_PURCHASEORDER_PROCESS_SRV</code></td><td>Stock transport orders</td></tr>
+<tr><td><code>API_MATERIAL_STOCK_SRV</code></td><td>Book stock</td></tr>
+<tr><td><code>MMIM_MATDOC_SRV</code></td><td>Material document read-back</td></tr>
+<tr><td><code>SD_CUSTOMER_INVOICES_CREATE</code></td><td>Billing creation</td></tr>
+</tbody></table>
+<div class="box box-key">
+<span class="tag">The delivery service must be version 2</span>
+<p>Version 1 exists under the identical name and lacks the batch-split operations. It would activate cleanly and then fail on first real use.</p>
+</div>
+<div class="box box-warn">
+<span class="tag">Billing cannot be created through the billing API</span>
+<p>All eight of its data sets are marked not-creatable. Billing creation must go through a different service. Any design assuming otherwise needs correcting.</p>
+</div>
+
+<h2><span class="h2num">3.2</span>The BAPIs</h2>
+<p>Fifteen interfaces were read from your system. All are callable remotely. <b>Three are not released</b> — SAP makes no commitment to keep their interface stable across upgrades. If any is adopted, that carries a named upgrade risk.</p>
+<table>
+<thead><tr><th style="width:38%">Interface</th><th>Released</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td><code>BAPI_SHIPMENT_CREATE</code></td><td><span class="pill pill-yes">Yes</span></td><td><b>The one pre-PGI step with a proper standard API</b></td></tr>
+<tr><td><code>BAPI_SHIPMENT_COST_ESTIMATE</code></td><td><span class="pill pill-no">No</span></td><td>Freight estimate — creates no document</td></tr>
+<tr><td><code>BAPI_SHIPMENT_CHANGE</code></td><td><span class="pill pill-no">No</span></td><td>Not proven to perform cost release</td></tr>
+<tr><td><code>BAPI_OUTB_DELIVERY_CHANGE</code></td><td><span class="pill pill-no">No</span></td><td>Delivery quantity change alternative</td></tr>
+<tr><td>Goods movement, delivery create, PO create, billing</td><td><span class="pill pill-yes">Yes</span></td><td>Other APIs in the portfolio</td></tr>
+</tbody></table>
+<div class="box box-key">
+<span class="tag">Your transport fields have a home</span>
+<p>Vehicle number, driver name and mobile, LR/GR number and date, and the three weights are customer fields on the <b>shipment creation</b> structure. The specification currently parks them as belonging to an unidentified route. They belong to the shipment creation call.</p>
+</div>
+<p><b>Two practical notes.</b> <code>BAPI_SHIPMENT_CREATE</code> has no test mode — its first execution creates a real shipment. And the freight estimate is not a delivery-only call: it requires a full in-memory shipment to be constructed, not just a delivery number and a transporter.</p>
+
+<h2><span class="h2num">3.3</span>What performs the middle steps</h2>
+<p>Steps 2 to 5 are performed by internal SAP function modules. We identified all of them by name:</p>
+<table>
+<thead><tr><th style="width:40%">Step</th><th>SAP function module</th></tr></thead>
+<tbody>
+<tr><td>Create cost document</td><td><code>SD_SCDS_CREATE</code></td></tr>
+<tr><td>Calculate</td><td><code>SD_SCD_ITEM_CALCULATE</code></td></tr>
+<tr><td>Account assign</td><td><code>SD_SCD_ITEM_ACCT_ASSIGNMENT</code></td></tr>
+<tr><td>Settle / release</td><td><code>SD_SCDS_RELEASE</code></td></tr>
+<tr><td>Persist</td><td><code>SD_SCDS_SAVE</code></td></tr>
+</tbody></table>
+<div class="box box-good">
+<span class="tag">The terminology, confirmed by SAP itself</span>
+<p><code>SD_SCDS_RELEASE</code>'s own SAP description translates as <b>“transfer of freight cost items”</b> — not “release”. This is why completing it creates a purchase order and a service entry sheet in Materials Management.</p>
+</div>
+<div class="box box-key">
+<span class="tag">SAP refuses to split two of these steps</span>
+<p><code>SD_SCDS_CREATE</code> calls <code>SD_SCDS_SAVE</code> internally. Creating and persisting the cost document is a <b>single SAP operation</b>. Exposing them as two endpoints would invent a boundary that does not exist.</p>
+</div>
+
+<h2><span class="h2num">3.4</span>The verdict</h2>
+<table>
+<thead><tr><th style="width:52%">Step</th><th>Standard callable API?</th></tr></thead>
+<tbody>
+<tr><td>1 · Shipment create</td><td><span class="pill pill-yes">YES</span></td></tr>
+<tr><td>— · Freight estimate</td><td><span class="pill pill-warn">Callable, but not a released interface</span></td></tr>
+<tr><td>2 · Cost document create</td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>3 · Calculate</td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>4 · Account assign</td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>5 · Settle / release</td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>6 · Goods issue</td><td><span class="pill pill-yes">YES</span></td></tr>
+</tbody></table>
+
+<div class="box box-good">
+<span class="tag">The conclusion that drives our recommendation</span>
+<p style="font-size:14pt; font-weight:600; color:var(--primary); margin-bottom:3mm;">Four of the six pre-PGI steps have no callable SAP interface.</p>
+<p>Custom SAP development is therefore <b>mandatory</b>, regardless of how many endpoints we expose. This is a property of the system, not a design preference. “Use standard APIs instead” is not an available option for this span.</p>
+</div>
+<p class="meta">Method note: we state this as a finding from the searches performed — function-module name patterns and full-scope where-used analysis, each with a control to prove the search itself was working. We do not claim no such interface could exist anywhere.</p>
+
+<!-- ============ 4 ============ -->
+<h1><span class="h1num">4</span>What we found that is not currently known</h1>
+
+<h2><span class="h2num">4.1</span>10,496 shipment-cost documents are stranded</h2>
+<p>Full count across your entire cost-document table:</p>
+
+<div class="statbar">
+  <div class="bar">
+    <div class="seg" style="width:52.4%; background:#2A6049;">52.4% settled</div>
+    <div class="seg" style="width:47.4%; background:#8FA6AF;">47.4% not relevant</div>
+    <div class="seg" style="width:0.18%; background:#B3402A;"></div>
+  </div>
+  <div class="legend">
+    <div><span class="sw" style="background:#2A6049"></span><b>3,021,454</b> fully transferred</div>
+    <div><span class="sw" style="background:#8FA6AF"></span><b>2,737,318</b> not relevant</div>
+    <div><span class="sw" style="background:#B3402A"></span><b>10,496</b> stranded (0.18%)</div>
+  </div>
+</div>
+
+<table>
+<thead><tr><th>Settlement status</th><th>Meaning</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+<tbody>
+<tr><td>Fully transferred</td><td>Completed correctly</td><td class="num">3,021,454</td><td class="num">52.4%</td></tr>
+<tr><td>Not relevant</td><td>Settlement never applied</td><td class="num">2,737,318</td><td class="num">47.4%</td></tr>
+<tr><td><b>Relevant, never transferred</b></td><td><b>Should have completed — did not</b></td><td class="num"><b>10,496</b></td><td class="num"><b>0.18%</b></td></tr>
+<tr><td colspan="2"><b>Total</b></td><td class="num"><b>5,769,268</b></td><td></td></tr>
+</tbody></table>
+
+<p><b>0.18% is a small proportion, and we want to be straight about that.</b> This is not a system in crisis. But it is the number that matters, for this reason:</p>
+
+<div class="box box-quote">
+This 0.18% is the <b>best case</b>. It comes from code running inside SAP, in the same program context, with no network between the steps, tuned over years of production use. It still leaves 10,496 documents stranded. An integration that splits these steps across a network boundary, with an orchestrator that cannot read the cost tables, will not do better.
+</div>
+
+<p>At roughly 4,000 logistics calls per day, 0.18% is about <b>7 documents a day, 2,600 a year</b> — each with freight cost calculated but never posted to Materials Management. No freight purchase order, no service entry sheet, no accrual cleared.</p>
+
+<h3>A traced example</h3>
+<div class="chain">
+  <div class="chain-node bad"><span class="n">Cost document 1300105310</span><br>
+    <span class="m">Calculated · settlement relevant · <b>never completed</b> · 12,144.00 INR · no freight PO, no service entry</span></div>
+  <div class="chain-arrow">↓</div>
+  <div class="chain-node"><span class="n">Shipment 1300105363</span></div>
+  <div class="chain-arrow">↓</div>
+  <div class="chain-node bad"><span class="n">Delivery 0080387199</span><br>
+    <span class="m"><b>Goods issue COMPLETE — and invoiced</b></span></div>
+</div>
+<p><b>The delivery shipped and was billed. The freight cost never posted.</b> That is what these 10,496 documents look like.</p>
+
+<h2><span class="h2num">4.2</span>Cost type is a required input, and it is not constant</h2>
+<p>Any call that creates a shipment cost document must supply a <b>cost type</b>. Four types behave differently in your system:</p>
+<table>
+<thead><tr><th style="width:18%">Cost type</th><th>Observed behaviour</th></tr></thead>
+<tbody>
+<tr><td><code>Z001</code></td><td><b>Completes fully</b> — freight PO and service entry created</td></tr>
+<tr><td><code>Z003</code></td><td><b>Strands</b> — this is the 10,496 population</td></tr>
+<tr><td><code>Z006</code></td><td>Calculates; settlement not relevant</td></tr>
+<tr><td><code>Y003</code></td><td>Calculated only</td></tr>
+</tbody></table>
+<div class="box box-key">
+<span class="tag">New information</span>
+<p>On 17 August, cost release was described as “a tick inside the transaction, not a separate BAPI”. That is accurate in the user interface. But the <b>callable</b> form requires a cost type to be chosen and supplied — and the current specification has no field for it. This needs a decision: is it derived from the shipment, or does the caller send it?</p>
+</div>
+
+<h2><span class="h2num">4.3</span>Settlement is not technically required before PGI</h2>
+<p>This was an open question. It is now answered, and the answer is not what was assumed.</p>
+<div class="box box-good">
+<span class="tag">Proven from your data</span>
+<p><b>SAP does not block goods issue on unsettled freight cost.</b> The example above proves it: settlement was relevant and incomplete, and the delivery was goods-issued and invoiced anyway.</p>
+</div>
+<p><b>What this means.</b> “Release before goods issue” is a <b>business rule, not a SAP constraint</b>. If you want it enforced, the interface must enforce it — SAP will not. Equally, an orchestration that waits for settlement is imposing a constraint SAP does not impose. That should be a deliberate decision rather than an inherited assumption.</p>
+
+<h2><span class="h2num">4.4</span>This pattern is already implemented in your system</h2>
+<p>The internal function that creates cost documents is called from <b>eight places, all of them custom code written for this landscape</b> — and from no SAP standard program. One of them is a function module with this interface:</p>
+<table>
+<thead><tr><th style="width:40%">Input</th><th></th></tr></thead>
+<tbody>
+<tr><td>Shipment number</td><td>mandatory</td></tr>
+<tr><td>Cost type</td><td>mandatory</td></tr>
+<tr><td>Commit flag</td><td>optional</td></tr>
+</tbody></table>
+<p>One shipment in, cost document posted, commit under the caller's control. <b>This is the shape we are proposing, and it already exists and runs here</b> — a useful feasibility proof.</p>
+<div class="box box-warn">
+<span class="tag">Two things must be said about it</span>
+<p><b>1.</b> It belongs to a different programme — outside C&amp;F scope — so we cite it as proof the pattern works, <b>not</b> as something CNF can simply reuse.</p>
+<p><b>2.</b> It returns <b>nothing</b>: no document number, no error. It cannot tell its caller what it created or why it failed. That is the one thing our version must do differently.</p>
+</div>
+
+<!-- ============ 5 ============ -->
+<h1><span class="h1num">5</span>Comparison with the v1.8 specification</h1>
+
+<h2><span class="h2num">5.1</span>Corrections required</h2>
+<table>
+<thead><tr><th style="width:46%">Current specification says</th><th>Your system says</th></tr></thead>
+<tbody>
+<tr><td><code>VFKK-STFRE</code> is the cost release status</td><td>It is account assignment; blank means “not relevant”</td></tr>
+<tr><td>Cost document number equals shipment number</td><td>False — they are different numbers</td></tr>
+<tr><td>Batch split call takes 4 parameters</td><td><b>5</b> — a unit parameter is missing; the call would fail</td></tr>
+<tr><td>Billing can be created via the billing API</td><td>Not possible — read-only for creation</td></tr>
+<tr><td>Transport fields have no identified home</td><td>They are fields on the shipment-create structure</td></tr>
+<tr><td>Cost type not mentioned</td><td>It is a <b>mandatory</b> input and varies by scenario</td></tr>
+<tr><td>Stage-B route “unidentified”</td><td>Identified by name — and none of it is callable</td></tr>
+</tbody></table>
+
+<h2><span class="h2num">5.2</span>The gap in the specification</h2>
+<p>The API-03 request section has field-level detail for every stage <b>except</b> the shipment and cost stage, which carries only a note that the route is unidentified.</p>
+<p><b>That gap can now be closed.</b> The request contract is the shipment-create structure including your vehicle, driver, LR and weight fields, plus the delivery reference, plus a decision on cost type. We will produce this as a correction report rather than editing the approved workbook.</p>
+
+<h2><span class="h2num">5.3</span>Status of the twelve APIs</h2>
+<p>We hold a deliberately strict standard: an operation counts as validated only when a real input was executed and the result reconciled to an SAP document. <b>On that standard, two operations are validated.</b> Most of the rest are blocked not by SAP, but by the absence of test data in the development system — see 7.2.</p>
+<table>
+<thead><tr><th style="width:34%">API</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>API-01 · Goods receipt</td><td>Contract confirmed; blocked by missing test data</td></tr>
+<tr><td>API-02 · Create delivery</td><td>Contract confirmed; blocked by missing predecessors</td></tr>
+<tr><td><b>API-03 · Invoice chain</b></td><td><b>Pre-PGI half requires custom development — section 6</b></td></tr>
+<tr><td>API-04 · Freight estimate</td><td>Interface not released; input larger than assumed</td></tr>
+<tr><td>API-05 · Stock</td><td>Correct service, correctly read-only</td></tr>
+<tr><td>API-06 / 07 · Statutory</td><td>Existing route; boundary not yet traced</td></tr>
+<tr><td>API-08 / 09 / 10 · Reads</td><td>Services work; CNF document types absent from development</td></tr>
+<tr><td>API-11 · Create STO PO</td><td>Blocked by configuration — see note</td></tr>
+<tr><td>API-12 · Update quantity</td><td>Quantity updatable; unit is not</td></tr>
+</tbody></table>
+<p class="meta">On API-11: we ran the purchase-order create in simulation mode with your document type <code>ZP06</code>. SAP replied <i>“Document type ZP06 not allowed with document category F”</i>. That is a configuration statement about the development system, not a defect in the interface.</p>
+
+<!-- ============ 6 ============ -->
+<h1><span class="h1num">6</span>Our recommendation</h1>
+
+<h2><span class="h2num">6.1</span>The question</h2>
+<p>For the span <b>shipment creation → freight estimate → cost document and calculation → cost release</b>, ending immediately before goods issue: does CNF call SAP <b>once</b>, or <b>three times</b>?</p>
+
+<h2><span class="h2num">6.2</span>Why one</h2>
+
+<h3>1 · Custom development is required either way</h3>
+<p>Four of six steps have no callable interface. Three endpoints means three custom wrappers, not fewer. The only question is how many doors we cut, not whether we cut any.</p>
+
+<h3>2 · SAP has already merged two of the steps</h3>
+<p>Creating and persisting the cost document is a single SAP operation. Splitting it would invent a boundary that does not exist. This also matches what was agreed on 17 August — costing creation and release merged into one call.</p>
+
+<h3>3 · The state lives in SAP, so the caller cannot own it</h3>
+<p>Only SAP can answer “how far did this get”. Three calls means the orchestrator holding a state machine for data it cannot read. One call that reads those documents and continues from where it finds itself is <b>safe to retry by design</b> — the most valuable property this interface can have.</p>
+
+<h3>4 · The 10,496</h3>
+<p>Splitting the steps is survivable — SAP's own implementation survives it at 0.18%. But nothing about three endpoints makes that number smaller, and two things make it larger: a network between the steps, and an orchestrator that cannot see the cost tables.</p>
+
+<h2><span class="h2num">6.3</span>What the API returns</h2>
+<pre><span class="c">{</span> <span class="hi">"shipment"</span><span class="c">:</span>        <span class="ok">"1100605471"</span><span class="c">,</span>
+  <span class="hi">"costDocument"</span><span class="c">:</span>    <span class="ok">"1100608871"</span><span class="c">,</span>
+  <span class="hi">"costType"</span><span class="c">:</span>        <span class="ok">"Z001"</span><span class="c">,</span>
+  <span class="hi">"calculated"</span><span class="c">:</span>      true<span class="c">,</span>
+  <span class="hi">"accountAssigned"</span><span class="c">:</span> true<span class="c">,</span>
+  <span class="hi">"settled"</span><span class="c">:</span>         true<span class="c">,</span>
+  <span class="hi">"freightPO"</span><span class="c">:</span>       <span class="ok">"6000105831"</span><span class="c">,</span>
+  <span class="hi">"serviceEntry"</span><span class="c">:</span>    <span class="ok">"1003382363"</span><span class="c">,</span>
+  <span class="hi">"stage"</span><span class="c">:</span>           <span class="ok">"READY_FOR_PGI"</span><span class="c">,</span>
+  <span class="hi">"messages"</span><span class="c">:</span>        <span class="c">[ SAP's own messages ]</span> <span class="c">}</span></pre>
+<p><b>Stage-level status, not a simple success or failure.</b> Every step that completed is named with the document it produced. A failure returns the step it stopped at, plus SAP's own message — which is what the functional-versus-technical error split agreed on 17 August requires in order to route errors correctly.</p>
+
+<h2><span class="h2num">6.4</span>Three conditions we state alongside it</h2>
+<ol>
+<li><b>It is not atomic, and cannot be.</b> Once the shipment is committed it is committed; recovery is reversal, not rollback. This is equally true of one API or three — but it should be on the record now rather than discovered later. The word “rollback” used in the 17 August readout should be withdrawn.</li>
+<li><b>It is resumable, not fire-and-forget.</b> Calling it again reads the existing documents, works out what already exists, and continues. This is what prevents duplicate shipments.</li>
+<li><b>The SAP side does not own process state.</b> Process identity, stage history and replay protection belong to the orchestrator. SAP holds no cross-step process state and cannot undo a committed goods issue however the code is written.</li>
+</ol>
+
+<!-- ============ 7 ============ -->
+<h1><span class="h1num">7</span>What remains open, and what we need</h1>
+
+<h2><span class="h2num">7.1</span>Open technical questions</h2>
+<table>
+<thead><tr><th style="width:52%">Question</th><th>Why it matters</th></tr></thead>
+<tbody>
+<tr><td>Does shipment creation automatically trigger cost document creation?</td><td>If yes, the interface we expose gets smaller</td></tr>
+<tr><td>Does the freight estimate genuinely create nothing?</td><td>The estimate API depends on it being side-effect free</td></tr>
+<tr><td>How is cost type determined?</td><td>It is mandatory and currently unspecified</td></tr>
+</tbody></table>
+
+<h2><span class="h2num">7.2</span>Why we cannot yet demonstrate this in development</h2>
+<p>The development system has the <b>configuration</b> for this process but almost none of the <b>data</b>.</p>
+<table>
+<thead><tr><th style="width:40%">Missing</th><th>Consequence</th></tr></thead>
+<tbody>
+<tr><td><b>No vendor records at all</b></td><td><b>No transporter can be entered — this alone blocks every step from shipment onward</b></td></tr>
+<tr><td>No material valuation</td><td>No goods movement can be posted</td></tr>
+<tr><td>No stock, no batches</td><td>Nothing to pick or issue</td></tr>
+<tr><td>No sales orders or deliveries</td><td>No starting point for the chain</td></tr>
+</tbody></table>
+<p>Present and usable: shipment types, transportation planning points, routes, cost document types and standard purchase order types. Your CNF-specific document types <code>ZP06</code>, <code>ZNL</code> and <code>ZSTO</code> are <b>not present in the development system</b>.</p>
+
+<h3>A decision we need from you</h3>
+<table>
+<thead><tr><th style="width:24%"></th><th>Option A — generic</th><th>Option B — CNF parity</th></tr></thead>
+<tbody>
+<tr><td>Uses</td><td>Standard SAP document types</td><td>Your <code>ZP06</code> / <code>ZNL</code> / <code>ZSTO</code> brought into development</td></tr>
+<tr><td>Proves</td><td>Mechanics, payloads, commit behaviour, retry</td><td>Actual CNF behaviour</td></tr>
+<tr><td>Does not prove</td><td>Anything about your specific document types</td><td>—</td></tr>
+<tr><td>Speed</td><td>Fast, once master data exists</td><td>Needs a configuration transport</td></tr>
+</tbody></table>
+<p><b>We recommend A now, B before sign-off.</b> Option A unblocks the technical proof immediately. Option B is required before anyone signs a contract that names your document types. We will never present Option A results as proof of CNF parity.</p>
+
+<h2><span class="h2num">7.3</span>What we are asking for</h2>
+<p><b>One disposable test chain in the development system:</b> a valued material with stock, a batch-managed variant, a customer and an order, one delivery not yet goods-issued, <b>at least one transporter</b>, a route, and freight rate configuration — plus confirmation of which shipment type, planning point and cost document type to use.</p>
+<p><b>And one process answer that no technical inspection can produce:</b> which transaction or job your team actually runs to create and settle shipment costs.</p>
+<p class="meta">A field-level list of the fifteen items has been prepared and can be handed to the functional and Basis teams directly.</p>
+
+<!-- ============ 8 ============ -->
+<h1><span class="h1num">8</span>Summary</h1>
+<table>
+<thead><tr><th style="width:48%">Finding</th><th>Consequence</th></tr></thead>
+<tbody>
+<tr><td>Four of six pre-PGI steps have no callable SAP interface</td><td>Custom development is mandatory either way</td></tr>
+<tr><td>SAP merges cost creation and persistence internally</td><td>Splitting them invents a boundary that does not exist</td></tr>
+<tr><td>Chain state lives only in SAP documents</td><td>An external orchestrator cannot reliably own it</td></tr>
+<tr><td>10,496 documents stranded at 0.18%, inside SAP, with no network</td><td>Splitting across a network will not improve on that</td></tr>
+<tr><td>Settlement does not technically block goods issue</td><td>The sequencing rule is yours to enforce, not SAP's</td></tr>
+<tr><td>Cost type is mandatory and varies</td><td>A missing field in the current specification</td></tr>
+<tr><td>The pattern already runs here in custom code</td><td>Feasibility proven; the shape is known</td></tr>
+</tbody></table>
+
+<div class="box box-good">
+<span class="tag">Recommendation</span>
+<p style="font-size:14pt; font-weight:600; color:var(--primary); margin-bottom:3mm;">One resumable pre-PGI API, returning stage-level status and document numbers.</p>
+<p>Not atomic — we will say so plainly. Not a thin passthrough — the orchestration logic is real and belongs to the orchestrator. But <b>one call</b>, because SAP gives us no honest place to cut it into three.</p>
+</div>
+
+<hr class="rule">
+<p class="meta">Prepared from live system evidence in DS4/200 and QS4/700. Supporting detail, document traces, captured interfaces and full status counts are available on request.</p>
+
+</body></html>
+

@@ -1,0 +1,41 @@
+# 14aug_3 - translate
+duration: 04:50  |  language: hi-IN  |  turns: 57
+
+[00:02] S2 : Look, we have made all these services. I haven't shown you this, but I'll show you. Now, this is a handling agent.
+[00:12] S3 : ID OTP I will have to start the server, then I will show you.
+[00:21] S2 : So, when he logs in, he will see all the warehouses.
+[00:24] S3 : New orders are coming from T1. We have created all those services for deliveries and invoices.
+[00:29] S2 : I have put the list of missing attributes here. I'll show that too. Then we will send them to the takeouts. This is the place. The LRG card number is not showing, e-way bill, invoice status. Now, you will have to add two more to this. PGI Shipment. Number. And what else was there?
+[00:55] S1 : It means costing.
+[00:57] S2 : We were not showing the shipment cost there in the flow.
+[01:01] S1 : Hmm, I am showing it in the whole flow, right? Yes, yes, 100%.
+[01:04] S2 : That is a number, sir.
+[01:05] S1 : Yes, I need the number, right? Yes, I need it.
+[01:07] S2 : Yes, I have entered the shipment number.
+[01:09] S1 : There is also a number for shipment costing. Shipment costing number.
+[01:11] S2 : Okay, one minute, let me check.
+[01:14] S1 : There are three documents, one is a shipment document, one is a shipment costing document. And they have been drunk. And she is drinking coffee, she hasn't eaten food.
+[01:38] S3 : No, I feel sleepy after eating, right?
+[01:45] S2 : So, this is the e-way bin number, invoice number is there, e-way shipment number, shipment cost. So, this is the costing number. What is the need for the shipment cost number? That is also a need. So, three more need to be added.
+[02:09] S1 : Yes.
+[02:09] S2 : Sit, sit, sit here.
+[02:12] S1 : Okay, I will send it now, I am sending it to you, okay? You do it according to your preference. Hmm hmm.
+[03:00] S3 : So, should we continue the same previous discussion?
+[03:07] S2 : But I will apply it.
+[03:07] S3 : But I will apply it.
+[03:08] S2 : It is good. This is the same.
+[03:20] S1 : Like, if you call out a little, Yogesh, Avdhesh, everyone will speak.
+[03:32] S2 : Is this not on?
+[03:35] S3 : This is the problem here. Whose laptop was installed here last time?
+[03:43] S2 : Deep.
+[03:44] S3 : I will show you by applying it. Once it turns on, it will come back again.
+[03:51] S2 : No, no, that cable is loose. The rest comes off.
+[03:54] S1 : The security of the cement will not be installed. Let's try applying it.
+[04:13] S3 : What is this, brother? Yes, that's your problem.
+[04:16] S2 : Okay, I'll send one, apply it.
+[04:18] S3 : Are you sending a movie?
+[04:19] S2 : No no, Figma is fine, it also sends. Let's do another review.
+[04:34] S3 : That Ravi of yours. We'll take Ravi later. This one is finished. It will take this much time. What we are doing now. And how much more process?
+[04:43] S1 : Order
+[04:46] S3 : Yes, you have just finished the Migo, Migo is complete.
+[04:49] S1 : This is an order fulfillment.

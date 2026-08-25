@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Pre-PGI Decision</title>
+<style>
+@page { size: A4; margin: 18mm 16mm 16mm 16mm; }
+* { box-sizing: border-box; }
+:root{--ink:#15191E;--soft:#4A555F;--mute:#77848D;--primary:#0F4C5C;--primary-l:#1B6E82;
+--accent:#B3402A;--gold:#8A6A00;--green:#2A6049;--rule:#DCE4E8;--surface:#F6F9FA;--surface2:#EEF4F6;}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact;
+  color-scheme:only light; background:#FFFFFF;}
+body{background:#FFFFFF;}
+@media (prefers-color-scheme:dark){
+  html,body{background:#FFFFFF !important;color:#15191E !important;}
+}
+body{font-family:"Segoe UI",-apple-system,Arial,sans-serif;font-size:11.2pt;line-height:1.62;color:#15191E;background:#FFFFFF;margin:0;}
+p{margin:0 0 10pt 0;orphans:3;widows:3;}
+b,strong{font-weight:600;}
+.cover{page-break-after:always;}
+.band{height:7mm;background:var(--primary);margin:0 -16mm 14mm -16mm;}
+.kick{font-size:8.5pt;letter-spacing:.18em;text-transform:uppercase;color:var(--primary-l);font-weight:700;margin-bottom:8mm;}
+.cover h1{font-size:34pt;line-height:1.08;font-weight:300;color:var(--primary);margin:0 0 7mm 0;border:0;padding:0;page-break-before:auto;letter-spacing:-.01em;}
+.cover h1 b{font-weight:700;}
+.sub{font-size:13.5pt;line-height:1.45;color:var(--soft);font-weight:300;margin-bottom:14mm;max-width:150mm;}
+.meta{display:table;width:100%;border-top:1.5pt solid var(--primary);border-bottom:.5pt solid var(--rule);padding:5mm 0;margin-bottom:12mm;}
+.meta div{display:table-cell;width:25%;padding-right:6mm;vertical-align:top;}
+.meta .l{font-size:7.5pt;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:700;display:block;margin-bottom:1.5mm;}
+.meta .v{font-size:10.5pt;font-weight:600;}
+.decide{background:var(--primary);color:#fff;padding:9mm;margin-bottom:8mm;}
+.decide .l{font-size:8pt;letter-spacing:.16em;text-transform:uppercase;opacity:.72;font-weight:700;display:block;margin-bottom:3mm;}
+.decide p{font-size:14pt;line-height:1.45;font-weight:300;margin:0;color:#fff;}
+.decide p b{font-weight:600;color:#fff;}
+h1{font-size:20pt;font-weight:300;color:var(--primary);margin:0 0 7mm 0;padding:0 0 3mm 0;
+border-bottom:2pt solid var(--primary);page-break-after:avoid;page-break-before:always;}
+h1 .n{display:inline-block;min-width:11mm;font-weight:700;color:var(--primary-l);}
+h1.first{page-break-before:auto;}
+h2{font-size:13pt;font-weight:600;color:var(--primary);margin:9mm 0 3.5mm 0;page-break-after:avoid;}
+h3{font-size:11pt;font-weight:700;margin:6mm 0 2.5mm 0;page-break-after:avoid;}
+code{font-family:Consolas,monospace;font-size:9.6pt;background:var(--surface2);color:#0B3A46;padding:.4mm 1.2mm;}
+table{border-collapse:collapse;width:100%;margin:4mm 0 6mm 0;font-size:10pt;page-break-inside:avoid;}
+th{background:var(--primary);color:#fff;text-align:left;padding:2.6mm 3.2mm;font-weight:600;font-size:9.2pt;}
+td{border-bottom:.5pt solid var(--rule);padding:2.6mm 3.2mm;vertical-align:top;line-height:1.45;}
+tbody tr:nth-child(even) td{background:var(--surface);}
+td.num{text-align:right;}
+.box{padding:5mm 6mm;margin:5mm 0;page-break-inside:avoid;}
+.box p:last-child{margin-bottom:0;}
+.box .t{display:block;font-size:7.8pt;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:2mm;}
+.k{background:#FDF8E7;border-left:3pt solid var(--gold);} .k .t{color:var(--gold);}
+.w{background:#FDF3F0;border-left:3pt solid var(--accent);} .w .t{color:var(--accent);}
+.g{background:#EFF6F2;border-left:3pt solid var(--green);} .g .t{color:var(--green);}
+.q{background:var(--surface);border-left:3pt solid var(--primary-l);font-size:11.4pt;font-weight:300;color:var(--soft);}
+.pill{display:inline-block;font-size:8pt;font-weight:700;padding:.6mm 2.2mm;border-radius:6pt;}
+.yes{background:#DCEFE4;color:var(--green);} .no{background:#FBE3DE;color:var(--accent);}
+.big{font-size:15pt;font-weight:600;color:var(--primary);margin-bottom:3mm;}
+ul,ol{margin:0 0 10pt 0;padding-left:5mm;} li{margin-bottom:2.5mm;}
+.small{font-size:9.2pt;color:var(--mute);line-height:1.5;}
+.steps{margin:5mm 0;page-break-inside:avoid;}
+.step{display:table;width:100%;border-bottom:.5pt solid var(--rule);}
+.step>div{display:table-cell;padding:2.8mm 0;vertical-align:top;}
+.step .no2{width:9mm;font-weight:700;color:var(--primary-l);}
+.step .wh{width:52mm;font-weight:600;}
+.step .st{}
+hr{border:0;border-top:.5pt solid var(--rule);margin:7mm 0;}
+</style></head><body>
+
+<div class="cover">
+  <div class="band"></div>
+  <div class="kick">Decision paper · CNF C&amp;F Agent</div>
+  <h1>Pre-PGI:<br>What Your System<br><b>Requires Us To Build</b></h1>
+  <div class="sub">Findings from running the actual functions in your DS4 and QS4 systems — and the design decision that follows from them.</div>
+  <div class="meta">
+    <div><span class="l">Systems</span><span class="v">DS4 / 200<br>QS4 / 700</span></div>
+    <div><span class="l">Method</span><span class="v">Live execution,<br>not documentation</span></div>
+    <div><span class="l">Date</span><span class="v">19 Aug 2026</span></div>
+    <div><span class="l">Decision</span><span class="v">One API for<br>the pre-PGI span</span></div>
+  </div>
+  <div class="decide">
+    <span class="l">The decision</span>
+    <p><b>One API</b> covering shipment, freight cost and cost release. Not three.<br><br>
+    Not a preference — <b>four of the six steps have no interface at all</b>, so custom SAP code is required whichever way we go.</p>
+  </div>
+  <p class="small">Every figure and document number in this paper was read from your system. We ran the functions rather than reading about them.</p>
+</div>
+
+<h1 class="first"><span class="n">1</span>What your system actually does</h1>
+
+<p>The portal shows one button. SAP performs <b>six things, one after another</b>. Each one saves separately — once a step is saved, it is saved. You do not undo it; you reverse it with another document.</p>
+
+<div class="steps">
+  <div class="step"><div class="no2">1</div><div class="wh">Create the shipment</div><div class="st">The truck run</div></div>
+  <div class="step"><div class="no2">2</div><div class="wh">Create the freight cost document</div><div class="st">The freight bill</div></div>
+  <div class="step"><div class="no2">3</div><div class="wh">Calculate it</div><div class="st">Work out the money</div></div>
+  <div class="step"><div class="no2">4</div><div class="wh">Account assign it</div><div class="st">Decide which account it hits</div></div>
+  <div class="step"><div class="no2">5</div><div class="wh">Settle it</div><div class="st">Push the cost into purchasing — this creates a real PO and service entry sheet</div></div>
+  <div class="step"><div class="no2">6</div><div class="wh">Goods issue</div><div class="st">Stock leaves the plant</div></div>
+</div>
+
+<p><b>What everyone calls "cost release" is step 5.</b> It is not a tickbox. It is SAP pushing the freight cost into Materials Management. That is why a purchase order appears when it works.</p>
+
+<h2>A real example from your system</h2>
+<p>Delivery <code>9004953084</code>, 17 August, in your quality system:</p>
+<table>
+<thead><tr><th style="width:20%">Time</th><th>What happened</th></tr></thead>
+<tbody>
+<tr><td>10:26:23</td><td>Delivery created</td></tr>
+<tr><td>11:11:28</td><td>Shipment <code>1100605471</code> created</td></tr>
+<tr><td>11:11:28</td><td>Freight cost document <code>1100608871</code> created and calculated — 7,460.00 INR</td></tr>
+<tr><td>11:11:30</td><td>Settled → purchase order <code>6000105831</code>, service entry <code>1003382363</code></td></tr>
+<tr><td>11:11:31</td><td>Goods issue</td></tr>
+<tr><td>11:11:32</td><td>Invoice</td></tr>
+</tbody></table>
+<p>Shipment to settled took <b>two seconds</b>. This is a fast chain, not a long-running process.</p>
+
+<h1><span class="n">2</span>Why custom code is unavoidable</h1>
+
+<p>To call something in SAP from outside, SAP has to provide a door — a published interface. We checked every step.</p>
+
+<table>
+<thead><tr><th style="width:56%">Step</th><th>Can we call it from outside?</th></tr></thead>
+<tbody>
+<tr><td>1 · Create the shipment</td><td><span class="pill yes">YES</span></td></tr>
+<tr><td>2 · Create the freight cost document</td><td><span class="pill no">NO</span></td></tr>
+<tr><td>3 · Calculate</td><td><span class="pill no">NO</span></td></tr>
+<tr><td>4 · Account assign</td><td><span class="pill no">NO</span></td></tr>
+<tr><td>5 · Settle</td><td><span class="pill no">NO</span></td></tr>
+<tr><td>6 · Goods issue</td><td><span class="pill yes">YES</span></td></tr>
+</tbody></table>
+
+<div class="g">
+<span class="t">The conclusion</span>
+<p class="big">Four of the six steps have no interface.</p>
+<p>Custom SAP development is therefore <b>required</b>, regardless of how many endpoints anyone prefers. This is a property of your system, not a design opinion. <b>"Use standard APIs instead" is not available for this stretch.</b></p>
+</div>
+
+<p class="small">How we know: we searched SAP's function registry by name pattern, and asked SAP directly which programs call which functions — each search with a control test to prove the search itself was working. We state this as a finding from those searches, not as a claim about the whole universe of SAP.</p>
+
+<h1><span class="n">3</span>What we proved by running it</h1>
+
+<p>Three things were open questions. We settled all three by executing against your DS4 system.</p>
+
+<h2>3.1 The internal functions <i>can</i> be driven from custom code</h2>
+<p>This was the real risk. If those four internal steps only worked inside their own screen, nothing would be buildable.</p>
+<p>We created a real shipment in DS4 and then called the internal freight-cost function directly against it, outside its normal transaction. <b>It ran clean in three seconds, accepted its input and rejected nothing.</b></p>
+<div class="g"><span class="t">Risk closed</span><p>The wrapper approach works. This was the single assumption the whole design rested on.</p></div>
+
+<h2>3.2 Your own team already built this pattern</h2>
+<p>When their developers needed to automate freight costing, they hit exactly the same wall and solved it the same way. There is a function in your system today that takes a shipment number, a cost type and a save flag, and calls the same internal SAP function we intend to call.</p>
+<p><b>We are not inventing an approach. We are building the CNF version of something already running in your landscape.</b></p>
+<div class="k"><span class="t">The one difference</span><p>Theirs returns <b>nothing</b> — no document number, no error message. It cannot tell its caller what it created or why it failed. That is fine behind a screen where a person is watching. It is not fine for an interface. <b>Ours must report back.</b></p></div>
+
+<h2>3.3 The shipment interface does not save by itself</h2>
+<p>We ran the standard shipment-create function twice with identical input.</p>
+<table>
+<thead><tr><th style="width:46%">What we did</th><th>What SAP returned</th><th>What actually existed</th></tr></thead>
+<tbody>
+<tr><td>Created the shipment, nothing else</td><td>Shipment <b>1000</b>, "Save shipment", no errors</td><td><b>Nothing.</b> The table was empty.</td></tr>
+<tr><td>Created it, then issued the save step</td><td>Shipment <b>1001</b></td><td><b>Shipment 1001 exists.</b></td></tr>
+</tbody></table>
+
+<div class="w">
+<span class="t">Three consequences</span>
+<p><b>1.</b> Whoever calls it must issue the save. If they don't, everything disappears.</p>
+<p><b>2.</b> SAP gives you the number <i>before</i> it saves. So you can hand the portal "shipment 1000" for a shipment that never existed — and number 1000 is now permanently used up.</p>
+<p><b>3.</b> Every message came back green. Success does not mean saved.</p>
+<p>This is exactly how orphaned records appear and go unnoticed. Our service handles the save so no caller has to remember.</p>
+</div>
+
+<h1><span class="n">4</span>Four things worth correcting</h1>
+
+<p>Found while we were in the system. Each one would cause a real problem if built on.</p>
+
+<h3>1 · The field everyone reads as "cost release" is not cost release</h3>
+<p>It is the <b>account assignment</b> status. And blank on it means "not applicable" — not "not done". So it never indicated a missed step. There is no release field on the freight document at all; release is the settlement step.</p>
+
+<h3>2 · The freight document number is not the shipment number</h3>
+<p>They look alike and sit in similar ranges, but they are different documents. Anything built by matching them will quietly give wrong answers.</p>
+
+<h3>3 · Cost type is required, and it is missing from the specification</h3>
+<p>SAP will not create a freight document without one. We found four different cost types in your system behaving differently — one completes the full cycle, another calculates and then stops. <b>Somebody needs to decide whether the portal sends it or we derive it.</b></p>
+
+<h3>4 · Billing cannot be created through the billing API</h3>
+<p>That service is read-only for creation. If any part of the design assumes otherwise, it needs changing now rather than in testing.</p>
+
+<h1><span class="n">5</span>What we will build</h1>
+
+<p><b>One function, called once by CNF.</b> It runs SAP's own steps in order, saves them, and reports exactly what was created.</p>
+
+<h2>What goes in</h2>
+<p>What the C&amp;F agent's screen already collects — delivery, transporter, vehicle number, driver name and mobile, LR number and date, the three weights, route, shipment type and planning point — plus the cost type discussed above.</p>
+<p class="small">The vehicle, driver, LR and weight fields already have a home: they are custom fields your team added to SAP's standard shipment structure. We simply pass them through.</p>
+
+<h2>What it does inside</h2>
+<table>
+<thead><tr><th style="width:8%">#</th><th style="width:44%">Step</th><th>Whose code</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Check what already exists</td><td>Ours — a few reads</td></tr>
+<tr><td>2</td><td>Create the shipment</td><td><b>SAP's own</b></td></tr>
+<tr><td>3</td><td>Create and calculate the freight cost</td><td><b>SAP's own</b></td></tr>
+<tr><td>4</td><td>Settle it</td><td><b>SAP's own</b></td></tr>
+<tr><td>5</td><td>Save</td><td><b>SAP's own</b></td></tr>
+<tr><td>6</td><td>Read back and report what exists</td><td>Ours — a few reads</td></tr>
+</tbody></table>
+<p><b>We add no freight logic.</b> No rates, no routes, no accounting. All of that stays SAP's, using your existing configuration. We add a door, the save, and a truthful answer.</p>
+
+<h2>What comes back</h2>
+<p>Shipment number, freight document number, cost type, <b>which step it reached</b>, the purchase order and service entry if settlement worked, and SAP's own error messages if it did not.</p>
+<p>The important part is <b>which step it reached</b> — not a yes/no. If something fails at settlement, CNF is told: shipment exists, freight document exists, settlement failed, here is SAP's message. Nobody guesses. Nobody goes digging.</p>
+
+<h2>Why it is safe to call twice</h2>
+<p>If a call times out and CNF does not know what happened, it simply sends the same request again. The service looks first: shipment already there? freight document already there? settled? It skips what is done and finishes the rest.</p>
+<p><b>No duplicate shipment. No duplicate freight cost.</b> This only works because the truth lives in SAP's tables — which is also the main reason for one call rather than three.</p>
+
+<h1><span class="n">6</span>Why one call, not three</h1>
+
+<h3>Each step needs the number the previous step just created</h3>
+<p>SAP invents the shipment number. Step 3 cannot start without it. SAP then invents the freight document number, and step 5 cannot start without <i>that</i>.</p>
+<p>Split into three calls and your portal has to catch SAP's shipment number, hold it, hand it back for the next call, catch the next number, hand that back again. <b>With one call those numbers never leave SAP.</b></p>
+
+<h3>Only SAP knows how far a run got</h3>
+<p>The progress lives in SAP's tables. Three separate calls mean something outside SAP tracking state it cannot see. One call reads those tables directly.</p>
+
+<h3>SAP itself refuses to split two of the steps</h3>
+<p>Creating and saving the freight document is a single operation inside SAP — one calls the other. Exposing them separately would invent a boundary SAP does not have.</p>
+
+<h3>And the number worth knowing</h3>
+<div class="q">
+<b>10,496 freight cost documents in your quality system are stuck</b> — calculated, meant to be settled, never were. No purchase order, no service entry. The deliveries still shipped and still got invoiced. Only the freight cost never reached the books.
+</div>
+<p>That is <b>0.18%</b> of 5.7 million documents. Small — and we want to be straight about that. But:</p>
+<div class="k"><span class="t">Why it still matters</span><p>That 0.18% is the <b>best case</b>. It is SAP code, running inside SAP, with no network between the steps, tuned over years. It still leaves 10,496 behind. Splitting these steps across a network, with something outside SAP tracking them, will not do better.</p></div>
+<p>At around 4,000 logistics calls a day, that is roughly <b>7 a day, 2,600 a year</b>.</p>
+
+<h1><span class="n">7</span>What we are asking for</h1>
+
+<h2>Say this plainly now, not later</h2>
+<div class="w"><span class="t">Not all-or-nothing</span>
+<p>Once the shipment is saved, it is saved. If settlement fails you do not rewind — you reverse. This is equally true of one API or three, and it cannot be designed away. <b>The word "rollback" used in the last session should be withdrawn.</b></p></div>
+
+<h2>Two things we need from you</h2>
+<table>
+<thead><tr><th style="width:40%">What</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td><b>A test setup in DEV</b> — one transporter, one material with stock, one delivery</td><td>DS4 currently has <b>no transporters at all</b>, which blocks everything from the shipment onwards. We cannot run the full chain end to end until this exists.</td></tr>
+<tr><td><b>One process answer</b> — which transaction or job your team actually runs to create and settle freight costs</td><td>No amount of technical inspection produces this. Only your functional people know it.</td></tr>
+</tbody></table>
+<p class="small">Both are build prerequisites, not gaps in the analysis.</p>
+
+<h2>One more decision for you</h2>
+<p>Your CNF-specific document types are not present in the development system. Two options:</p>
+<table>
+<thead><tr><th style="width:24%"></th><th>Prove the mechanics now</th><th>Prove your exact setup</th></tr></thead>
+<tbody>
+<tr><td>Uses</td><td>Standard SAP document types</td><td>Your own types brought into DEV</td></tr>
+<tr><td>Proves</td><td>The build works — payloads, saving, retry</td><td>Actual CNF behaviour</td></tr>
+<tr><td>Speed</td><td>Fast, once test data exists</td><td>Needs a configuration transport</td></tr>
+</tbody></table>
+<p><b>We recommend the first now, the second before sign-off.</b> We will never present results from standard types as proof of your configuration.</p>
+
+<hr>
+
+<div class="g">
+<span class="t">In one line</span>
+<p class="big">Your system forces custom code here — four of six steps have no interface.</p>
+<p>Your own team already built this exact pattern once. We are asking to build it properly for CNF: <b>one call, it tells you what it created, and it is safe to call twice.</b></p>
+</div>
+
+<p class="small">Prepared from live execution in DS4/200 and read-only analysis of QS4/700. Document traces, captured interfaces and full counts available on request.</p>
+
+</body></html>

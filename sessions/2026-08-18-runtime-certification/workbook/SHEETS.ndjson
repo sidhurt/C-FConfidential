@@ -1,0 +1,13 @@
+{"kind":"sheet","id":"ws/8ngx7z","name":"Overview","index":0,"range":"A1:G79","address":"A1:G79"}
+{"kind":"sheet","id":"ws/h9epjz","name":"API-01 Submit MIGO","index":1,"range":"A1:E89","address":"A1:E89"}
+{"kind":"sheet","id":"ws/g74jc5","name":"API-02 Create DI","index":2,"range":"A1:E103","address":"A1:E103"}
+{"kind":"sheet","id":"ws/nzmc4v","name":"API-03 Invoice Create","index":3,"range":"A1:E114","address":"A1:E114"}
+{"kind":"sheet","id":"ws/ysfr05","name":"API-04 Shipment Cost","index":4,"range":"A1:E75","address":"A1:E75"}
+{"kind":"sheet","id":"ws/h64yma","name":"API-05 Stock Avail","index":5,"range":"A1:E86","address":"A1:E86"}
+{"kind":"sheet","id":"ws/a5eybu","name":"API-06 EWB Extension","index":6,"range":"A1:E83","address":"A1:E83"}
+{"kind":"sheet","id":"ws/a0lzbh","name":"API-07 Invoice Corr","index":7,"range":"A1:E87","address":"A1:E87"}
+{"kind":"sheet","id":"ws/69mr3m","name":"API-08 STO Orders","index":8,"range":"A1:E81","address":"A1:E81"}
+{"kind":"sheet","id":"ws/rfpcia","name":"API-09 STO Deliveries","index":9,"range":"A1:E87","address":"A1:E87"}
+{"kind":"sheet","id":"ws/ffue9b","name":"API-10 STO Invoice","index":10,"range":"A1:E88","address":"A1:E88"}
+{"kind":"sheet","id":"ws/t2rzgm","name":"API-11 Create STO PO","index":11,"range":"A1:E86","address":"A1:E86"}
+{"kind":"sheet","id":"ws/fij0ua","name":"API-12 Update DI Qty","index":12,"range":"A1:E74","address":"A1:E74"}

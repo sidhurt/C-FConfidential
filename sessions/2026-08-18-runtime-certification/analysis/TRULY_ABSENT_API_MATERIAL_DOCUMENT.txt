@@ -1,0 +1,8 @@
+CrossPlantConfigurableProduct
+ProductCharacteristic1
+ProductCharacteristic2
+ProductCharacteristic3
+ProductCollection
+ProductSeason
+ProductSeasonYear
+ProductTheme

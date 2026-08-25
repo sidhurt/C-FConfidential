@@ -1,0 +1,793 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="Aggregation"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="Capabilities"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.CodeList.v1" Alias="SAP__CodeList"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+  <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="SAP__common"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CORE',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="Org.OData.Core.V1" Alias="SAP__core"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="Org.OData.Measures.V1" Alias="Measures"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PDF',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.PDF.v1" Alias="SAP__PDF"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="Org.OData.Validation.V1" Alias="Validation"/>
+ </edmx:Reference>
+ <edmx:Reference Uri="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/iwfnd/catalogservice;v=2/Vocabularies(TechnicalName='SAP__SELF',Version='0001',SAP__Origin='')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Include Namespace="com.sap.vocabularies.PDF.v1" Alias="SAP__PDF"/>
+ </edmx:Reference>
+ <edmx:DataServices m:DataServiceVersion="2.0">
+  <Schema Namespace="MMIM_MATDOC_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+   <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+   <EntityType Name="MatDocItem" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="MaterialDocument"/>
+     <PropertyRef Name="MaterialDocumentYear"/>
+     <PropertyRef Name="MaterialDocumentItem"/>
+    </Key>
+    <Property Name="MaterialDocument" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Material Doc." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MaterialDocumentYear" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Mat. Doc. Year" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MaterialDocumentItem" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Mat. Doc.Item" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="AssignmentReference" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Mat. Doc.Item" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MovementType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Managed Stock Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StorageLocation" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Stor. Location" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Batch" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Batch" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="InventorySpecialStockType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Inventory Special Stock Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Supplier" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Supplier" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesOrder" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="SalesOrder" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesOrderItem" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="SalesOrderItem" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="WBSElement" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="WBS Element Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StockType" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Stock Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StockTypeAssignmentReference" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Stock Type Reference" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="QuantityInEntryUnit" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:unit="EntryUnit" sap:label="Quantity in UnE" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="EntryUnit" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Unit of Entry" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
+    <Property Name="GLAccount" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="G/L Account" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="CostCenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Cost center" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="CurrentStock" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Unrestricted" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="BlockedStockQuantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Blocked" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="DocumentItemText" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Document Item Text" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="GoodsMovementReasonCode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Goods Movement Reason Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ManufactureDate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Date of Manufacture" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ShelfLifeExpirationDate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Shelf Life Expiration Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="CreateSerialNoAutomatic" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="SerialNo. auto." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <NavigationProperty Name="MatDocItem2Serial" Relationship="MMIM_MATDOC_SRV.MatDocItem_to_SerialNumbers" FromRole="FromRole_MatDocItem_to_SerialNumbers" ToRole="ToRole_MatDocItem_to_SerialNumbers"/>
+   </EntityType>
+   <EntityType Name="CostCenterHelp" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Plant"/>
+     <PropertyRef Name="CostCenter"/>
+    </Key>
+    <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="CostCenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Cost Center" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="CostCenterName" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="MatDocHeader" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="MaterialDocument"/>
+     <PropertyRef Name="MaterialDocumentYear"/>
+    </Key>
+    <Property Name="MaterialDocument" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Material Doc." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MaterialDocumentYear" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Mat. Doc. Year" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="PostingDate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Posting Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="DocumentDate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Document Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Temp_key" Type="Edm.String" Nullable="false" MaxLength="90" sap:unicode="false" sap:label="Document Management object key" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ControlSignificance" Type="Edm.String" Nullable="false" MaxLength="1000" sap:unicode="false" sap:label="Control string" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="VersionForPrintingSlip" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Version for Printing Slip" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MaterialDocumentHeaderText" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Document Header Text" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <NavigationProperty Name="MatDocHeader2Items" Relationship="MMIM_MATDOC_SRV.MatDocHeaderItems" FromRole="FromRole_MatDocHeaderItems" ToRole="ToRole_MatDocHeaderItems"/>
+   </EntityType>
+   <EntityType Name="ManagedStockType" sap:label="ManagedStockType" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Code"/>
+    </Key>
+    <Property Name="Code" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="ManagedStockType" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Text" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Short Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MovementType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Movement Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StockTypeAssignmentReference" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Stock Type Assignment Reference" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="SalesOrderTransVHelp" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="SalesOrder"/>
+     <PropertyRef Name="SalesOrderItem"/>
+    </Key>
+    <Property Name="SalesOrder" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Sales Order" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesOrderItem" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Sales Order Item" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="CreatedByUser" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Created By" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ProductionPlant" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Production Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesOrderItemText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Sales Order Item Text" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SoldToParty" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Customer" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesOrganization" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Organization" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="DistributionChannel" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Distrbution Channel" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Division" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Division" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesOrderType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Document Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesGroup" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Sales Group" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SalesOffice" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Office" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="GoodsMovementReason" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="MovementType"/>
+     <PropertyRef Name="GoodsMovementReasonCode"/>
+    </Key>
+    <Property Name="MovementType" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Movement Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="GoodsMovementReasonCode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Goods Movement Reason Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="GoodsMovementReasonName" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Goods Movement Reason Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="WBSElementTransVHelp" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="WBSElement"/>
+    </Key>
+    <Property Name="WBSElement" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="WBS Element" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="WBSDescription" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Project" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Project def." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ProjectDescription" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="MatDocItemSerialNum" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="MaterialDocument"/>
+     <PropertyRef Name="MaterialDocumentYear"/>
+     <PropertyRef Name="MaterialDocumentItem"/>
+     <PropertyRef Name="SerialNumber"/>
+    </Key>
+    <Property Name="MaterialDocument" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Material Doc." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MaterialDocumentYear" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Mat. Doc. Year" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MaterialDocumentItem" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Mat. Doc.Item" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SerialNumber" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Serial Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="C_MM_SalesOrderItemValueHelpType" sap:label="Sales Order Item Value Help" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="SalesOrder"/>
+     <PropertyRef Name="SalesOrderItem"/>
+    </Key>
+    <Property Name="SalesOrder" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Sales Order"/>
+    <Property Name="SalesOrderItem" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="NonNegative" sap:text="SalesOrderItemText" sap:label="Item" sap:quickinfo="Sales Order Item"/>
+    <Property Name="CreatedByUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Name of Person Responsible for Creating the Object"/>
+    <Property Name="Material" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Material" sap:quickinfo="Material Number" sap:value-list="standard"/>
+    <Property Name="ProductionPlant" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant" sap:quickinfo="Plant (Own or External)"/>
+    <Property Name="SalesOrderItemText" Type="Edm.String" MaxLength="40" sap:label="Item Description" sap:quickinfo="Short text for sales order item"/>
+    <Property Name="SoldToParty" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Sold-to Party" sap:value-list="standard"/>
+    <Property Name="SalesOrganization" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Sales Organization"/>
+    <Property Name="DistributionChannel" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Distribution Channel"/>
+    <Property Name="Division" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Division"/>
+    <Property Name="SalesOrderType" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Sales Order Type"/>
+    <Property Name="SalesGroup" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Sales Group"/>
+    <Property Name="SalesOffice" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Sales Office"/>
+    <Property Name="OrganizationDivision" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Organization Division" sap:quickinfo="Division"/>
+    <Property Name="AuthorizationGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Authorization" sap:quickinfo="Authorization Group"/>
+   </EntityType>
+   <EntityType Name="I_ChartOfAccountsStdVHType" sap:label="Chart Of Accounts" sap:value-list="true" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="ChartOfAccounts"/>
+    </Key>
+    <Property Name="ChartOfAccounts" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Chart of Accounts"/>
+    <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Chart Of Accounts Description" sap:quickinfo="Chart of Accounts Description" sap:creatable="false" sap:updatable="false"/>
+   </EntityType>
+   <EntityType Name="I_ControllingAreaType" sap:label="Controlling Area" sap:value-list="true" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="ControllingArea"/>
+    </Key>
+    <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ControllingAreaName" sap:label="Controlling Area"/>
+    <Property Name="FiscalYearVariant" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Fiscal Year Variant"/>
+    <Property Name="ControllingAreaName" Type="Edm.String" MaxLength="25" sap:label="Controlling Area Name"/>
+    <Property Name="ControllingAreaCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Controlling Area Currency" sap:semantics="currency-code"/>
+    <Property Name="ChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Chart of Accounts" sap:value-list="standard"/>
+    <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Chart Of Accounts Description" sap:quickinfo="Chart of Accounts Description" sap:creatable="false" sap:updatable="false"/>
+    <Property Name="CostCenterStandardHierarchy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Cost Center Standard Hierarchy"/>
+    <Property Name="OperatingConcern" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Operating concern"/>
+    <Property Name="ProfitCenterStandardHierarchy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Profit Center Standard Hierarchy"/>
+    <Property Name="BusinessProcessStandardHier" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Business Process Standard Hierarchy Area"/>
+    <Property Name="CreditDownPaymentDefaultGLAcct" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="G/L Account for Supplier Down Payments" sap:quickinfo="Default General Ledger Account for Supplier Down Payments"/>
+    <Property Name="DebitDownPaymentDefaultGLAcct" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="G/L Account for Customer Down Payments" sap:quickinfo="Default General Ledger Account for Customer Down Payments"/>
+    <Property Name="ControllingAreaCurrencyRole" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Currency Type for Controlling Area"/>
+    <Property Name="FinancialManagementArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="FM Area" sap:quickinfo="Financial Management Area"/>
+    <Property Name="ControllingAreaResponsibleUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Responsible User of Controlling Area"/>
+    <Property Name="DefaultProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Default Profit Center" sap:quickinfo="Default Profit Center for Nonassigned Processes"/>
+    <Property Name="CtrlgStdFinStatementVersion" Type="Edm.String" MaxLength="42" sap:display-format="UpperCase" sap:text="CtrlgStdFinStatementVersion_Text" sap:label="Leading Ctrlg Financial Stmnt Version" sap:quickinfo="Leading Controlling Financial Statement Version"/>
+    <Property Name="CtrlgStdFinStatementVersion_Text" Type="Edm.String" MaxLength="50" sap:label="Financial Statement Description" sap:quickinfo="Hierarchy description" sap:creatable="false" sap:updatable="false"/>
+    <Property Name="ProfitCenterAccountingCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Profit Center Local Currency" sap:quickinfo="Local Currency for Profit Center Accounting" sap:semantics="currency-code"/>
+   </EntityType>
+   <EntityType Name="I_Customer_VHType" sap:label="Customer" sap:value-list="true" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Customer"/>
+    </Key>
+    <Property Name="Customer" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="CustomerName" sap:label="Customer" sap:quickinfo="Customer Number"/>
+    <Property Name="OrganizationBPName1" Type="Edm.String" MaxLength="35" sap:label="Name 1"/>
+    <Property Name="OrganizationBPName2" Type="Edm.String" MaxLength="35" sap:label="Name 2"/>
+    <Property Name="Country" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Country/Region" sap:quickinfo="Country/Region Key"/>
+    <Property Name="CityName" Type="Edm.String" MaxLength="35" sap:label="City"/>
+    <Property Name="StreetName" Type="Edm.String" MaxLength="35" sap:label="Street" sap:quickinfo="Street and House Number"/>
+    <Property Name="PostalCode" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Postal Code"/>
+    <Property Name="CustomerName" Type="Edm.String" MaxLength="80" sap:label="Customer Name" sap:quickinfo="Name of Customer"/>
+    <Property Name="CustomerAccountGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Account group" sap:quickinfo="Customer Account Group"/>
+    <Property Name="AuthorizationGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Authorization" sap:quickinfo="Authorization Group"/>
+    <Property Name="IsBusinessPurposeCompleted" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Purpose Complete Flag" sap:quickinfo="Business Purpose Completed Flag"/>
+    <Property Name="IsCompetitor" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Competitors" sap:quickinfo="Indicator: Competitor"/>
+    <Property Name="BusinessPartner" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Business Partner" sap:quickinfo="Business Partner Number"/>
+    <Property Name="BusinessPartnerType" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Business Partner Type"/>
+   </EntityType>
+   <EntityType Name="I_MaterialStdVHType" sap:label="Material" sap:value-list="true" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Material"/>
+    </Key>
+    <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:text="Material_Text" sap:label="Material" sap:quickinfo="Material Number"/>
+    <Property Name="Material_Text" Type="Edm.String" MaxLength="40" sap:label="Material Description" sap:creatable="false" sap:updatable="false"/>
+   </EntityType>
+   <EntityType Name="I_ProfitCenterStdVHType" sap:label="Profit Center" sap:value-list="true" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="ControllingArea"/>
+     <PropertyRef Name="ProfitCenter"/>
+     <PropertyRef Name="ValidityEndDate"/>
+    </Key>
+    <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Controlling Area"/>
+    <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="ProfitCenter_Text" sap:label="Profit Center"/>
+    <Property Name="ProfitCenter_Text" Type="Edm.String" MaxLength="20" sap:label="Profit Center Name" sap:quickinfo="Description of Profit Center" sap:creatable="false" sap:updatable="false"/>
+    <Property Name="ValidityEndDate" Type="Edm.DateTime" Nullable="false" Precision="0" sap:display-format="Date" sap:label="Valid To" sap:quickinfo="Valid To Date"/>
+    <Property Name="ValidityStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Valid From" sap:quickinfo="Valid-From Date"/>
+   </EntityType>
+   <EntityType Name="MMIM_WBSELEMENTVALUEHELPType" sap:label="Value Help for WBS Element" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="WBSElement"/>
+    </Key>
+    <Property Name="WBSElement" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:text="WBSDescription" sap:label="WBS Element" sap:quickinfo="Work Breakdown Structure Element (WBS Element) Edited"/>
+    <Property Name="WBSDescription" Type="Edm.String" MaxLength="40" sap:label="WBS Element Name"/>
+    <Property Name="Project" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Project definition"/>
+    <Property Name="ProjectDescription" Type="Edm.String" MaxLength="40" sap:label="Project Name"/>
+    <Property Name="WBSElementIsBillingElement" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Billing Element" sap:quickinfo="Indicator: Billing element"/>
+    <Property Name="WBSIsAccountAssignmentElement" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Account Assignment Element" sap:quickinfo="Indicator: Account assignment element"/>
+   </EntityType>
+   <EntityType Name="SAP__Currency" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="CurrencyCode"/>
+    </Key>
+    <Property Name="CurrencyCode" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Currency" sap:semantics="currency-code"/>
+    <Property Name="ISOCode" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="ISO code"/>
+    <Property Name="Text" Type="Edm.String" Nullable="false" MaxLength="15" sap:label="Short text"/>
+    <Property Name="DecimalPlaces" Type="Edm.Byte" Nullable="false" sap:label="Decimals"/>
+   </EntityType>
+   <EntityType Name="SAP__UnitOfMeasure" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="UnitCode"/>
+    </Key>
+    <Property Name="UnitCode" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Internal UoM" sap:semantics="unit-of-measure"/>
+    <Property Name="ISOCode" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="ISO Code"/>
+    <Property Name="ExternalCode" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Commercial"/>
+    <Property Name="Text" Type="Edm.String" Nullable="false" MaxLength="30" sap:label="Measurement Unit Txt"/>
+    <Property Name="DecimalPlaces" Type="Edm.Int16" sap:label="Decimal Places"/>
+   </EntityType>
+   <EntityType Name="SAP__DocumentDescription" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Id"/>
+    </Key>
+    <Property Name="Id" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+    <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12"/>
+    <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+    <Property Name="FileName" Type="Edm.String" Nullable="false" MaxLength="256"/>
+    <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="256"/>
+    <NavigationProperty Name="Format" Relationship="MMIM_MATDOC_SRV.to_format" FromRole="FromRole_to_format" ToRole="ToRole_to_format"/>
+    <NavigationProperty Name="TableColumns" Relationship="MMIM_MATDOC_SRV.to_tablecolumns" FromRole="FromRole_to_tablecolumns" ToRole="ToRole_to_tablecolumns"/>
+    <NavigationProperty Name="CoverPage" Relationship="MMIM_MATDOC_SRV.to_coverpage" FromRole="FromRole_to_coverpage" ToRole="ToRole_to_coverpage"/>
+    <NavigationProperty Name="Signature" Relationship="MMIM_MATDOC_SRV.to_signature" FromRole="FromRole_to_signature" ToRole="ToRole_to_signature"/>
+    <NavigationProperty Name="PDFStandard" Relationship="MMIM_MATDOC_SRV.to_pdfstandard" FromRole="FromRole_to_pdfstandard" ToRole="ToRole_to_pdfstandard"/>
+   </EntityType>
+   <EntityType Name="SAP__Format" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Id"/>
+    </Key>
+    <Property Name="FitToPage" Type="MMIM_MATDOC_SRV.SAP__FitToPage" Nullable="false"/>
+    <Property Name="Id" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="FontSize" Type="Edm.Int32" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Orientation" Type="Edm.String" Nullable="false" MaxLength="10" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="PaperSize" Type="Edm.String" Nullable="false" MaxLength="10" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="BorderSize" Type="Edm.Int32" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MarginSize" Type="Edm.Int32" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="FontName" Type="Edm.String" Nullable="false" MaxLength="255" sap:label="Font Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="SAP__PDFStandard" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Id"/>
+    </Key>
+    <Property Name="Id" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="UsePDFAConformance" Type="Edm.Boolean" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="DoEnableAccessibility" Type="Edm.Boolean" Nullable="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="SAP__TableColumns" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Id"/>
+     <PropertyRef Name="Name"/>
+     <PropertyRef Name="Header"/>
+    </Key>
+    <Property Name="Id" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Header" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="HorizontalAlignment" Type="Edm.String" Nullable="false" MaxLength="10" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="SAP__CoverPage" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Title"/>
+     <PropertyRef Name="Id"/>
+     <PropertyRef Name="Name"/>
+    </Key>
+    <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Id" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="SAP__Signature" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="Id"/>
+    </Key>
+    <Property Name="Id" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="DoSign" Type="Edm.Boolean" Nullable="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Reason" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </EntityType>
+   <EntityType Name="SAP__ValueHelp" sap:content-version="1">
+    <Key>
+     <PropertyRef Name="VALUEHELP"/>
+    </Key>
+    <Property Name="VALUEHELP" Type="Edm.String" Nullable="false"/>
+    <Property Name="FIELD_VALUE" Type="Edm.String" Nullable="false" MaxLength="10"/>
+    <Property Name="DESCRIPTION" Type="Edm.String"/>
+   </EntityType>
+   <ComplexType Name="ShelfLifeExpirationDateType">
+    <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="40" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StorageLocation" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="StorageLocation" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MovementType" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Movement Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ManufactureDate" Type="Edm.DateTime" Precision="7" sap:label="ManufactureDate" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ShelfLifeExpirationDate" Type="Edm.DateTime" Precision="7" sap:label="ShelfLifeExpirationDate" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </ComplexType>
+   <ComplexType Name="CheckTableType">
+    <Property Name="StockTypeSource" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Stock Type Source" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StockTypeSourceAssignmentRef" Type="Edm.String" Nullable="false" MaxLength="30" sap:label="Stock Type Source Assignment Ref" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StockTypeTarget" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Stock Type Target" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StockTypeTargetAssignmentRef" Type="Edm.String" Nullable="false" MaxLength="30" sap:label="Stock Type Target Assignment Ref" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SpecialStockTypeSource" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Special Stock Type Source" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SpecialStockTypeTarget" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Special Stock Type Target" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MovementType" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Movement Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="SupplyingPlant" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Supplying Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="PlantGroup" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Plant Group" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StorageLocation" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Storage Location" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="Allowed" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Allowed" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ControlOfReasonCodeTableField" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Control of Reason Code Table Field" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="StorLocAutoCreationIsAllowed" Type="Edm.Boolean" Nullable="false" sap:label="Automatic creation of storage location allowed" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="PrintingIsAllowed" Type="Edm.Boolean" Nullable="false" sap:label="Printing is allowed" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ControlOfExpirationDate" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Control of Expiration Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="ControlOfManufactureDate" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Control of Manufacture Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </ComplexType>
+   <ComplexType Name="SAP__FitToPage">
+    <Property Name="ErrorRecoveryBehavior" Type="Edm.String" Nullable="false" MaxLength="8" sap:label="Error behavior" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="IsEnabled" Type="Edm.Boolean" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+    <Property Name="MinimumFontSize" Type="Edm.Int32" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+   </ComplexType>
+   <Association Name="to_format" sap:content-version="1">
+    <End Type="MMIM_MATDOC_SRV.SAP__DocumentDescription" Multiplicity="1" Role="FromRole_to_format"/>
+    <End Type="MMIM_MATDOC_SRV.SAP__Format" Multiplicity="1" Role="ToRole_to_format"/>
+    <ReferentialConstraint>
+     <Principal Role="FromRole_to_format">
+      <PropertyRef Name="Id"/>
+     </Principal>
+     <Dependent Role="ToRole_to_format">
+      <PropertyRef Name="Id"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association Name="to_tablecolumns" sap:content-version="1">
+    <End Type="MMIM_MATDOC_SRV.SAP__DocumentDescription" Multiplicity="1" Role="FromRole_to_tablecolumns"/>
+    <End Type="MMIM_MATDOC_SRV.SAP__TableColumns" Multiplicity="*" Role="ToRole_to_tablecolumns"/>
+    <ReferentialConstraint>
+     <Principal Role="FromRole_to_tablecolumns">
+      <PropertyRef Name="Id"/>
+     </Principal>
+     <Dependent Role="ToRole_to_tablecolumns">
+      <PropertyRef Name="Id"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association Name="to_coverpage" sap:content-version="1">
+    <End Type="MMIM_MATDOC_SRV.SAP__DocumentDescription" Multiplicity="1" Role="FromRole_to_coverpage"/>
+    <End Type="MMIM_MATDOC_SRV.SAP__CoverPage" Multiplicity="*" Role="ToRole_to_coverpage"/>
+    <ReferentialConstraint>
+     <Principal Role="FromRole_to_coverpage">
+      <PropertyRef Name="Id"/>
+     </Principal>
+     <Dependent Role="ToRole_to_coverpage">
+      <PropertyRef Name="Id"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association Name="to_signature" sap:content-version="1">
+    <End Type="MMIM_MATDOC_SRV.SAP__DocumentDescription" Multiplicity="1" Role="FromRole_to_signature"/>
+    <End Type="MMIM_MATDOC_SRV.SAP__Signature" Multiplicity="1" Role="ToRole_to_signature"/>
+    <ReferentialConstraint>
+     <Principal Role="FromRole_to_signature">
+      <PropertyRef Name="Id"/>
+     </Principal>
+     <Dependent Role="ToRole_to_signature">
+      <PropertyRef Name="Id"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association Name="to_pdfstandard" sap:content-version="1">
+    <End Type="MMIM_MATDOC_SRV.SAP__DocumentDescription" Multiplicity="1" Role="FromRole_to_pdfstandard"/>
+    <End Type="MMIM_MATDOC_SRV.SAP__PDFStandard" Multiplicity="1" Role="ToRole_to_pdfstandard"/>
+    <ReferentialConstraint>
+     <Principal Role="FromRole_to_pdfstandard">
+      <PropertyRef Name="Id"/>
+     </Principal>
+     <Dependent Role="ToRole_to_pdfstandard">
+      <PropertyRef Name="Id"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association Name="MatDocItem_to_SerialNumbers" sap:content-version="1">
+    <End Type="MMIM_MATDOC_SRV.MatDocItem" Multiplicity="1" Role="FromRole_MatDocItem_to_SerialNumbers"/>
+    <End Type="MMIM_MATDOC_SRV.MatDocItemSerialNum" Multiplicity="*" Role="ToRole_MatDocItem_to_SerialNumbers"/>
+    <ReferentialConstraint>
+     <Principal Role="FromRole_MatDocItem_to_SerialNumbers">
+      <PropertyRef Name="MaterialDocument"/>
+      <PropertyRef Name="MaterialDocumentYear"/>
+      <PropertyRef Name="MaterialDocumentItem"/>
+     </Principal>
+     <Dependent Role="ToRole_MatDocItem_to_SerialNumbers">
+      <PropertyRef Name="MaterialDocument"/>
+      <PropertyRef Name="MaterialDocumentYear"/>
+      <PropertyRef Name="MaterialDocumentItem"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association Name="MatDocHeaderItems" sap:content-version="1">
+    <End Type="MMIM_MATDOC_SRV.MatDocHeader" Multiplicity="1" Role="FromRole_MatDocHeaderItems"/>
+    <End Type="MMIM_MATDOC_SRV.MatDocItem" Multiplicity="*" Role="ToRole_MatDocHeaderItems"/>
+    <ReferentialConstraint>
+     <Principal Role="FromRole_MatDocHeaderItems">
+      <PropertyRef Name="MaterialDocument"/>
+      <PropertyRef Name="MaterialDocumentYear"/>
+     </Principal>
+     <Dependent Role="ToRole_MatDocHeaderItems">
+      <PropertyRef Name="MaterialDocument"/>
+      <PropertyRef Name="MaterialDocumentYear"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <EntityContainer Name="MMIM_MATDOC_SRV_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx pdf">
+    <EntitySet Name="C_MM_SalesOrderItemValueHelp" EntityType="MMIM_MATDOC_SRV.C_MM_SalesOrderItemValueHelpType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+    <EntitySet Name="I_ChartOfAccountsStdVH" EntityType="MMIM_MATDOC_SRV.I_ChartOfAccountsStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+    <EntitySet Name="I_ControllingArea" EntityType="MMIM_MATDOC_SRV.I_ControllingAreaType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+    <EntitySet Name="I_Customer_VH" EntityType="MMIM_MATDOC_SRV.I_Customer_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+    <EntitySet Name="I_MaterialStdVH" EntityType="MMIM_MATDOC_SRV.I_MaterialStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+    <EntitySet Name="I_ProfitCenterStdVH" EntityType="MMIM_MATDOC_SRV.I_ProfitCenterStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+    <EntitySet Name="MMIM_WBSELEMENTVALUEHELP" EntityType="MMIM_MATDOC_SRV.MMIM_WBSELEMENTVALUEHELPType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+    <EntitySet Name="SAP__Currencies" EntityType="MMIM_MATDOC_SRV.SAP__Currency" sap:content-version="1"/>
+    <EntitySet Name="SAP__UnitsOfMeasure" EntityType="MMIM_MATDOC_SRV.SAP__UnitOfMeasure" sap:content-version="1"/>
+    <EntitySet Name="SAP__MyDocumentDescriptions" EntityType="MMIM_MATDOC_SRV.SAP__DocumentDescription" sap:content-version="1"/>
+    <EntitySet Name="SAP__FormatSet" EntityType="MMIM_MATDOC_SRV.SAP__Format" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+    <EntitySet Name="SAP__PDFStandardSet" EntityType="MMIM_MATDOC_SRV.SAP__PDFStandard" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+    <EntitySet Name="SAP__TableColumnsSet" EntityType="MMIM_MATDOC_SRV.SAP__TableColumns" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+    <EntitySet Name="SAP__CoverPageSet" EntityType="MMIM_MATDOC_SRV.SAP__CoverPage" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+    <EntitySet Name="SAP__SignatureSet" EntityType="MMIM_MATDOC_SRV.SAP__Signature" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+    <EntitySet Name="SAP__ValueHelpSet" EntityType="MMIM_MATDOC_SRV.SAP__ValueHelp" sap:content-version="1"/>
+    <EntitySet Name="MatDocItems" EntityType="MMIM_MATDOC_SRV.MatDocItem" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <EntitySet Name="CostCenterHelps" EntityType="MMIM_MATDOC_SRV.CostCenterHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <EntitySet Name="MatDocHeaders" EntityType="MMIM_MATDOC_SRV.MatDocHeader" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <EntitySet Name="ManagedStockTypes" EntityType="MMIM_MATDOC_SRV.ManagedStockType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <EntitySet Name="SalesOrderTransVHelps" EntityType="MMIM_MATDOC_SRV.SalesOrderTransVHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <EntitySet Name="GoodsMovementReasons" EntityType="MMIM_MATDOC_SRV.GoodsMovementReason" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <EntitySet Name="WBSElementTransVHelps" EntityType="MMIM_MATDOC_SRV.WBSElementTransVHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <EntitySet Name="MatDocItemSerialNumSet" EntityType="MMIM_MATDOC_SRV.MatDocItemSerialNum" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+    <AssociationSet Name="MatDocHeaderItemsSet" Association="MMIM_MATDOC_SRV.MatDocHeaderItems" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+     <End EntitySet="MatDocHeaders" Role="FromRole_MatDocHeaderItems"/>
+     <End EntitySet="MatDocItems" Role="ToRole_MatDocHeaderItems"/>
+    </AssociationSet>
+    <AssociationSet Name="to_formatSet" Association="MMIM_MATDOC_SRV.to_format" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_format"/>
+     <End EntitySet="SAP__FormatSet" Role="ToRole_to_format"/>
+    </AssociationSet>
+    <AssociationSet Name="to_pdfstandardSet" Association="MMIM_MATDOC_SRV.to_pdfstandard" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_pdfstandard"/>
+     <End EntitySet="SAP__PDFStandardSet" Role="ToRole_to_pdfstandard"/>
+    </AssociationSet>
+    <AssociationSet Name="MatDocItem_to_SerialNumbersSet" Association="MMIM_MATDOC_SRV.MatDocItem_to_SerialNumbers" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+     <End EntitySet="MatDocItems" Role="FromRole_MatDocItem_to_SerialNumbers"/>
+     <End EntitySet="MatDocItemSerialNumSet" Role="ToRole_MatDocItem_to_SerialNumbers"/>
+    </AssociationSet>
+    <AssociationSet Name="to_tablecolumnsSet" Association="MMIM_MATDOC_SRV.to_tablecolumns" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_tablecolumns"/>
+     <End EntitySet="SAP__TableColumnsSet" Role="ToRole_to_tablecolumns"/>
+    </AssociationSet>
+    <AssociationSet Name="to_signatureSet" Association="MMIM_MATDOC_SRV.to_signature" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_signature"/>
+     <End EntitySet="SAP__SignatureSet" Role="ToRole_to_signature"/>
+    </AssociationSet>
+    <AssociationSet Name="to_coverpageSet" Association="MMIM_MATDOC_SRV.to_coverpage" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_coverpage"/>
+     <End EntitySet="SAP__CoverPageSet" Role="ToRole_to_coverpage"/>
+    </AssociationSet>
+    <FunctionImport Name="ShelfLifeExpirationDate" ReturnType="Collection(MMIM_MATDOC_SRV.ShelfLifeExpirationDateType)" m:HttpMethod="GET">
+     <Parameter Name="StorageLocation" Type="Edm.String" Mode="In" MaxLength="4" sap:label="Storage Location"/>
+     <Parameter Name="Plant" Type="Edm.String" Mode="In" MaxLength="4" sap:label="Plant"/>
+     <Parameter Name="MovementType" Type="Edm.String" Mode="In" MaxLength="3" sap:label="MovementType"/>
+     <Parameter Name="Material" Type="Edm.String" Mode="In" MaxLength="40" sap:label="Material"/>
+     <Parameter Name="ManufactureDate" Type="Edm.DateTime" Mode="In" Precision="7" sap:label="Manufacture Date"/>
+    </FunctionImport>
+    <FunctionImport Name="AuthorityCheckPost" ReturnType="Collection(MMIM_MATDOC_SRV.CheckTableType)" m:HttpMethod="GET">
+     <Parameter Name="Plant" Type="Edm.String" Mode="In" MaxLength="4" sap:label="Plant"/>
+     <Parameter Name="Application" Type="Edm.String" Mode="In" MaxLength="20" sap:label="Application"/>
+     <Parameter Name="Material" Type="Edm.String" Mode="In" MaxLength="40" sap:label="Material"/>
+    </FunctionImport>
+   </EntityContainer>
+   <Annotations Target="MMIM_MATDOC_SRV.C_MM_SalesOrderItemValueHelpType/Material" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="Common.ValueList">
+     <Record>
+      <PropertyValue Property="Label" String="Material"/>
+      <PropertyValue Property="CollectionPath" String="I_MaterialStdVH"/>
+      <PropertyValue Property="SearchSupported" Bool="true"/>
+      <PropertyValue Property="Parameters">
+       <Collection>
+        <Record Type="Common.ValueListParameterInOut">
+         <PropertyValue Property="LocalDataProperty" PropertyPath="Material"/>
+         <PropertyValue Property="ValueListProperty" String="Material"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="Material_Text"/>
+        </Record>
+       </Collection>
+      </PropertyValue>
+     </Record>
+    </Annotation>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.C_MM_SalesOrderItemValueHelpType/SoldToParty" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="Common.ValueList">
+     <Record>
+      <PropertyValue Property="Label" String="Customer"/>
+      <PropertyValue Property="CollectionPath" String="I_Customer_VH"/>
+      <PropertyValue Property="SearchSupported" Bool="true"/>
+      <PropertyValue Property="Parameters">
+       <Collection>
+        <Record Type="Common.ValueListParameterInOut">
+         <PropertyValue Property="LocalDataProperty" PropertyPath="SoldToParty"/>
+         <PropertyValue Property="ValueListProperty" String="Customer"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="OrganizationBPName1"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="OrganizationBPName2"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="Country"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="CityName"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="StreetName"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="PostalCode"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="CustomerName"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="BusinessPartner"/>
+        </Record>
+       </Collection>
+      </PropertyValue>
+     </Record>
+    </Annotation>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.I_ControllingAreaType/ChartOfAccounts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="Common.ValueList">
+     <Record>
+      <PropertyValue Property="Label" String="Chart Of Accounts"/>
+      <PropertyValue Property="CollectionPath" String="I_ChartOfAccountsStdVH"/>
+      <PropertyValue Property="SearchSupported" Bool="true"/>
+      <PropertyValue Property="Parameters">
+       <Collection>
+        <Record Type="Common.ValueListParameterInOut">
+         <PropertyValue Property="LocalDataProperty" PropertyPath="ChartOfAccounts"/>
+         <PropertyValue Property="ValueListProperty" String="ChartOfAccounts"/>
+        </Record>
+        <Record Type="Common.ValueListParameterDisplayOnly">
+         <PropertyValue Property="ValueListProperty" String="ChartOfAccounts_Text"/>
+        </Record>
+       </Collection>
+      </PropertyValue>
+     </Record>
+    </Annotation>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.MMIM_MATDOC_SRV_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.C_MM_SalesOrderItemValueHelpType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="Common.SemanticKey">
+     <Collection>
+      <PropertyPath>SalesOrderItem</PropertyPath>
+      <PropertyPath>SalesOrder</PropertyPath>
+     </Collection>
+    </Annotation>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.MMIM_MATDOC_SRV_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__CodeList.CurrencyCodes">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="SAP__Currencies"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__CodeList.UnitsOfMeasure">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="SAP__UnitsOfMeasure"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__PDF.Features">
+     <Record>
+      <PropertyValue Property="DocumentDescriptionReference" String="./$metadata"/>
+      <PropertyValue Property="DocumentDescriptionCollection" String="SAP__MyDocumentDescriptions"/>
+      <PropertyValue Property="ArchiveFormat" Bool="true"/>
+      <PropertyValue Property="CoverPage" Bool="true"/>
+      <PropertyValue Property="Signature" Bool="true"/>
+      <PropertyValue Property="FitToPage" Bool="true"/>
+      <PropertyValue Property="FontName" Bool="true"/>
+      <PropertyValue Property="FontSize" Bool="true"/>
+      <PropertyValue Property="Margin" Bool="true"/>
+      <PropertyValue Property="Border" Bool="true"/>
+      <PropertyValue Property="ResultSizeDefault" Int="20000"/>
+      <PropertyValue Property="ResultSizeMaximum" Int="20000"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__CodeList.SAP__DocumentDescription">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="SAP__MyDocumentDescriptions"/>
+     </Record>
+    </Annotation>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__Currency/CurrencyCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__common.Text" Path="Text"/>
+    <Annotation Term="SAP__common.UnitSpecificScale" Path="DecimalPlaces"/>
+    <Annotation Term="SAP__CodeList.StandardCode" Path="ISOCode"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__UnitOfMeasure/UnitCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__common.Text" Path="Text"/>
+    <Annotation Term="SAP__common.UnitSpecificScale" Path="DecimalPlaces"/>
+    <Annotation Term="SAP__CodeList.StandardCode" Path="ISOCode"/>
+    <Annotation Term="SAP__CodeList.ExternalCode" Path="ExternalCode"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__UnitOfMeasure" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__core.AlternateKeys">
+     <Collection>
+      <Record>
+       <PropertyValue Property="Key">
+        <Collection>
+         <Record>
+          <PropertyValue Property="Name" Path="ExternalCode"/>
+          <PropertyValue Property="Alias" String="ExternalCode"/>
+         </Record>
+        </Collection>
+       </PropertyValue>
+      </Record>
+     </Collection>
+    </Annotation>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__DocumentDescription/CreatedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__core.Computed"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__DocumentDescription/CreatedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__core.Computed"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__DocumentDescription" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__capabilties.InsertRestrictions">
+     <Record>
+      <PropertyValue Property="Insertable" Bool="false"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__capabilties.UpdateRestrictions">
+     <Record>
+      <PropertyValue Property="Updatable" Bool="false"/>
+      <PropertyValue Property="QueryOptions">
+       <Record>
+        <PropertyValue Property="SelectSupported" Bool="true"/>
+       </Record>
+      </PropertyValue>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__capabilties.DeleteRestrictions">
+     <Record>
+      <PropertyValue Property="Deletable" Bool="false"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__capabilties.FilterRestrictions">
+     <Record>
+      <PropertyValue Property="FilterExpressionRestrictions">
+       <Collection>
+        <Record>
+         <PropertyValue Property="Property" PropertyPath="Format/Orientation"/>
+         <PropertyValue Property="AllowedExpressions" String="Multivalue"/>
+        </Record>
+        <Record>
+         <PropertyValue Property="Property" PropertyPath="Format/PaperSize"/>
+         <PropertyValue Property="AllowedExpressions" String="Multivalue"/>
+        </Record>
+       </Collection>
+      </PropertyValue>
+     </Record>
+    </Annotation>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__Format/FitToPage/ErrorRecoveryBehavior" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__common.ValueListReferences">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="../../../../SAP__ValueHelpSet?$filter=VALUEHELP%20eq%20%27ErrorRecoveryBehaviour%27"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__common.ValueListWithFixedValues"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__Format/FontName" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__common.ValueListReferences">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="SAP__ValueHelpSet?$filter=VALUEHELP%20eq%20%27FontName%27"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__common.ValueListWithFixedValues"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__Format/PaperSize" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__common.ValueListReferences">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="SAP__ValueHelpSet?$filter=VALUEHELP%20eq%20%27PaperSize%27"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__common.ValueListWithFixedValues"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__Format/Orientation" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__common.ValueListReferences">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="SAP__ValueHelpSet?$filter=VALUEHELP%20eq%20%27FontName%27"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__common.ValueListWithFixedValues"/>
+   </Annotations>
+   <Annotations Target="MMIM_MATDOC_SRV.SAP__TableColumns/HorizontalAlignment" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <Annotation Term="SAP__common.ValueListReferences">
+     <Record>
+      <PropertyValue Property="Url" String="./$metadata"/>
+      <PropertyValue Property="CollectionPath" String="SAP__ValueHelpSet?$filter=VALUEHELP%20eq%20%27HorizontalAlignment%27"/>
+     </Record>
+    </Annotation>
+    <Annotation Term="SAP__common.ValueListWithFixedValues"/>
+   </Annotations>
+   <atom:link rel="self" href="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/sap/MMIM_MATDOC_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+   <atom:link rel="latest-version" href="https://vhresds4ci.sap.shreecement.com:44300/sap/opu/odata/sap/MMIM_MATDOC_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+  </Schema>
+ </edmx:DataServices>
+</edmx:Edmx>

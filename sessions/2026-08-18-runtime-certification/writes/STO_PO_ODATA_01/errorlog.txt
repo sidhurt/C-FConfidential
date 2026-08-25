@@ -1,0 +1,10 @@
+﻿cscript.exe : C:\Users\sidmy\Downloads\shree-cement-cnf-agent-cowork-20260729T062834Z-1-001\shree-cement-cnf-agent-cowo
+rk\sessions\2026-08-18-runtime-certification\scripts\gw_errorlog_read.vbs(13, 1) SAP Frontend Server: The virtual key 
+is not enabled.
+At line:1 char:458
++ ... ification"; cscript.exe //nologo .\scripts\gw_errorlog_read.vbs 2>&1  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\sidmy\...is not enabled.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+

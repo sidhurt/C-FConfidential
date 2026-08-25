@@ -1,0 +1,4 @@
+﻿TABLE|LFA1
+TITLE|Data Browser: Table LFA1: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

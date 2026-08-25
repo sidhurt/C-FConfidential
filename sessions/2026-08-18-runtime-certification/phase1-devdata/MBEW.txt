@@ -1,0 +1,4 @@
+﻿TABLE|MBEW
+TITLE|Data Browser: Table MBEW: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

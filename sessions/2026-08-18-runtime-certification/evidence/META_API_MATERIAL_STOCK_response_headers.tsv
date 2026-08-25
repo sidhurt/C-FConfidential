@@ -1,0 +1,19 @@
+NAME	VALUE
+~status_code	200
+~status_reason	OK
+sap-processing-info	ODataBEP=,crp=,RAL=,st=,MedCacheHub=Table,codeployed=X,softstate=
+cache-control	max-age=0
+content-encoding	gzip
+content-length	2241
+content-type	application/xml
+dataserviceversion	2.0
+last-modified	Tue, 18 Aug 2026 05:35:48 GMT
+sap-original-protocol	h2
+sap-perf-fesrec	48304.000000
+sap-server	true
+set-cookie	[REDACTED]
+set-cookie	[REDACTED]
+~remote_addr	
+~server_protocol	HTTP/1.1
+~uri_scheme_expanded	NONE
+~grid_title	HTTP Response - Processing Time = 95  ms

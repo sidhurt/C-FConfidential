@@ -1,0 +1,5893 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_PO_CREATE1",
+    "functionGroup": "2012",
+    "remoteEnabled": true,
+    "releaseStatus": "Released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "MEMORY_COMPLETE",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Hold Purchase Order if NOT Faulty",
+        "structureFields": []
+      },
+      {
+        "parameter": "MEMORY_UNCOMPLETE",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Hold Purchase Order if Faulty",
+        "structureFields": []
+      },
+      {
+        "parameter": "NO_AUTHORITY",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "No Authorization Check",
+        "structureFields": []
+      },
+      {
+        "parameter": "NO_MESSAGE_REQ",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "No messages necessary",
+        "structureFields": []
+      },
+      {
+        "parameter": "NO_MESSAGING",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "No message determination",
+        "structureFields": []
+      },
+      {
+        "parameter": "NO_PRICE_FROM_PO",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "No Adoption of Price from Last Document",
+        "structureFields": []
+      },
+      {
+        "parameter": "PARK_COMPLETE",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Park Document if NOT Faulty",
+        "structureFields": []
+      },
+      {
+        "parameter": "PARK_UNCOMPLETE",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Park Document if Faulty",
+        "structureFields": []
+      },
+      {
+        "parameter": "POADDRVENDOR",
+        "associatedType": "BAPIMEPOADDRVENDOR",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Address of Vendor",
+        "structureFields": []
+      },
+      {
+        "parameter": "POEXPIMPHEADER",
+        "associatedType": "BAPIEIKP",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Export Trade: Header Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "POEXPIMPHEADERX",
+        "associatedType": "BAPIEIKPX",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Foreign Trade: Change Bar: Header Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "POHEADER",
+        "associatedType": "BAPIMEPOHEADER",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Header Data",
+        "structureFields": [
+          {
+            "field": "PO_NUMBER",
+            "position": "0001",
+            "dataElement": "EBELN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COMP_CODE",
+            "position": "0002",
+            "dataElement": "BUKRS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_TYPE",
+            "position": "0003",
+            "dataElement": "ESART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0004",
+            "dataElement": "ELOEK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS",
+            "position": "0005",
+            "dataElement": "ESTAK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREAT_DATE",
+            "position": "0006",
+            "dataElement": "ERDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREATED_BY",
+            "position": "0007",
+            "dataElement": "ERNAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM_INTVL",
+            "position": "0008",
+            "dataElement": "PINCR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VENDOR",
+            "position": "0009",
+            "dataElement": "ELIFN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU",
+            "position": "0010",
+            "dataElement": "SPRAS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU_ISO",
+            "position": "0011",
+            "dataElement": "SPRAS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PMNTTRMS",
+            "position": "0012",
+            "dataElement": "DZTERM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT1_TO",
+            "position": "0013",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT2_TO",
+            "position": "0014",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT3_TO",
+            "position": "0015",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT1",
+            "position": "0016",
+            "dataElement": "DZBD1P",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT2",
+            "position": "0017",
+            "dataElement": "DZBD2P",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PURCH_ORG",
+            "position": "0018",
+            "dataElement": "EKORG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PUR_GROUP",
+            "position": "0019",
+            "dataElement": "BKGRP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0020",
+            "dataElement": "WAERS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY_ISO",
+            "position": "0021",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXCH_RATE",
+            "position": "0022",
+            "dataElement": "WKURS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EX_RATE_FX",
+            "position": "0023",
+            "dataElement": "KUFIX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_DATE",
+            "position": "0024",
+            "dataElement": "EBDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_START",
+            "position": "0025",
+            "dataElement": "KDATB",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_END",
+            "position": "0026",
+            "dataElement": "KDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WARRANTY",
+            "position": "0027",
+            "dataElement": "MM_GWLDT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOTATION",
+            "position": "0028",
+            "dataElement": "ANGNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOT_DATE",
+            "position": "0029",
+            "dataElement": "IHRAN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_1",
+            "position": "0030",
+            "dataElement": "IHREZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_PERS",
+            "position": "0031",
+            "dataElement": "EVERK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TELEPHONE",
+            "position": "0032",
+            "dataElement": "TELF0",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_VEND",
+            "position": "0033",
+            "dataElement": "LLIEF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CUSTOMER",
+            "position": "0034",
+            "dataElement": "KUNNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGREEMENT",
+            "position": "0035",
+            "dataElement": "KONNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_MESSAGE",
+            "position": "0036",
+            "dataElement": "WEAKT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_PLNT",
+            "position": "0037",
+            "dataElement": "RESWK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0038",
+            "dataElement": "INCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0039",
+            "dataElement": "INCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COLLECT_NO",
+            "position": "0040",
+            "dataElement": "SUBMI",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DIFF_INV",
+            "position": "0041",
+            "dataElement": "LIFRE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "OUR_REF",
+            "position": "0042",
+            "dataElement": "UNSEZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOGSYSTEM",
+            "position": "0043",
+            "dataElement": "LOGSYSTEM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUBITEMINT",
+            "position": "0044",
+            "dataElement": "UPINC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_REL_IND",
+            "position": "0045",
+            "dataElement": "FRGKE",
+            "checkTable": "T16FB",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REL_STATUS",
+            "position": "0046",
+            "dataElement": "FRGZU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY",
+            "position": "0047",
+            "dataElement": "STCEG_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY_ISO",
+            "position": "0048",
+            "dataElement": "STCEG_L_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CANCEL",
+            "position": "0049",
+            "dataElement": "ABSGR",
+            "checkTable": "T165R",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CODE",
+            "position": "0050",
+            "dataElement": "/SAPPSPRO/_GR_REASON_CODE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_TYPE",
+            "position": "0051",
+            "dataElement": "RETTP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_PERCENTAGE",
+            "position": "0052",
+            "dataElement": "RETPZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_TYPE",
+            "position": "0053",
+            "dataElement": "ME_DPTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_AMOUNT",
+            "position": "0054",
+            "dataElement": "BAPIMEDOWNPAY",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_PERCENT",
+            "position": "0055",
+            "dataElement": "ME_DPPCNT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_DUEDATE",
+            "position": "0056",
+            "dataElement": "ME_DPDDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORY",
+            "position": "0057",
+            "dataElement": "MEMER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORYTYPE",
+            "position": "0058",
+            "dataElement": "MEMORYTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPTYPE",
+            "position": "0059",
+            "dataElement": "VERSART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERLOC",
+            "position": "0060",
+            "dataElement": "HANDOVER_LOC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPCOND",
+            "position": "0061",
+            "dataElement": "VSBED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMSV",
+            "position": "0062",
+            "dataElement": "INCOV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0063",
+            "dataElement": "INCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0064",
+            "dataElement": "INCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_SYS",
+            "position": "0065",
+            "dataElement": "MMPUR_EXTREFERENCESYSTEMID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REF",
+            "position": "0066",
+            "dataElement": "MMPUR_EXTERNALREFERENCEID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_REL",
+            "position": "0067",
+            "dataElement": "INTRA_REL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_EXCL",
+            "position": "0068",
+            "dataElement": "INTRA_EXCL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REV_TMSTMP",
+            "position": "0069",
+            "dataElement": "MM_EXT_REV_TMSTMP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_PCS",
+            "position": "0070",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_PCS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_PMA",
+            "position": "0071",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_PMA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_DG",
+            "position": "0072",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_DG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_SDS",
+            "position": "0073",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_SDS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "POHEADERX",
+        "associatedType": "BAPIMEPOHEADERX",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Header Data (Change Parameter)",
+        "structureFields": [
+          {
+            "field": "PO_NUMBER",
+            "position": "0001",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COMP_CODE",
+            "position": "0002",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_TYPE",
+            "position": "0003",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0004",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS",
+            "position": "0005",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREAT_DATE",
+            "position": "0006",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREATED_BY",
+            "position": "0007",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM_INTVL",
+            "position": "0008",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VENDOR",
+            "position": "0009",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU",
+            "position": "0010",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU_ISO",
+            "position": "0011",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PMNTTRMS",
+            "position": "0012",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT1_TO",
+            "position": "0013",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT2_TO",
+            "position": "0014",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT3_TO",
+            "position": "0015",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT1",
+            "position": "0016",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT2",
+            "position": "0017",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PURCH_ORG",
+            "position": "0018",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PUR_GROUP",
+            "position": "0019",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0020",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY_ISO",
+            "position": "0021",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXCH_RATE",
+            "position": "0022",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EX_RATE_FX",
+            "position": "0023",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_DATE",
+            "position": "0024",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_START",
+            "position": "0025",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_END",
+            "position": "0026",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WARRANTY",
+            "position": "0027",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOTATION",
+            "position": "0028",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOT_DATE",
+            "position": "0029",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_1",
+            "position": "0030",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_PERS",
+            "position": "0031",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TELEPHONE",
+            "position": "0032",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_VEND",
+            "position": "0033",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CUSTOMER",
+            "position": "0034",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGREEMENT",
+            "position": "0035",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_MESSAGE",
+            "position": "0036",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_PLNT",
+            "position": "0037",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0038",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0039",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COLLECT_NO",
+            "position": "0040",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DIFF_INV",
+            "position": "0041",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "OUR_REF",
+            "position": "0042",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOGSYSTEM",
+            "position": "0043",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUBITEMINT",
+            "position": "0044",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_REL_IND",
+            "position": "0045",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REL_STATUS",
+            "position": "0046",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY",
+            "position": "0047",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY_ISO",
+            "position": "0048",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CANCEL",
+            "position": "0049",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CODE",
+            "position": "0050",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_TYPE",
+            "position": "0051",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_PERCENTAGE",
+            "position": "0052",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_TYPE",
+            "position": "0053",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_AMOUNT",
+            "position": "0054",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_PERCENT",
+            "position": "0055",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_DUEDATE",
+            "position": "0056",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORY",
+            "position": "0057",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORYTYPE",
+            "position": "0058",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPTYPE",
+            "position": "0059",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERLOC",
+            "position": "0060",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPCOND",
+            "position": "0061",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMSV",
+            "position": "0062",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0063",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0064",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_SYS",
+            "position": "0065",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REF",
+            "position": "0066",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_REL",
+            "position": "0067",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_EXCL",
+            "position": "0068",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REV_TMSTMP",
+            "position": "0069",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "TESTRUN",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Test Indicator",
+        "structureFields": []
+      },
+      {
+        "parameter": "VERSIONS",
+        "associatedType": "BAPIMEDCM",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Version Management",
+        "structureFields": []
+      }
+    ],
+    "EXPORT": [
+      {
+        "parameter": "EXPHEADER",
+        "associatedType": "BAPIMEPOHEADER",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": [
+          {
+            "field": "PO_NUMBER",
+            "position": "0001",
+            "dataElement": "EBELN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COMP_CODE",
+            "position": "0002",
+            "dataElement": "BUKRS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_TYPE",
+            "position": "0003",
+            "dataElement": "ESART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0004",
+            "dataElement": "ELOEK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS",
+            "position": "0005",
+            "dataElement": "ESTAK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREAT_DATE",
+            "position": "0006",
+            "dataElement": "ERDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREATED_BY",
+            "position": "0007",
+            "dataElement": "ERNAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM_INTVL",
+            "position": "0008",
+            "dataElement": "PINCR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VENDOR",
+            "position": "0009",
+            "dataElement": "ELIFN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU",
+            "position": "0010",
+            "dataElement": "SPRAS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU_ISO",
+            "position": "0011",
+            "dataElement": "SPRAS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PMNTTRMS",
+            "position": "0012",
+            "dataElement": "DZTERM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT1_TO",
+            "position": "0013",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT2_TO",
+            "position": "0014",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT3_TO",
+            "position": "0015",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT1",
+            "position": "0016",
+            "dataElement": "DZBD1P",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT2",
+            "position": "0017",
+            "dataElement": "DZBD2P",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PURCH_ORG",
+            "position": "0018",
+            "dataElement": "EKORG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PUR_GROUP",
+            "position": "0019",
+            "dataElement": "BKGRP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0020",
+            "dataElement": "WAERS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY_ISO",
+            "position": "0021",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXCH_RATE",
+            "position": "0022",
+            "dataElement": "WKURS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EX_RATE_FX",
+            "position": "0023",
+            "dataElement": "KUFIX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_DATE",
+            "position": "0024",
+            "dataElement": "EBDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_START",
+            "position": "0025",
+            "dataElement": "KDATB",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_END",
+            "position": "0026",
+            "dataElement": "KDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WARRANTY",
+            "position": "0027",
+            "dataElement": "MM_GWLDT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOTATION",
+            "position": "0028",
+            "dataElement": "ANGNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOT_DATE",
+            "position": "0029",
+            "dataElement": "IHRAN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_1",
+            "position": "0030",
+            "dataElement": "IHREZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_PERS",
+            "position": "0031",
+            "dataElement": "EVERK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TELEPHONE",
+            "position": "0032",
+            "dataElement": "TELF0",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_VEND",
+            "position": "0033",
+            "dataElement": "LLIEF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CUSTOMER",
+            "position": "0034",
+            "dataElement": "KUNNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGREEMENT",
+            "position": "0035",
+            "dataElement": "KONNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_MESSAGE",
+            "position": "0036",
+            "dataElement": "WEAKT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_PLNT",
+            "position": "0037",
+            "dataElement": "RESWK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0038",
+            "dataElement": "INCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0039",
+            "dataElement": "INCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COLLECT_NO",
+            "position": "0040",
+            "dataElement": "SUBMI",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DIFF_INV",
+            "position": "0041",
+            "dataElement": "LIFRE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "OUR_REF",
+            "position": "0042",
+            "dataElement": "UNSEZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOGSYSTEM",
+            "position": "0043",
+            "dataElement": "LOGSYSTEM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUBITEMINT",
+            "position": "0044",
+            "dataElement": "UPINC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_REL_IND",
+            "position": "0045",
+            "dataElement": "FRGKE",
+            "checkTable": "T16FB",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REL_STATUS",
+            "position": "0046",
+            "dataElement": "FRGZU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY",
+            "position": "0047",
+            "dataElement": "STCEG_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY_ISO",
+            "position": "0048",
+            "dataElement": "STCEG_L_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CANCEL",
+            "position": "0049",
+            "dataElement": "ABSGR",
+            "checkTable": "T165R",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CODE",
+            "position": "0050",
+            "dataElement": "/SAPPSPRO/_GR_REASON_CODE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_TYPE",
+            "position": "0051",
+            "dataElement": "RETTP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_PERCENTAGE",
+            "position": "0052",
+            "dataElement": "RETPZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_TYPE",
+            "position": "0053",
+            "dataElement": "ME_DPTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_AMOUNT",
+            "position": "0054",
+            "dataElement": "BAPIMEDOWNPAY",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_PERCENT",
+            "position": "0055",
+            "dataElement": "ME_DPPCNT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_DUEDATE",
+            "position": "0056",
+            "dataElement": "ME_DPDDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORY",
+            "position": "0057",
+            "dataElement": "MEMER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORYTYPE",
+            "position": "0058",
+            "dataElement": "MEMORYTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPTYPE",
+            "position": "0059",
+            "dataElement": "VERSART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERLOC",
+            "position": "0060",
+            "dataElement": "HANDOVER_LOC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPCOND",
+            "position": "0061",
+            "dataElement": "VSBED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMSV",
+            "position": "0062",
+            "dataElement": "INCOV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0063",
+            "dataElement": "INCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0064",
+            "dataElement": "INCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_SYS",
+            "position": "0065",
+            "dataElement": "MMPUR_EXTREFERENCESYSTEMID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REF",
+            "position": "0066",
+            "dataElement": "MMPUR_EXTERNALREFERENCEID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_REL",
+            "position": "0067",
+            "dataElement": "INTRA_REL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_EXCL",
+            "position": "0068",
+            "dataElement": "INTRA_EXCL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REV_TMSTMP",
+            "position": "0069",
+            "dataElement": "MM_EXT_REV_TMSTMP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_PCS",
+            "position": "0070",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_PCS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_PMA",
+            "position": "0071",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_PMA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_DG",
+            "position": "0072",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_DG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_SDS",
+            "position": "0073",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_SDS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "EXPPOEXPIMPHEADER",
+        "associatedType": "BAPIEIKP",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXPPURCHASEORDER",
+        "associatedType": "BAPIMEPOHEADER-PO_NUMBER",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": [
+          {
+            "field": "PO_NUMBER",
+            "position": "0001",
+            "dataElement": "EBELN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COMP_CODE",
+            "position": "0002",
+            "dataElement": "BUKRS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_TYPE",
+            "position": "0003",
+            "dataElement": "ESART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0004",
+            "dataElement": "ELOEK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS",
+            "position": "0005",
+            "dataElement": "ESTAK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREAT_DATE",
+            "position": "0006",
+            "dataElement": "ERDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREATED_BY",
+            "position": "0007",
+            "dataElement": "ERNAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM_INTVL",
+            "position": "0008",
+            "dataElement": "PINCR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VENDOR",
+            "position": "0009",
+            "dataElement": "ELIFN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU",
+            "position": "0010",
+            "dataElement": "SPRAS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LANGU_ISO",
+            "position": "0011",
+            "dataElement": "SPRAS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PMNTTRMS",
+            "position": "0012",
+            "dataElement": "DZTERM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT1_TO",
+            "position": "0013",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT2_TO",
+            "position": "0014",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCNT3_TO",
+            "position": "0015",
+            "dataElement": "DZBDET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT1",
+            "position": "0016",
+            "dataElement": "DZBD1P",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DSCT_PCT2",
+            "position": "0017",
+            "dataElement": "DZBD2P",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PURCH_ORG",
+            "position": "0018",
+            "dataElement": "EKORG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PUR_GROUP",
+            "position": "0019",
+            "dataElement": "BKGRP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0020",
+            "dataElement": "WAERS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY_ISO",
+            "position": "0021",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXCH_RATE",
+            "position": "0022",
+            "dataElement": "WKURS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EX_RATE_FX",
+            "position": "0023",
+            "dataElement": "KUFIX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_DATE",
+            "position": "0024",
+            "dataElement": "EBDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_START",
+            "position": "0025",
+            "dataElement": "KDATB",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VPER_END",
+            "position": "0026",
+            "dataElement": "KDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WARRANTY",
+            "position": "0027",
+            "dataElement": "MM_GWLDT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOTATION",
+            "position": "0028",
+            "dataElement": "ANGNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUOT_DATE",
+            "position": "0029",
+            "dataElement": "IHRAN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_1",
+            "position": "0030",
+            "dataElement": "IHREZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_PERS",
+            "position": "0031",
+            "dataElement": "EVERK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TELEPHONE",
+            "position": "0032",
+            "dataElement": "TELF0",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_VEND",
+            "position": "0033",
+            "dataElement": "LLIEF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CUSTOMER",
+            "position": "0034",
+            "dataElement": "KUNNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGREEMENT",
+            "position": "0035",
+            "dataElement": "KONNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_MESSAGE",
+            "position": "0036",
+            "dataElement": "WEAKT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_PLNT",
+            "position": "0037",
+            "dataElement": "RESWK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0038",
+            "dataElement": "INCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0039",
+            "dataElement": "INCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COLLECT_NO",
+            "position": "0040",
+            "dataElement": "SUBMI",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DIFF_INV",
+            "position": "0041",
+            "dataElement": "LIFRE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "OUR_REF",
+            "position": "0042",
+            "dataElement": "UNSEZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOGSYSTEM",
+            "position": "0043",
+            "dataElement": "LOGSYSTEM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUBITEMINT",
+            "position": "0044",
+            "dataElement": "UPINC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_REL_IND",
+            "position": "0045",
+            "dataElement": "FRGKE",
+            "checkTable": "T16FB",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REL_STATUS",
+            "position": "0046",
+            "dataElement": "FRGZU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY",
+            "position": "0047",
+            "dataElement": "STCEG_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAT_CNTRY_ISO",
+            "position": "0048",
+            "dataElement": "STCEG_L_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CANCEL",
+            "position": "0049",
+            "dataElement": "ABSGR",
+            "checkTable": "T165R",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CODE",
+            "position": "0050",
+            "dataElement": "/SAPPSPRO/_GR_REASON_CODE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_TYPE",
+            "position": "0051",
+            "dataElement": "RETTP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_PERCENTAGE",
+            "position": "0052",
+            "dataElement": "RETPZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_TYPE",
+            "position": "0053",
+            "dataElement": "ME_DPTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_AMOUNT",
+            "position": "0054",
+            "dataElement": "BAPIMEDOWNPAY",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_PERCENT",
+            "position": "0055",
+            "dataElement": "ME_DPPCNT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_DUEDATE",
+            "position": "0056",
+            "dataElement": "ME_DPDDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORY",
+            "position": "0057",
+            "dataElement": "MEMER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MEMORYTYPE",
+            "position": "0058",
+            "dataElement": "MEMORYTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPTYPE",
+            "position": "0059",
+            "dataElement": "VERSART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERLOC",
+            "position": "0060",
+            "dataElement": "HANDOVER_LOC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPCOND",
+            "position": "0061",
+            "dataElement": "VSBED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMSV",
+            "position": "0062",
+            "dataElement": "INCOV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0063",
+            "dataElement": "INCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0064",
+            "dataElement": "INCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_SYS",
+            "position": "0065",
+            "dataElement": "MMPUR_EXTREFERENCESYSTEMID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REF",
+            "position": "0066",
+            "dataElement": "MMPUR_EXTERNALREFERENCEID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_REL",
+            "position": "0067",
+            "dataElement": "INTRA_REL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_EXCL",
+            "position": "0068",
+            "dataElement": "INTRA_EXCL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REV_TMSTMP",
+            "position": "0069",
+            "dataElement": "MM_EXT_REV_TMSTMP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_PCS",
+            "position": "0070",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_PCS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_PMA",
+            "position": "0071",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_PMA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_DG",
+            "position": "0072",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_DG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TOTAL_STATUS_SDS",
+            "position": "0073",
+            "dataElement": "MMPUR_PC_TOTAL_STATUS_SDS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "ALLVERSIONS",
+        "associatedType": "BAPIMEDCM_ALLVERSIONS",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "All Versions (Export Parameter)",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXTENSIONIN",
+        "associatedType": "BAPIPAREX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Customer's Own Fields (Import Parameters)",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXTENSIONOUT",
+        "associatedType": "BAPIPAREX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Customer's Own Fields (Export Parameters)",
+        "structureFields": []
+      },
+      {
+        "parameter": "INVPLANHEADER",
+        "associatedType": "BAPI_INVOICE_PLAN_HEADER",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Invoicing Plan Header Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "INVPLANHEADERX",
+        "associatedType": "BAPI_INVOICE_PLAN_HEADERX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Invoicing Plan Header Data (Change Parameter)",
+        "structureFields": []
+      },
+      {
+        "parameter": "INVPLANITEM",
+        "associatedType": "BAPI_INVOICE_PLAN_ITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Invoicing Plan Item Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "INVPLANITEMX",
+        "associatedType": "BAPI_INVOICE_PLAN_ITEMX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Invoicing Plan Item Data (Change Parameter)",
+        "structureFields": []
+      },
+      {
+        "parameter": "NFMETALLITMS",
+        "associatedType": "/NFM/BAPIDOCITM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "/NFM/: BAPI Communication Structure NF Document Item Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "POACCOUNT",
+        "associatedType": "BAPIMEPOACCOUNT",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Account Assignment Fields",
+        "structureFields": []
+      },
+      {
+        "parameter": "POACCOUNTPROFITSEGMENT",
+        "associatedType": "BAPIMEPOACCOUNTPROFITSEGMENT",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Reservation Profitability Segment: BAPI_PROFITABILITY_SEGMENT",
+        "structureFields": []
+      },
+      {
+        "parameter": "POACCOUNTX",
+        "associatedType": "BAPIMEPOACCOUNTX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Account Assignment Fields (Change Parameter)",
+        "structureFields": []
+      },
+      {
+        "parameter": "POADDRDELIVERY",
+        "associatedType": "BAPIMEPOADDRDELIVERY",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Addresses for Inward Delivery (Item)",
+        "structureFields": []
+      },
+      {
+        "parameter": "POCOMPONENTS",
+        "associatedType": "BAPIMEPOCOMPONENT",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "BAPI Structure for Components",
+        "structureFields": []
+      },
+      {
+        "parameter": "POCOMPONENTSX",
+        "associatedType": "BAPIMEPOCOMPONENTX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Update Information for Components in BUS2012 API",
+        "structureFields": []
+      },
+      {
+        "parameter": "POCOND",
+        "associatedType": "BAPIMEPOCOND",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Conditions (Items)",
+        "structureFields": []
+      },
+      {
+        "parameter": "POCONDHEADER",
+        "associatedType": "BAPIMEPOCONDHEADER",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Conditions (Header)",
+        "structureFields": []
+      },
+      {
+        "parameter": "POCONDHEADERX",
+        "associatedType": "BAPIMEPOCONDHEADERX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Conditions (Header, Change Parameter)",
+        "structureFields": []
+      },
+      {
+        "parameter": "POCONDX",
+        "associatedType": "BAPIMEPOCONDX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Conditions (Items, Change Parameter)",
+        "structureFields": []
+      },
+      {
+        "parameter": "POCONTRACTLIMITS",
+        "associatedType": "BAPIESUCC",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "External Services: Contract Limits",
+        "structureFields": []
+      },
+      {
+        "parameter": "POEXPIMPITEM",
+        "associatedType": "BAPIEIPO",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Foreign Trade: Item Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "POEXPIMPITEMX",
+        "associatedType": "BAPIEIPOX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Foreign Trade: Change Parameter: Item Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "POITEM",
+        "associatedType": "BAPIMEPOITEM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Item Data",
+        "structureFields": [
+          {
+            "field": "PO_ITEM",
+            "position": "0001",
+            "dataElement": "EBELP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0002",
+            "dataElement": "ELOEK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHORT_TEXT",
+            "position": "0003",
+            "dataElement": "TXZ01",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL",
+            "position": "0004",
+            "dataElement": "MATNR18",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_EXTERNAL",
+            "position": "0005",
+            "dataElement": "MGV_MATERIAL_EXTERNAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_GUID",
+            "position": "0006",
+            "dataElement": "MGV_MATERIAL_GUID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_VERSION",
+            "position": "0007",
+            "dataElement": "MGV_MATERIAL_VERSION",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL",
+            "position": "0008",
+            "dataElement": "EMATNR18",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_EXTERNAL",
+            "position": "0009",
+            "dataElement": "MGV_MATERIAL_EXTERNAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_GUID",
+            "position": "0010",
+            "dataElement": "MGV_MATERIAL_GUID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_VERSION",
+            "position": "0011",
+            "dataElement": "MGV_MATERIAL_VERSION",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PLANT",
+            "position": "0012",
+            "dataElement": "EWERK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STGE_LOC",
+            "position": "0013",
+            "dataElement": "LGORT_D",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TRACKINGNO",
+            "position": "0014",
+            "dataElement": "BEDNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATL_GROUP",
+            "position": "0015",
+            "dataElement": "MATKL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INFO_REC",
+            "position": "0016",
+            "dataElement": "INFNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VEND_MAT",
+            "position": "0017",
+            "dataElement": "IDNLF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUANTITY",
+            "position": "0018",
+            "dataElement": "BSTMG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_UNIT",
+            "position": "0019",
+            "dataElement": "BSTME",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_UNIT_ISO",
+            "position": "0020",
+            "dataElement": "BSTME_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDERPR_UN",
+            "position": "0021",
+            "dataElement": "BBPRM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDERPR_UN_ISO",
+            "position": "0022",
+            "dataElement": "BBPRM_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONV_NUM1",
+            "position": "0023",
+            "dataElement": "BPUMZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONV_DEN1",
+            "position": "0024",
+            "dataElement": "BPUMN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_PRICE",
+            "position": "0025",
+            "dataElement": "BAPICUREXT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICE_UNIT",
+            "position": "0026",
+            "dataElement": "EPEIN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_PR_TIME",
+            "position": "0027",
+            "dataElement": "WEBAZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_CODE",
+            "position": "0028",
+            "dataElement": "MWSKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BON_GRP1",
+            "position": "0029",
+            "dataElement": "EBONU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUAL_INSP",
+            "position": "0030",
+            "dataElement": "INSMK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INFO_UPD",
+            "position": "0031",
+            "dataElement": "SPINF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRNT_PRICE",
+            "position": "0032",
+            "dataElement": "PRSDR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EST_PRICE",
+            "position": "0033",
+            "dataElement": "SCHPR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REMINDER1",
+            "position": "0034",
+            "dataElement": "MAHN1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REMINDER2",
+            "position": "0035",
+            "dataElement": "MAHN2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REMINDER3",
+            "position": "0036",
+            "dataElement": "MAHN3",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "OVER_DLV_TOL",
+            "position": "0037",
+            "dataElement": "UEBTO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNLIMITED_DLV",
+            "position": "0038",
+            "dataElement": "UEBTK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNDER_DLV_TOL",
+            "position": "0039",
+            "dataElement": "UNTTO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAL_TYPE",
+            "position": "0040",
+            "dataElement": "BWTAR_D",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_MORE_GR",
+            "position": "0041",
+            "dataElement": "ELIKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FINAL_INV",
+            "position": "0042",
+            "dataElement": "EREKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM_CAT",
+            "position": "0043",
+            "dataElement": "PSTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ACCTASSCAT",
+            "position": "0044",
+            "dataElement": "KNTTP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DISTRIB",
+            "position": "0045",
+            "dataElement": "VRTKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PART_INV",
+            "position": "0046",
+            "dataElement": "TWRKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_IND",
+            "position": "0047",
+            "dataElement": "WEPOS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_NON_VAL",
+            "position": "0048",
+            "dataElement": "WEUNB",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "IR_IND",
+            "position": "0049",
+            "dataElement": "REPOS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FREE_ITEM",
+            "position": "0050",
+            "dataElement": "UMSON",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_BASEDIV",
+            "position": "0051",
+            "dataElement": "WEBRE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ACKN_REQD",
+            "position": "0052",
+            "dataElement": "KZABS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ACKNOWL_NO",
+            "position": "0053",
+            "dataElement": "LABNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGREEMENT",
+            "position": "0054",
+            "dataElement": "KONNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGMT_ITEM",
+            "position": "0055",
+            "dataElement": "KTPNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPPING",
+            "position": "0056",
+            "dataElement": "EVERS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CUSTOMER",
+            "position": "0057",
+            "dataElement": "EKUNNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COND_GROUP",
+            "position": "0058",
+            "dataElement": "EKKOG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_DISCT",
+            "position": "0059",
+            "dataElement": "ESKTOF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PLAN_DEL",
+            "position": "0060",
+            "dataElement": "EPLIF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_WEIGHT",
+            "position": "0061",
+            "dataElement": "ENTGE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WEIGHTUNIT",
+            "position": "0062",
+            "dataElement": "EGEWE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WEIGHTUNIT_ISO",
+            "position": "0063",
+            "dataElement": "EGEWE_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXJURCODE",
+            "position": "0064",
+            "dataElement": "TXJCD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CTRL_KEY",
+            "position": "0065",
+            "dataElement": "QSSPUR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONF_CTRL",
+            "position": "0066",
+            "dataElement": "BSTAE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REV_LEV",
+            "position": "0067",
+            "dataElement": "REVLV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUND",
+            "position": "0068",
+            "dataElement": "BP_GEBER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUNDS_CTR",
+            "position": "0069",
+            "dataElement": "FISTL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CMMT_ITEM",
+            "position": "0070",
+            "dataElement": "FIPOS",
+            "checkTable": "FMFPO",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICEDATE",
+            "position": "0071",
+            "dataElement": "MEPRF",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICE_DATE",
+            "position": "0072",
+            "dataElement": "PREDT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GROSS_WT",
+            "position": "0073",
+            "dataElement": "BRGEW",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUME",
+            "position": "0074",
+            "dataElement": "VOLUM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT",
+            "position": "0075",
+            "dataElement": "VOLEH",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT_ISO",
+            "position": "0076",
+            "dataElement": "VOLEH_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0077",
+            "dataElement": "INCO1",
+            "checkTable": "TINC",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0078",
+            "dataElement": "INCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRE_VENDOR",
+            "position": "0079",
+            "dataElement": "KOLIF",
+            "checkTable": "LFA1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VEND_PART",
+            "position": "0080",
+            "dataElement": "LTSNR",
+            "checkTable": "WYT1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HL_ITEM",
+            "position": "0081",
+            "dataElement": "UEBPO",
+            "checkTable": "EKPO",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_TO_DATE",
+            "position": "0082",
+            "dataElement": "LEWED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPP_VENDOR",
+            "position": "0083",
+            "dataElement": "EMLIF",
+            "checkTable": "LFA1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SC_VENDOR",
+            "position": "0084",
+            "dataElement": "LBLKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "KANBAN_IND",
+            "position": "0085",
+            "dataElement": "KBNKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ERS",
+            "position": "0086",
+            "dataElement": "XERSY",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "R_PROMO",
+            "position": "0087",
+            "dataElement": "WAKTION",
+            "checkTable": "WAKH",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "POINTS",
+            "position": "0088",
+            "dataElement": "ANZPU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "POINT_UNIT",
+            "position": "0089",
+            "dataElement": "PUNEI",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "POINT_UNIT_ISO",
+            "position": "0090",
+            "dataElement": "PUNEI_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SEASON",
+            "position": "0091",
+            "dataElement": "SAISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SEASON_YR",
+            "position": "0092",
+            "dataElement": "SAISJ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BON_GRP2",
+            "position": "0093",
+            "dataElement": "EBON2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BON_GRP3",
+            "position": "0094",
+            "dataElement": "EBON3",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SETT_ITEM",
+            "position": "0095",
+            "dataElement": "EBONY",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MINREMLIFE",
+            "position": "0096",
+            "dataElement": "MHDRZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RFQ_NO",
+            "position": "0097",
+            "dataElement": "ANFNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RFQ_ITEM",
+            "position": "0098",
+            "dataElement": "ANFPS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_NO",
+            "position": "0099",
+            "dataElement": "BANFN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_ITEM",
+            "position": "0100",
+            "dataElement": "BNFPO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC",
+            "position": "0101",
+            "dataElement": "REFBS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_ITEM",
+            "position": "0102",
+            "dataElement": "REFPS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SI_CAT",
+            "position": "0103",
+            "dataElement": "UPTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RET_ITEM",
+            "position": "0104",
+            "dataElement": "RETPO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AT_RELEV",
+            "position": "0105",
+            "dataElement": "AUREL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDER_REASON",
+            "position": "0106",
+            "dataElement": "BSGRU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BRAS_NBM",
+            "position": "0107",
+            "dataElement": "J_1BNBMCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATL_USAGE",
+            "position": "0108",
+            "dataElement": "J_1BMATUSE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MAT_ORIGIN",
+            "position": "0109",
+            "dataElement": "J_1BMATORG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "IN_HOUSE",
+            "position": "0110",
+            "dataElement": "J_1BOWNPRO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INDUS3",
+            "position": "0111",
+            "dataElement": "J_1BINDUS3",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INF_INDEX",
+            "position": "0112",
+            "dataElement": "J_1AINDXP",
+            "checkTable": "J_1AINFT2",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNTIL_DATE",
+            "position": "0113",
+            "dataElement": "J_1AIDATEP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_COMPL",
+            "position": "0114",
+            "dataElement": "EGLKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PART_DELIV",
+            "position": "0115",
+            "dataElement": "KZTUL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIP_BLOCKED",
+            "position": "0116",
+            "dataElement": "NOVET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_NAME",
+            "position": "0117",
+            "dataElement": "AFNAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PERIOD_IND_EXPIRATION_DATE",
+            "position": "0118",
+            "dataElement": "DATTP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INT_OBJ_NO",
+            "position": "0119",
+            "dataElement": "CUOBJ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PCKG_NO",
+            "position": "0120",
+            "dataElement": "PACKNO",
+            "checkTable": "ESLH",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BATCH",
+            "position": "0121",
+            "dataElement": "CHARG_D",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VENDRBATCH",
+            "position": "0122",
+            "dataElement": "LICHN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CALCTYPE",
+            "position": "0123",
+            "dataElement": "KNPRS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GRANT_NBR",
+            "position": "0124",
+            "dataElement": "GM_GRANT_NBR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CMMT_ITEM_LONG",
+            "position": "0125",
+            "dataElement": "FM_FIPEX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUNC_AREA_LONG",
+            "position": "0126",
+            "dataElement": "FKBER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_ROUNDING",
+            "position": "0127",
+            "dataElement": "NO_ROUNDING",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_PRICE",
+            "position": "0128",
+            "dataElement": "BAPI_PO_PRICE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_STLOC",
+            "position": "0129",
+            "dataElement": "RESLO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRV_BASED_IV",
+            "position": "0130",
+            "dataElement": "LEBRE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUNDS_RES",
+            "position": "0131",
+            "dataElement": "KBLNR_FI",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RES_ITEM",
+            "position": "0132",
+            "dataElement": "KBLPOS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORIG_ACCEPT",
+            "position": "0133",
+            "dataElement": "WEORA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ALLOC_TBL",
+            "position": "0134",
+            "dataElement": "ABELN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ALLOC_TBL_ITEM",
+            "position": "0135",
+            "dataElement": "ABELP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRC_STOCK_TYPE",
+            "position": "0136",
+            "dataElement": "/SPE/INSMK_SRC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_REJ",
+            "position": "0137",
+            "dataElement": "ABGRU",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_SALES_ORDER_NO",
+            "position": "0138",
+            "dataElement": "/SPE/VBELN_CRM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_SALES_ORDER_ITEM_NO",
+            "position": "0139",
+            "dataElement": "/SPE/POSNR_CRM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_REF_SALES_ORDER_NO",
+            "position": "0140",
+            "dataElement": "/SPE/REF_VBELN_CRM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_REF_SO_ITEM_NO",
+            "position": "0141",
+            "dataElement": "/SPE/REF_POSNR_CRM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRIO_URGENCY",
+            "position": "0142",
+            "dataElement": "PRIO_URG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRIO_REQUIREMENT",
+            "position": "0143",
+            "dataElement": "PRIO_REQ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CODE",
+            "position": "0144",
+            "dataElement": "/SAPPSPRO/_GR_REASON_CODE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUND_LONG",
+            "position": "0145",
+            "dataElement": "FM_FUND_LONG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LONG_ITEM_NUMBER",
+            "position": "0146",
+            "dataElement": "EXLIN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXTERNAL_SORT_NUMBER",
+            "position": "0147",
+            "dataElement": "EXSNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXTERNAL_HIERARCHY_TYPE",
+            "position": "0148",
+            "dataElement": "EHTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_PERCENTAGE",
+            "position": "0149",
+            "dataElement": "RETPZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_TYPE",
+            "position": "0150",
+            "dataElement": "ME_DPTYP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_AMOUNT",
+            "position": "0151",
+            "dataElement": "BAPIMEDOWNPAY",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_PERCENT",
+            "position": "0152",
+            "dataElement": "ME_DPPCNT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_DUEDATE",
+            "position": "0153",
+            "dataElement": "ME_DPDDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_RFX_NUMBER",
+            "position": "0154",
+            "dataElement": "ME_PUR_EXT_DOC_ID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_RFX_ITEM",
+            "position": "0155",
+            "dataElement": "ME_PUR_EXT_DOC_ITEM_ID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_RFX_SYSTEM",
+            "position": "0156",
+            "dataElement": "LOGSYSTEM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRM_CONTRACT_ID",
+            "position": "0157",
+            "dataElement": "SRM_CONTRACT_ID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRM_CONTRACT_ITM",
+            "position": "0158",
+            "dataElement": "SRM_CONTRACT_ITEM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BUDGET_PERIOD",
+            "position": "0159",
+            "dataElement": "FM_BUDGET_PERIOD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BLOCK_REASON_ID",
+            "position": "0160",
+            "dataElement": "BLK_REASON_ID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BLOCK_REASON_TEXT",
+            "position": "0161",
+            "dataElement": "BLK_REASON_TXT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SPE_CRM_FKREL",
+            "position": "0162",
+            "dataElement": "/SPE/FKREL_CRM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DATE_QTY_FIXED",
+            "position": "0163",
+            "dataElement": "ME_FIXMG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GI_BASED_GR",
+            "position": "0164",
+            "dataElement": "WABWE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPTYPE",
+            "position": "0165",
+            "dataElement": "VERSART",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERLOC",
+            "position": "0166",
+            "dataElement": "HANDOVER_LOC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TC_AUT_DET",
+            "position": "0167",
+            "dataElement": "J_1BTC_AUT_DET",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MANUAL_TC_REASON",
+            "position": "0168",
+            "dataElement": "J_1BMANUAL_TC_REASON",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FISCAL_INCENTIVE",
+            "position": "0169",
+            "dataElement": "J_1BFISCAL_INCENTIVE_CODE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FISCAL_INCENTIVE_ID",
+            "position": "0170",
+            "dataElement": "J_1BFISCAL_INCENTIVE_ID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_SUBJECT_ST",
+            "position": "0171",
+            "dataElement": "J_1BTC_TAX_SUBJECT_ST",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_SEGMENT",
+            "position": "0172",
+            "dataElement": "SGT_RCAT16",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STK_SEGMENT",
+            "position": "0173",
+            "dataElement": "SGT_SCAT16",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SF_TXJCD",
+            "position": "0174",
+            "dataElement": "J_1BCTE_SJCD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0175",
+            "dataElement": "INCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0176",
+            "dataElement": "INCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_LONG",
+            "position": "0177",
+            "dataElement": "MATNR40",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_LONG",
+            "position": "0178",
+            "dataElement": "EMATNR40",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SERVICEPERFORMER",
+            "position": "0179",
+            "dataElement": "SERVICEPERFORMER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRODUCTTYPE",
+            "position": "0180",
+            "dataElement": "PRODUCT_TYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STARTDATE",
+            "position": "0181",
+            "dataElement": "MMPUR_SERVPROC_PERIOD_START",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ENDDATE",
+            "position": "0182",
+            "dataElement": "MMPUR_SERVPROC_PERIOD_END",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_SEG_LONG",
+            "position": "0183",
+            "dataElement": "SGT_RCAT40",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STK_SEG_LONG",
+            "position": "0184",
+            "dataElement": "SGT_SCAT40",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXPECTED_VALUE",
+            "position": "0185",
+            "dataElement": "BAPICUREXT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LIMIT_AMOUNT",
+            "position": "0186",
+            "dataElement": "BAPICUREXT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REF",
+            "position": "0187",
+            "dataElement": "MMPUR_EXTERNALREFERENCEID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GL_ACCOUNT",
+            "position": "0188",
+            "dataElement": "SAKNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COSTCENTER",
+            "position": "0189",
+            "dataElement": "KOSTL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WBS_ELEMENT",
+            "position": "0190",
+            "dataElement": "PS_POSID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COMMODITY_CODE",
+            "position": "0191",
+            "dataElement": "/SAPSLL/COMCO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_SERVICE_CODE",
+            "position": "0192",
+            "dataElement": "/SAPSLL/ISVCO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONTRACT_FOR_LIMIT",
+            "position": "0193",
+            "dataElement": "CTR_FOR_LIMIT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXCALCDATE",
+            "position": "0194",
+            "dataElement": "TXDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXCOUNTRY",
+            "position": "0195",
+            "dataElement": "FOT_TAX_COUNTRY",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_PCS",
+            "position": "0196",
+            "dataElement": "MMPUR_PC_STATUS_PCS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_PMA",
+            "position": "0197",
+            "dataElement": "MMPUR_PC_STATUS_PMA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_DG",
+            "position": "0198",
+            "dataElement": "MMPUR_PC_STATUS_DG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STATUS_SDS",
+            "position": "0199",
+            "dataElement": "MMPUR_PC_STATUS_SDS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TXS_BUSINESS_TRANSACTION",
+            "position": "0200",
+            "dataElement": "TXS_BUSINESS_TRANSACTION",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TXS_USAGE_PURPOSE",
+            "position": "0201",
+            "dataElement": "TXS_USAGE_PURPOSE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "POITEMX",
+        "associatedType": "BAPIMEPOITEMX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Item Data (Change Parameter)",
+        "structureFields": [
+          {
+            "field": "PO_ITEM",
+            "position": "0001",
+            "dataElement": "EBELP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_ITEMX",
+            "position": "0002",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0003",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHORT_TEXT",
+            "position": "0004",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL",
+            "position": "0005",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_EXTERNAL",
+            "position": "0006",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_GUID",
+            "position": "0007",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_VERSION",
+            "position": "0008",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL",
+            "position": "0009",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_EXTERNAL",
+            "position": "0010",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_GUID",
+            "position": "0011",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_VERSION",
+            "position": "0012",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PLANT",
+            "position": "0013",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STGE_LOC",
+            "position": "0014",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TRACKINGNO",
+            "position": "0015",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATL_GROUP",
+            "position": "0016",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INFO_REC",
+            "position": "0017",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VEND_MAT",
+            "position": "0018",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUANTITY",
+            "position": "0019",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_UNIT",
+            "position": "0020",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_UNIT_ISO",
+            "position": "0021",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDERPR_UN",
+            "position": "0022",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDERPR_UN_ISO",
+            "position": "0023",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONV_NUM1",
+            "position": "0024",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONV_DEN1",
+            "position": "0025",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_PRICE",
+            "position": "0026",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICE_UNIT",
+            "position": "0027",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_PR_TIME",
+            "position": "0028",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_CODE",
+            "position": "0029",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BON_GRP1",
+            "position": "0030",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUAL_INSP",
+            "position": "0031",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INFO_UPD",
+            "position": "0032",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRNT_PRICE",
+            "position": "0033",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EST_PRICE",
+            "position": "0034",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REMINDER1",
+            "position": "0035",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REMINDER2",
+            "position": "0036",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REMINDER3",
+            "position": "0037",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "OVER_DLV_TOL",
+            "position": "0038",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNLIMITED_DLV",
+            "position": "0039",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNDER_DLV_TOL",
+            "position": "0040",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VAL_TYPE",
+            "position": "0041",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_MORE_GR",
+            "position": "0042",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FINAL_INV",
+            "position": "0043",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM_CAT",
+            "position": "0044",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ACCTASSCAT",
+            "position": "0045",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DISTRIB",
+            "position": "0046",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PART_INV",
+            "position": "0047",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_IND",
+            "position": "0048",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_NON_VAL",
+            "position": "0049",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "IR_IND",
+            "position": "0050",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FREE_ITEM",
+            "position": "0051",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_BASEDIV",
+            "position": "0052",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ACKN_REQD",
+            "position": "0053",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ACKNOWL_NO",
+            "position": "0054",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGREEMENT",
+            "position": "0055",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AGMT_ITEM",
+            "position": "0056",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPPING",
+            "position": "0057",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CUSTOMER",
+            "position": "0058",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COND_GROUP",
+            "position": "0059",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_DISCT",
+            "position": "0060",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PLAN_DEL",
+            "position": "0061",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_WEIGHT",
+            "position": "0062",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WEIGHTUNIT",
+            "position": "0063",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WEIGHTUNIT_ISO",
+            "position": "0064",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXJURCODE",
+            "position": "0065",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CTRL_KEY",
+            "position": "0066",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONF_CTRL",
+            "position": "0067",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REV_LEV",
+            "position": "0068",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUND",
+            "position": "0069",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUNDS_CTR",
+            "position": "0070",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CMMT_ITEM",
+            "position": "0071",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICEDATE",
+            "position": "0072",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICE_DATE",
+            "position": "0073",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GROSS_WT",
+            "position": "0074",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUME",
+            "position": "0075",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT",
+            "position": "0076",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VOLUMEUNIT_ISO",
+            "position": "0077",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0078",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0079",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRE_VENDOR",
+            "position": "0080",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VEND_PART",
+            "position": "0081",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HL_ITEM",
+            "position": "0082",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_TO_DATE",
+            "position": "0083",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPP_VENDOR",
+            "position": "0084",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SC_VENDOR",
+            "position": "0085",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "KANBAN_IND",
+            "position": "0086",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ERS",
+            "position": "0087",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "R_PROMO",
+            "position": "0088",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "POINTS",
+            "position": "0089",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "POINT_UNIT",
+            "position": "0090",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "POINT_UNIT_ISO",
+            "position": "0091",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SEASON",
+            "position": "0092",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SEASON_YR",
+            "position": "0093",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BON_GRP2",
+            "position": "0094",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BON_GRP3",
+            "position": "0095",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SETT_ITEM",
+            "position": "0096",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MINREMLIFE",
+            "position": "0097",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RFQ_NO",
+            "position": "0098",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RFQ_ITEM",
+            "position": "0099",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_NO",
+            "position": "0100",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_ITEM",
+            "position": "0101",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC",
+            "position": "0102",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_ITEM",
+            "position": "0103",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SI_CAT",
+            "position": "0104",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RET_ITEM",
+            "position": "0105",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "AT_RELEV",
+            "position": "0106",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDER_REASON",
+            "position": "0107",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BRAS_NBM",
+            "position": "0108",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATL_USAGE",
+            "position": "0109",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MAT_ORIGIN",
+            "position": "0110",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "IN_HOUSE",
+            "position": "0111",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INDUS3",
+            "position": "0112",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INF_INDEX",
+            "position": "0113",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "UNTIL_DATE",
+            "position": "0114",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_COMPL",
+            "position": "0115",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PART_DELIV",
+            "position": "0116",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIP_BLOCKED",
+            "position": "0117",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_NAME",
+            "position": "0118",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PERIOD_IND_EXPIRATION_DATE",
+            "position": "0119",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INT_OBJ_NO",
+            "position": "0120",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PCKG_NO",
+            "position": "0121",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BATCH",
+            "position": "0122",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VENDRBATCH",
+            "position": "0123",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CALCTYPE",
+            "position": "0124",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_ROUNDING",
+            "position": "0125",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_PRICE",
+            "position": "0126",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SUPPL_STLOC",
+            "position": "0127",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRV_BASED_IV",
+            "position": "0128",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUNDS_RES",
+            "position": "0129",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RES_ITEM",
+            "position": "0130",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GRANT_NBR",
+            "position": "0131",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FUNC_AREA_LONG",
+            "position": "0132",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORIG_ACCEPT",
+            "position": "0133",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ALLOC_TBL",
+            "position": "0134",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ALLOC_TBL_ITEM",
+            "position": "0135",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRC_STOCK_TYPE",
+            "position": "0136",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_REJ",
+            "position": "0137",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_SALES_ORDER_NO",
+            "position": "0138",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_SALES_ORDER_ITEM_NO",
+            "position": "0139",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_REF_SALES_ORDER_NO",
+            "position": "0140",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CRM_REF_SO_ITEM_NO",
+            "position": "0141",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRIO_URGENCY",
+            "position": "0142",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRIO_REQUIREMENT",
+            "position": "0143",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REASON_CODE",
+            "position": "0144",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LONG_ITEM_NUMBER",
+            "position": "0145",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXTERNAL_SORT_NUMBER",
+            "position": "0146",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXTERNAL_HIERARCHY_TYPE",
+            "position": "0147",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "RETENTION_PERCENTAGE",
+            "position": "0148",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_TYPE",
+            "position": "0149",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_AMOUNT",
+            "position": "0150",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_PERCENT",
+            "position": "0151",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOWNPAY_DUEDATE",
+            "position": "0152",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_RFX_NUMBER",
+            "position": "0153",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_RFX_ITEM",
+            "position": "0154",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_RFX_SYSTEM",
+            "position": "0155",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRM_CONTRACT_ID",
+            "position": "0156",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SRM_CONTRACT_ITM",
+            "position": "0157",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BUDGET_PERIOD",
+            "position": "0158",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BLOCK_REASON_ID",
+            "position": "0159",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BLOCK_REASON_TEXT",
+            "position": "0160",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SPE_CRM_FKREL",
+            "position": "0161",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DATE_QTY_FIXED",
+            "position": "0162",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GI_BASED_GR",
+            "position": "0163",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIPTYPE",
+            "position": "0164",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERLOC",
+            "position": "0165",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TC_AUT_DET",
+            "position": "0166",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MANUAL_TC_REASON",
+            "position": "0167",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FISCAL_INCENTIVE",
+            "position": "0168",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FISCAL_INCENTIVE_ID",
+            "position": "0169",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_SUBJECT_ST",
+            "position": "0170",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_SEGMENT",
+            "position": "0171",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STK_SEGMENT",
+            "position": "0172",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SF_TXJCD",
+            "position": "0173",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0174",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0175",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_LONG",
+            "position": "0176",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EMATERIAL_LONG",
+            "position": "0177",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SERVICEPERFORMER",
+            "position": "0178",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRODUCTTYPE",
+            "position": "0179",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STARTDATE",
+            "position": "0180",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ENDDATE",
+            "position": "0181",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_SEG_LONG",
+            "position": "0182",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STK_SEG_LONG",
+            "position": "0183",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXPECTED_VALUE",
+            "position": "0184",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LIMIT_AMOUNT",
+            "position": "0185",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_REF",
+            "position": "0186",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GL_ACCOUNT",
+            "position": "0187",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COSTCENTER",
+            "position": "0188",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WBS_ELEMENT",
+            "position": "0189",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COMMODITY_CODE",
+            "position": "0190",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INTRASTAT_SERVICE_CODE",
+            "position": "0191",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONTRACT_FOR_LIMIT",
+            "position": "0192",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXCALCDATE",
+            "position": "0193",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXCOUNTRY",
+            "position": "0194",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TXS_BUSINESS_TRANSACTION",
+            "position": "0195",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TXS_USAGE_PURPOSE",
+            "position": "0196",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "POLIMITS",
+        "associatedType": "BAPIESUHC",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "External Services: Limits",
+        "structureFields": []
+      },
+      {
+        "parameter": "POPARTNER",
+        "associatedType": "BAPIEKKOP",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Partner",
+        "structureFields": []
+      },
+      {
+        "parameter": "POSCHEDULE",
+        "associatedType": "BAPIMEPOSCHEDULE",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Delivery Schedule",
+        "structureFields": [
+          {
+            "field": "PO_ITEM",
+            "position": "0001",
+            "dataElement": "EBELP",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SCHED_LINE",
+            "position": "0002",
+            "dataElement": "ETENR",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DEL_DATCAT_EXT",
+            "position": "0003",
+            "dataElement": "LPEIN",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIVERY_DATE",
+            "position": "0004",
+            "dataElement": "EEIND",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUANTITY",
+            "position": "0005",
+            "dataElement": "ETMEN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_TIME",
+            "position": "0006",
+            "dataElement": "LZEIT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STAT_DATE",
+            "position": "0007",
+            "dataElement": "SLFDT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_NO",
+            "position": "0008",
+            "dataElement": "BANFN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_ITEM",
+            "position": "0009",
+            "dataElement": "BNFPO",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_DATE",
+            "position": "0010",
+            "dataElement": "ETBDT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROUTESCHED",
+            "position": "0011",
+            "dataElement": "AULWE",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MS_DATE",
+            "position": "0012",
+            "dataElement": "MBDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MS_TIME",
+            "position": "0013",
+            "dataElement": "MBUHR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOAD_DATE",
+            "position": "0014",
+            "dataElement": "LDDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOAD_TIME",
+            "position": "0015",
+            "dataElement": "LDUHR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TP_DATE",
+            "position": "0016",
+            "dataElement": "TDDAT_D",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TP_TIME",
+            "position": "0017",
+            "dataElement": "TDUHR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GI_DATE",
+            "position": "0018",
+            "dataElement": "WADAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GI_TIME",
+            "position": "0019",
+            "dataElement": "WAUHR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0020",
+            "dataElement": "ELOEK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_CLOSED",
+            "position": "0021",
+            "dataElement": "EBAKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_END_DATE",
+            "position": "0022",
+            "dataElement": "ELDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_END_TIME",
+            "position": "0023",
+            "dataElement": "ELUHR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COM_QTY",
+            "position": "0024",
+            "dataElement": "MNG06",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COM_DATE",
+            "position": "0025",
+            "dataElement": "DAT05",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GEO_ROUTE",
+            "position": "0026",
+            "dataElement": "/SPE/DE_ROUTE_ID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERDATE",
+            "position": "0027",
+            "dataElement": "HANDOVER_DATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERTIME",
+            "position": "0028",
+            "dataElement": "HANDOVER_TIME",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "POSCHEDULEX",
+        "associatedType": "BAPIMEPOSCHEDULX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Delivery Schedule (Change Parameter)",
+        "structureFields": [
+          {
+            "field": "PO_ITEM",
+            "position": "0001",
+            "dataElement": "EBELP",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SCHED_LINE",
+            "position": "0002",
+            "dataElement": "ETENR",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_ITEMX",
+            "position": "0003",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SCHED_LINEX",
+            "position": "0004",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DEL_DATCAT_EXT",
+            "position": "0005",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIVERY_DATE",
+            "position": "0006",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "QUANTITY",
+            "position": "0007",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_TIME",
+            "position": "0008",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STAT_DATE",
+            "position": "0009",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_NO",
+            "position": "0010",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PREQ_ITEM",
+            "position": "0011",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PO_DATE",
+            "position": "0012",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROUTESCHED",
+            "position": "0013",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MS_DATE",
+            "position": "0014",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MS_TIME",
+            "position": "0015",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOAD_DATE",
+            "position": "0016",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOAD_TIME",
+            "position": "0017",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TP_DATE",
+            "position": "0018",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TP_TIME",
+            "position": "0019",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GI_DATE",
+            "position": "0020",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GI_TIME",
+            "position": "0021",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELETE_IND",
+            "position": "0022",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_CLOSED",
+            "position": "0023",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_END_DATE",
+            "position": "0024",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_END_TIME",
+            "position": "0025",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COM_QTY",
+            "position": "0026",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COM_DATE",
+            "position": "0027",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GEO_ROUTE",
+            "position": "0028",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERDATE",
+            "position": "0029",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HANDOVERTIME",
+            "position": "0030",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "POSERVICES",
+        "associatedType": "BAPIESLLC",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "External Services: Service Lines",
+        "structureFields": []
+      },
+      {
+        "parameter": "POSERVICESTEXT",
+        "associatedType": "BAPIESLLTX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "External Services: Service Long Text",
+        "structureFields": []
+      },
+      {
+        "parameter": "POSHIPPING",
+        "associatedType": "BAPIITEMSHIP",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "BAPI Shipping Data for Stock Transport Orders",
+        "structureFields": []
+      },
+      {
+        "parameter": "POSHIPPINGEXP",
+        "associatedType": "BAPIMEPOSHIPPEXP",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Export Structure for Shipping Data",
+        "structureFields": []
+      },
+      {
+        "parameter": "POSHIPPINGX",
+        "associatedType": "BAPIITEMSHIPX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "BAPI Shipping Data Change Parameter",
+        "structureFields": []
+      },
+      {
+        "parameter": "POSRVACCESSVALUES",
+        "associatedType": "BAPIESKLC",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "External Services: Account Assignment Distribution for Service Lines",
+        "structureFields": []
+      },
+      {
+        "parameter": "POTEXTHEADER",
+        "associatedType": "BAPIMEPOTEXTHEADER",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Header Texts",
+        "structureFields": []
+      },
+      {
+        "parameter": "POTEXTITEM",
+        "associatedType": "BAPIMEPOTEXT",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Item Texts",
+        "structureFields": []
+      },
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRET2",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Return Parameter",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARAMETER",
+            "position": "0011",
+            "dataElement": "BAPI_PARAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROW",
+            "position": "0012",
+            "dataElement": "BAPI_LINE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FIELD",
+            "position": "0013",
+            "dataElement": "BAPI_FLD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SYSTEM",
+            "position": "0014",
+            "dataElement": "BAPILOGSYS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "SERIALNUMBER",
+        "associatedType": "BAPIMEPOSERIALNO",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Serial Numbers in Purchase Order BAPIs",
+        "structureFields": []
+      },
+      {
+        "parameter": "SERIALNUMBERX",
+        "associatedType": "BAPIMEPOSERIALNOX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Change Parameter: Serial Number in Purchase Order BAPIs",
+        "structureFields": []
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "SIMULATION_ONLY",
+    "request": {
+      "TESTRUN": "X",
+      "POHEADER": {
+        "DOC_TYPE": "ZP06",
+        "PURCH_ORG": "1000",
+        "PUR_GROUP": "801",
+        "SUPPL_PLNT": "<DEV supplying plant>"
+      },
+      "POHEADERX": {
+        "DOC_TYPE": "X",
+        "PURCH_ORG": "X",
+        "PUR_GROUP": "X",
+        "SUPPL_PLNT": "X"
+      },
+      "POITEM": [
+        {
+          "PO_ITEM": "00010",
+          "MATERIAL": "<DEV material>",
+          "PLANT": "<DEV receiving plant>",
+          "QUANTITY": "<quantity>",
+          "PO_UNIT": "<unit>",
+          "ITEM_CAT": "7"
+        }
+      ],
+      "POITEMX": [
+        {
+          "PO_ITEM": "00010",
+          "PO_ITEMX": "X",
+          "MATERIAL": "X",
+          "PLANT": "X",
+          "QUANTITY": "X",
+          "PO_UNIT": "X",
+          "ITEM_CAT": "X"
+        }
+      ],
+      "POSCHEDULE": [
+        {
+          "PO_ITEM": "00010",
+          "SCHED_LINE": "0001",
+          "DELIVERY_DATE": "<YYYYMMDD>",
+          "QUANTITY": "<quantity>"
+        }
+      ],
+      "POSCHEDULEX": [
+        {
+          "PO_ITEM": "00010",
+          "SCHED_LINE": "0001",
+          "PO_ITEMX": "X",
+          "SCHED_LINEX": "X",
+          "DELIVERY_DATE": "X",
+          "QUANTITY": "X"
+        }
+      ]
+    },
+    "successEvidence": "RETURN contains no E/A messages in TESTRUN; no purchase order is committed."
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_GOODSMVT_CANCEL",
+    "functionGroup": "MB_BUS2017",
+    "remoteEnabled": true,
+    "releaseStatus": "Released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "DOCUMENTHEADER_TEXT",
+        "associatedType": "BAPI2017_GM_HEAD_02-HEADER_TXT",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Document Header Text",
+        "structureFields": []
+      },
+      {
+        "parameter": "GOODSMVT_PR_UNAME",
+        "associatedType": "BAPI2017_GM_HEAD_01-PR_UNAME",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "User Name for Printing Goods Receipt/Issue Slip",
+        "structureFields": [
+          {
+            "field": "PSTNG_DATE",
+            "position": "0001",
+            "dataElement": "BUDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_DATE",
+            "position": "0002",
+            "dataElement": "BLDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC_NO",
+            "position": "0003",
+            "dataElement": "XBLNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_OF_LADING",
+            "position": "0004",
+            "dataElement": "FRBNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GR_GI_SLIP_NO",
+            "position": "0005",
+            "dataElement": "XABLN",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PR_UNAME",
+            "position": "0006",
+            "dataElement": "UNAME",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HEADER_TXT",
+            "position": "0007",
+            "dataElement": "BKTXT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VER_GR_GI_SLIP",
+            "position": "0008",
+            "dataElement": "WEVER",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "VER_GR_GI_SLIPX",
+            "position": "0009",
+            "dataElement": "BAPIUPDATE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXT_WMS",
+            "position": "0010",
+            "dataElement": "BFWMS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC_NO_LONG",
+            "position": "0011",
+            "dataElement": "XBLNR_LONG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_OF_LADING_LONG",
+            "position": "0012",
+            "dataElement": "FRBNR_LONG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BAR_CODE",
+            "position": "0013",
+            "dataElement": "SAEBARCODE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "GOODSMVT_PSTNG_DATE",
+        "associatedType": "BAPI2017_GM_HEAD_02-PSTNG_DATE",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Posting Date",
+        "structureFields": []
+      },
+      {
+        "parameter": "MATDOCUMENTYEAR",
+        "associatedType": "BAPI2017_GM_HEAD_02-DOC_YEAR",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Material Document Year",
+        "structureFields": []
+      },
+      {
+        "parameter": "MATERIALDOCUMENT",
+        "associatedType": "BAPI2017_GM_HEAD_02-MAT_DOC",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Number of a Material Document",
+        "structureFields": []
+      }
+    ],
+    "EXPORT": [
+      {
+        "parameter": "GOODSMVT_HEADRET",
+        "associatedType": "BAPI2017_GM_HEAD_RET",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": [
+          {
+            "field": "MAT_DOC",
+            "position": "0001",
+            "dataElement": "MBLNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_YEAR",
+            "position": "0002",
+            "dataElement": "MJAHR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "GOODSMVT_MATDOCITEM",
+        "associatedType": "BAPI2017_GM_ITEM_04",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Items That Are To be Reversed",
+        "structureFields": []
+      },
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRET2",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Return Messages",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARAMETER",
+            "position": "0011",
+            "dataElement": "BAPI_PARAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROW",
+            "position": "0012",
+            "dataElement": "BAPI_LINE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FIELD",
+            "position": "0013",
+            "dataElement": "BAPI_FLD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SYSTEM",
+            "position": "0014",
+            "dataElement": "BAPILOGSYS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "INTERFACE_CAPTURED_NOT_EXECUTED",
+    "request": "<build from exact interface below using approved DEV test data>",
+    "successEvidence": "Inspect RETURN/BAPIRET* and business document state."
+  }
+}

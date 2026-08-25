@@ -1,0 +1,17 @@
+BillingDocument
+BillingDocumentItem
+BillingDocumentReleaseRequested
+BillToParty
+BillToPartyAddressText
+BillToPartyName
+Message
+MessageId
+MessageType
+NewBillToPartyAddressId
+OldBillToPartyAddressId
+ReferenceSDDocumentItem
+RefSDDocWithInvalidPartner
+RequestedBillingDocumentDate
+RequestedBillingDocumentType
+SeparateBilllingDocumentsRequested
+SnapshotRequested

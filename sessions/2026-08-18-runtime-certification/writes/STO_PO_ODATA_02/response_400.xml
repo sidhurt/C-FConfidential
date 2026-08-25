@@ -1,0 +1,36 @@
+<!-- POST /sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder
+     DS4/200 · user QNOVATE8 · 2026-08-19 · HTTP 400 Bad Request · content-length 742
+     Payload: payloads/odata/STO_PO_CREATE_UB.json (PurchaseOrderType UB, item category 7)
+     Provenance: response pane read from the Gateway Client. The client's
+     "Download to PC" menu saves the REQUEST (see request_echo.xml), not the
+     response, so the response body was taken from the rendered response pane. -->
+<error xmlns="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+<code>/IWBEP/CM_MGW_RT/022</code>
+<message xml:lang="en">Exception raised without specific error</message>
+<innererror>
+<application>
+<component_id>MM-PUR-PO</component_id>
+<service_namespace>/SAP/</service_namespace>
+<service_id>API_PURCHASEORDER_PROCESS_SRV</service_id>
+<service_version>0001</service_version>
+</application>
+<transactionid>0A054D5DDFA40020E006A84F8D827283</transactionid>
+<errordetails>
+<errordetail>
+<code>APPL_MM_PUR_PO/064</code>
+<message>Use purchase order type "Standard" ("NB") or a type copied from "NB".</message>
+<severity>error</severity>
+</errordetail>
+<errordetail>
+<code>APPL_MM_PUR_PO/065</code>
+<message>Use a supported purchase order item category for item . See long text.</message>
+<severity>error</severity>
+</errordetail>
+<errordetail>
+<code>/IWBEP/CX_MGW_BUSI_EXCEPTION</code>
+<message>Exception raised without specific error</message>
+<severity>error</severity>
+</errordetail>
+</errordetails>
+</innererror>
+</error>

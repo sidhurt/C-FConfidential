@@ -1,0 +1,9 @@
+DOMNAME	DDLANGUAGE	AS4LOCAL	VALPOS	AS4VERS	DDTEXT	DOMVAL_LD	DOMVAL_HD	DOMVALUE_L
+FBGST	D	A	0001	0000	nicht relevant			
+FBGST	D	A	0002	0000	nicht bearbeitet			A
+FBGST	D	A	0003	0000	teilweise bearbeitet			B
+FBGST	D	A	0004	0000	vollständig bearbeitet			C
+FBGST	E	A	0001	0000	Not Relevant			
+FBGST	E	A	0002	0000	Not Processed			A
+FBGST	E	A	0003	0000	Partially Processed			B
+FBGST	E	A	0004	0000	Completely Processed			C

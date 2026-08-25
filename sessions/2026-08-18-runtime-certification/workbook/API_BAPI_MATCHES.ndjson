@@ -1,0 +1,213 @@
+{"kind":"match","sheet":"Overview","address":"A1","value":"Shree Cement — C&F Agent Interface · SAP API Request/Response Specification","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A2","value":"One sheet per API. Columns C/D/E/G are RE-DERIVED FROM THE TWELVE SHEETS - the v1.7 S/C/X class taxonomy and its POST-for-reads convention are superseded. Every API is RUNTIME-UNPROVEN: no service is activated and no OData call has been made.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A6","value":"API-01","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"G6","value":"INBOUND SIDE - a goods receipt into a depot. Whether any pillar triggers its own receipt, and whether non-transfer receipts exist, is OPEN. Persisted reference model RESOLVED - the posted GR carries both the STO PO (MSEG-EBELN) and the outbound delivery (MSEG-VBELN_IM); inbound-delivery route rejected. Required CREATE-REQUEST fields runtime-unproven. BLOCKER: GoodsMovementCode unconfirmed.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A7","value":"API-02","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A8","value":"API-03","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A9","value":"API-04","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"F9","value":"no standard OData service found - discovery gap","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"G9","value":"TRADE / NON-TRADE / STO. PROVEN STANDARD-ODATA DISCOVERY GAP - zero candidates across the full catalogue screen. Existing freight route still to IDENTIFY; BAPI_SHIPMENT_COST_ESTIMATE existence and suitability UNVERIFIED; narrow custom endpoint justified only if neither proves callable.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A10","value":"API-05","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A11","value":"API-06","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A12","value":"API-07","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A13","value":"API-08","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A14","value":"API-09","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A15","value":"API-10","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A17","value":"Candidate interfaces — outside the manager-shared API-01…API-10 baseline","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A18","value":"API-11","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A19","value":"API-12","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A22","value":"• API-01 retains all authoritative live checks inside Submit MIGO. Removing Check MIGO removes only the standalone read contract, not posting validation.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A23","value":"• API-02 creates the SAP outbound delivery. API-12 is deliberately separate because it changes an already-created DI and has different preconditions and idempotency semantics.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A24","value":"• API-03 remains a provisional orchestration contract. The portal's one Generate Billing Documents journey does not prove one SAP LUW or one internal operation.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A25","value":"• API-05 is the sole stock-availability / physical-inventory read. It does not post adjustments; SAP revalidates live stock and batch eligibility before PGI.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A26","value":"- API-08, API-09 and API-10 remain independent STO read contracts. The v1.7 ZCNF_STO_SRV grouping is superseded: API-08 -> API_PURCHASEORDER_PROCESS_SRV, API-09 -> API_OUTBOUND_DELIVERY_SRV;v=2, API-10 -> API_BILLING_DOCUMENT_SRV. Confirm CPI pull versus S/4 push and reconcile the real-time row with Option C's Datasphere feed.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A27","value":"• Candidate APIs retain their own numbers so the manager-shared API-01…API-10 sequence stays stable and traceable to the functional interface screenshot.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A30","value":"ALL TWELVE sheets have been REWRITTEN as standard-first contracts. Each specifies the actual service or route, the operation/entity/action, request and response properties, the SAP field mapping, standard coverage, the v1.7 fields that do NOT exist in the standard contract, derivations, genuine gaps with named owners, activation status, required positive and negative tests, and a final disposition.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A31","value":"The speculative ZCNF_* custom services are gone. v1.7's envelope fields (RequestId, IsReplay, SourceSystem, MessageCode, TotalCount, HasMore) are no longer specified as SAP fields; each is listed on its sheet as a named gap with an owner - almost always CPI/T2.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A34","value":"Honest headline: API-05 and API-08 are the cleanest standard reads. API-01, API-02, API-09, API-11 and API-12 are standard with real adapter gaps. API-10 is conditional on $metadata. API-03 is a SIX-STAGE composition (stages A-F), NOT one SAP API. API-04 is a proven standard-OData DISCOVERY gap. API-06 and API-07 are existing DigiGST/EY routes that must be traced, not reinvented.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A35","value":"API-04, API-06 and API-07 returned ZERO candidate rows across the full 2,626-project SEGW catalogue screen. That absence is the evidence for their disposition, not a gap in the analysis.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A36","value":"Evidence: read-only SAP GUI trace of QS4 client 700, 2026-08-16, plus the SEGW design-time extracts of 14-15 Aug (SRC-SYS-20260814-01, SRC-SYS-20260815-01..16). OData entity types, properties and function-import signatures for the screened projects are LOCALLY EXTRACTED design-time evidence, not documentation. What remains unproven is RUNTIME: Gateway registration, activation, ICF, authorization and actual call behaviour. No OData call has been made and no service is activated.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A44","value":"API-01 GoodsMovementCode is UNCONFIRMED and mandatory. The goods-receipt posting cannot be built without it. Owner: Functional/business (MM).","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A45","value":"API-02 creation path is UNDEFINED - VL10X (2026 documents) versus custom ZLE020 (2024); neither is VL01N. Owner: Functional/business + ABAP/SAP.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A46","value":"API-02 Trade/Non-trade is CONFIRMED business scope but NOT yet field-mapped - the sales-order predecessor variant has not been traced in QS4. This is an evidence gap in this pass, not a descope. Owner: ABAP/SAP to trace and map.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A47","value":"API-10 AUBEL -> SalesDocument is UNVERIFIED. VBRP-AUBEL holds a PURCHASE order, but the released model names that property SalesDocument. Load-bearing for the STO-invoice join and must be proven against local $metadata before use. Owner: ABAP/SAP.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A48","value":"API-11 RequisitionNumber is FUNCTIONALLY OPEN - neither EKPO-BEDNR nor PurchaseRequisition is settled from one sample. Owner: Functional/business.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A49","value":"API-09 STO discriminator: DeliveryDocumentType = ZNL leads, category V supports. ZNL population validation remains OPEN, and delta is exposed at DATE grain only against a feed described as real-time. Owner: Functional/business + CPI/T2.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A54","value":"API-02, API-03, API-04, API-05, API-06, API-07 and API-12 sit on that shared spine and serve all three pillars. API-08, API-09, API-10 and API-11 are STO-specific. API-01 is the inbound side - receiving stock into a depot - and is not one of the three outbound pillars.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A59","value":"COLUMN CONVENTION - read this before reading any request or response table","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A64","value":"Every request or response property in this workbook carries FIVE separable claims. They have different evidence and must not be collapsed into one word.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A74","value":"CLOSED - API-12 writable property: A_OutbDeliveryItemType.ActualDeliveryQuantity, Edm.Decimal(13,3), CREATABLE=X and UPDATABLE=X, ABAP field ACTUALDELIVERYQUANTITY. Also found: Batch is UPDATABLE but NOT CREATABLE, so batch cannot be set on the create call.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A75","value":"CLOSED - API-09 discriminator: A_OutbDeliveryHeaderType.DeliveryDocumentType, Edm.String(4), FILTERABLE=X, ABAP field DELIVERYDOCUMENTTYPE. The ZNL filter is valid. ReceivingPlant is also on the header and filterable.","formula":null,"match":"value"}
+{"kind":"match","sheet":"Overview","address":"A76","value":"STILL OPEN - API-10 AUBEL: A_BillingDocumentItemType.SalesDocument exists, Edm.String(10), ABAP field SALESDOCUMENT. That is the CDS VIEW field name, NOT the source table field, so it does NOT prove the property carries VBRP-AUBEL. This was predicted to close from the extract and did not. It needs the CDS view definition (read-only SE11/DDLS) or a runtime read.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"A1","value":"API-01 - Submit MIGO","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"B21","value":"OData V2","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"B22","value":"MMIM_MATDOC_SRV, already registered and read-only, if the create response does not return line numbers.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"A28","value":"4. REQUEST PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"A29","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"A42","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"A43","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"A59","value":"RequestId / IsReplay","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"A60","value":"SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"B61","value":"Not returned when you post. These have to be read separately from the order or delivery history. Working them out from the posting response would be guessing.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-01 Submit MIGO","address":"B84","value":"Try to receive more than is outstanding and confirm SAP refuses. Try an invalid storage location and confirm SAP refuses. Try a closed period and confirm SAP refuses. Post the same request twice and confirm you get two documents.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"A1","value":"API-02 - Create DI","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"B17","value":"/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"B18","value":"OData V2","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"A28","value":"4. REQUEST PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"A29","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"A36","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"A37","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"A64","value":"RequestId / IsReplay","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"B64","value":"SAP will happily create a second delivery from a repeated request.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-02 Create DI","address":"A65","value":"SourceSystem / RequestedBy / CrmOrderCode","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"A1","value":"API-03 - Create Invoice / Billing Documents","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"C17","value":"OData V2 function imports","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"D18","value":"Three sub-steps per the 14 Aug sequence: create shipment, calculate shipment cost, RELEASE the cost. Release is a distinct step and is a precondition for PGI in that account. See API-04. No SEGW candidate exists.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"C19","value":"OData V2 function import","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"C20","value":"OData V2 function import","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"C21","value":"OData V2 GET","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"D21","value":"Released, NOT activated. V2 has NO creatable entity set - read/cancel/PDF only; creation exists only on the OData V4 successor.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"D22","value":"EXISTING CLIENT ROUTE - installed/configured footprint observed, operational use NOT evidenced. See API-06/API-07.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"C28","value":"Parameters: ReferenceSDDocument + ReferenceSDDocumentCategory + ReferenceSDDocumentItem; BillingDocumentReleaseRequested.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"A31","value":"4. REQUEST PROPERTIES BY STAGE","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"B44","value":"BillingDocumentReleaseRequested","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"A47","value":"5. RESPONSE PROPERTIES BY STAGE","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"B68","value":"Shipment, shipment cost and cost release (stage B). Statutory generation (stage F) is an existing route footprint, not a standard OData service and not evidenced in operation.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"A72","value":"RequestId / IsReplay","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"A74","value":"SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"B75","value":"Per-stage OData error payloads only; no unified portal code.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"B81","value":"Live stock and batch eligibility before PGI. A stale batch selection must fail at PGI, not be trusted from the request.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"B89","value":"SD_CUSTOMER_INVOICES_CREATE is application-internal. If architecture rejects it, validate the OData V4 billing successor or BAPI_BILLINGDOC_CREATEMULTIPLE and expose only the narrow missing command.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"B112","value":"Six-stage composition, A to F. STANDARD + CPI/T2 ADAPTER for stages A, C and E. EXISTING CLIENT ROUTE for stage F. PROVEN STANDARD-ODATA DISCOVERY GAP for stage B. RUNTIME-UNPROVEN throughout.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-03 Invoice Create","address":"B114","value":"sessions/2026-08-15-standard-api-discovery/CNF_STANDARD_API_MATRIX.tsv (API-03 rows); OUTBOUND_DELIVERY_DELTA.md; deliverables/CNF_STANDARD_API_SOLUTION_AND_TEST_PLAN.md; SRC-MTG-20260814-01; STO evidence ","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"A1","value":"API-04 - Shipment Calculation","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B2","value":"Read - freight estimate for an existing DI - NO STANDARD ODATA SERVICE FOUND IN THE CATALOGUE SCREEN","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B3","value":"v1.8 standard-first result. PROVEN STANDARD-ODATA DISCOVERY GAP - a discovery outcome, not an unfinished specification.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"A16","value":"Standard OData","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B16","value":"NONE. The full local SEGW catalogue was screened and API-04 produced ZERO candidate rows in CNF_STANDARD_API_MATRIX.tsv. That is the evidence, not an omission.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B17","value":"BAPI_SHIPMENT_COST_ESTIMATE - candidate fallback. Existence and suitability in THIS system are UNVERIFIED: it has not been located, inspected or executed. Verify in SE37 before relying on it.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B22","value":"BAPI_SHIPMENT_COST_ESTIMATE - inputs to confirm in SE37; no OData entity exists.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"A26","value":"4. REQUEST PROPERTIES - TARGET CONTRACT IF A NARROW ENDPOINT IS BUILT","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"A33","value":"5. RESPONSE PROPERTIES - TARGET CONTRACT","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B47","value":"ZERO. No released or registered OData service closes any part of this requirement.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B50","value":"There is no standard contract to be absent from. RequestId, SourceSystem, RequestedBy, Status, MessageCode and Message would be envelope fields on any endpoint that is eventually built.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B60","value":"First confirm BAPI_SHIPMENT_COST_ESTIMATE exists and is suitable in this system, then execute it in SE37 against an approved representative delivery and capture inputs, outputs and error behaviour.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"A65","value":"OData","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B66","value":"Existence and suitability UNVERIFIED. Not located, not inspected, not executed; no SE37 run has been performed.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B69","value":"SE37 execution of BAPI_SHIPMENT_COST_ESTIMATE for a configured DI and transporter returning a plausible amount and currency.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B73","value":"PROVEN STANDARD-ODATA DISCOVERY GAP. RUNTIME-UNPROVEN. Not yet classified as PROVEN CUSTOM GAP - that requires both the existing freight route and the BAPI to be disproven as callable.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B74","value":"(1) PROVEN STANDARD-ODATA DISCOVERY GAP - no credible released SEGW integration service closes this requirement. (2) An existing client freight route must still be IDENTIFIED. (3) BAPI_SHIPMENT_COST_ESTIMATE must still be VERIFIED in SE37 - existence and suitability unverified. (4) A narrow custom ABAP endpoint is justified ONLY if neither route proves callable.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-04 Shipment Cost","address":"B75","value":"CNF_STANDARD_API_MATRIX.tsv contains ZERO rows for API-04 across the full catalogue screen. CNF_FULL_CATALOG_DISCOVERY_REPORT.md; solution plan section 3. STO delivery evidence ","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"A1","value":"API-05 - Stock Availability","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"B13","value":"This is BOOK STOCK. It is NOT ATP availability, NOT stock ageing, and NOT the DI-context batch determination that belongs to API-03.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"B17","value":"OData V2 - GET","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"A27","value":"4. REQUEST PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"A28","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"A34","value":"$filter / $inlinecount / paging - - No Standard OData query options.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"A36","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"A37","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"A59","value":"RequestId / SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"B60","value":"OData ","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"D60","value":" and error payload; portal shaping sits outside SAP.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"B62","value":"Map to standard OData paging, but the page-size policy is a caller concern.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"B67","value":"This read does not reserve stock. Batch eligibility is revalidated at PGI inside API-03.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-05 Stock Avail","address":"B86","value":"CNF_STANDARD_API_MATRIX.tsv API-05 rows (8 requirement rows, KEEP-PRIMARY); solution plan section 3; SYSTEM_OF_RECORD_MATRIX for the ageing route.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"A1","value":"API-06 - E-Way Bill Extension","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B2","value":"Command - existing DigiGST/EY eDocument route - NOT a standard SEGW OData service","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B13","value":"CONFIRMED business policy. Reject requests made earlier than eight hours before Valid Upto, and at or after Valid Upto. There is no after-expiry window.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"A16","value":"Standard OData","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B16","value":"NONE. API-06 produced ZERO candidate rows in CNF_STANDARD_API_MATRIX.tsv across the full 2,626-project catalogue screen. Do not invent a standard SEGW API for this.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"A26","value":"4. REQUEST PROPERTIES - VALIDATED BUSINESS INPUTS","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B29","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"E29","value":"Place from which extension is requested.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B30","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B31","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B32","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B33","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B34","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B35","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B36","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"A39","value":"5. RESPONSE PROPERTIES - VALIDATED BUSINESS OUTPUTS","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B42","value":"provider response","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B43","value":"provider response","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B52","value":"ZERO standard OData coverage. A provider-route footprint is installed and configured in the landscape, so this is most likely an integration/tracing problem rather than build-from-nothing - but that is an inference from configuration, not from observed operation.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"A55","value":"RequestId / IsReplay","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"A56","value":"SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B57","value":"Provider response codes must be mapped to stable portal codes.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B61","value":"Each successful extension adds exactly 24 hours. Do NOT expose ExtensionHours in the request.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B63","value":"Success is the provider's confirmed response and the persisted status - never a local assumption.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"A68","value":"Provider request/response contract","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B68","value":"Exact payload, error codes and retry semantics.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B74","value":"INSTALLED / CONFIGURED ROUTE FOOTPRINT OBSERVED - eDocument framework objects, /DIGIGST/ tables and EY_* destinations exist in the landscape. Operational use is NOT proven: no runtime request or response has been captured. Callable entry point UNTRACED.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B77","value":"One approved non-production extension request against a valid E-Way Bill inside the eight-hour window, with the provider response and persisted UpdatedValidUpto captured - only if test credentials and a valid document exist.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B78","value":"Request earlier than eight hours before expiry rejected; request at or after expiry rejected; replayed request produces NO second statutory submission.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-06 EWB Extension","address":"B83","value":"CNF_STANDARD_API_MATRIX.tsv contains ZERO rows for API-06; CNF_BUSINESS_SEARCH_DICTIONARY.tsv (DIGIGST, EDOCUMENT); D-017; 06_PREDICTIVE_SEGW_BAPI_IMPLEMENTATION_MAP.md; solution plan section 3.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"A1","value":"API-07 - Invoice Correction (transport / e-document details)","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B2","value":"Command - existing DigiGST/EY eDocument correct/cancel/regenerate route - NOT a standard SEGW OData service","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B13","value":"This is NOT a generic billing cancellation, NOT a price or quantity correction, and NOT a re-issue of the invoice. The older oversized correction payload is superseded.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"A16","value":"Standard OData","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B16","value":"NONE. API-07 produced ZERO candidate rows in CNF_STANDARD_API_MATRIX.tsv across the full catalogue screen.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B19","value":"Do not directly update VBRK, EDOCUMENT or /DIGIGST/* tables. There is no justified BAPI_BILLINGDOC_* command for this requirement.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"A26","value":"4. REQUEST PROPERTIES - THE VALIDATED CORRECTION DELTA ONLY","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B29","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B30","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B31","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B32","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B33","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B34","value":"provider payload","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"A38","value":"5. RESPONSE PROPERTIES - SEPARATE STATUTORY OUTCOMES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B47","value":"provider response","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B56","value":"ZERO standard OData coverage. A correction-capable provider-route footprint is installed and configured; its operational use is not evidenced here.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"A59","value":"RequestId / IsReplay","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"A60","value":"SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B78","value":"INSTALLED / CONFIGURED ROUTE FOOTPRINT OBSERVED - eDocument and /DIGIGST/ objects exist in the landscape. Operational use is NOT proven: no runtime request or response has been captured. Callable implementation UNPROVEN.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-07 Invoice Corr","address":"B87","value":"CNF_STANDARD_API_MATRIX.tsv contains ZERO rows for API-07; SRC-FIG-20260811-07; SRC-CPI-20260811-01; 06_PREDICTIVE_SEGW_BAPI_IMPLEMENTATION_MAP.md; solution plan section 3.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"A1","value":"API-08 - STO Orders (read)","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"B11","value":"This returns purchase orders only. Deliveries are API-09 and invoices are API-10. Keep the three apart.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"B15","value":"OData V2","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"A23","value":"4. REQUEST PROPERTIES (QUERY)","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"A24","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"A33","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"A34","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"A56","value":"CorrelationId / SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-08 STO Orders","address":"B57","value":"OData gives a row count and its own error format. Shaping that for the portal happens outside SAP.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"A1","value":"API-09 - STO Deliveries (read)","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"B14","value":"OData V2","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"A24","value":"4. REQUEST PROPERTIES (QUERY)","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"A25","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"A34","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"A35","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"A58","value":"CorrelationId / SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"B59","value":"OData gives a row count and its own error format.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"B66","value":"The delivery tables hold a full timestamp internally, but the service only exposes a date. API-08 and API-10 both expose a proper timestamp. So for deliveries you cannot ask for what changed in the last hour - only what changed today. That matters for a feed the architecture calls real-time.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-09 STO Deliveries","address":"A71","value":"Same-day changes cannot be requested","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"A1","value":"API-10 - STO Invoice (read)","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"B18","value":"OData V2","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"B19","value":"This service reads, cancels and prints. It cannot create an invoice - that belongs to API-03.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"A26","value":"4. REQUEST PROPERTIES (QUERY)","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"A27","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"A35","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"A36","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"A62","value":"CorrelationId / SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-10 STO Invoice","address":"B63","value":"OData gives a row count and its own error format.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"A1","value":"API-11 - Create STO Purchase Order","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"B10","value":"The purchase order this creates becomes the predecessor for API-02, which creates the delivery against it.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"B14","value":"OData V2","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"A21","value":"4. REQUEST PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"A22","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"A38","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"A39","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"D40","value":"The order number, e.g. 5600084208. This is what API-02 needs next.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"A58","value":"RequestId / IsReplay","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"B58","value":"SAP has no idea a request is a repeat. Send the same payload twice and you get two purchase orders. Something outside SAP has to stop that.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"A59","value":"SourceSystem / RequestedBy","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"B61","value":"There is nowhere to put it. No shipping type field is filled on EKKO or EKPO - it lives on the delivery instead (LIKP-VSART was 01). Move it to API-02, let SAP derive it, or drop it.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-11 Create STO PO","address":"B81","value":"Send the same plant as source and destination and confirm SAP refuses. Send an unknown material and confirm SAP refuses. Send the same request twice and confirm you get two orders - that is what proves duplicate protection has to live outside SAP.","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"A1","value":"API-12 - Update DI Quantity","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"B17","value":"OData V2, using If-Match so two people cannot overwrite each other","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"A23","value":"4. REQUEST PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"A24","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"A30","value":"5. RESPONSE PROPERTIES","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"A31","value":"OData property","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"A47","value":"RequestId / IsReplay","formula":null,"match":"value"}
+{"kind":"match","sheet":"API-12 Update DI Qty","address":"A48","value":"SourceSystem / RequestedBy","formula":null,"match":"value"}

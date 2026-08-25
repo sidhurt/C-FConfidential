@@ -1,0 +1,15 @@
+Allowed
+Application
+ControlOfExpirationDate
+ControlOfManufactureDate
+ControlOfReasonCodeTableField
+PlantGroup
+PrintingIsAllowed
+SpecialStockTypeSource
+SpecialStockTypeTarget
+StockTypeSource
+StockTypeSourceAssignmentRef
+StockTypeTarget
+StockTypeTargetAssignmentRef
+StorLocAutoCreationIsAllowed
+SupplyingPlant

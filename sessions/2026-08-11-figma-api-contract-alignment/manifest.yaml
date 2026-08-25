@@ -1,0 +1,93 @@
+schema_version: 1
+session_date: 2026-08-11
+title: Figma and API contract alignment
+status: delta_pending_canonical_reconciliation
+canonical_files_modified_by_this_pack: false
+legacy_files_deleted: false
+
+default_read_order:
+  - README.md
+  - 01_PROCESS_AND_BUSINESS_HANDOVER.md
+  - 05_DI_FLOW_DEEP_CONTEXT.md
+  - 02_API_CONTRACT_HANDOVER.md
+  - 06_PREDICTIVE_SEGW_BAPI_IMPLEMENTATION_MAP.md
+
+optional_reference:
+  - 03_EVIDENCE_AND_CONFIDENCE.md
+  - 04_CANONICAL_RECONCILIATION_BACKLOG.md
+
+technical_implementation_hypothesis:
+  path: sessions/2026-08-11-figma-api-contract-alignment/06_PREDICTIVE_SEGW_BAPI_IMPLEMENTATION_MAP.md
+  status: predictive_requires_qs4_verification
+  scope:
+    - current API-01 through API-10 plus candidate API-11
+    - SEGW service topology and entity/method shapes
+    - BAPI, released API, CDS and eDocument candidates
+    - transaction, idempotency and concurrency boundaries
+    - discovery roadmap and working ABAP effort ranges
+
+current_workbook:
+  path: outputs/cnf_api_contract_v17/CNF_API_Request_Response_Specification_v1.7.xlsx
+  updated_in_place_and_render_verified: true
+  retained_api_ids:
+    - API-01
+    - API-02
+    - API-03
+    - API-04
+    - API-05
+    - API-06
+    - API-07
+    - API-08
+    - API-09
+    - API-10
+  candidate_api_ids:
+    - API-11
+  removed_operations:
+    standalone_e_invoice_correction: not a required interface; current API-08 is E-Way Bill Extension
+    separate_inventory_reconciliation_api: duplicate of API-04 stock/physical-inventory read
+  current_numbering:
+    API-08: E-Way Bill Extension
+    API-09: Modify DI
+    API-10: Valid Storage Locations
+    API-11: Create STO Purchase Order candidate
+  known_defects:
+    - API-02 and Overview incorrectly model DMG/STG as SAP storage-location posting inputs
+    - API-04 contains a DMG stock-location example that conflicts with direct clarification
+    - API-11 SAP MM service/BAPI, document type and formal ownership remain candidate gates
+    - sales-organisation 1300 is written despite unresolved conflict C-10
+    - FIFO business rule is stated without closing its SAP ownership/date-field gates
+
+business_flows:
+  - Trade
+  - Non-trade
+  - STO_intra_warehouse
+
+new_sources:
+  images:
+    - SRC-FIG-20260811-09
+    - SRC-FIG-20260811-10
+    - SRC-FIG-20260811-11
+    - SRC-FIG-20260811-12
+    - SRC-FIG-20260811-13
+    - SRC-FIG-20260812-01
+    - SRC-DOC-20260811-02
+    - SRC-DOC-20260811-03
+    - SRC-DOC-20260811-04
+  direct_clarifications:
+    - SRC-SID-20260811-08
+    - SRC-SID-20260811-09
+    - SRC-SID-20260811-10
+    - SRC-SID-20260811-11
+    - SRC-SID-20260811-12
+    - SRC-SID-20260812-01
+    - SRC-SID-20260812-02
+    - SRC-SID-20260812-03
+
+highest_risk_open_items:
+  - MRN identity and Submit-MIGO returned key
+  - DMG/STG SAP posting and exception-ledger design
+  - candidate API-11 Create STO PO formal scope, SAP MM service/BAPI and ownership
+  - physical inventory variance posting and audit
+  - API-08 provider field, reason-code and error mapping; timing and duration rules are confirmed
+  - sales organisation versus company-code mapping for 1000/1300
+  - FIFO determination ownership and source age field

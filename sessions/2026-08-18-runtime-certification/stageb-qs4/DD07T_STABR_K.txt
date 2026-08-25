@@ -1,0 +1,15 @@
+﻿SESSION|QS4/700 located at connection[1] session[0]|user=QNOVATE8
+SELFIELD|ctxtI1-LOW=STABR_K
+TABLE|DD07T
+TITLE|Data Browser: Table DD07T Select Entries          8
+SBAR|
+ALV|rows=8|cols=9
+HDR|DOMNAME	DDLANGUAGE	AS4LOCAL	VALPOS	AS4VERS	DDTEXT	DOMVAL_LD	DOMVAL_HD	DOMVALUE_L	
+ROW0|STABR_K	D	A	0001	0000	Nicht relevant f�r �berleitung				
+ROW1|STABR_K	D	A	0002	0000	nicht �bergeleitet			A	
+ROW2|STABR_K	D	A	0003	0000	teilweise �bergeleitet			B	
+ROW3|STABR_K	D	A	0004	0000	vollst�ndig �bergeleitet			C	
+ROW4|STABR_K	E	A	0001	0000	Not relevant for transfer				
+ROW5|STABR_K	E	A	0002	0000	Not transferred			A	
+ROW6|STABR_K	E	A	0003	0000	Partially transferred			B	
+ROW7|STABR_K	E	A	0004	0000	Fully transferred			C	

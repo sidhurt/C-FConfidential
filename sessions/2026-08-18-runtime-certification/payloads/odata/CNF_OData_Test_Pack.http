@@ -1,0 +1,191 @@
+@baseUrl = https://<DS4-host>:<port>
+@material = MAT18
+@plant = PLQ3
+@unit = EA
+@delivery = <approved-DEV-delivery>
+@deliveryItem = 000010
+@purchaseOrder = <approved-DEV-STO>
+@billingDocument = <approved-DEV-billing-document>
+@csrfToken = <fetch-per-session>
+@etag = <ETag-from-prior-GET>
+
+# CNF OData request/response research pack — DS4 client 200
+# GET blocks are non-posting. Every POST/PATCH block is intentionally marked GATED.
+# Do not substitute QS4/700 document numbers into DS4/200: the DEV data is different.
+
+### Gateway/service proof — expect HTTP 200 and EDMX XML
+GET {{baseUrl}}/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/$metadata
+Accept: application/xml
+
+### API-05 book stock (safe read) — expect HTTP 200 and d.results[]
+GET {{baseUrl}}/sap/opu/odata/sap/API_MATERIAL_STOCK_SRV/A_MatlStkInAcctMod?$filter=Material%20eq%20'{{material}}'%20and%20Plant%20eq%20'{{plant}}'&$format=json
+Accept: application/json
+
+### BAPI comparison: ATP is not book stock (safe read via OData remains API-05)
+# Compare this result with BAPI_MATERIAL_AVAILABILITY for the same material/plant/unit.
+# A zero ATP result does not prove zero unrestricted-use stock, and vice versa.
+
+### API-08 STO purchase order read (safe; execute after a DEV STO is supplied)
+GET {{baseUrl}}/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder('{{purchaseOrder}}')?$expand=to_PurchaseOrderItem/to_ScheduleLine&$format=json
+Accept: application/json
+
+### API-09 outbound delivery read (safe; v2 is mandatory)
+GET {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader('{{delivery}}')?$expand=to_DeliveryDocumentItem&$format=json
+Accept: application/json
+
+### API-10 billing read (safe)
+GET {{baseUrl}}/sap/opu/odata/sap/API_BILLING_DOCUMENT_SRV/A_BillingDocument('{{billingDocument}}')?$expand=to_Item&$format=json
+Accept: application/json
+
+### API-01 material-document readback (safe; fill both keys)
+GET {{baseUrl}}/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='<YYYY>',MaterialDocument='<material-document>')?$expand=to_MaterialDocumentItem&$format=json
+Accept: application/json
+
+### MMIM companion readback (safe; entity keys must be copied from live metadata/result)
+GET {{baseUrl}}/sap/opu/odata/sap/MMIM_MATDOC_SRV/MatDocHeaders?$top=1&$format=json
+Accept: application/json
+
+################################################################################
+# GATED COMMANDS BELOW — REQUIRE APPROVED DEV DATA AND EXPLICIT POSTING APPROVAL #
+################################################################################
+
+### CSRF token fetch — safe GET; retain cookies and ETag/session context
+GET {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/
+Accept: application/json
+X-CSRF-Token: Fetch
+
+### API-01 Submit MIGO — GATED POST
+# Expected success: HTTP 201, MaterialDocument + MaterialDocumentYear and item data.
+# Required research questions: confirm GoodsMovementCode and whether PO, delivery, or both references are required.
+POST {{baseUrl}}/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader
+Content-Type: application/json
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "GoodsMovementCode": "<MM-confirmed-code>",
+  "PostingDate": "/Date(<epoch-ms>)/",
+  "DocumentDate": "/Date(<epoch-ms>)/",
+  "MaterialDocumentHeaderText": "CNF DEV API-01 test",
+  "to_MaterialDocumentItem": [
+    {
+      "GoodsMovementType": "101",
+      "PurchaseOrder": "{{purchaseOrder}}",
+      "PurchaseOrderItem": "00010",
+      "Delivery": "{{delivery}}",
+      "DeliveryItem": "{{deliveryItem}}",
+      "Material": "{{material}}",
+      "Plant": "{{plant}}",
+      "StorageLocation": "<DEV-storage-location>",
+      "QuantityInEntryUnit": "<quantity>",
+      "EntryUnit": "{{unit}}",
+      "GoodsMovementRefDocType": "<runtime-confirmed-value>"
+    }
+  ]
+}
+
+### API-02 create delivery from STO — GATED POST
+# Expected success: HTTP 201 and DeliveryDocument. SAP derives route, ship-to, type and movement type.
+POST {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader
+Content-Type: application/json
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "to_DeliveryDocumentItem": [
+    {
+      "ReferenceSDDocument": "{{purchaseOrder}}",
+      "ReferenceSDDocumentItem": "000010",
+      "ReferenceSDDocumentCategory": "V",
+      "ActualDeliveryQuantity": "<quantity>",
+      "DeliveryQuantityUnit": "{{unit}}"
+    }
+  ]
+}
+
+### API-03A pick one item using sales quantity — GATED POST function import
+# Expected success: HTTP 200 and PickingReport collection; verify item picking status.
+POST {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/PickOneItemWithSalesQuantity?DeliveryDocument='{{delivery}}'&DeliveryDocumentItem='{{deliveryItem}}'&ActualDeliveryQuantity=<quantity>M&DeliveryQuantityUnit='{{unit}}'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### API-03A batch split — GATED POST; v2-only signature proven from live metadata
+POST {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/PickAndBatchSplitOneItem?DeliveryDocument='{{delivery}}'&DeliveryDocumentItem='{{deliveryItem}}'&Batch='<DEV-batch>'&SplitQuantity=<quantity>M&SplitQuantityUnit='{{unit}}'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### API-03A alternate explicit split item — GATED POST; six live parameters
+POST {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/CreateBatchSplitItem?PickQuantityInSalesUOM=<quantity>M&Batch='<DEV-batch>'&DeliveryDocument='{{delivery}}'&DeliveryDocumentItem='{{deliveryItem}}'&ActualDeliveryQuantity=<quantity>M&DeliveryQuantityUnit='{{unit}}'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### API-03A confirm picking — GATED POST
+POST {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/ConfirmPickingAllItems?DeliveryDocument='{{delivery}}'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### API-03C post goods issue — GATED POST, irreversible business effect without reversal
+POST {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/PostGoodsIssue?DeliveryDocument='{{delivery}}'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### API-03C reverse goods issue — GATED POST
+POST {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/ReverseGoodsIssue?DeliveryDocument='{{delivery}}'&ActualGoodsMovementDate=datetime'<YYYY-MM-DD>T00:00:00'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### API-03D billing create — GATED POST, all 16 live parameters shown
+# Expected success: FunctionImportResult collection; then read the created document through API_BILLING_DOCUMENT_SRV.
+POST {{baseUrl}}/sap/opu/odata/sap/SD_CUSTOMER_INVOICES_CREATE/CreateBillingDocuments?RefSDDocWithInvalidPartner=''&OldBillToPartyAddressId=''&NewBillToPartyAddressId=''&SalesOrganization='<sales-org>'&ReferenceSDDocumentItem='{{deliveryItem}}'&ToBeBilledQuantity='<quantity>'&SnapshotRequested=''&ReferenceSDDocumentCategory='<confirm-category>'&DestinationCountry='IN'&BillingDocumentType='<confirm-type>'&SeparateBilllingDocumentsRequested=''&RequestedBillingDocumentDate='<YYYYMMDD>'&BillingDocumentReleaseRequested='X'&BillingDocumentDate='<YYYYMMDD>'&ReferenceSDDocument='{{delivery}}'&RequestedBillingDocumentType='<confirm-type>'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### API-11 create STO PO — GATED POST
+# Runtime metadata navigation is to_PurchaseOrderItem -> to_ScheduleLine.
+POST {{baseUrl}}/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder
+Content-Type: application/json
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "PurchaseOrderType": "ZP06",
+  "PurchasingOrganization": "1000",
+  "PurchasingGroup": "801",
+  "SupplyingPlant": "<DEV-supplying-plant>",
+  "to_PurchaseOrderItem": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Plant": "<DEV-receiving-plant>",
+      "Material": "{{material}}",
+      "OrderQuantity": "<quantity>",
+      "PurchaseOrderQuantityUnit": "{{unit}}",
+      "PurchaseOrderItemCategory": "7",
+      "RequisitionerName": "<DEV-user-name>",
+      "to_ScheduleLine": [
+        {
+          "ScheduleLine": "0001",
+          "ScheduleLineDeliveryDate": "/Date(<epoch-ms>)/",
+          "ScheduleLineOrderQuantity": "<quantity>"
+        }
+      ]
+    }
+  ]
+}
+
+### API-12 update delivery quantity — GATED PATCH
+# Expected: HTTP 204 or updated representation; stale ETag must fail with 412.
+PATCH {{baseUrl}}/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryItem(DeliveryDocument='{{delivery}}',DeliveryDocumentItem='{{deliveryItem}}')
+Content-Type: application/json
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+If-Match: {{etag}}
+
+{
+  "ActualDeliveryQuantity": "<new-quantity>"
+}
+
+### Billing cancel — GATED POST
+POST {{baseUrl}}/sap/opu/odata/sap/API_BILLING_DOCUMENT_SRV/Cancel?BillingDocument='{{billingDocument}}'
+Accept: application/json
+X-CSRF-Token: {{csrfToken}}
+

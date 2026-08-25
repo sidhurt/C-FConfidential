@@ -1,0 +1,30 @@
+SCOPE|Function Module: SD_SCDS_SAVE|pressing Select All
+FM|SD_SCDS_SAVE
+RESULT_TITLE|Where-used Function Module SD_SCDS_SAVE (9 Hits)
+SBAR|
+NO_GRID|dumping labels
+  Classes/Interfaces
+  Short Descript.
+  ZCLDACE_WT_TRNASFER
+  SHIP_COST_CAN
+  Shipment Cost Cancel
+  Program
+  Short description
+  LV54CU10
+  NOTRANSL: Frachtkosten anlegen (on
+  LV54CU12
+  NOTRANSL: Frachtkosten „ndern (onl
+  LV54CU15
+  NOTRANSL: Frachtkosten „ndern (onl
+  LZDACEFG_SHIP_COSTU01
+  Shipment Cost Posting FM
+  LZDACEFG_SHIP_COSTU02
+  Ship Cost Delete FM
+  LZOTC_SHIP_SCD_DELETE_FGU01
+  Shipment and shipment cost delete
+  ZSDR_PGI_SHIP_REV
+  PGI Shipment Reversal
+  Enhancement Implementation
+  Short description
+  ZEI_SD_CHECK_MAT_DELETION
+  Validation to stop SO saving if ma

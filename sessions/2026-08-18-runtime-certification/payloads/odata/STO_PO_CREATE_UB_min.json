@@ -1,0 +1,16 @@
+{
+  "PurchaseOrderType": "UB",
+  "CompanyCode": "1000",
+  "PurchasingOrganization": "0001",
+  "PurchasingGroup": "001",
+  "SupplyingPlant": "PLQ3",
+  "to_PurchaseOrderItem": [
+    {
+      "Material": "MAT18",
+      "Plant": "PLQ1",
+      "PurchaseOrderItemCategory": "7",
+      "OrderQuantity": "1",
+      "PurchaseOrderQuantityUnit": "EA"
+    }
+  ]
+}

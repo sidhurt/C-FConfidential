@@ -1,0 +1,786 @@
+﻿TITLE|Activate and Maintain Services
+SBAR|
+ALV|rows=782
+HDR|TYPE	SERVICE_NAME	SERVICE_VERSION	DESCRIPTION	EXTERNAL_SERVICE_NAME	NAMESPACE	OAUTH_SCOPE_EXISTS	SOFT_STATE_STATUS	PROCESS_MODE_TEXT	
+ROW0|BEP	ZABAP_REPOSITORY_SRV	1	SAPUI5 ABAP Repository services via oData	ABAP_REPOSITORY_SRV	/UI5/	 	Not Supported	Routing-based	
+ROW1|BEP	ADT	1	Gateway service for ADT	ADT_SRV		X	Not Supported	Routing-based	
+ROW2|BEP	ZANA_QUERY_DESIGNER	1	Analytical Query Designer	ANA_QUERY_DESIGNER		 	Not Supported	Routing-based	
+ROW3|BEP	ZAPI_BILLING_DOCUMENT_SRV	1	Remote API for SD Billing Document	API_BILLING_DOCUMENT_SRV		 	Not Supported	Routing-based	
+ROW4|BEP	ZAPI_BUSINESS_PARTNER	1	Remote API for Business Partner	API_BUSINESS_PARTNER		 	Not Supported	Routing-based	
+ROW5|BEP	ZAPI_CV_ATTACHMENT_SRV	1	Gateway: API for Attachment Service	API_CV_ATTACHMENT_SRV		 	Not Supported	Routing-based	
+ROW6|BEP	ZAPI_DISPUTECASEASCOORDTR	1	Dispute Case As Coordinator	API_DISPUTECASEASCOORDTR		 		Co-deployed only	
+ROW7|BEP	ZAPI_DISPUTECASEASPERSNRESP	1	Dispute Case As Person Responsible	API_DISPUTECASEASPERSNRESP		 		Co-deployed only	
+ROW8|BEP	ZAPI_DISPUTECASEASPROCESSOR	1	Dispute Case As Processor	API_DISPUTECASEASPROCESSOR		 		Co-deployed only	
+ROW9|BEP	ZAPI_EQUIPMENT	1	Equipment Web API	API_EQUIPMENT		 	Not Supported	Routing-based	
+ROW10|BEP	ZAPI_MAINTNOTIFICATION	1	Maintenance Notification	API_MAINTNOTIFICATION		 		Co-deployed only	
+ROW11|BEP	ZAPI_MAINTORDERCONFIRMATION	1	Service Binding for Maint. Order Confirmation	API_MAINTORDERCONFIRMATION		 		Co-deployed only	
+ROW12|BEP	ZAPI_MATERIAL_DOCUMENT_SRV	1	OData Service for Material Document API	API_MATERIAL_DOCUMENT_SRV		 	Not Supported	Routing-based	
+ROW13|BEP	ZAPI_MATERIAL_STOCK_SRV	1	OData Service for Material Stock API	API_MATERIAL_STOCK_SRV		 	Not Supported	Routing-based	
+ROW14|BEP	ZAPI_OUTBOUND_DELIVERY_SRV	2	Remote API for Outbound Delivery	API_OUTBOUND_DELIVERY_SRV		 	Not Supported	Routing-based	
+ROW15|BEP	ZAPI_PROC_ORDER_CONFIRMATION_2_SRV	1	API for Process Order Confirmation	API_PROC_ORDER_CONFIRMATION_2_SRV		 	Not Supported	Co-deployed only	
+ROW16|BEP	ZAPI_PROCESS_ORDER_2_SRV	1	API for Process Orders	API_PROCESS_ORDER_2_SRV		 	Not Supported	Co-deployed only	
+ROW17|BEP	ZAPI_PURCHASEORDER_PROCESS_SRV	1	OData service for PO API	API_PURCHASEORDER_PROCESS_SRV		 	Not Supported	Routing-based	
+ROW18|BEP	ZAPI_PURCHASEREQ_PROCESS_SRV	1	OData Service for Purchase Requisition API	API_PURCHASEREQ_PROCESS_SRV		 	Not Supported	Routing-based	
+ROW19|BEP	ZAPI_SALES_ORDER_SRV	1	Sales Order (A2X)	API_SALES_ORDER_SRV		 	Not Supported	Routing-based	
+ROW20|BEP	ZAPI_SUPPLIERINVOICE_PROCESS_SRV	1	OData service SI API	API_SUPPLIERINVOICE_PROCESS_SRV		 	Not Supported	Routing-based	
+ROW21|BEP	ZAPJ_JOB_MANAGEMENT_SRV	1	Application job management	APJ_JOB_MANAGEMENT_SRV		 		Co-deployed only	
+ROW22|BEP	ZAPL_LOG_MANAGEMENT_SRV	1	Application Log management	APL_LOG_MANAGEMENT_SRV		 		Routing-based	
+ROW23|BEP	ZAPS_BUM_EMPLOYEE_SRV	1	APS Employee Business User	APS_BUM_EMPLOYEE_SRV		 	Not Supported	Routing-based	
+ROW24|BEP	ZAPS_CHANGE_DOCUMENTS_SRV	1	OData Service for Change Documents	APS_CHANGE_DOCUMENTS_SRV		 	Not Supported	Routing-based	
+ROW25|BEP	ZAPS_CUSTOM_FIELD_MAINTENANCE_SRV	1	Custom Field Maintenance	APS_CUSTOM_FIELD_MAINTENANCE_SRV		 	Not Supported	Routing-based	
+ROW26|BEP	ZAPS_DATA_SOURCE_EXTENSION_SRV	1	Custom Fields: Data Source Extension	APS_DATA_SOURCE_EXTENSION_SRV		 	Not Supported	Routing-based	
+ROW27|BEP	ZAPS_EXT_ATO_PK_AI_SRV	1	Adaptation Transport Organizer, Assign Item	APS_EXT_ATO_PK_AI_SRV		 	Not Supported	Routing-based	
+ROW28|BEP	ZAPS_EXT_ATO_PK_CFG_SRV	1	Transport Configuration of Packages	APS_EXT_ATO_PK_CFG_SRV		 	Not Supported	Routing-based	
+ROW29|BEP	ZAPS_EXT_ATO_SETTINGS_SRV	1	Extensibility Settings	APS_EXT_ATO_SETTINGS_SRV		 	Not Supported	Routing-based	
+ROW30|BEP	ZAPS_OM_EMAIL_TMPL_SRV	1	Email Template	APS_OM_EMAIL_TMPL_SRV		 	Not Supported	Routing-based	
+ROW31|BEP	ZAPS_OM_FORM_TMPL_SRV	1	Form Template	APS_OM_FORM_TMPL_SRV		 	Not Supported	Routing-based	
+ROW32|BEP	ZBANKACCOUNTOPENINGREQWL	1	Approve Bank Account Applications	BANKACCOUNTOPENINGREQWL		 		Co-deployed only	
+ROW33|BEP	ZBANKCASHBALANCE_MONITOR_O2	1	Bank Account Balance Monitor	BANKCASHBALANCE_MONITOR_O2		 	Not Supported	Routing-based	
+ROW34|BEP	ZBANKCASHBALANCE_O2	1	Bank Cash Balance	BANKCASHBALANCE_O2		 	Not Supported	Routing-based	
+ROW35|BEP	/IWBEP/ZTEA_BATCH_AT_ONCE	1	Test implementation for batch@once option	BATCH_AT_ONCE_TEST	/IWBEP/	 	Inactive	Routing-based	
+ROW36|BEP	ZBSANLY_APF_RUNTIME_SRV	1	Analysis Path Framework Runtime	BSANLY_APF_RUNTIME_SRV		 	Not Supported	Routing-based	
+ROW37|BEP	ZC_ACTUALCASHFLOWANALYTICS_CDS	1	Actual Cash Flow in 90 days	C_ACTUALCASHFLOWANALYTICS_CDS		 	Inactive	Routing-based	
+ROW38|BEP	ZC_APDAYSPAYOUTST_CDS	1	Days Payable Outstanding Smart Business App	C_APDAYSPAYOUTST_CDS		 	Inactive	Co-deployed only	
+ROW39|BEP	ZC_APDAYSPYBLOUTSTDGDIRECT_CDS	1	Overview page DPO Dir	C_APDAYSPYBLOUTSTDGDIRECT_CDS		 	Inactive	Co-deployed only	
+ROW40|BEP	ZC_APDAYSPYBLOUTSTDGINDRCT_CDS	1	Overview Page: DPO Ind	C_APDAYSPYBLOUTSTDGINDRCT_CDS		 	Inactive	Co-deployed only	
+ROW41|BEP	ZC_APFLEXIBLEAGING_CDS	1	Aging Analysis Smart Business App	C_APFLEXIBLEAGING_CDS		 	Inactive	Co-deployed only	
+ROW42|BEP	ZC_APINVOICEPROCESSINGTIME_CDS	1	Accounts Payable. Invoice Processing Time	C_APINVOICEPROCESSINGTIME_CDS		 	Inactive	Co-deployed only	
+ROW43|BEP	ZC_APINVOICEPROCGANALYSIS_CDS	1	Invoice Processing Analysis	C_APINVOICEPROCGANALYSIS_CDS		 	Inactive	Co-deployed only	
+ROW44|BEP	ZC_APOVRD_CDS	1	Accounts Payable. Overdue Payables	C_APOVRD_CDS		 	Inactive	Co-deployed only	
+ROW45|BEP	ZC_ARAGINGANALYSISOVW_CDS	1	Card AR Aging Analysis	C_ARAGINGANALYSISOVW_CDS		 		Co-deployed only	
+ROW46|BEP	ZC_ARBREAKDOWNOVW_CDS	1	Card AR Breakdown	C_ARBREAKDOWNOVW_CDS		 		Co-deployed only	
+ROW47|BEP	ZC_ARCASHCOLLTRACKEROVW_CDS	1	AR Cash Collection Tracker Card	C_ARCASHCOLLTRACKEROVW_CDS		 		Co-deployed only	
+ROW48|BEP	ZC_ARDAYSSALESOUTSTDGOVW_CDS	1	Card Days Sales Outstanding	C_ARDAYSSALESOUTSTDGOVW_CDS		 		Co-deployed only	
+ROW49|BEP	ZC_ARDEBTORSOVW_CDS	1	Card Top 10 Debtors	C_ARDEBTORSOVW_CDS		 		Co-deployed only	
+ROW50|BEP	ZC_BALANCECARRYFWDSTATUS_CDS	1	Status of Balance Carry Forward	C_BALANCECARRYFWDSTATUS_CDS		 		Co-deployed only	
+ROW51|BEP	ZC_BANKRISKANALYTICS_CDS	1	Bank Risk Analytics	C_BANKRISKANALYTICS_CDS		 		Co-deployed only	
+ROW52|BEP	ZC_BANKSTATEMENTMONITOR_CDS	1	Monitor Bank Statement	C_BANKSTATEMENTMONITOR_CDS		 		Co-deployed only	
+ROW53|BEP	ZC_BKACCTTWOPERSONWL_SRV	1	Bank Acct Two Person Worklist	C_BKACCTTWOPERSONWL_SRV		 	Not Supported	Routing-based	
+ROW54|BEP	ZC_BR_VERIFYCTE_CDS	1	Brazil Verify CT-e	C_BR_VERIFYCTE_CDS		 		Co-deployed only	
+ROW55|BEP	ZC_BR_VERIFYNFS_CDS	1	Brazil Verify Service Nota Fiscal	C_BR_VERIFYNFS_CDS		 		Co-deployed only	
+ROW56|BEP	ZC_BR_VERIFYNOTAFISCAL_CDS	1	Brazil Verify Nota Fiscal	C_BR_VERIFYNOTAFISCAL_CDS		 		Co-deployed only	
+ROW57|BEP	ZC_CASHPOSITIONANALYTICS_CDS	1	Cash Position Analytics	C_CASHPOSITIONANALYTICS_CDS		 		Co-deployed only	
+ROW58|BEP	ZC_CASHPOSITIONANLYSWTHFLW_CDS	1	Cash Position Analysis	C_CASHPOSITIONANLYSWTHFLW_CDS		 	Not Supported	Co-deployed only	
+ROW59|BEP	ZC_CHGMGMTREQUESTOVERVIEWQ_CDS	1	Change Request Overview - Query	C_CHGMGMTREQUESTOVERVIEWQ_CDS		 	Inactive	Routing-based	
+ROW60|BEP	ZC_COLLECTIONPROGRESSQ_CDS	1	Collection Progress Query	C_COLLECTIONPROGRESSQ_CDS		 		Co-deployed only	
+ROW61|BEP	ZC_COLLMGMTRBLSITMFORKEYDTE_CDS	1	AR for Key Date - Collections Management	C_COLLMGMTRBLSITMFORKEYDTE_CDS		 		Co-deployed only	
+ROW62|BEP	ZC_CONTRACT_FS_SRV	1	Purchase Contract	C_CONTRACT_FS_SRV		 	Not Supported	Routing-based	
+ROW63|BEP	ZC_CONTRACTITEM_FS_SRV	1	Purchase Contract Item	C_CONTRACTITEM_FS_SRV		 		Co-deployed only	
+ROW64|BEP	ZC_CONVERTPLANNEDORDER_CDS	1	Convert Planned Orders	C_CONVERTPLANNEDORDER_CDS		 		Co-deployed only	
+ROW65|BEP	ZC_CREDITLIMITUTILIZATIONQ_CDS	1	Credit Limit Utilization with Threshold	C_CREDITLIMITUTILIZATIONQ_CDS		 	Inactive	Co-deployed only	
+ROW66|BEP	ZC_CUSTOMER_OP_SRV	1	Customer Object Pages	C_CUSTOMER_OP_SRV		 		Co-deployed only	
+ROW67|BEP	ZC_CUSTOMERRETURNRATEQRY_CDS	1	Customer Return Rate - Query	C_CUSTOMERRETURNRATEQRY_CDS		 		Co-deployed only	
+ROW68|BEP	ZC_DAMAGEANALYSISQUERY_CDS	1	Damage Analysis Query	C_DAMAGEANALYSISQUERY_CDS		 	Inactive	Routing-based	
+ROW69|BEP	ZC_DAYSPAYABLESOUTSTANDING_CDS	1	Days Payable Outstanding - Indirect	C_DAYSPAYABLESOUTSTANDING_CDS		 	Inactive	Co-deployed only	
+ROW70|BEP	ZC_DAYSSALESOUTSTANDING_CDS	1	Days Sales Outstanding Smart Business App	C_DAYSSALESOUTSTANDING_CDS		 	Inactive	Co-deployed only	
+ROW71|BEP	ZC_DEFICITCASHPOOLANALYTICS_CDS	1	Deficit Cash Pool	C_DEFICITCASHPOOLANALYTICS_CDS		 		Co-deployed only	
+ROW72|BEP	ZC_DELIVITMPERFANLYTSQRY_CDS	1	Query for Dlv Perf - Shipped as Planned	C_DELIVITMPERFANLYTSQRY_CDS		 		Co-deployed only	
+ROW73|BEP	ZC_ENGRECORDHEADER_CDS	1	Addtional	C_ENGRECORDHEADER_CDS		 		Co-deployed only	
+ROW74|BEP	ZC_FINVALIDATIONRESULT_CDS	1	Financial Validation Result	C_FINVALIDATIONRESULT_CDS		 	Not Supported	Routing-based	
+ROW75|BEP	ZC_GLDAYSPYBLOUTSTDGINDRCT_CDS	1	GL DPO Indirect Ovw	C_GLDAYSPYBLOUTSTDGINDRCT_CDS		 	Inactive	Co-deployed only	
+ROW76|BEP	ZC_GLDAYSSALESOUTSTDGOVW_CDS	1	GL Days Sales Outstanding Ovw	C_GLDAYSSALESOUTSTDGOVW_CDS		 	Inactive	Co-deployed only	
+ROW77|BEP	ZC_GLREVENUEEXPENSESOVW_CDS	1	GL Revenue and Expenses Overview	C_GLREVENUEEXPENSESOVW_CDS		 	Inactive	Co-deployed only	
+ROW78|BEP	ZC_LFCASTANALYTICS_CDS	1	Liquidity Forecast 90 Days	C_LFCASTANALYTICS_CDS		 	Inactive	Routing-based	
+ROW79|BEP	ZC_MAINTOBJBREAKDOWNQUERY_CDS	1	Maintenance Object Breakdown Query	C_MAINTOBJBREAKDOWNQUERY_CDS		 	Inactive	Routing-based	
+ROW80|BEP	ZC_MAINTPLANACTVSYSTSTATUSQ_CDS	1	Maintenance Plan System Status - Qry	C_MAINTPLANACTVSYSTSTATUSQ_CDS		 	Inactive	Routing-based	
+ROW81|BEP	ZC_MDGOVCLSDWRKFLWBPQRY_CDS	1	Analytics on Closed CR Work Item for Business Partners	C_MDGOVCLSDWRKFLWBPQRY_CDS		 		Co-deployed only	
+ROW82|BEP	ZC_MDGOVOPENWRKFLWBPQRY_CDS	1	Analytics on Open WI for BP	C_MDGOVOPENWRKFLWBPQRY_CDS		 		Co-deployed only	
+ROW83|BEP	ZC_MFGORDCOMPEXCSCONSMPTQRY_CDS	1	Mfg Order Operation Component Excess Consumption - Query	C_MFGORDCOMPEXCSCONSMPTQRY_CDS		 	Inactive	Routing-based	
+ROW84|BEP	ZC_MFGORDEROPEXECDURNQRY_CDS	1	Mfg Order Operation Execution Duration - Query	C_MFGORDEROPEXECDURNQRY_CDS		 		Co-deployed only	
+ROW85|BEP	ZC_MFGORDITEMMATERIALSCRAPQ_CDS	1	Manufacturing Order Item Material Scrap - Query	C_MFGORDITEMMATERIALSCRAPQ_CDS		 		Co-deployed only	
+ROW86|BEP	ZC_MFGORDOPCONFSCRAPREASONQ_CDS	1	Mfg Order Operation Confirmation Scrap Reason - Query	C_MFGORDOPCONFSCRAPREASONQ_CDS		 		Co-deployed only	
+ROW87|BEP	ZC_MFGORDOPERATIONSCRAPQRY_CDS	1	Manufacturing Order Operation Scrap - Query	C_MFGORDOPERATIONSCRAPQRY_CDS		 		Co-deployed only	
+ROW88|BEP	ZC_MNTRDOCWTHGRIRFLAGNOTSET_CDS	1	Monitor Purchasing Documents with GR IR Flag Not Set	C_MNTRDOCWTHGRIRFLAGNOTSET_CDS		 		Co-deployed only	
+ROW89|BEP	ZC_MRPCTRLRBYAOR_SRV	1	Service Binding C_MRPCtrlrByAreaOfRespy	C_MRPCTRLRBYAOR_SRV		 	Not Supported	Routing-based	
+ROW90|BEP	ZC_MYFMANNUALAVLBLEBUDGET_SRV	1	OData Service for C_MyFMAnnualAvlbleBudget	C_MYFMANNUALAVLBLEBUDGET_SRV		 	Not Supported	Co-deployed only	
+ROW91|BEP	ZC_MYFMANNUALBDGTDRILLBDGT_SRV	1	OData Service for C_MyFMAnnualBdgtDrillBdgt	C_MYFMANNUALBDGTDRILLBDGT_SRV		 	Not Supported	Co-deployed only	
+ROW92|BEP	ZC_MYFMANNUALBDGTDRILLPOST_SRV	1	Odata Service for C_MyFMAnnualBdgtDrillPost	C_MYFMANNUALBDGTDRILLPOST_SRV		 	Not Supported	Co-deployed only	
+ROW93|BEP	ZC_NONMNGDPURGSPEND_CDS	1	Non Managed Purchasing Spend	C_NONMNGDPURGSPEND_CDS		 	Inactive	Routing-based	
+ROW94|BEP	ZC_OPENCLOSEDDISPUTECASE_CDS	1	Open and Closed Dispute Cases	C_OPENCLOSEDDISPUTECASE_CDS		 		Co-deployed only	
+ROW95|BEP	ZC_OVERDUEACCTRBLS_CDS	1	Overdue Accounts Receivables Smart Business App	C_OVERDUEACCTRBLS_CDS		 	Inactive	Co-deployed only	
+ROW96|BEP	ZC_OVERDUEINDISPUTE_CDS	1		C_OVERDUEINDISPUTE_CDS		 		Co-deployed only	
+ROW97|BEP	ZC_OVERDUEPO_CDS	1	Overdue Purchase Order	C_OVERDUEPO_CDS		 	Not Supported	Routing-based	
+ROW98|BEP	ZC_PAYMENTSTATISTICS_CDS	1	Payment Statistics	C_PAYMENTSTATISTICS_CDS		 		Co-deployed only	
+ROW99|BEP	ZC_PLANNEDORDERS_CDS	1	Manage Planned Orders	C_PLANNEDORDERS_CDS		 	Not Supported	Routing-based	
+ROW100|BEP	ZC_PRICEVARIANCE_CDS	1	Supplier Evaluation by Price Variance	C_PRICEVARIANCE_CDS		 	Not Supported	Routing-based	
+ROW101|BEP	ZC_PROCMONKPIO2C_CDS	1	Order-to-Cash Performance KPI	C_PROCMONKPIO2C_CDS		 	Not Supported	Co-deployed only	
+ROW102|BEP	ZC_PROFITMARGINBYMONTHQUERY_CDS	1	Profit Margin By Month	C_PROFITMARGINBYMONTHQUERY_CDS		 	Inactive	Co-deployed only	
+ROW103|BEP	ZC_PURCHASECONTRACTLEAKAGE_CDS	1	Purchase Contract Leakage	C_PURCHASECONTRACTLEAKAGE_CDS		 	Inactive	Routing-based	
+ROW104|BEP	ZC_PURCHASEORDER_FS_SRV	1	Purchase Order	C_PURCHASEORDER_FS_SRV		 	Not Supported	Routing-based	
+ROW105|BEP	ZC_PURCHASINGGROUPANALYSIS_CDS	1	Purchasing Group Analysis Query	C_PURCHASINGGROUPANALYSIS_CDS		 	Not Supported	Routing-based	
+ROW106|BEP	ZC_PURGINFORECORD_FS_SRV	1	Purchasing Info Record Object Page	C_PURGINFORECORD_FS_SRV		 		Co-deployed only	
+ROW107|BEP	ZC_PURGMATLPRICECHANGE_CDS	1	Material Price Change	C_PURGMATLPRICECHANGE_CDS		 	Inactive	Co-deployed only	
+ROW108|BEP	ZC_PURGSPENDOFFCONTRACT_CDS	1	Off Contract Spend	C_PURGSPENDOFFCONTRACT_CDS		 	Inactive	Routing-based	
+ROW109|BEP	ZC_PURORDVALUEWITHPLND_CDS	1	Purchase Order Value with Planned Spend	C_PURORDVALUEWITHPLND_CDS		 	Not Supported	Routing-based	
+ROW110|BEP	ZC_PURREQUISITION_FS_SRV	1	Purchase Requisition	C_PURREQUISITION_FS_SRV		 	Not Supported	Co-deployed only	
+ROW111|BEP	ZC_PURREQUISITIONITEM_FS_SRV	1	Purchase Requisition Item	C_PURREQUISITIONITEM_FS_SRV		 	Not Supported	Co-deployed only	
+ROW112|BEP	ZC_QUANTITYCONTRACTCNSMPN_CDS	1	Quantity Contract Consumption	C_QUANTITYCONTRACTCNSMPN_CDS		 	Inactive	Routing-based	
+ROW113|BEP	ZC_QUANTITYVARIANCE_CDS	1	Quantity Variance	C_QUANTITYVARIANCE_CDS		 	Not Supported	Routing-based	
+ROW114|BEP	ZC_REQNAVGAPPROVALTIME_CDS	1	Requisition Average Approval Time	C_REQNAVGAPPROVALTIME_CDS		 	Not Supported	Routing-based	
+ROW115|BEP	ZC_REQNTOORDERCYCLETIME_CDS	1	Requisition To Order Cycle Time	C_REQNTOORDERCYCLETIME_CDS		 	Not Supported	Routing-based	
+ROW116|BEP	ZC_REQUISITIONCHANGE_CDS	1	Change Purchase Requisition	C_REQUISITIONCHANGE_CDS		 	Not Supported	Routing-based	
+ROW117|BEP	ZC_REQUISITIONNOTOUCHRATE_CDS	1	Requisition No Touch Rate	C_REQUISITIONNOTOUCHRATE_CDS		 	Inactive	Routing-based	
+ROW118|BEP	ZC_REQUISITIONTYPEANALYSIS_CDS	1	Purchase Requisition Type Analysis	C_REQUISITIONTYPEANALYSIS_CDS		 	Not Supported	Routing-based	
+ROW119|BEP	ZC_RESOLVEDDISPUTECASE_CDS	1	Resolved Dispute Case	C_RESOLVEDDISPUTECASE_CDS		 		Co-deployed only	
+ROW120|BEP	ZC_RESPYMGMTTEAMHIERARCHY_CDS	1	Team Hierarchy	C_RESPYMGMTTEAMHIERARCHY_CDS		 	Inactive	Routing-based	
+ROW121|BEP	ZC_SALESANALYTICSQRY_1_CDS	1	Sales Volume and Open Sales - Query	C_SALESANALYTICSQRY_1_CDS		 	Inactive	Routing-based	
+ROW122|BEP	ZC_SALESCONTRACTITMFLFMTQ_CDS	1	Sales Contract Fulfillment Rate - Query	C_SALESCONTRACTITMFLFMTQ_CDS		 		Co-deployed only	
+ROW123|BEP	ZC_SALESDOCUMENTWORKFLOWVH_CDS	1	Sales Document Workflow Value Help	C_SALESDOCUMENTWORKFLOWVH_CDS		 	Not Supported	Routing-based	
+ROW124|BEP	ZC_SALESVOLUMEANALYSISQUERY_CDS	1	Analytics - Sales Volume Detailed Analysis	C_SALESVOLUMEANALYSISQUERY_CDS		 	Inactive	Routing-based	
+ROW125|BEP	ZC_SALESVOLUMEANALYTICSQRY_CDS	1	Sales Volume - Query	C_SALESVOLUMEANALYTICSQRY_CDS		 		Routing-based	
+ROW126|BEP	ZC_SALESVOLUMEBYYEARQUERY_CDS	1		C_SALESVOLUMEBYYEARQUERY_CDS		 	Inactive	Routing-based	
+ROW127|BEP	ZC_SHPDASPLNDDELIVITEMSQRY_CDS	1	Delivery Items Shipped as Planned	C_SHPDASPLNDDELIVITEMSQRY_CDS		 		Co-deployed only	
+ROW128|BEP	ZC_SITNINSTANCETP_CDS	1	RAP: C_SITNINSTANCETP_CDS generated at 20190515	C_SITNINSTANCETP_CDS		 		Routing-based	
+ROW129|BEP	ZC_SITNINSTCEACTYMONITORING_CDS	1	Monitor Situations	C_SITNINSTCEACTYMONITORING_CDS		 		Co-deployed only	
+ROW130|BEP	ZC_SITNMYSITUATION_CDS	1	RAP: C_SITNMYSITUATION_CDS generated at 20190509	C_SITNMYSITUATION_CDS		 		Co-deployed only	
+ROW131|BEP	ZC_SLSORDCONFANLYTSQRY_CDS	1	Confirmation of Sales Orders - Query	C_SLSORDCONFANLYTSQRY_CDS		 		Co-deployed only	
+ROW132|BEP	ZC_SLSORDDELIVPERFANLYTSQRY_CDS	1	Delivery Performance - Query	C_SLSORDDELIVPERFANLYTSQRY_CDS		 	Inactive	Routing-based	
+ROW133|BEP	ZC_SLSQTANCONVERSIONRATEQ_CDS	1	Sales Quotation Conversion Rate - Query	C_SLSQTANCONVERSIONRATEQ_CDS		 		Co-deployed only	
+ROW134|BEP	ZC_SUPLRCOMPRNVIAPURVALS_CDS	1	Supplier Comparison Via Purchase Values	C_SUPLRCOMPRNVIAPURVALS_CDS		 	Inactive	Routing-based	
+ROW135|BEP	ZC_SUPLREVALBYQLTYNOTIFQRY_CDS	1	By Quality Notification	C_SUPLREVALBYQLTYNOTIFQRY_CDS		 	Inactive	Routing-based	
+ROW136|BEP	ZC_SUPLREVALBYQUALITY_CDS	1	Supplier Evaluation by Quality	C_SUPLREVALBYQUALITY_CDS		 	Not Supported	Routing-based	
+ROW137|BEP	ZC_SUPLREVALBYQUESTIONAIRE_CDS	1	Supplier Evaluation By Questionaire	C_SUPLREVALBYQUESTIONAIRE_CDS		 	Not Supported	Routing-based	
+ROW138|BEP	ZC_SUPPLIER_FS_SRV	1	Supplier	C_SUPPLIER_FS_SRV		 	Not Supported	Routing-based	
+ROW139|BEP	ZC_SUPPLIERACTIVITY_FS_SRV	1	Manage Activities	C_SUPPLIERACTIVITY_FS_SRV		 		Co-deployed only	
+ROW140|BEP	ZC_SUPPLIERACTIVITYTASKPROCESS_SRV	1	Process Tasks	C_SUPPLIERACTIVITYTASKPROCESS_SRV		 		Co-deployed only	
+ROW141|BEP	ZC_SUPPLIEREVALOVERALLQRY_CDS	1	Supplier Evaluation Overall	C_SUPPLIEREVALOVERALLQRY_CDS		 	Inactive	Routing-based	
+ROW142|BEP	ZC_SUPPLIEREVALUATION_CDS	1	Supplier Evaluation	C_SUPPLIEREVALUATION_CDS		 	Not Supported	Routing-based	
+ROW143|BEP	ZC_TIMEVARIANCE_CDS	1	Time Variance	C_TIMEVARIANCE_CDS		 	Not Supported	Routing-based	
+ROW144|BEP	ZC_TRIALBALANCEQ0001_CDS	1	Trial Balance	C_TRIALBALANCEQ0001_CDS		 	Inactive	Routing-based	
+ROW145|BEP	ZC_VALUECONTRACTCNSMPN_CDS	1	Value Contract Consumption	C_VALUECONTRACTCNSMPN_CDS		 	Inactive	Routing-based	
+ROW146|BEP	ZC_WORKCNTRGRPBYAOR_SRV	1	Service Binding for WorkCenter Groups AOR	C_WORKCNTRGRPBYAOR_SRV		 		Co-deployed only	
+ROW147|BEP	ZCA_BPF_LAYOUT_METADATA_SRV	1	Layout Metadata for Business Process Flow	CA_BPF_LAYOUT_METADATA_SRV		 	Not Supported	Routing-based	
+ROW148|BEP	CA_DATA_MODEL_SRV	1	Odata service for data model	CA_DATA_MODEL_SRV		 	Not Supported	Routing-based	
+ROW149|BEP	ZCA_FM_FEATURE_TOGGLE_STATUS_SRV	1	OData Service for UI Library	CA_FM_FEATURE_TOGGLE_STATUS_SRV		 		Co-deployed only	
+ROW150|BEP	CA_INFORMATION_SRV	1	Information Management	CA_INFORMATION_SRV		 	Not Supported	Routing-based	
+ROW151|BEP	ZCA_OC_MANAGE_OR_ITEMS_SRV	1	Manage Output Request Items	CA_OC_MANAGE_OR_ITEMS_SRV		 		Co-deployed only	
+ROW152|BEP	ZCA_OC_OUTPUT_REQUEST_SRV	1	Output Request	CA_OC_OUTPUT_REQUEST_SRV		 		Co-deployed only	
+ROW153|BEP	ZCA_RSM_TEAM_ACTION_SRV	1	Project for Manage Teams And Responsibilities	CA_RSM_TEAM_ACTION_SRV		 	Not Supported	Routing-based	
+ROW154|BEP	ZCA_RSM_TEAM_SRV	1	Project for Maintain Teams as Responsible	CA_RSM_TEAM_SRV		 	Not Supported	Routing-based	
+ROW155|	/IWFND/SG_MED_CATALOG	1	Catalog Service	CATALOGSERVICE	/IWFND/	X	Not Supported	Routing-based	
+ROW156|	/IWFND/SG_MED_CATALOG	2	Catalog Service Version 2	CATALOGSERVICE	/IWFND/	X	Not Supported	Routing-based	
+ROW157|BEP	ZCDSALLVIEWS	1	View Browser Service	CDSALLVIEWS		 	Not Supported	Routing-based	
+ROW158|BEP	ZCMM_DYNAMIC_TILE_SRV	1	Dynamic Tile Information - CM Pricing	CMM_DYNAMIC_TILE_SRV		 		Co-deployed only	
+ROW159|BEP	ZCMMFDCO_DYNAMIC_TILE_SRV	1	Dynamic Tile Information	CMMFDCO_DYNAMIC_TILE_SRV		 		Co-deployed only	
+ROW160|BEP	/BDTS/COMMAND_SRV	1	/BDTS/CL_ODATA_CMD_DPC_EXT	COMMAND_SRV	/BDTS/	 		Routing-based	
+ROW161|BEP	ZCONS_VECIE_SRV	1	Import and Export for Validation Rules and Methods	CONS_VECIE_SRV		 	Not Supported	Routing-based	
+ROW162|BEP	ZCONS_VECMETHOD_SRV	1	Validation Method	CONS_VECMETHOD_SRV		 	Not Supported	Routing-based	
+ROW163|BEP	ZCONS_VECRESULT_SRV	1	Validation Rule Result	CONS_VECRESULT_SRV		 	Not Supported	Routing-based	
+ROW164|BEP	ZCONS_VECRULE_SRV	1	Validation Rule	CONS_VECRULE_SRV		 	Not Supported	Routing-based	
+ROW165|BEP	ZCRMS4_SERV_CONTRACT_MANAGE_SRV	1	Service Contract Management	CRMS4_SERV_CONTRACT_MANAGE_SRV		 	Not Supported	Routing-based	
+ROW166|BEP	ZCV_ATTACHMENT_SRV	1	Gateway : ODATA model for CV - attachments	CV_ATTACHMENT_SRV		 		Routing-based	
+ROW167|BEP	ZCV_DOCUMENT_MANAGE	1	Document Manage	CV_DOCUMENT_MANAGE		 	Not Supported	Co-deployed only	
+ROW168|BEP	ZCV_DOCUMENT_MANAGEMENT	1	Gateway: Simplified Document Management	CV_DOCUMENT_MANAGEMENT		 	Not Supported	Co-deployed only	
+ROW169|BEP	ZDATEFUNCTION	1	Date Function Service	DATEFUNCTION		 	Not Supported	Routing-based	
+ROW170|BEP	ZDFS_MAINT_ORDANDOPERATION_SRV	1	Extention of EAM_OBJPG_MAINTORDANDOPERATION	DFS_MAINT_ORDANDOPERATION_SRV		 	Not Supported	Co-deployed only	
+ROW171|BEP	ZDFS_MAINT_ORDER_SRV	1	Extension for EAM_OBJPG_MAINTENANCEORDER	DFS_MAINT_ORDER_SRV		 	Not Supported	Co-deployed only	
+ROW172|BEP	ZDFS_MAINT_TECHNICALOBJECT_SRV	1	Extension project for EAM_OBJPG_TECHNICALOBJECT	DFS_MAINT_TECHNICALOBJECT_SRV		 	Not Supported	Co-deployed only	
+ROW173|BEP	ZE2EIE_IC_MNGCLDSOL	1	Merged Srv for scoping,config,sysState,changeproj,phaseProg	E2EIE_IC_MNGCLDSOL		 	Not Supported	Routing-based	
+ROW174|BEP	ZEAM_BACKLOG_MANAGE	1	F4073: Manage Maintenance Backlog	EAM_BACKLOG_MANAGE		 		Co-deployed only	
+ROW175|BEP	ZEAM_MAINT_PLANNER_OVERVIEW_SRV	1	F5105: EAM Maintenance Planning Overview	EAM_MAINT_PLANNER_OVERVIEW_SRV		 	Not Supported	Routing-based	
+ROW176|BEP	ZEAM_MAINTORDER_WORKFLOW_SRV	1	Maintenance Order Workflow	EAM_MAINTORDER_WORKFLOW_SRV		 	Not Supported	Routing-based	
+ROW177|BEP	ZEAM_MALFUNCTION_MANAGE	1	F2023 "Respond to Breakdown" FIORI app	EAM_MALFUNCTION_MANAGE		 	Not Supported	Co-deployed only	
+ROW178|BEP	ZEAM_NTF_CREATE	1	EAM Notification Creation	EAM_NTF_CREATE		 	Not Supported	Co-deployed only	
+ROW179|BEP	ZEAM_OBJPG_MAINTITEM_SRV	1	Maintenance Item for Object Page	EAM_OBJPG_MAINTITEM_SRV		 		Co-deployed only	
+ROW180|BEP	ZEAM_OBJPG_MAINTNOTIFICATION_SRV	1	Maintenance Notification for Object Page	EAM_OBJPG_MAINTNOTIFICATION_SRV		X	Not Supported	Routing-based	
+ROW181|BEP	ZEAM_OBJPG_MAINTORDANDOPER_SRV	1	F2173: Find Maintenance Orders and Operations	EAM_OBJPG_MAINTORDANDOPER_SRV		 		Co-deployed only	
+ROW182|BEP	ZEAM_OBJPG_MAINTPLAN_SRV	1	Maintenance Plan for Object Page	EAM_OBJPG_MAINTPLAN_SRV		 		Co-deployed only	
+ROW183|BEP	ZEAM_OBJPG_ORDERCONFIRMATION_SRV	1	oData service for EAM Maintenance Order Confirmation	EAM_OBJPG_ORDERCONFIRMATION_SRV		 		Co-deployed only	
+ROW184|BEP	ZEAM_OBJPG_PURCH_SRV	1	F3065: Procurement for Maintenance Planner (Purchase Reqn)	EAM_OBJPG_PURCH_SRV		 		Co-deployed only	
+ROW185|BEP	ZEAM_OBJPG_PURCHORDER_SRV	1	F2827: Procurement for Maintenance Planner (Purchase Order)	EAM_OBJPG_PURCHORDER_SRV		 		Co-deployed only	
+ROW186|BEP	ZEAM_OBJPG_TASKLIST_SRV	1	Maintenance Task List for Object Page	EAM_OBJPG_TASKLIST_SRV		 	Not Supported	Co-deployed only	
+ROW187|BEP	ZEAM_OBJPG_TASKLISTANDOP_SRV	1	Maintenance Task List and Operation Object Page	EAM_OBJPG_TASKLISTANDOP_SRV		 	Not Supported	Co-deployed only	
+ROW188|BEP	ZEAM_OBJPG_TECHNICALOBJECT_SRV	1	OData service for EAM Technical Object Object Page	EAM_OBJPG_TECHNICALOBJECT_SRV		 		Co-deployed only	
+ROW189|BEP	ZEAM_ORD_MASS_CONFIRMATION_SRV	1	Mass Confirmation services	EAM_ORD_MASS_CONFIRMATION_SRV		 		Co-deployed only	
+ROW190|BEP	ZEAM_ORDER_ACTUALCOST_MONITOR	1	F3567 Analyze Actual Cost	EAM_ORDER_ACTUALCOST_MONITOR		 	Not Supported	Routing-based	
+ROW191|BEP	ZEAM_ORDER_MONITOR	1	F2828 "EAM Overview Page for Maintenance Planner"	EAM_ORDER_MONITOR		 	Not Supported	Routing-based	
+ROW192|BEP	ZEAM_PLNGBUCKET_MANAGE	1	F3888: Manage Maintenance Planning Buckets	EAM_PLNGBUCKET_MANAGE		 		Co-deployed only	
+ROW193|BEP	ZEASY_ACCESS_MENU	1	Easy Access Menu service	EASY_ACCESS_MENU	/UI2/	 		Routing-based	
+ROW194|BEP	ZEDOC_DCC_SRV	1	Document Compliance Cockpit Service	EDOC_DCC_SRV		 		Co-deployed only	
+ROW195|BEP	ZEHFND_FIORI_TILE_SRV	1	Generic Tile Service for Dynamic Fiori Tiles	EHFND_FIORI_TILE_SRV		 		Co-deployed only	
+ROW196|BEP	ZEHS_PMA_MKT_INFO_SRV	1	Marketability Info of Product	EHS_PMA_MKT_INFO_SRV		 		Co-deployed only	
+ROW197|BEP	ZESH_SEARCH_SRV	1	ESH Search	ESH_SEARCH_SRV		 		Co-deployed only	
+ROW198|BEP	ZFAA_ASSET_OVERVIEWPAGE_SRV	1	Asset Accountant Overview Page	FAA_ASSET_OVERVIEWPAGE_SRV		 	Not Supported	Co-deployed only	
+ROW199|BEP	ZFAC_CURRENCY_EXCHANGE_RATE_SRV	1	Currency Exchange Rate	FAC_CURRENCY_EXCHANGE_RATE_SRV		 	Not Supported	Routing-based	
+ROW200|BEP	ZFAC_EDITING_OPTIONS_SRV	1	Odata for Fiori FB00	FAC_EDITING_OPTIONS_SRV		 		Co-deployed only	
+ROW201|BEP	ZFAC_FINANCIAL_DOCUMENT_SRV_01	1	oData Financial Document (Display and Reversal)	FAC_FINANCIAL_DOCUMENT_SRV_01		 		Co-deployed only	
+ROW202|BEP	ZFAC_FINANCIAL_STATEMENT_SRV	1	Financial Statement	FAC_FINANCIAL_STATEMENT_SRV		 	Not Supported	Routing-based	
+ROW203|BEP	ZFAC_FINANCIALS_POSTING_SRV	1	Posting Transaction in Financials	FAC_FINANCIALS_POSTING_SRV		 	Not Supported	Routing-based	
+ROW204|BEP	ZFAC_GL_DOCUMENT_POST_SRV	1	Post GL Document Service	FAC_GL_DOCUMENT_POST_SRV		 	Not Supported	Routing-based	
+ROW205|BEP	ZFAC_GL_JOURNALENTRY_VER_SRV	1	G/L Journal Entry Verification	FAC_GL_JOURNALENTRY_VER_SRV		 		Co-deployed only	
+ROW206|BEP	ZFAC_GL_MANUAL_CLEARING_SRV	1	GL Open Items Manual Clearing	FAC_GL_MANUAL_CLEARING_SRV		 	Not Supported	Routing-based	
+ROW207|BEP	ZFAC_GL_OVP_SRV	1	G/L Overview	FAC_GL_OVP_SRV		 	Not Supported	Co-deployed only	
+ROW208|BEP	ZFAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV	1	GL Line Item Browser GLV	FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV		 		Co-deployed only	
+ROW209|BEP	ZFAC_GRIR_ANALYSIS_SRV	1	oData Service GR/IR Clearing Analysis	FAC_GRIR_ANALYSIS_SRV		 	Not Supported	Co-deployed only	
+ROW210|BEP	ZFAC_GRIR_RECONCILIATION_SRV	1	oData Service GR/IR Clearing Reconciliation	FAC_GRIR_RECONCILIATION_SRV		 	Not Supported	Routing-based	
+ROW211|BEP	ZFAC_GROSSMARGIN_SRV	1	Gross Margin - Presumed/Actuals	FAC_GROSSMARGIN_SRV		 		Co-deployed only	
+ROW212|BEP	ZFAC_HIERARCHY_MIGRTN_SRVB	1	Service binding for Hierarchy Migration	FAC_HIERARCHY_MIGRTN_SRVB		 	Not Supported	Routing-based	
+ROW213|BEP	ZFAC_INCOMINGORDERS_SRV	1	Incoming Orders	FAC_INCOMINGORDERS_SRV		 		Co-deployed only	
+ROW214|BEP	ZFAC_MANAGE_GLACCOUNT_SRV	2	Manage G/L Account Master Draft 2	FAC_MANAGE_GLACCOUNT_SRV		 	Not Supported	Routing-based	
+ROW215|BEP	ZFAC_MONITORING_PRA_SRV	1	oData Service Predictive Accounting Monitoring	FAC_MONITORING_PRA_SRV		 		Co-deployed only	
+ROW216|BEP	ZFAC_RECURRING_ACCOUNTING_DOC_SRV	1	Recurring Journal Entry Template Service	FAC_RECURRING_ACCOUNTING_DOC_SRV		 		Co-deployed only	
+ROW217|BEP	ZFAC_REVENUE_VARIANCE_SRV	1	Revenue Variance	FAC_REVENUE_VARIANCE_SRV		 		Co-deployed only	
+ROW218|BEP	ZFAC_RVW_APPRV_ACCRUALS_SRV	1	OData Review and Approve Accruals	FAC_RVW_APPRV_ACCRUALS_SRV		 		Co-deployed only	
+ROW219|BEP	ZFAC_UNIVERSAL_HIERARCHY_SRV	1	Universal Hierarchy	FAC_UNIVERSAL_HIERARCHY_SRV		 		Routing-based	
+ROW220|BEP	ZFAP_APOVERVIEWPAGE_SRV	1	Accounts Payable Overview	FAP_APOVERVIEWPAGE_SRV		 	Not Supported	Co-deployed only	
+ROW221|BEP	ZFAP_APPROVEBANKPAYMENTS_SRV	1	Approve Bank Payments	FAP_APPROVEBANKPAYMENTS_SRV		 		Co-deployed only	
+ROW222|BEP	ZFAP_BALANCES_V2_SRV	1	Supplier Balances V2 Fiori Elements	FAP_BALANCES_V2_SRV		 	Not Supported	Co-deployed only	
+ROW223|BEP	ZFAP_BANK_CHAIN_SRV	1	Manage Bank Chains	FAP_BANK_CHAIN_SRV		 		Co-deployed only	
+ROW224|BEP	ZFAP_MANAGE_PAYMENT_MEDIA	1	Manage Payment Media	FAP_MANAGE_PAYMENT_MEDIA		 		Co-deployed only	
+ROW225|BEP	ZFAP_MANUAL_CLEARING_SRV	1	Manual clearing of outgoing payments	FAP_MANUAL_CLEARING_SRV		 		Co-deployed only	
+ROW226|BEP	ZFAP_MONPAYBATCHS_SRV	1	Monitor Payment Batches	FAP_MONPAYBATCHS_SRV		 		Co-deployed only	
+ROW227|BEP	ZFAP_PAYMENT_POST_SRV	1	Post Outgoing Supplier Payment	FAP_PAYMENT_POST_SRV		 		Co-deployed only	
+ROW228|BEP	ZFAP_REVISE_PAYMENT_PROPOSAL	1	Revise Payment Proposal	FAP_REVISE_PAYMENT_PROPOSAL		 		Co-deployed only	
+ROW229|BEP	ZFAP_SCHEDULE_PAYMENT_PROPOSAL	1	Schedule Payment Proposal	FAP_SCHEDULE_PAYMENT_PROPOSAL		 		Co-deployed only	
+ROW230|BEP	ZFAP_VENDOR_LINE_ITEMS_SRV	1	vendor line items (aka fbl1n)	FAP_VENDOR_LINE_ITEMS_SRV		 	Not Supported	Routing-based	
+ROW231|BEP	ZFAR_AR_OVP_SRV	1	Account Receivable Overview	FAR_AR_OVP_SRV		 		Co-deployed only	
+ROW232|BEP	ZFAR_ASSIGN_OPEN_ITEMS_SRV	1	Assign Open Items	FAR_ASSIGN_OPEN_ITEMS_SRV		 		Co-deployed only	
+ROW233|BEP	ZFAR_BAD_DEBT_RESERVE_SRV	1	OData Service - Bad Debt Reserve Adequacy	FAR_BAD_DEBT_RESERVE_SRV		 		Co-deployed only	
+ROW234|BEP	ZFAR_BALANCES_V2_SRV	1	Customer Balances V2 Fiori Elements	FAR_BALANCES_V2_SRV		 		Co-deployed only	
+ROW235|BEP	ZFAR_BS_ITM_REPROC_SRV	1	Reprocess Bank Statement Items Service	FAR_BS_ITM_REPROC_SRV		 		Co-deployed only	
+ROW236|BEP	ZFAR_CORRESPONDENCE_HISTORY_SRV	1	Display Correspondence History	FAR_CORRESPONDENCE_HISTORY_SRV		 		Co-deployed only	
+ROW237|BEP	ZFAR_CUST_BALANCE_SRV	1	Customer Balance	FAR_CUST_BALANCE_SRV		 		Co-deployed only	
+ROW238|BEP	ZFAR_CUSTOMER_LINE_ITEMS	1	customer line items (aka fbl5n)	FAR_CUSTOMER_LINE_ITEMS		 	Not Supported	Routing-based	
+ROW239|BEP	ZFAR_CUSTOMER_LIST_V2	1	Display Customer List V2 (OData V2)	FAR_CUSTOMER_LIST_V2		 		Co-deployed only	
+ROW240|BEP	ZFAR_DISP_PAYMENT_CARD_DATA_SRV	1	Display Payment Card Data	FAR_DISP_PAYMENT_CARD_DATA_SRV		 		Co-deployed only	
+ROW241|BEP	ZFAR_DISP_PROCESS_FLOW_SRV	1	Display Process Flow for AR	FAR_DISP_PROCESS_FLOW_SRV		 		Co-deployed only	
+ROW242|BEP	ZFAR_DOUBTFUL_ACCTS_VALUATION_SRV	1	OData Service - Doubtful Accounts Valuation	FAR_DOUBTFUL_ACCTS_VALUATION_SRV		 		Co-deployed only	
+ROW243|BEP	ZFAR_DOWN_PAYMENT_REQUEST_MANAGE_SR	1	Manage Down Payment Requests (AR)	FAR_DOWN_PAYMENT_REQUEST_MANAGE_SRV		 		Co-deployed only	
+ROW244|BEP	ZFAR_DUNNING_HISTORY_SRV	1	Display Dunning History	FAR_DUNNING_HISTORY_SRV		 		Co-deployed only	
+ROW245|BEP	ZFAR_INSPECT_ITEMS_CHNGLOG_SRV	1	Inspect Items Changelog	FAR_INSPECT_ITEMS_CHNGLOG_SRV		 		Co-deployed only	
+ROW246|BEP	ZFAR_MANAGE_BS_SRV	1	Manage Bank Statement - Fiori App	FAR_MANAGE_BS_SRV		 		Co-deployed only	
+ROW247|BEP	ZFAR_MANAGE_COLL_STRATEGIES_SRV	1	Manage Collection Strategies	FAR_MANAGE_COLL_STRATEGIES_SRV		 		Co-deployed only	
+ROW248|BEP	ZFAR_MANAGE_PAYMENT_ADVICES_SRV	1	Manage Payment Advices	FAR_MANAGE_PAYMENT_ADVICES_SRV		 		Co-deployed only	
+ROW249|BEP	ZFAR_MANAGE_PR_SRV	1	Manage Posting Rules	FAR_MANAGE_PR_SRV		 		Co-deployed only	
+ROW250|BEP	ZFAR_MANUAL_CLEARING_SRV	1	Manual clearing of incoming payments	FAR_MANUAL_CLEARING_SRV		 		Co-deployed only	
+ROW251|BEP	ZFAR_MY_DUNNING_PROPOSAL_SRV	1	Dunning proposals belonging to an accounting clerk	FAR_MY_DUNNING_PROPOSAL_SRV		 		Co-deployed only	
+ROW252|BEP	ZFAR_PAYMENT_POST_SRV	1	Post Incoming Customer Payment (aka f-28)	FAR_PAYMENT_POST_SRV		 		Co-deployed only	
+ROW253|BEP	ZFARP_MANAGE_INTEREST_RUNS_SRV	1	oData Service for Manage Interest Runs App	FARP_MANAGE_INTEREST_RUNS_SRV		 		Co-deployed only	
+ROW254|BEP	ZFARP_VALUE_HELPS_SRV	1	Service containing value helps for FIN AP/AR	FARP_VALUE_HELPS_SRV		 	Not Supported	Routing-based	
+ROW255|BEP	ZFBV_INV_BALSHEET_VALUATION_SRV	1	Inventory Balance Sheet Valuations	FBV_INV_BALSHEET_VALUATION_SRV		 		Co-deployed only	
+ROW256|BEP	ZFCLM_BAM_ACCOUNTWD_SRV	1	Manage Bank Account with Draft	FCLM_BAM_ACCOUNTWD_SRV		 	Not Supported	Routing-based	
+ROW257|BEP	ZFCLM_BAM_FS_BANK_SRV	1	Factsheet Bank	FCLM_BAM_FS_BANK_SRV		 		Co-deployed only	
+ROW258|BEP	ZFCLM_BAM_FS_HOUSEBANK_SRV_01	1	Factsheet House Bank	FCLM_BAM_FS_HOUSEBANK_SRV_01		 		Co-deployed only	
+ROW259|BEP	ZFCLM_BAM_FS_HOUSEBANKACCT_SRV	1	Factsheet House Bank Account	FCLM_BAM_FS_HOUSEBANKACCT_SRV		 		Co-deployed only	
+ROW260|BEP	ZFCLM_BAM_SRV	1	Cash: Bank Account Master Data	FCLM_BAM_SRV		 	Not Supported	Co-deployed only	
+ROW261|BEP	ZFCLM_BM_SRV	1	Bank managment	FCLM_BM_SRV		 	Not Supported	Routing-based	
+ROW262|BEP	ZFCLM_BRM_INTRABNKSTAT_MONITOR_SRV	1	Intraday Bank Statement Monitor	FCLM_BRM_INTRABNKSTAT_MONITOR_SRV		 		Co-deployed only	
+ROW263|BEP	ZFCLM_CASH_ALI_SRV	1	Detect Abnormal Liquidity Items	FCLM_CASH_ALI_SRV		 		Co-deployed only	
+ROW264|BEP	ZFCLM_CASH_BANKTRANSFER_SRV	1	Bank Transfer	FCLM_CASH_BANKTRANSFER_SRV		 		Co-deployed only	
+ROW265|BEP	ZFCLM_CASH_BANKTRANSFERTEM_SRV	1	Make Bank Transfer with Template	FCLM_CASH_BANKTRANSFERTEM_SRV		 		Co-deployed only	
+ROW266|BEP	ZFCLM_CASH_CONCN_SRV	1	Gateway project for cash concentration	FCLM_CASH_CONCN_SRV		 		Co-deployed only	
+ROW267|BEP	ZFCLM_CASH_CPLMGMT_MDL_SRV	1	Manage Cash Pools	FCLM_CASH_CPLMGMT_MDL_SRV		 		Co-deployed only	
+ROW268|BEP	ZFCLM_CASH_FLOW_ANALYZER_SRV	1	Gateway project of Cash Flow and Balance Analyzer	FCLM_CASH_FLOW_ANALYZER_SRV		 		Routing-based	
+ROW269|BEP	ZFCLM_CASH_MEMORECORDWD_SRV	1	Gateway Service with draft for Memo Record	FCLM_CASH_MEMORECORDWD_SRV		 		Co-deployed only	
+ROW270|BEP	ZFCLM_CASH_MMRD_RECNCL_SRV	1	Reconcile Cash Flows - Memo Records	FCLM_CASH_MMRD_RECNCL_SRV		 		Co-deployed only	
+ROW271|BEP	ZFCLM_CASH_RCF_SRV	1	Release Cash Flow	FCLM_CASH_RCF_SRV		 		Co-deployed only	
+ROW272|BEP	ZFCLM_CASH_RECNCLN_SRV	1	Cash Reconciliation	FCLM_CASH_RECNCLN_SRV		 		Co-deployed only	
+ROW273|BEP	ZFCLM_CP_PAYMENTDETAIL_SRV	1	Payment Detail	FCLM_CP_PAYMENTDETAIL_SRV		 	Not Supported	Routing-based	
+ROW274|BEP	ZFCLM_MBTS_WITHTMPL_SRV	1	Make Bank Transfers with Template	FCLM_MBTS_WITHTMPL_SRV		 		Co-deployed only	
+ROW275|BEP	ZFCO_CORE_SRV	1	Correction Request Service	FCO_CORE_SRV		 		Co-deployed only	
+ROW276|BEP	ZFCO_COST_CENTER_BUDGET_SRV	1	Cost Center Budget Report	FCO_COST_CENTER_BUDGET_SRV		 		Routing-based	
+ROW277|BEP	ZFCO_COST_CTR_CLASSIC_CMTMT	1	Service Binding for Commitment Reporting Classic	FCO_COST_CTR_CLASSIC_CMTMT		 		Co-deployed only	
+ROW278|BEP	ZFCO_COST_CTR_COMMITMENT_2	1	Service Binding for Commitment Reporting	FCO_COST_CTR_COMMITMENT_2		 		Co-deployed only	
+ROW279|BEP	ZFCO_DISPLAY_COST_RATE	1	Service binding for Display Cost Rate	FCO_DISPLAY_COST_RATE		 		Co-deployed only	
+ROW280|BEP	ZFCO_EVENTBASED_POSTING_RULES_SRV	1	Event-Based Posting Rules	FCO_EVENTBASED_POSTING_RULES_SRV		 		Co-deployed only	
+ROW281|BEP	ZFCO_MANAGE_ACTIVITY_TYPE_SRV	1	Manage Activity Type	FCO_MANAGE_ACTIVITY_TYPE_SRV		 	Not Supported	Routing-based	
+ROW282|BEP	ZFCO_MANAGE_ALLOCATION_SRV	1	Manage Allocations	FCO_MANAGE_ALLOCATION_SRV		 	Not Supported	Routing-based	
+ROW283|BEP	ZFCO_MANAGE_COST_CENTERS_SRV	1	Manage Cost Centers	FCO_MANAGE_COST_CENTERS_SRV		 	Not Supported	Routing-based	
+ROW284|BEP	ZFCO_MNG_COST_ELEMENT_GROUP	1	Manage Cost Element Groups	FCO_MNG_COST_ELEMENT_GROUP		 	Not Supported	Routing-based	
+ROW285|BEP	ZFCO_MS_SPEND_SRV	1	Service for My Spend II	FCO_MS_SPEND_SRV		 		Co-deployed only	
+ROW286|BEP	ZFCO_MU_SRV	1	Unusual items odata service	FCO_MU_SRV		 		Co-deployed only	
+ROW287|BEP	ZFCO_PRODUCTION_COST_ANALYSIS_SRV	1	Production Cost Analysis	FCO_PRODUCTION_COST_ANALYSIS_SRV		 	Not Supported	Co-deployed only	
+ROW288|BEP	ZFCO_PROF_SEGMENT_SRV	1	Assign Profitability Segment	FCO_PROF_SEGMENT_SRV		 		Co-deployed only	
+ROW289|BEP	ZFCO_REALTIME_ORD_COSTS_DETAIL_SRV	1	Real Time Order Costs Details	FCO_REALTIME_ORD_COSTS_DETAIL_SRV		 		Co-deployed only	
+ROW290|BEP	ZFCO_SALES_ACCTG_OVERVIEW_SRV	1	Sales Accounting Overview	FCO_SALES_ACCTG_OVERVIEW_SRV		 		Co-deployed only	
+ROW291|BEP	ZFCO_STATISTICAL_KEY_FIGURE_V2_SRV	1	Manage Statistical Key Figures	FCO_STATISTICAL_KEY_FIGURE_V2_SRV		 	Not Supported	Routing-based	
+ROW292|BEP	ZFCO_VIA_AAR_OVERVIEW_SRV	1	Analyze allocation Results	FCO_VIA_AAR_OVERVIEW_SRV		 		Co-deployed only	
+ROW293|BEP	ZFCO_VIA_AAR_OVERVIEW_V2_SRV	1	Analyze allocation Results V2	FCO_VIA_AAR_OVERVIEW_V2_SRV		 		Co-deployed only	
+ROW294|BEP	ZFCOM_COSTCENTER_SRV	1	Cost Center Master Data	FCOM_COSTCENTER_SRV		 	Not Supported	Routing-based	
+ROW295|BEP	/UI2/FDM_PAGE_REPOSITORY_CUST_SRV	1	Fiori Data Model: Page Repository Customizing Service	FDM_PAGE_REPOSITORY_CUST_SRV	/UI2/	 	Not Supported	Co-deployed only	
+ROW296|BEP	/UI2/FDM_PAGE_REPOSITORY_SRV	1	Fiori Data Model: Page Repository Service	FDM_PAGE_REPOSITORY_SRV	/UI2/	 	Not Supported	Co-deployed only	
+ROW297|BEP	/UI2/FDM_PAGE_RUNTIME_SRV	1	SAP Fiori Data Model: Page Runtime Service	FDM_PAGE_RUNTIME_SRV	/UI2/	 	Not Supported	Co-deployed only	
+ROW298|BEP	/UI2/FDM_SPACE_REPOSITORY_CUST_SRV	1	SAP Fiori Data Model: Space Repository Customizing Service	FDM_SPACE_REPOSITORY_CUST_SRV	/UI2/	 	Not Supported	Co-deployed only	
+ROW299|BEP	/UI2/FDM_TRANSPORT_SRV	1	SAP Fiori Data Model: Transport Service	FDM_TRANSPORT_SRV	/UI2/	 	Not Supported	Co-deployed only	
+ROW300|BEP	/UI2/FDM_VALUE_HELP_SRV	1	Fiori Data Model: Value Help Service	FDM_VALUE_HELP_SRV	/UI2/	 	Not Supported	Co-deployed only	
+ROW301|BEP	/INOWITS/FG_READYNESS_SRV_01	1	FG Process Readyness	FG_READYNESS_SRV_01	/INOWITS/	X	Not Supported	Routing-based	
+ROW302|BEP	ZFI_CORRESPONDENCE_SRV	1	Finance Correspondence	FI_CORRESPONDENCE_SRV		 		Co-deployed only	
+ROW303|BEP	ZFI_CORRESPONDENCE_V2_SRV	1	Finance Correspondence v2	FI_CORRESPONDENCE_V2_SRV		 		Co-deployed only	
+ROW304|BEP	ZFIN_ACCOUNTING_IMPACT_SRV	1	Display Accounting Impact	FIN_ACCOUNTING_IMPACT_SRV		 		Co-deployed only	
+ROW305|BEP	ZFIN_CLRG_RSET_SRV	1	Manage Clearing Documents	FIN_CLRG_RSET_SRV		 		Co-deployed only	
+ROW306|BEP	ZFIN_CONS_GENERICLOG_SRV	1	Generic Log	FIN_CONS_GENERICLOG_SRV		 	Not Supported	Routing-based	
+ROW307|BEP	ZFIN_CONS_INTCO_RECNCLN_SRV	1	Consolidation Intercompany Reconciliation	FIN_CONS_INTCO_RECNCLN_SRV		 		Co-deployed only	
+ROW308|BEP	ZFIN_ML_ACR_DISP	1	F6073 Display Actual Costing Result	FIN_ML_ACR_DISP		 	Not Supported	Routing-based	
+ROW309|BEP	ZFIN_SSC_SR_SRV	1	Shared Service Center OData Service	FIN_SSC_SR_SRV		 		Co-deployed only	
+ROW310|BEP	ZFIN_USER_DEFAULTPARAMETER_SRV	1	User Default Parameter	FIN_USER_DEFAULTPARAMETER_SRV		 	Not Supported	Routing-based	
+ROW311|BEP	ZFINCS_ADDL_MD_MAINTENANCE_SRV	1	Consolidation Additional Master Data Maintenance	FINCS_ADDL_MD_MAINTENANCE_SRV		 	Not Supported	Routing-based	
+ROW312|BEP	ZFINCS_FSIMAP_ASSG_SRV	1	Assign FS Item Mappings to Periods and Versions	FINCS_FSIMAP_ASSG_SRV		 	Not Supported	Routing-based	
+ROW313|BEP	ZFINCS_FSIMAP_MAINTENANCE_SRV	1	Consolidation FS Item Mapping Maintenance	FINCS_FSIMAP_MAINTENANCE_SRV		 	Not Supported	Routing-based	
+ROW314|BEP	ZFINCS_GRPSTR_SRV	1	Consolidation Group Structure	FINCS_GRPSTR_SRV		 	Not Supported	Routing-based	
+ROW315|BEP	ZFINCS_IMPORT_JOURNAL_ENTRY_SRV	1	Import Consolidation Journal entries	FINCS_IMPORT_JOURNAL_ENTRY_SRV		 	Not Supported	Routing-based	
+ROW316|BEP	ZFINCS_IMPORT_MAPPINGS_SRV	1	Import Mappings	FINCS_IMPORT_MAPPINGS_SRV		 	Not Supported	Routing-based	
+ROW317|BEP	ZFINCS_JRNLENTR_LIST_SRV	1	Group Journal Entry List	FINCS_JRNLENTR_LIST_SRV		 	Not Supported	Routing-based	
+ROW318|BEP	ZFINCS_JRNLENTR_POST_SRV	1	Consolidation Journal Entry Post	FINCS_JRNLENTR_POST_SRV		 	Not Supported	Routing-based	
+ROW319|BEP	ZFINCS_MD_XLSX_SRV	1	Consolidation Master Data Import and Export	FINCS_MD_XLSX_SRV		 	Not Supported	Routing-based	
+ROW320|BEP	ZFINCS_SELECTION_SRV	1	Unified Selection	FINCS_SELECTION_SRV		 	Not Supported	Routing-based	
+ROW321|BEP	ZFINS_ACDOC_PLAN_IMPORT_SRV	1	CL_FINS_ACDOC_PLAN_IMP_DPC_EXT	FINS_ACDOC_PLAN_IMPORT_SRV		 	Not Supported	Routing-based	
+ROW322|BEP	ZFINS_BALANCE_AUDIT_TRAIL_ITEMS_SRV	1	OData Service Account Balance Audit Trail	FINS_BALANCE_AUDIT_TRAIL_ITEMS_SRV		 	Not Supported	Routing-based	
+ROW323|BEP	ZFINS_TRR_PECRUN_PROJECT_SRV_01	1	service for Manage Revenue Recognition - Projects	FINS_TRR_PECRUN_PROJECT_SRV_01		 		Co-deployed only	
+ROW324|BEP	ZFINS_TRR_PECRUN_REALTIME_SRV	1	oData service for Manage Realtime issues	FINS_TRR_PECRUN_REALTIME_SRV		 		Co-deployed only	
+ROW325|BEP	ZFINS_TRR_PECRUN_SALES_SRV	1	Odata service for Manage Revenue Recognition - sales	FINS_TRR_PECRUN_SALES_SRV		 		Co-deployed only	
+ROW326|BEP	ZFINS_TRR_PECRUN_SRVDOC_SRV	1	service for Manage Revenue Recognition - Service Documents	FINS_TRR_PECRUN_SRVDOC_SRV		 		Co-deployed only	
+ROW327|BEP	ZFIORI_MONI_SRV	1	MBC Connector Monitor	FIORI_MONI_SRV	/BSNAGT/	 	Not Supported	Routing-based	
+ROW328|BEP	ZFITAXCN_INVC_BND_SRV	1	China Tax Invoice Binding Management	FITAXCN_INVC_BND_SRV		 		Co-deployed only	
+ROW329|BEP	ZFML_DMVC_ESTIMATED_COSTS	1	Service Binding - F4898 DMVC - Estimated Costs	FML_DMVC_ESTIMATED_COSTS		 		Co-deployed only	
+ROW330|BEP	ZFML_ESTDCOSTRUN_MANAGE_SRV	1	Estimated Costing Run List Page	FML_ESTDCOSTRUN_MANAGE_SRV		 		Co-deployed only	
+ROW331|BEP	ZFML_MATLVCA_DISP_SRV	1	Display Material Value Chain	FML_MATLVCA_DISP_SRV		 	Not Supported	Routing-based	
+ROW332|BEP	ZFML_MATVAL_MANAGE_SRV	1	Manage Material Valuations	FML_MATVAL_MANAGE_SRV		 		Co-deployed only	
+ROW333|BEP	ZFML_UPLMATINVPR_SRV	1	Upload Material Inventory Prices	FML_UPLMATINVPR_SRV		 		Co-deployed only	
+ROW334|BEP	ZFTR_ALERTS_SRV	1	Odata project for FTR_ALERT	FTR_ALERTS_SRV		 		Co-deployed only	
+ROW335|BEP	GFD_CONFIG_SRV	1	Generic Form Designer Configuration details	GFD_CONFIG_SRV		X	Not Supported	Routing-based	
+ROW336|BEP	GHO_ODATA_SRV	1	OData Project for Global Hydrocarbon Operations	GHO_ODATA_SRV		 		Routing-based	
+ROW337|BEP	/IWFND/GWDEMO_SP2	1	ZCL_ZTEST_GWDEMO_DPC_EXT	GWDEMO_SP2	/IWBEP/	 		Routing-based	
+ROW338|BEP	HRSFEC_ECP_INFO_SRV	1	Get ECP Information	HRSFEC_ECP_INFO_SRV		X	Not Supported	Routing-based	
+ROW339|BEP	HRSFEC_INFOTYPE_SRV	1	Infotype data	HRSFEC_INFOTYPE_SRV		X	Not Supported	Routing-based	
+ROW340|BEP	HRSFEC_PAY_OVERVIEW_SRV	1	Pay Overview	HRSFEC_PAY_OVERVIEW_SRV		X	Not Supported	Routing-based	
+ROW341|BEP	HRSFEC_PAYCTRL_REC_SRV	1	Service for payroll control record	HRSFEC_PAYCTRL_REC_SRV		X	Not Supported	Routing-based	
+ROW342|BEP	ZICA_MATCH_METHOD_SRV	1	Inter-Company Match Method Maintenance	ICA_MATCH_METHOD_SRV		 	Not Supported	Routing-based	
+ROW343|BEP	/BDTS/INSTALLED_SAP_NOTE_SRV	1	/BDTS/CL_ODATA_INST_SN_DPC_EXT	INSTALLED_SAP_NOTE_SRV	/BDTS/	 		Routing-based	
+ROW344|BEP	ZINTEROP	1	Gateway Service of Interaperability	INTEROP	/UI2/	 		Routing-based	
+ROW345|BEP	ZISU_BI_OPN_OVP_SRV	1	Open Billing Overview GW Service	ISU_BI_OPN_OVP_SRV		 	Not Supported	Co-deployed only	
+ROW346|BEP	ZJ_1BNFE_CONTINGENCY_SRV	1	Service for Fiori Contingency APP	J_1BNFE_CONTINGENCY_SRV		 		Co-deployed only	
+ROW347|BEP	ZJ_1BNFE_MONITOR_SRV	1	Gateway for Monitor NF-e Fiori App	J_1BNFE_MONITOR_SRV		 		Co-deployed only	
+ROW348|BEP	ZLCM_LEGALTR_MANAGE	1	Manage Legal Transaction	LCM_LEGALTR_MANAGE		 	Not Supported	Routing-based	
+ROW349|BEP	ZLE_SHP_OD_CREATE_SRV	1	Create Outbound Delivery	LE_SHP_OD_CREATE_SRV		 	Not Supported	Routing-based	
+ROW350|BEP	ZLE_SHP_OUTBOUND_DELIVERY_FS	1	Outbound Delivery Fact sheet	LE_SHP_OUTBOUND_DELIVERY_FS		 		Co-deployed only	
+ROW351|BEP	ZLE_SHP_QC_DLVREF_SRV	1	Quick Create: Delivery with ref.	LE_SHP_QC_DLVREF_SRV		 	Not Supported	Routing-based	
+ROW352|BEP	ZLE_SHP_RETURNS_DELIVERY_FS_SRV	1	Returns Delivery Fact sheet	LE_SHP_RETURNS_DELIVERY_FS_SRV		 		Co-deployed only	
+ROW353|BEP	ZLO_BM_BATCH_SRV	1	Batch: Object Page, List Report	LO_BM_BATCH_SRV		 		Co-deployed only	
+ROW354|BEP	ZLO_MASS_UPLOAD_UTILITY_SRV_01	1	Gateway Service for Mass Upload Utility	LO_MASS_UPLOAD_UTILITY_SRV_01		 	Not Supported	Co-deployed only	
+ROW355|BEP	ZLO_SETMAN_CC_OPG	1	Condition Contract (Object Page)	LO_SETMAN_CC_OPG		 		Co-deployed only	
+ROW356|BEP	ZLO_SETMAN_CCCUST_MAN	1	Manage Customer Condition Contracts	LO_SETMAN_CCCUST_MAN		 		Co-deployed only	
+ROW357|BEP	ZLO_SETMAN_CCSUPL_MAN	1	Manage Supplier Condition Contracts	LO_SETMAN_CCSUPL_MAN		 		Co-deployed only	
+ROW358|BEP	ZLO_VCHCLF	1	Variant Configuration and Classification Service	LO_VCHCLF		 		Co-deployed only	
+ROW359|BEP	ZLO_VCHCLF_INTEGRATION_LEGACY_SRV	1	Legacy appl. integration helper service for VCHCLF	LO_VCHCLF_INTEGRATION_LEGACY_SRV		 		Co-deployed only	
+ROW360|BEP	ZLORD_ODATA_ORDER_SRV	1	OData Service for Sales Order	LORD_ODATA_ORDER_SRV		 		Co-deployed only	
+ROW361|BEP	/SOMO/MA_ODATA_SRV	1	/SOMO/CL_MA_ODATA_DPC_EXT	MA_ODATA_SRV	/SOMO/	 		Routing-based	
+ROW362|BEP	ZMANAGE_SEPA_MANDATE	1	Service Binding for Manage SEPA Mandate	MANAGE_SEPA_MANDATE		 		Co-deployed only	
+ROW363|BEP	ZMD_BUSINESSPARTNER_SRV	1	OData service for Business Partner Master Data	MD_BUSINESSPARTNER_SRV		 	Not Supported	Routing-based	
+ROW364|BEP	ZMD_C_PRODUCT_MAINTAIN_SRV	1	Product Master - Odata based on Consumption views	MD_C_PRODUCT_MAINTAIN_SRV		 		Co-deployed only	
+ROW365|BEP	ZMD_PRODUCT_OP_SRV	1	OData Service for Product Object Page	MD_PRODUCT_OP_SRV		 		Co-deployed only	
+ROW366|BEP	ZMD_SUPPLIER_MASTER_SRV	1	OData service for Supplier Master	MD_SUPPLIER_MASTER_SRV		 	Not Supported	Routing-based	
+ROW367|BEP	ZMDC_EXPORT_SRV	1	Masterdata Export	MDC_EXPORT_SRV		 	Not Supported	Co-deployed only	
+ROW368|BEP	ZMDC_IMPORT_SRV	1	Masterdata Import	MDC_IMPORT_SRV		 		Co-deployed only	
+ROW369|BEP	ZMDC_MANAGE_SOURCE_DATA_SRV	1	Master Data Manage Source Data	MDC_MANAGE_SOURCE_DATA_SRV		 		Co-deployed only	
+ROW370|BEP	ZMDC_PROC_BP_ALP_SRV	1	Analytical List Page: Change Processes for Business Partner	MDC_PROC_BP_ALP_SRV		 		Co-deployed only	
+ROW371|BEP	ZMDC_PROCESS_SRV__1405	1	Service for MDC business partner relationships	MDC_PROCESS_SRV__1405		 		Co-deployed only	
+ROW372|BEP	ZMDC_PROCESS_SRV__147	1	MDC Process Object For BP	MDC_PROCESS_SRV__147		 		Co-deployed only	
+ROW373|BEP	ZMDC_PROCESS_SRV__194	1	MDC Process Object For Material	MDC_PROCESS_SRV__194		 		Co-deployed only	
+ROW374|BEP	ZMDC_PROCESS_SRV__986	1	Service for MDC business partner and relationships	MDC_PROCESS_SRV__986		 		Co-deployed only	
+ROW375|BEP	ZMDC_TRACK_CHANGES_SRV__1405	1	MDC Service for Track Changes - Business Partner Relations	MDC_TRACK_CHANGES_SRV__1405		 		Co-deployed only	
+ROW376|BEP	ZMDC_TRACK_CHANGES_SRV__147	1	MDC Service for Track Changes - Business Partner	MDC_TRACK_CHANGES_SRV__147		 		Co-deployed only	
+ROW377|BEP	ZMDC_TRACK_CHANGES_SRV__194	1	MDC Service for Track Changes - Material	MDC_TRACK_CHANGES_SRV__194		 		Co-deployed only	
+ROW378|BEP	ZMDG_CR_BUPA_ALP_SRV	1	Analytical List Page: Change Requests for Business Partner	MDG_CR_BUPA_ALP_SRV		 		Co-deployed only	
+ROW379|BEP	ZMDG_MDPROC_BUPA_OVP_SRV	1	Overview Page: Master Data Processes for Business Partner	MDG_MDPROC_BUPA_OVP_SRV		 		Co-deployed only	
+ROW380|BEP	/INOWITS/MDM_AUDIT_TRAIL_2_SRV	1	Audit Trail Report Created By Guruprasad On 03.07.2020	MDM_AUDIT_TRAIL_2_SRV	/INOWITS/	X	Not Supported	Routing-based	
+ROW381|BEP	/INOWITS/MDM_MAT_DASH_SRV	1	oData service for material dashboard	MDM_MAT_DASH_SRV	/INOWITS/	X	Not Supported	Routing-based	
+ROW382|BEP	/INOWITS/MDM_ODATA_SRV	1	MDM:ODATA	MDM_ODATA_SRV	/INOWITS/	X	Not Supported	Routing-based	
+ROW383|BEP	ZMESSAGE_TEXT	1	Message Text Service - Exposes T100 message longtexts	MESSAGE_TEXT	/IWBEP/	 	Not Supported	Routing-based	
+ROW384|BEP	ZMIG_MC_ODATA_SRV	1	Migration Cockpit OData Service	MIG_MC_ODATA_SRV	/LTB/	 	Not Supported	Routing-based	
+ROW385|BEP	ZMM_IM_INV_TURNOVR_ANLYS_SRV	1	Inventory Turnover Analysis	MM_IM_INV_TURNOVR_ANLYS_SRV		 	Not Supported	Routing-based	
+ROW386|BEP	ZMM_PRC_OVP	1	Overview for Procurement	MM_PRC_OVP		 	Not Supported	Routing-based	
+ROW387|BEP	ZMM_PUR_ANA_SUPPLEVALOVERALL_SRV	1	Overall Supplier Evaluation	MM_PUR_ANA_SUPPLEVALOVERALL_SRV		 	Inactive	Routing-based	
+ROW388|BEP	ZMM_PUR_CTRITEM_MNTR_SRV_01	1	Monitor Purchase Contract Items	MM_PUR_CTRITEM_MNTR_SRV_01		 	Not Supported	Routing-based	
+ROW389|BEP	ZMM_PUR_MAT_PROPOSE_CTR_SRV	1	Propose Materials for Contract	MM_PUR_MAT_PROPOSE_CTR_SRV		 	Not Supported	Routing-based	
+ROW390|BEP	ZMM_PUR_MATL_PRC_VARIANCE	1	Material Price Variance	MM_PUR_MATL_PRC_VARIANCE		 	Not Supported	Co-deployed only	
+ROW391|BEP	ZMM_PUR_OA_MAINTAIN_SRV	1	Maintain Outline Agreements	MM_PUR_OA_MAINTAIN_SRV		 	Inactive	Co-deployed only	
+ROW392|BEP	ZMM_PUR_PO_MAINT_V2_SRV	1	Manage Purchase Orders (SmartTemplate)	MM_PUR_PO_MAINT_V2_SRV		 	Inactive	Routing-based	
+ROW393|BEP	ZMM_PUR_POITEMS_MONI_SRV	1	Monitor Purchase Order Items	MM_PUR_POITEMS_MONI_SRV		 	Not Supported	Routing-based	
+ROW394|BEP	ZMM_PUR_PR_PROCESS_SRV	1	Purchase Requisition Processing	MM_PUR_PR_PROCESS_SRV		 	Not Supported	Routing-based	
+ROW395|BEP	ZMM_PUR_PR_PROFNL_MAINTAIN_SRV	1	Profnl Purchase Requisition maintan	MM_PUR_PR_PROFNL_MAINTAIN_SRV		 	Inactive	Routing-based	
+ROW396|BEP	ZMM_PUR_PRITEM_MNTR_SRV	1	Monitor PR Items	MM_PUR_PRITEM_MNTR_SRV		 	Not Supported	Co-deployed only	
+ROW397|BEP	ZMM_PUR_PRITEMACCT_MNTR_SRV	1	Monitor PR Items by Account Assignment	MM_PUR_PRITEMACCT_MNTR_SRV		 	Not Supported	Co-deployed only	
+ROW398|BEP	ZMM_PUR_QTN_COMPARE_SRV	1	Supplier Quotation Compare	MM_PUR_QTN_COMPARE_SRV		 	Not Supported	Routing-based	
+ROW399|BEP	ZMM_PUR_QTN_MAINTAIN_SRV	1	Supplier Quotation	MM_PUR_QTN_MAINTAIN_SRV		 	Not Supported	Routing-based	
+ROW400|BEP	ZMM_PUR_REL_STRATEGY_SRV	1	Release Strategy	MM_PUR_REL_STRATEGY_SRV		 		Co-deployed only	
+ROW401|BEP	ZMM_PUR_REQ_APPROVAL_COMPLETION_SRV	1	PR Completion	MM_PUR_REQ_APPROVAL_COMPLETION_SRV		 	Not Supported	Routing-based	
+ROW402|BEP	ZMM_PUR_REQ_SSP_V2_MAINTAIN_SRV	1	Odata for SSP modernization	MM_PUR_REQ_SSP_V2_MAINTAIN_SRV		 	Not Supported	Routing-based	
+ROW403|BEP	ZMM_PUR_RFQ_MAINTAIN_SRV	1	Maintain RFQ Project	MM_PUR_RFQ_MAINTAIN_SRV		 	Not Supported	Routing-based	
+ROW404|BEP	ZMM_PUR_SCHEDG_AGRMT_SRV	1	Scheduling Agreement	MM_PUR_SCHEDG_AGRMT_SRV		 		Co-deployed only	
+ROW405|BEP	ZMM_SUPPLIER_INV_SITUATION_PAGE_SRV	1	Supplier Invoice Situation Page	MM_SUPPLIER_INV_SITUATION_PAGE_SRV		 		Co-deployed only	
+ROW406|BEP	ZMM_SUPPLIER_INVOICE_LIST_ENH_SRV	1	Supplier Invoices List Enhanced	MM_SUPPLIER_INVOICE_LIST_ENH_SRV		 	Not Supported	Routing-based	
+ROW407|BEP	ZMM_SUPPLIER_INVOICE_MANAGE	1	Manage Supplier Invoice	MM_SUPPLIER_INVOICE_MANAGE		 		Routing-based	
+ROW408|BEP	ZMM_SUPPLIER_INVOICE_UPLOAD_SRV	1	Supplier Invoice Upload	MM_SUPPLIER_INVOICE_UPLOAD_SRV		 	Not Supported	Routing-based	
+ROW409|BEP	ZMMIM_BATRMNGSLORPRDTE_SRV	1	Determine Remaining Shelf Life or Prodcution Date	MMIM_BATRMNGSLORPRDTE_SRV		 	Not Supported	Co-deployed only	
+ROW410|BEP	ZMMIM_DEADSTOCKMATERIAL_SRV	1	Dead stock material	MMIM_DEADSTOCKMATERIAL_SRV		 	Not Supported	Routing-based	
+ROW411|BEP	ZMMIM_GR_CANCELLATION_SRV	1	Cancellation of Goods Receipt	MMIM_GR_CANCELLATION_SRV		 		Co-deployed only	
+ROW412|BEP	ZMMIM_INVANALYST_OVP_SRV	1	Inventory Analyst OVP	MMIM_INVANALYST_OVP_SRV		 	Not Supported	Co-deployed only	
+ROW413|BEP	ZMMIM_MATDOC_OV_SRV	1	Odata Service: Material Documents Overview	MMIM_MATDOC_OV_SRV		 	Not Supported	Co-deployed only	
+ROW414|BEP	ZMMIM_MATDOC_SRV	1	oData Service Material Document	MMIM_MATDOC_SRV		 	Not Supported	Co-deployed only	
+ROW415|BEP	ZMMIM_MATERIAL_DATA_SRV	1	Retrieve Material Master Data	MMIM_MATERIAL_DATA_SRV		 	Not Supported	Co-deployed only	
+ROW416|BEP	ZMMIM_MULTIPLE_MATERIAL_SRV	1	Retrieve multiple Material Data	MMIM_MULTIPLE_MATERIAL_SRV		 	Not Supported	Routing-based	
+ROW417|BEP	ZMMIM_SLOWORNONMOVINGMATERIAL_SRV	1	Service for Slow or Non-Moving Material Query	MMIM_SLOWORNONMOVINGMATERIAL_SRV		 	Not Supported	Routing-based	
+ROW418|BEP	ZMMIM_STKKPITIMESERIESCOMPRN_SRV	1	Stock KPI Time Series Comparison	MMIM_STKKPITIMESERIESCOMPRN_SRV		 	Not Supported	Co-deployed only	
+ROW419|BEP	ZMMIM_STOCKINDATERANGE_SRV	1	Service for Analyze Stock in Date Range	MMIM_STOCKINDATERANGE_SRV		 		Co-deployed only	
+ROW420|BEP	ZMMPUR_ANA_CNTRL_CTR_MNTR_SRV	1	Monitor Central Contract Items	MMPUR_ANA_CNTRL_CTR_MNTR_SRV		 	Not Supported	Routing-based	
+ROW421|BEP	ZMMPUR_PROC_CAT_MAINT_SRV	1	Maintian procurement catalog call structure	MMPUR_PROC_CAT_MAINT_SRV		 		Co-deployed only	
+ROW422|BEP	ZMMPUR_REL_STRAT_CLASS_SRV	1	Gateway project for Manage Class	MMPUR_REL_STRAT_CLASS_SRV		 		Co-deployed only	
+ROW423|BEP	ZMMPUR_REQ_SSP_MAINTAIN_SRV	1	SSP Requisition	MMPUR_REQ_SSP_MAINTAIN_SRV		 	Not Supported	Co-deployed only	
+ROW424|BEP	ZMPE_PLANNEDORDER_OBJPG_SRV	1	Planned Order Object Page SEGW Gateway Project	MPE_PLANNEDORDER_OBJPG_SRV		 		Co-deployed only	
+ROW425|BEP	ZMPE_PPPIWORKCENTER_OBJPG_SRV	1	Resource Object Page	MPE_PPPIWORKCENTER_OBJPG_SRV		 		Co-deployed only	
+ROW426|BEP	ZMPE_PROCESSORDER_OBJPG_SRV	1	Process Order Object Page	MPE_PROCESSORDER_OBJPG_SRV		 		Co-deployed only	
+ROW427|BEP	ZMPE_PRODORDER_OBJPG_SRV	1	Production Order Object Page SEGW Project	MPE_PRODORDER_OBJPG_SRV		 		Co-deployed only	
+ROW428|BEP	ZMPE_WORKCENTER_OBJPG_SRV	1	WorkCenter Object Page	MPE_WORKCENTER_OBJPG_SRV		 		Co-deployed only	
+ROW429|	/IWFND/SG_MGW_NOTIF_STORE	1	ODATA Channel: Notification Store	NOTIFICATIONSTORE	/IWFND/	 		Routing-based	
+ROW430|BEP	ZO2C_FICA_ANALYZE_RETURNS_SRV	1	Fiori: Analyze Returns	O2C_FICA_ANALYZE_RETURNS_SRV		 		Co-deployed only	
+ROW431|BEP	ZO2C_FICA_CREDITITEM_ANALYSIS_SRV	1	Fiori: Analyse Due Credit	O2C_FICA_CREDITITEM_ANALYSIS_SRV		 		Co-deployed only	
+ROW432|BEP	ZO2C_FICA_DUNNING_SUCCESS	1	Fiori: Analysis of Dunning Success	O2C_FICA_DUNNING_SUCCESS		 		Co-deployed only	
+ROW433|BEP	ZO2C_FICA_DUNNING_VOLUME	1	Fiori: Analysis of Dunning Volume	O2C_FICA_DUNNING_VOLUME		 		Co-deployed only	
+ROW434|BEP	ZO2C_FICA_DUNNINGRUN_EXCEPTION_SRV	1	Fiori: Analyze Dunning Run Exceptions	O2C_FICA_DUNNINGRUN_EXCEPTION_SRV		 		Co-deployed only	
+ROW435|BEP	ZO2C_FICA_EXTCOLLVOLUME_SRV	1	Fiori: Analyze External Collection Agencies	O2C_FICA_EXTCOLLVOLUME_SRV		 		Co-deployed only	
+ROW436|BEP	ZO2C_FICA_GENTOOLS	1	FI-CA Generic Data Accesses	O2C_FICA_GENTOOLS		 	Not Supported	Co-deployed only	
+ROW437|BEP	ZO2C_FICA_INSTPLAN_SRV	1	Fiori: Analyze Installment Plan	O2C_FICA_INSTPLAN_SRV		 		Co-deployed only	
+ROW438|BEP	ZO2C_FICA_LOCK_ANALYSIS_SRV	1	Fiori: Analyze Processing Locks	O2C_FICA_LOCK_ANALYSIS_SRV		 		Co-deployed only	
+ROW439|BEP	ZO2C_FICA_MYWORKLIST	1	Fiori: Manage My Worklist	O2C_FICA_MYWORKLIST		 		Co-deployed only	
+ROW440|BEP	ZO2C_FICA_OVERDUEITEM_ANALYSIS	1	Fiori: Overdue Item Analysis	O2C_FICA_OVERDUEITEM_ANALYSIS		 	Not Supported	Co-deployed only	
+ROW441|BEP	ZO2C_FICA_PAYMENTRUN_SRV	1	Fiori: Analyse Payment Run Exceptions	O2C_FICA_PAYMENTRUN_SRV		 		Co-deployed only	
+ROW442|BEP	ZO2C_FICA_POSTINGLOCK_ANALYSIS	1	Fiori: Posting Lock Analysis	O2C_FICA_POSTINGLOCK_ANALYSIS		 		Co-deployed only	
+ROW443|BEP	ZO2C_FICA_WORKLIST	1	Fiori: Worklist	O2C_FICA_WORKLIST		 	Not Supported	Co-deployed only	
+ROW444|BEP	ZO2C_FICA_WRITEOFF_ANALYSIS_SRV	1	SADL Generated Service	O2C_FICA_WRITEOFF_ANALYSIS_SRV		 		Co-deployed only	
+ROW445|BEP	ZODATA_GRIR_ML_INFERE_SRV	1	Service for GRIR UI Inference	ODATA_GRIR_ML_INFERE_SRV		 	Not Supported	Routing-based	
+ROW446|BEP	ZODATA_GRIR_WRITEOFF_SRV	1	GR/IR Account Reconciliation Write Off	ODATA_GRIR_WRITEOFF_SRV		 	Not Supported	Routing-based	
+ROW447|BEP	ZPAGE_BUILDER_CONF	1	Pagebuilder - Configuration level	PAGE_BUILDER_CONF	/UI2/	 		Co-deployed only	
+ROW448|BEP	ZPAGE_BUILDER_CUST	1	Pagebuilder - Customizing level	PAGE_BUILDER_CUST	/UI2/	 		Co-deployed only	
+ROW449|BEP	ZPAGE_BUILDER_PERS	1	Pagebuilder - Personalization level	PAGE_BUILDER_PERS	/UI2/	 		Co-deployed only	
+ROW450|BEP	ZPICKCART_SRV	1	EWM: PICK CART	PICKCART_SRV	/SCWM/	 		Co-deployed only	
+ROW451|BEP	PIQ_LPD_ADVISOR_SRV	1	Service for Launchpad for Advisor	PIQ_LPD_ADVISOR_SRV		 	Not Supported	Routing-based	
+ROW452|BEP	PIQ_LPD_DEG_REQ_SRV	1	Launchpad service for Degree Requirement	PIQ_LPD_DEG_REQ_SRV		 	Not Supported	Routing-based	
+ROW453|BEP	PIQ_REQUEST_SRV	1	Project for request application	PIQ_REQUEST_SRV		 	Not Supported	Routing-based	
+ROW454|BEP	ZPLMI_REQ_ASSIGNMENT_SRV	1	OData service for requirement assignment	PLMI_REQ_ASSIGNMENT_SRV		 		Co-deployed only	
+ROW455|BEP	ZPMRP_CAPACITY_SERVICE	1	RAP: PMRP_CAPACITY_SERVICE generated at 20190405	PMRP_CAPACITY_SERVICE		 	Not Supported	Routing-based	
+ROW456|BEP	ZPMRP_FLXBLCSTRT_UI_SERVICE	1	Service for Flexible Constraint	PMRP_FLXBLCSTRT_UI_SERVICE		 	Not Supported	Routing-based	
+ROW457|BEP	ZPMRP_RECEIPT_SERVICE	1	RAP: PMRP_RECEIPT_SERVICE generated at 20190415	PMRP_RECEIPT_SERVICE		 		Co-deployed only	
+ROW458|BEP	ZPMRP_SIM_COMPONENT_SERVICE	1	Service for Components in the Simulation	PMRP_SIM_COMPONENT_SERVICE		 		Co-deployed only	
+ROW459|BEP	ZPMRP_SIMUL_SERVICE	1	RAP: PMRP_SIMUL_SERVICE generated at 20181129	PMRP_SIMUL_SERVICE		 	Not Supported	Routing-based	
+ROW460|BEP	ZPMRP_SIMULATION_SERVICE	1	RAP: PMRP_SIMULATION_SERVICE generated at 20181203	PMRP_SIMULATION_SERVICE		 	Not Supported	Routing-based	
+ROW461|BEP	ZPMRP_SIMULTLD_SERVICE	1	RAP: PMRP_SIMULTLD_SERVICE generated at 20181210	PMRP_SIMULTLD_SERVICE		 	Not Supported	Routing-based	
+ROW462|BEP	ZPMRP_SIMURES_SERVICE	1	RAP: PMRP_SIMURES_SERVICE generated at 20190417	PMRP_SIMURES_SERVICE		 	Not Supported	Routing-based	
+ROW463|BEP	ZPMRP_SIMUTLD_SERVICE	1	RAP: PMRP_SIMUTLD_SERVICE generated at 20181122	PMRP_SIMUTLD_SERVICE		 	Not Supported	Routing-based	
+ROW464|BEP	ZPMRP_SUPPLYCHAIN_SERVICE	1	RAP: PMRP_SUPPLYCHAIN_SERVICE generated at 20190404	PMRP_SUPPLYCHAIN_SERVICE		 		Co-deployed only	
+ROW465|BEP	ZPP_CFS_CAPEVAL_SRV	1	Production Planning: Capacity Evaluation App	PP_CFS_CAPEVAL_SRV		 	Not Supported	Routing-based	
+ROW466|BEP	ZPP_DD_BUFPOS_SRV	1	OData DDR: Buffer Positioning	PP_DD_BUFPOS_SRV		 		Co-deployed only	
+ROW467|BEP	ZPP_DD_MASSADJBUF_SRV	1	OData PP: Mass Adjust Buffers	PP_DD_MASSADJBUF_SRV		 		Co-deployed only	
+ROW468|BEP	ZPP_DD_MASSMAINTPROD_SRV	1	Odata DDR: Mass Maintenance: Products (DD)	PP_DD_MASSMAINTPROD_SRV		 		Co-deployed only	
+ROW469|BEP	ZPP_DD_ORD_DET_SRV	1	OData for Order details	PP_DD_ORD_DET_SRV		 		Co-deployed only	
+ROW470|BEP	ZPP_DD_REPLENISHMENT_SRV	1	Demand Driven Replenishment	PP_DD_REPLENISHMENT_SRV		 		Co-deployed only	
+ROW471|BEP	ZPP_DD_REPLMNT_DETAILS_SRV	1	Replenishment Details	PP_DD_REPLMNT_DETAILS_SRV		 		Co-deployed only	
+ROW472|BEP	ZPP_DD_STLM_SRV	1	Odata DDR: Manage Buffer Levels	PP_DD_STLM_SRV		 		Co-deployed only	
+ROW473|BEP	ZPP_FCDM_MASS_MAINT	1	Demand Forecast Keyfigures and Mass Maintenance	PP_FCDM_MASS_MAINT		 	Not Supported	Routing-based	
+ROW474|BEP	ZPP_MNTR_WRKCTR_SRV	1	Monitor Work Center Schedules	PP_MNTR_WRKCTR_SRV		 		Co-deployed only	
+ROW475|BEP	ZPP_MRP_AOR_SRV	1	AoR Service for MRP Apps	PP_MRP_AOR_SRV		 	Not Supported	Routing-based	
+ROW476|BEP	ZPP_MRP_COCKPIT_SRV	1	MRP Cockpit	PP_MRP_COCKPIT_SRV		 		Co-deployed only	
+ROW477|BEP	ZPP_MRP_MATERIAL_COV_INDSEG_SRV	1	Monitor Material Coverage Individual Segment Service	PP_MRP_MATERIAL_COV_INDSEG_SRV		 		Co-deployed only	
+ROW478|BEP	ZPP_MRP_MATERIAL_COVERAGE_POVER_SRV	1	Popover Service for Manage Material Coverage App	PP_MRP_MATERIAL_COVERAGE_POVER_SRV_		 		Co-deployed only	
+ROW479|BEP	ZPP_MRP_MATERIAL_COVERAGE_SRV	1	Manage Material Coverage	PP_MRP_MATERIAL_COVERAGE_SRV		 		Co-deployed only	
+ROW480|BEP	ZPP_MRP_PR_HANDOVER_SRV	1	Hand over Purchase Requisition	PP_MRP_PR_HANDOVER_SRV		 	Not Supported	Routing-based	
+ROW481|BEP	ZPP_MRP_TIMEDPNDNT_STK_SRV	1	Maintain Material Time Dependent Stock Levels	PP_MRP_TIMEDPNDNT_STK_SRV		 		Co-deployed only	
+ROW482|BEP	ZPP_PLANNER_OVP_SRV	1	ODATA PP: Planner Overview Page	PP_PLANNER_OVP_SRV		 		Co-deployed only	
+ROW483|BEP	ZPP_SCHEDULEPRODUCTION_SRV	1	Schedule Production	PP_SCHEDULEPRODUCTION_SRV		 	Not Supported	Routing-based	
+ROW484|BEP	ZPPDS_CAPA_UTIL_OBJ_SRV	1	Capacity Utilization Object Page	PPDS_CAPA_UTIL_OBJ_SRV		 		Co-deployed only	
+ROW485|BEP	ZPPDS_MRP_COCKPIT_SRV	1	Odata Service for Capacity MRP Cockpit	PPDS_MRP_COCKPIT_SRV		 	Not Supported	Routing-based	
+ROW486|BEP	ZPPDS_RES_SCHEDULE	1	OData for PPDS	PPDS_RES_SCHEDULE		 	Not Supported	Routing-based	
+ROW487|BEP	ZPPH_MRP_MASTER_DATA_ISSUE_SRV	1	MRP Master Data Issue	PPH_MRP_MASTER_DATA_ISSUE_SRV		 		Co-deployed only	
+ROW488|BEP	ZPPH_MRP_PERF_LOG_SRV	1	MRP Key Figures	PPH_MRP_PERF_LOG_SRV		 		Co-deployed only	
+ROW489|BEP	ZPPM_PRO_LAST_USED_PROJECT_SRV	1	My Last Used Projects	PPM_PRO_LAST_USED_PROJECT_SRV		 		Co-deployed only	
+ROW490|BEP	ZPPM_PRO_ME_AS_SUBSTITUTE_SRV	1	Projects With Me As Substitute	PPM_PRO_ME_AS_SUBSTITUTE_SRV		 		Co-deployed only	
+ROW491|BEP	ZPPM_PRO_MY_ACTIVE_PROJ_SRV	1	My Active Projects	PPM_PRO_MY_ACTIVE_PROJ_SRV		 		Co-deployed only	
+ROW492|BEP	ZPPM_PRO_MY_CRIT_SRV	1	My Most Critical Projects	PPM_PRO_MY_CRIT_SRV		 		Co-deployed only	
+ROW493|BEP	ZPPM_PRO_PLANNED_PROJ_SRV	1	Planned Projects	PPM_PRO_PLANNED_PROJ_SRV		 		Co-deployed only	
+ROW494|BEP	ZPPM_PRO_PROJECT_OVP_SRV	1	Project Overview Page	PPM_PRO_PROJECT_OVP_SRV		 	Not Supported	Co-deployed only	
+ROW495|BEP	ZPPM_PRO_UPCOMING_MILESTONES_SRV	1	Upcoming Milestones	PPM_PRO_UPCOMING_MILESTONES_SRV		 		Co-deployed only	
+ROW496|BEP	/BDTS/PRESEL_TAB_DATA_SRV	1	/BDTS/CL_ODATA_TAB_EXT_DPC_EXT	PRESEL_TAB_DATA_SRV	/BDTS/	 		Routing-based	
+ROW497|BEP	/BDTS/PRESEL_TAB_READ_NAME_SRV	1	/BDTS/CL_ODATA_TAB_NAM_DPC_EXT	PRESEL_TAB_READ_NAME_SRV	/BDTS/	 		Routing-based	
+ROW498|BEP	/BDTS/PRESEL_TASK_IS_CREATED_SRV	1	/BDTS/CL_ODATA_TASK_CR_DPC_EXT	PRESEL_TASK_IS_CREATED_SRV	/BDTS/	 		Routing-based	
+ROW499|BEP	/BDTS/PRESEL_TASK_PORTION_SRV	1	/BDTS/CL_ODATA_PT_PORT_DPC_EXT	PRESEL_TASK_PORTION_SRV	/BDTS/	 		Routing-based	
+ROW500|BEP	/BDTS/PRESEL_TASK_READ_STATUS_SRV	1	/BDTS/CL_ODATA_TASK_ST_DPC_EXT	PRESEL_TASK_READ_STATUS_SRV	/BDTS/	 		Routing-based	
+ROW501|BEP	PYC_ALERT_MANAGER_SRV	1	Payroll Controll Center Alert Management	PYC_ALERT_MANAGER_SRV		 	Not Supported	Routing-based	
+ROW502|BEP	PYC_CFG_SRV	1	Payroll Control Center - Configuration	PYC_CFG_SRV		X	Not Supported	Routing-based	
+ROW503|BEP	PYC_CFG_VR_SRV	1	Payroll Control Center - Validation Rule Configuration	PYC_CFG_VR_SRV		X	Not Supported	Routing-based	
+ROW504|BEP	PYC_CONF_SRV	1	Payroll Control Center Configuration	PYC_CONF_SRV		X	Not Supported	Routing-based	
+ROW505|BEP	PYC_CONT_002_SRV	1	Payroll Control Center Business Logic Version 002	PYC_CONT_002_SRV		X	Not Supported	Routing-based	
+ROW506|BEP	PYC_CONT_003_SRV	1	Payroll Control Center 003	PYC_CONT_003_SRV		 	Not Supported	Routing-based	
+ROW507|BEP	PYC_CONT_PEM_002_SRV	1	Pyaroll Control Center Error Management	PYC_CONT_PEM_002_SRV		X	Not Supported	Routing-based	
+ROW508|BEP	PYC_CONT_SRV	1	Payroll Control Center Content	PYC_CONT_SRV		X		Routing-based	
+ROW509|BEP	PYC_FRW_SRV	1	Payroll Control Center Framework	PYC_FRW_SRV		X		Routing-based	
+ROW510|BEP	PYC_KPI_CONFIG_1_SRV	1	PCC KPI Configuration	PYC_KPI_CONFIG_1_SRV		X	Not Supported	Routing-based	
+ROW511|BEP	PYC_OFF_CYCLE_SRV	1	Payroll Control Center - Manage Off-Cycle Payrolls	PYC_OFF_CYCLE_SRV		X	Not Supported	Routing-based	
+ROW512|BEP	PYC_PROCESS_MANAGER_SRV	1	Payroll Control Center - Process Manager	PYC_PROCESS_MANAGER_SRV		 	Not Supported	Routing-based	
+ROW513|BEP	PYC_TEAM_ALERTS_SRV	1	Payroll Control Center Team Alerts	PYC_TEAM_ALERTS_SRV		 	Not Supported	Routing-based	
+ROW514|BEP	PYC_TEAM_MAINT_SRV	1	Payroll Control Center Team Management	PYC_TEAM_MAINT_SRV		X	Not Supported	Routing-based	
+ROW515|BEP	PYC_TEAM_MANAGER_SRV	1	Payroll Control Center - Team Manager	PYC_TEAM_MANAGER_SRV		X	Not Supported	Routing-based	
+ROW516|BEP	PYD_CONT_SRV	1	Payroll Data Source Content International	PYD_CONT_SRV		 		Routing-based	
+ROW517|BEP	PYD_FRW_SRV	1	CL_PYD_FRW_DPC_EXT	PYD_FRW_SRV		 		Routing-based	
+ROW518|BEP	ZQM_INSPCHARCS_ANALYZE_SRV	1	OData QM: Inspection Characteristics Analytics	QM_INSPCHARCS_ANALYZE_SRV		 	Not Supported	Routing-based	
+ROW519|BEP	ZQM_INSPLOTDEF_ANALYZE_SRV	1	OData QM: Quality Mgmt. Information System - Inspection Lots	QM_INSPLOTDEF_ANALYZE_SRV		 	Not Supported	Routing-based	
+ROW520|BEP	ZQM_QLTYTASK_MANAGE_SRV	1	OData QM: Manage Quality Tasks	QM_QLTYTASK_MANAGE_SRV		 	Not Supported	Routing-based	
+ROW521|BEP	ZQM_QUALITYLEVEL_MANAGE_SRV	1	OData QM: Manage Quality Level	QM_QUALITYLEVEL_MANAGE_SRV		 	Not Supported	Routing-based	
+ROW522|BEP	ZRSAO_ODATA_SRV	1	Tlogo and Bookmark access via Odata	RSAO_ODATA_SRV		 		Co-deployed only	
+ROW523|BEP	ZS_EAM_WF_C_VH_CDS	1	Value Helps for EAM Workflow	S_EAM_WF_C_VH_CDS		 	Not Supported	Routing-based	
+ROW524|BEP	ZS_EPM_WF_C_VH_CDS	1		S_EPM_WF_C_VH_CDS		 	Not Supported	Routing-based	
+ROW525|BEP	ZS_INVOICEWORKFLOWVH_CDS	1	Value helps for manage INV workflow app	S_INVOICEWORKFLOWVH_CDS		 	Not Supported	Routing-based	
+ROW526|BEP	ZS_MMPURWORKFLOWVH_CDS	1	Value Helps for Manage Workflow Apps	S_MMPURWORKFLOWVH_CDS		 	Not Supported	Co-deployed only	
+ROW527|BEP	ZSBLE_BADI_CTX_REGISTRY_SRV	1	BAdI Context Registry Access	SBLE_BADI_CTX_REGISTRY_SRV		 	Not Supported	Routing-based	
+ROW528|BEP	ZSD_BIL_DOC_LIST_MANAGE_SRV	1	Manage billing documents lists / invoice lists	SD_BIL_DOC_LIST_MANAGE_SRV		 		Co-deployed only	
+ROW529|BEP	ZSD_BIL_DOC_LIST_OBJPG_SRV	1	Billing Document list / invoice list object page	SD_BIL_DOC_LIST_OBJPG_SRV		 		Co-deployed only	
+ROW530|BEP	ZSD_BILLINGDOC_PROCFLOW_SRV	1	SD Process Flow for Biilling Document	SD_BILLINGDOC_PROCFLOW_SRV		 		Co-deployed only	
+ROW531|BEP	ZSD_CMR_PROCFLOW_SRV	1	SD Process Flow for Credit Memo Request	SD_CMR_PROCFLOW_SRV		 		Routing-based	
+ROW532|BEP	ZSD_CRT_PROCFLOW_SRV	1	SD Process Flow for Customer Return	SD_CRT_PROCFLOW_SRV		 		Co-deployed only	
+ROW533|BEP	ZSD_CUSTOMER_INVOICES_CREATE	1	Create Customer Invoices	SD_CUSTOMER_INVOICES_CREATE		 	Not Supported	Routing-based	
+ROW534|BEP	ZSD_CUSTOMER_INVOICES_MANAGE	1	Manage Customer Invoices	SD_CUSTOMER_INVOICES_MANAGE		 		Co-deployed only	
+ROW535|BEP	ZSD_CUSTOMER360_OVP	1	SD Customer 360: OVP Cards	SD_CUSTOMER360_OVP		 		Co-deployed only	
+ROW536|BEP	ZSD_CUSTRET_WORKFLOW_SRV	1	Customer Return Workflow	SD_CUSTRET_WORKFLOW_SRV		 	Not Supported	Routing-based	
+ROW537|BEP	ZSD_DMR_PROCFLOW_SRV	1	SD Process Flow for Debit Memo Request	SD_DMR_PROCFLOW_SRV		 		Co-deployed only	
+ROW538|BEP	ZSD_EBDR_MANAGE_SRV	1	Manage External Billing Document Requests	SD_EBDR_MANAGE_SRV		 		Co-deployed only	
+ROW539|BEP	ZSD_F1708_CRT_WL_SRV	1	OData for Customer Returns Worklist	SD_F1708_CRT_WL_SRV		 		Co-deployed only	
+ROW540|BEP	ZSD_F1814_SO_FS_SRV	1	Sales Orders FactSheets - S4H SD FIORI	SD_F1814_SO_FS_SRV		 		Co-deployed only	
+ROW541|BEP	ZSD_F1815_CRT_FS_SRV	1	Customer Return FactSheet - S4H SD FIORI	SD_F1815_CRT_FS_SRV		 		Co-deployed only	
+ROW542|BEP	ZSD_F1846_CMR_FS_SRV	1	Credit Memo Request FactSheet	SD_F1846_CMR_FS_SRV		 		Routing-based	
+ROW543|BEP	ZSD_F1848_DMR_FS_SRV	1	Debit Memo Request Factsheet	SD_F1848_DMR_FS_SRV		 		Co-deployed only	
+ROW544|BEP	ZSD_F1851_CONTR_WL_SRV	1	Odata service for work list for sales contracts	SD_F1851_CONTR_WL_SRV		 		Co-deployed only	
+ROW545|BEP	ZSD_F1852_QUOT_WL_SRV	1	Odata for Work list for Sales Quotation	SD_F1852_QUOT_WL_SRV		 		Co-deployed only	
+ROW546|BEP	ZSD_F1871_QUOT_FS_SRV	1	Quotation FactSheet - S4H SD FIORI	SD_F1871_QUOT_FS_SRV		 		Co-deployed only	
+ROW547|BEP	ZSD_F1873_SO_WL_SRV	1	Odata for Work list for Sales Order	SD_F1873_SO_WL_SRV		 		Co-deployed only	
+ROW548|BEP	ZSD_F1988_DMR_WL_SRV	1	OData for Debit Memo Requests Work List	SD_F1988_DMR_WL_SRV		 		Co-deployed only	
+ROW549|BEP	ZSD_F1989_CMR_WL_SRV	1	Odata for Credit Memo Request Worklist	SD_F1989_CMR_WL_SRV		 		Co-deployed only	
+ROW550|BEP	ZSD_F2026_CONTR_FS_SRV	1	Contract Fact Sheet	SD_F2026_CONTR_FS_SRV		 		Co-deployed only	
+ROW551|BEP	ZSD_F2187_CUST360_SRV	1	Customer 360	SD_F2187_CUST360_SRV		 		Co-deployed only	
+ROW552|BEP	ZSD_F2200_OVP_ISR_SRV	1	OData Sales Overview Page for Internal Sales Representative	SD_F2200_OVP_ISR_SRV		 		Co-deployed only	
+ROW553|BEP	ZSD_F2303_SOWOC_FS_SRV	1	Sales Order Without Charge Factsheet	SD_F2303_SOWOC_FS_SRV		 		Co-deployed only	
+ROW554|BEP	ZSD_F2305_SOWOC_WL_SRV	1	Odata for Work list Sales Order without Charge	SD_F2305_SOWOC_WL_SRV		 		Co-deployed only	
+ROW555|BEP	ZSD_F2337_EBDR_FS_SRV	1	External Billing Document Request Fact Sheet	SD_F2337_EBDR_FS_SRV		 		Co-deployed only	
+ROW556|BEP	ZSD_F2369_INQY_FS_SRV	1	S4H SD - Odata for Inquiry Object Page	SD_F2369_INQY_FS_SRV		 		Co-deployed only	
+ROW557|BEP	ZSD_F2370_INQY_WL_SRV	1	OData - Sales Inquiry Work list	SD_F2370_INQY_WL_SRV		 		Co-deployed only	
+ROW558|BEP	ZSD_F2430_INCOMP_SRV	1	OData for Incomplete Sales Documents	SD_F2430_INCOMP_SRV		 	Not Supported	Routing-based	
+ROW559|BEP	ZSD_F2499_CUSTOMER_MATERIAL_SRV	1	Customer Material	SD_F2499_CUSTOMER_MATERIAL_SRV		 		Co-deployed only	
+ROW560|BEP	ZSD_F2583_SLSITMPRPSL_SRV	1	OData Service for Sales Item Proposals	SD_F2583_SLSITMPRPSL_SRV		 		Co-deployed only	
+ROW561|BEP	ZSD_F2713_SOCUSTEXPDPRICE_SRV	1	Manage Sales Orders with Customer Expected Price	SD_F2713_SOCUSTEXPDPRICE_SRV		 		Co-deployed only	
+ROW562|BEP	ZSD_F2714_SDOCBYOBJSTS_SRV	1	OData Service for Sales Documents by Object Status	SD_F2714_SDOCBYOBJSTS_SRV		 		Co-deployed only	
+ROW563|BEP	ZSD_F3014_CMR_WORKFLOW_SRV	1	Credit Memo Request Workflow	SD_F3014_CMR_WORKFLOW_SRV		 	Not Supported	Routing-based	
+ROW564|BEP	ZSD_F3014_SALESORDER_WORKFLOW_SRV	1	Sales Order Workflow	SD_F3014_SALESORDER_WORKFLOW_SRV		 	Not Supported	Routing-based	
+ROW565|BEP	ZSD_F3014_SALESQUOT_WORKFLOW_SRV	1	Sales Quotation Workflow	SD_F3014_SALESQUOT_WORKFLOW_SRV		 	Not Supported	Routing-based	
+ROW566|BEP	ZSD_F3245_SDOC_DUPLICATE_SRV	1	Manage Duplicate Sales Documents	SD_F3245_SDOC_DUPLICATE_SRV		 		Co-deployed only	
+ROW567|BEP	ZSD_MANAGE_SADVTNPRFL	1	Manage Deviation Profile	SD_MANAGE_SADVTNPRFL		 		Co-deployed only	
+ROW568|BEP	ZSD_MCC_CCO_MASS_UPDATE_SRV	1	OData for Mass Change Sales Contract	SD_MCC_CCO_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW569|BEP	ZSD_MCC_CMR_MASS_UPDATE_SRV	1	Mass Change Credit Memo Request	SD_MCC_CMR_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW570|BEP	ZSD_MCC_CR_MASS_UPDATE_SRV	1	Mass change for Customer Return	SD_MCC_CR_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW571|BEP	ZSD_MCC_DMR_MASS_UPDATE_SRV	1	Debit Memo Requests OData Service	SD_MCC_DMR_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW572|BEP	ZSD_MCC_DOC_CAT_AUTH_SRV	1	Authorization for Document Categories in Mass Change Cockpit	SD_MCC_DOC_CAT_AUTH_SRV		 		Co-deployed only	
+ROW573|BEP	ZSD_MCC_INCOTERMS_READ_SRV	1	Read location values based on Incoterms	SD_MCC_INCOTERMS_READ_SRV		 		Co-deployed only	
+ROW574|BEP	ZSD_MCC_SCH_MASS_UPDATE_SRV	1	Sales Order Scheduling Agreement	SD_MCC_SCH_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW575|BEP	ZSD_MCC_SD_MASS_UPDATE_SRV	1	Mass Change of Sales Document	SD_MCC_SD_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW576|BEP	ZSD_MCC_SO_MASS_UPDATE_SRV	1	Change cockpit for mass update sales order	SD_MCC_SO_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW577|BEP	ZSD_MCC_SOW_MASS_UPDATE_SRV	1	Sales Order Without Charge	SD_MCC_SOW_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW578|BEP	ZSD_MCC_SQ_MASS_UPDATE_SRV	1	Mass Change Sales Quotations	SD_MCC_SQ_MASS_UPDATE_SRV		 		Co-deployed only	
+ROW579|BEP	ZSD_ORD_PAYTCARDAUTHZN	1	Reauthorize Payment Card	SD_ORD_PAYTCARDAUTHZN		 		Co-deployed only	
+ROW580|BEP	ZSD_OVP_SM	1	OData Service for Sales Manager Overview Page	SD_OVP_SM		 	Not Supported	Co-deployed only	
+ROW581|BEP	ZSD_PRE_BIL_DOC_MANAGE	1	Manage preliminary billing documents	SD_PRE_BIL_DOC_MANAGE		 		Co-deployed only	
+ROW582|BEP	ZSD_PRE_BIL_DOC_OP_SRV	1	Preliminary Billing Document Object Page	SD_PRE_BIL_DOC_OP_SRV		 		Co-deployed only	
+ROW583|BEP	ZSD_PRE_BIL_DUE_LIST_ITEM_SRV	1	Preliminary Billing Due List Item	SD_PRE_BIL_DUE_LIST_ITEM_SRV		 		Co-deployed only	
+ROW584|BEP	ZSD_PREDICTEDDELIVERY	1	Sales Order Fulfillment - Predicted Delivery Delay	SD_PREDICTEDDELIVERY		 		Co-deployed only	
+ROW585|BEP	ZSD_PRICING_CONDITIONRECORD_SRV	1	SD Pricing Condition Record	SD_PRICING_CONDITIONRECORD_SRV		 		Co-deployed only	
+ROW586|BEP	ZSD_QTAN_PROCFLOW_SRV	1	SD Process Flow for Sales Quotation	SD_QTAN_PROCFLOW_SRV		 		Co-deployed only	
+ROW587|BEP	ZSD_SA_EDIPROCGOPTN_WL	1	Manage EDI Processing Options	SD_SA_EDIPROCGOPTN_WL		 		Co-deployed only	
+ROW588|BEP	ZSD_SA_PROCFLOW	1	SD Process Flow for Sales Scheduling Agreement	SD_SA_PROCFLOW		 		Co-deployed only	
+ROW589|BEP	ZSD_SA_SOLDTOPARTYDETN_WL	1	Assign Sold-to Parties for Delivery Schedules	SD_SA_SOLDTOPARTYDETN_WL		 		Co-deployed only	
+ROW590|BEP	ZSD_SADEMAND	1	Sales Scheduling Agreement Demand Analysis	SD_SADEMAND		 		Co-deployed only	
+ROW591|BEP	ZSD_SALES_DOC_IMPORT	1	Import Sales Documents	SD_SALES_DOC_IMPORT		 		Co-deployed only	
+ROW592|BEP	ZSD_SALES_ORDER_FOC_IMPORT	1	Import Sales Orders Without Charge	SD_SALES_ORDER_FOC_IMPORT		 		Co-deployed only	
+ROW593|BEP	ZSD_SALES_ORDER_IMPORT	1	Import Sales Order Service Project	SD_SALES_ORDER_IMPORT		 		Co-deployed only	
+ROW594|BEP	ZSD_SALES_QTN_IMPORT	1	Import Sales Quotations	SD_SALES_QTN_IMPORT		 		Co-deployed only	
+ROW595|BEP	ZSD_SALES_SA_IMPORT	1	Import Sales Scheduling Agreements	SD_SALES_SA_IMPORT		 		Co-deployed only	
+ROW596|BEP	ZSD_SALESSCHEDGAGRMT_OBJPG	1	for manage sales schedule agreement object page	SD_SALESSCHEDGAGRMT_OBJPG		 		Co-deployed only	
+ROW597|BEP	ZSD_SALESSCHEDGAGRMT_WL	1	ODate service for Manage Scheduling Agreements	SD_SALESSCHEDGAGRMT_WL		 		Co-deployed only	
+ROW598|BEP	ZSD_SLSORDWTHOUTCHRG_WORKFLOW_SRV	1	OData for Sales Order Without Charge Workflow	SD_SLSORDWTHOUTCHRG_WORKFLOW_SRV		 	Not Supported	Routing-based	
+ROW599|BEP	ZSD_SO_PROCFLOW_SRV	1	SD Process Flow for Sales Order	SD_SO_PROCFLOW_SRV		 		Co-deployed only	
+ROW600|BEP	ZSD_SOF	1	Sales Order Fulfillment Reuse Component	SD_SOF		 		Co-deployed only	
+ROW601|BEP	ZSD_SOFA	1	Sales Order Fulfillment Analyzer	SD_SOFA		 		Routing-based	
+ROW602|BEP	ZSD_SOFI	1	Sales Order Fulfillment Issues	SD_SOFI		 		Co-deployed only	
+ROW603|BEP	ZSD_SOFM_CREDIT_BLOCK_SRV	1	Resolve Credit Block in Sales Orders	SD_SOFM_CREDIT_BLOCK_SRV		 		Co-deployed only	
+ROW604|BEP	ZSD_SOFM_DELIVERY_SRV_01	1	Fiori Wave2 SOFM Delivery	SD_SOFM_DELIVERY_SRV_01		 		Co-deployed only	
+ROW605|BEP	ZSD_SOFM_INVOICE_SRV	1	Fiori Wave2 SOFM Issue Invoice not Transferred to Accounting	SD_SOFM_INVOICE_SRV		 		Co-deployed only	
+ROW606|BEP	ZSD_SOFM_SRV	1	Service for Sales Order Fulfillment Monitor	SD_SOFM_SRV		 		Co-deployed only	
+ROW607|BEP	ZSGBT_NTE_CDS_API_D_SRV	1	Notes for Application Object - Draft	SGBT_NTE_CDS_API_D_SRV		 		Co-deployed only	
+ROW608|BEP	ZSGBT_NTE_CDS_API_SRV	1	OData Service for Notes for Application Object	SGBT_NTE_CDS_API_SRV		 		Co-deployed only	
+ROW609|BEP	ZSIMDQ_SERVICES_SRV	1	Data Quality related services	SIMDQ_SERVICES_SRV		 		Co-deployed only	
+ROW610|BEP	ZSLL_CNTNTCMDTYCD_MANAGE	1	Manage Content from Data Provider - Commodity Codes	SLL_CNTNTCMDTYCD_MANAGE		 		Co-deployed only	
+ROW611|BEP	ZSLL_CNTNTCTRLCL_MANAGE	1	Manage Content from Data Provider - Control Class	SLL_CNTNTCTRLCL_MANAGE		 		Co-deployed only	
+ROW612|BEP	ZSLL_CNTNTTRIFNMBR_MANAGE	1	Manage Content from Data Provider - Customs Tariff Numbers	SLL_CNTNTTRIFNMBR_MANAGE		 		Co-deployed only	
+ROW613|BEP	ZSMART_BUSINESS_DESIGNTIME_SRV	1	SSB : Designtime Apps Services	SMART_BUSINESS_DESIGNTIME_SRV	/SSB/	 		Co-deployed only	
+ROW614|BEP	ZSMART_BUSINESS_RUNTIME_SRV	1	OData for Smart Business Runtime	SMART_BUSINESS_RUNTIME_SRV	/SSB/	 	Not Supported	Co-deployed only	
+ROW615|BEP	/BDTS/SOFTWARE_COMPONENT_SRV	1	/BDTS/CL_ODATA_SW_COMP_DPC_EXT	SOFTWARE_COMPONENT_SRV	/BDTS/	 		Routing-based	
+ROW616|BEP	ZSRF_REPORT_DEFINITION	1	Service for defining Statutory Report	SRF_REPORT_DEFINITION		 		Co-deployed only	
+ROW617|BEP	/IWFND/SUBSCRIPTIONMANAGEMENT	2	MOC enabled Subscription Management Service	SUBSCRIPTIONMANAGEMENT	/IWBEP/	 		Routing-based	
+ROW618|BEP	ZSUI_FLP_APP_SUP_SRV	1	FLP App Support Tool	SUI_FLP_APP_SUP_SRV		 		Co-deployed only	
+ROW619|BEP	ZSWF_FLEX_ADMIN_SRV	1	Workflow Administration Service	SWF_FLEX_ADMIN_SRV		 	Not Supported	Routing-based	
+ROW620|BEP	ZSWF_FLEX_DEF_SRV	1	Flexible Workflow Definition Service	SWF_FLEX_DEF_SRV		 	Not Supported	Co-deployed only	
+ROW621|BEP	ZSWF_FLEX_SCENARIO_SRV	1	Flexible Workflow Scenarios	SWF_FLEX_SCENARIO_SRV		 	Not Supported	Routing-based	
+ROW622|BEP	/BDTS/TABLE_FIELD_STRUCTUR_SRV	1	/BDTS/CL_ODATA_TAB_FLD_DPC_EXT	TABLE_FIELD_STRUCTUR_SRV	/BDTS/	 		Routing-based	
+ROW623|BEP	ZTASKPROCESSING	1	Task Gateway Service	TASKPROCESSING	/IWPGW/	 	Not Supported	Routing-based	
+ROW624|BEP	ZTASKPROCESSING	2	Task Gateway Service version 2.0	TASKPROCESSING	/IWPGW/	 	Not Supported	Routing-based	
+ROW625|BEP	/IWBEP/TEA_TEST_COMP_APP	1	Test Application Service Composition TEA	TEA_TEST_COMP_APP	/IWBEP/	 	Not Supported	Routing-based	
+ROW626|BEP	/IWBEP/TEA_TEST_REUSE_APP	1	Test Application Service TEA Reused by Composition TEA Serv	TEA_TEST_REUSE_APP	/IWBEP/	 	Inactive	Inherited	
+ROW627|BEP	ZTRANSPORT	1	UI2: Transport Service	TRANSPORT	/UI2/	 		Routing-based	
+ROW628|BEP	ZTRV_UI_SB_MTR_MANAGE	1	Service Binding for My Travel Request	TRV_UI_SB_MTR_MANAGE		 		Co-deployed only	
+ROW629|BEP	TSW_MYEVENTS_SRV	1	MyEvents Service	TSW_MYEVENTS_SRV		 	Active	Routing-based	
+ROW630|BEP	TSW_MYNOMINATIONS_SRV_01	1	Service for my nominations	TSW_MYNOMINATIONS_SRV_01		 	Active	Routing-based	
+ROW631|BEP	TSW_REGIONAL_INVENTORY_SRV_01	1	TSW: Service for Regional Inventory Fiori App	TSW_REGIONAL_INVENTORY_SRV_01		 	Not Supported	Routing-based	
+ROW632|BEP	ZUDMO_COLLECTION_WORKLIST	1	FIORI Receivables Worklist	UDMO_COLLECTION_WORKLIST		 		Co-deployed only	
+ROW633|BEP	ZUI_BILLINGDOCUMENTFS	1	Billing Document Fact Sheet	UI_BILLINGDOCUMENTFS		 		Co-deployed only	
+ROW634|BEP	ZUI_CASHPOOL_MANAGE	1	Manage cash pools	UI_CASHPOOL_MANAGE		 		Co-deployed only	
+ROW635|BEP	ZUI_CFINPNDGTRANSACT_F5482	1	Pending Posting	UI_CFINPNDGTRANSACT_F5482		 		Co-deployed only	
+ROW636|BEP	ZUI_COLL_CONTACT_MANAGE	1	Manage Collection Contacts	UI_COLL_CONTACT_MANAGE		 		Co-deployed only	
+ROW637|BEP	ZUI_COLL_MD_MANAGE	1	Collection Management Master Data	UI_COLL_MD_MANAGE		 		Co-deployed only	
+ROW638|BEP	ZUI_COLLECTIONS_EMAIL	1	Collections Email	UI_COLLECTIONS_EMAIL		 		Co-deployed only	
+ROW639|BEP	ZUI_CREDIT_DECISION_MANAGE	1	Manage Credit Decision Documents	UI_CREDIT_DECISION_MANAGE		 	Not Supported	Co-deployed only	
+ROW640|BEP	ZUI_CREDITLIMITREQUEST_MAN	1	Manage Credit Limit Requests	UI_CREDITLIMITREQUEST_MAN		 	Not Supported	Co-deployed only	
+ROW641|BEP	ZUI_CSHPOOLASSGMTHIER_DISP	1	Display Cash Pool Hierarchies	UI_CSHPOOLASSGMTHIER_DISP		 		Co-deployed only	
+ROW642|BEP	ZUI_CUSTOMER_CONTACT_MANAGE	1	Manage Customer Contacts	UI_CUSTOMER_CONTACT_MANAGE		 		Co-deployed only	
+ROW643|BEP	ZUI_DISPUTE_PROPOSAL_ASSGMT	1	DIspute Case Proposal Assignment	UI_DISPUTE_PROPOSAL_ASSGMT		 		Co-deployed only	
+ROW644|BEP	ZUI_DISPUTECASE_MANAGE	1	Manage Dispute Case	UI_DISPUTECASE_MANAGE		 		Co-deployed only	
+ROW645|BEP	ZUI_FINCS_CONSUNIT_DEFINE	1	FINCS - Consolidation Unit Service	UI_FINCS_CONSUNIT_DEFINE		 	Not Supported	Routing-based	
+ROW646|BEP	ZUI_FINCS_FSITEM_DEFINE	1	FINCS - Financial Statement Item Service	UI_FINCS_FSITEM_DEFINE		 	Not Supported	Routing-based	
+ROW647|BEP	ZUI_GCO_DASHBOARD	1	Service Binding for GCO Dashboard	UI_GCO_DASHBOARD		 		Co-deployed only	
+ROW648|BEP	ZUI_GLACCOUNT_BALANCES	1	OData Service for G/L Account Balances	UI_GLACCOUNT_BALANCES		 	Not Supported	Routing-based	
+ROW649|BEP	ZUI_GRIR_BPI	1	OData Service for GR/IR Reconciliation BPI App	UI_GRIR_BPI		 	Not Supported	Co-deployed only	
+ROW650|BEP	ZUI_HOBRECEIVABLES_DISPLAY	1	Head Office Receivables	UI_HOBRECEIVABLES_DISPLAY		 		Co-deployed only	
+ROW651|BEP	ZUI_IHBACCOUNTLIMITWORKFLOW	1	IHB Account Limit Workflow	UI_IHBACCOUNTLIMITWORKFLOW		 	Not Supported	Co-deployed only	
+ROW652|BEP	ZUI_IHBACCTLIMITOBJECTTP	1	IHB Account Limit OData v2	UI_IHBACCTLIMITOBJECTTP		 	Not Supported	Co-deployed only	
+ROW653|BEP	ZUI_INVOICEPRIOZNRULE_MAN	1	Invoice Prioritization Rules Manage	UI_INVOICEPRIOZNRULE_MAN		 		Co-deployed only	
+ROW654|BEP	ZUI_JOURNALENTRY_OTA_O2	1	Journal Entry One Time Account	UI_JOURNALENTRY_OTA_O2		 		Co-deployed only	
+ROW655|BEP	ZUI_LO_SETMAN_ROYTYCC_MON	1	Monitor Royalty Condition Contracts	UI_LO_SETMAN_ROYTYCC_MON		 		Co-deployed only	
+ROW656|BEP	ZUI_LO_SETMAN_SDOC_MON	1	RAP: UI_LO_SETMAN_SDOC_MON generated at 20190429	UI_LO_SETMAN_SDOC_MON		 		Co-deployed only	
+ROW657|BEP	ZUI_MAINTENANCE_PLAN	1	Maintenance Plan UI	UI_MAINTENANCE_PLAN		 		Co-deployed only	
+ROW658|BEP	ZUI_MAINTENANCEITEM	1	Maintenance Item UI	UI_MAINTENANCEITEM		 	Not Supported	Co-deployed only	
+ROW659|BEP	ZUI_MAINTENANCEJOB_MANAGE	1	Service binding of Maintenance Job	UI_MAINTENANCEJOB_MANAGE		 	Not Supported	Co-deployed only	
+ROW660|BEP	ZUI_MAINTORD_PLNACTCOST	1	F4603: Planned / Actual Cost Analysis	UI_MAINTORD_PLNACTCOST		 	Not Supported	Routing-based	
+ROW661|BEP	ZUI_MAINTORDMATLANDSRVC_MNG	1	F6178 Manage Components and Services	UI_MAINTORDMATLANDSRVC_MNG		 		Co-deployed only	
+ROW662|BEP	ZUI_MAINTWORKREQUESTOVW_V2	1	SB for Maint Work Request Super App	UI_MAINTWORKREQUESTOVW_V2		 	Not Supported	Co-deployed only	
+ROW663|BEP	ZUI_MAINTWRKREQ_ORD_MANAGE	1	SB for Maint Work Requests and Orders	UI_MAINTWRKREQ_ORD_MANAGE		 		Co-deployed only	
+ROW664|BEP	ZUI_PROCESSRECEIVABLES_MAN	1	Process receivables	UI_PROCESSRECEIVABLES_MAN		 		Co-deployed only	
+ROW665|BEP	ZUI_PRODUCTLIST	1	UI for ProductList	UI_PRODUCTLIST		 		Co-deployed only	
+ROW666|BEP	ZUI_PROMISETOPAY_MANAGE	1	Manage Promise To Pay	UI_PROMISETOPAY_MANAGE		 		Co-deployed only	
+ROW667|BEP	ZUI_RESERVATION_OBJPG	1	Service Binding for Object Page	UI_RESERVATION_OBJPG		 		Co-deployed only	
+ROW668|BEP	ZUI_RESUBMISSIONS_MANAGE	1	Manage Resubmissions	UI_RESUBMISSIONS_MANAGE		 		Co-deployed only	
+ROW669|BEP	ZUI_REV_AVAILY_CHECK_RESULT	1	UI Service Review Availability Check Result	UI_REV_AVAILY_CHECK_RESULT		 		Co-deployed only	
+ROW670|BEP	ZUI_REV_PROD_ALLOC_CHK_RSLT	1	Review Product Allocation Check Result	UI_REV_PROD_ALLOC_CHK_RSLT		 		Co-deployed only	
+ROW671|BEP	ZUI_REVIEWBOOKLET	1	Review Booklet	UI_REVIEWBOOKLET		 	Not Supported	Routing-based	
+ROW672|BEP	ZUI_REVIEWBOOKLET_CONF	1	Review Booklet Configuration	UI_REVIEWBOOKLET_CONF		 	Not Supported	Routing-based	
+ROW673|BEP	ZUI_SCM_ADVNCD_SCHEDG_BOARD	1	Service for Advanced Scheduling Board	UI_SCM_ADVNCD_SCHEDG_BOARD		 	Not Supported	Routing-based	
+ROW674|BEP	ZUI_SHORTTERMCASHPOS_DISP	1	Short Term Cash Position	UI_SHORTTERMCASHPOS_DISP		 		Co-deployed only	
+ROW675|BEP	ZUI_SLSDOCMASSCHANGEREQUEST	1	Service Binding for Mass Change Request	UI_SLSDOCMASSCHANGEREQUEST		 		Co-deployed only	
+ROW676|BEP	ZUI_SUBSTNVALDNRULE_MANAGE	1	Manage Subsitution and Validation Rule	UI_SUBSTNVALDNRULE_MANAGE		 	Not Supported	Routing-based	
+ROW677|BEP	ZUI_SUPPLIERLIST_MANAGE	1	Service Binding for UI_SupplierList_Manage	UI_SUPPLIERLIST_MANAGE		 	Not Supported	Routing-based	
+ROW678|BEP	ZUI_SUPPLYPROTECTION_REVIEW	1	UI_SUPPLYPROTECTION_REVIEW	UI_SUPPLYPROTECTION_REVIEW		 		Co-deployed only	
+ROW679|BEP	ZUI_TRAVELEXPENSEMANAGEV2	1	Binding for My Travel Expense	UI_TRAVELEXPENSEMANAGEV2		 		Co-deployed only	
+ROW680|BEP	ZUI_VALUECHAINMONITOR	1	Monitor Value Chains	UI_VALUECHAINMONITOR		 		Co-deployed only	
+ROW681|BEP	ZUI_WORKCENTERCAPLIST_02	1	Odata Service for Work Center Capacity	UI_WORKCENTERCAPLIST_02		 		Co-deployed only	
+ROW682|	/IWFND/USAGEEXTRACTOR	1	Metering Usage Extractor	USAGEEXTRACTOR	/IWFND/	 		Routing-based	
+ROW683|BEP	ZUSER_MENU	1	User Menu service	USER_MENU	/UI2/	 		Routing-based	
+ROW684|BEP	ZUSERDEFAULTS	1	User Default Settings	USERDEFAULTS		 		Co-deployed only	
+ROW685|	/IWFND/SG_USER_SERVICE	1	Information Worker - User Service	USERSERVICE	/IWFND/	 		Routing-based	
+ROW686|BEP	ZVDM_CDSVIEW_BROWSER	1	VDM CDSView Browser Gateway Project	VDM_CDSVIEW_BROWSER		 	Not Supported	Routing-based	
+ROW687|BEP	YTEST_CUSTOM	1		YTEST_CUSTOM		X		Co-deployed only	
+ROW688|BEP	Z_CDS_TRIAL2_CDS	1	Trial Balance	Z_CDS_TRIAL2_CDS		 	Inactive	Routing-based	
+ROW689|BEP	Z_EXPOSE_CDS_JOIN_BND	1		Z_EXPOSE_CDS_JOIN_BND		X		Co-deployed only	
+ROW690|BEP	Z2ND_ODATA_ALIAS_SRV	1	Alias missing odata service	Z2ND_ODATA_ALIAS_SRV		 	Not Supported	Routing-based	
+ROW691|BEP	Z2ND_ODATA_SRV	1	Assocoation & Navigation Path	Z2ND_ODATA_SRV		 	Not Supported	Routing-based	
+ROW692|BEP	ZAPI_ATTACH_DEMO_SRV	1	Attachment Demo	ZAPI_ATTACH_DEMO_SRV		 	Not Supported	Routing-based	
+ROW693|BEP	ZAPI_ATTACH_DEMO1_SRV	1	Attachment Demo	ZAPI_ATTACH_DEMO1_SRV		 	Not Supported	Routing-based	
+ROW694|BEP	ZAPI_EMPLOYEE_DETAILS_002_SRV	1	Employee Details	ZAPI_EMPLOYEE_DETAILS_002_SRV		 	Not Supported	Routing-based	
+ROW695|BEP	ZAPI_EMPLOYEE_DETAILS_SRV	1	Employee Details	ZAPI_EMPLOYEE_DETAILS_SRV		 	Not Supported	Routing-based	
+ROW696|BEP	ZAPI_ITEM_DETAILS_SRV	1	Items details Odata	ZAPI_ITEM_DETAILS_SRV		 	Not Supported	Routing-based	
+ROW697|BEP	ZAPI_MATERIAL_DATA_SRV	1	Material Details	ZAPI_MATERIAL_DATA_SRV		 	Not Supported	Routing-based	
+ROW698|BEP	ZAPI_PLANT_WEIGHBRIDGE_RMC_SRV	1	RMC Plant Weigh Bridge Data	ZAPI_PLANT_WEIGHBRIDGE_RMC_SRV		 	Not Supported	Routing-based	
+ROW699|BEP	ZAPI_RMC_TM_SRV	1	RMC TM Master API	ZAPI_RMC_TM_SRV		 	Not Supported	Routing-based	
+ROW700|BEP	ZAPI_SALE_DETAILS_SRV	1	Sales Details API	ZAPI_SALE_DETAILS_SRV		 	Not Supported	Routing-based	
+ROW701|BEP	ZAPI_STUDENT_DETAILS_SRV	1	Student Details	ZAPI_STUDENT_DETAILS_SRV		 	Not Supported	Routing-based	
+ROW702|BEP	ZBIDDINGDATASERVICES_SRV	1	Bidding Data Services	ZBIDDINGDATASERVICES_SRV		 	Not Supported	Routing-based	
+ROW703|BEP	ZCDS_DEMO_READ_TEXT_CDS	1	Read text in cds	ZCDS_DEMO_READ_TEXT_CDS		 	Not Supported	Routing-based	
+ROW704|BEP	ZCRM_CUSTOMER_BP_CREATE_SRV	1	CRM Customer BP Creation	ZCRM_CUSTOMER_BP_CREATE_SRV		 	Not Supported	Routing-based	
+ROW705|BEP	ZCRM_SHIPTO_SRV	1	Ship to customer from CRM	ZCRM_SHIPTO_SRV		 	Not Supported	Routing-based	
+ROW706|BEP	ZCRM_SO_REJECT_SRV	1	CRM: Sales order rejection	ZCRM_SO_REJECT_SRV		 	Not Supported	Routing-based	
+ROW707|BEP	ZCRM_STAGEGATE_SRV	1	CRM: Stage Gate	ZCRM_STAGEGATE_SRV		 	Not Supported	Routing-based	
+ROW708|BEP	ZCUSTOMER_DETAIL_SRV	1	Customer Detail - CPI	ZCUSTOMER_DETAIL_SRV		 	Not Supported	Routing-based	
+ROW709|BEP	ZCUSTOMER_PDF_INV_SRV	1	Customer PDF Invoice Interface	ZCUSTOMER_PDF_INV_SRV		 	Not Supported	Routing-based	
+ROW710|BEP	ZDACE_WEIGHT_EMAIL_SRV	1	Weight Bridge Approval or Reject OData	ZDACE_WEIGHT_EMAIL_SRV		 	Not Supported	Co-deployed only	
+ROW711|BEP	ZDATASB	1		ZDATASB		X		Co-deployed only	
+ROW712|BEP	ZDDCDATASERVICES_SRV	1	DDC Data Services	ZDDCDATASERVICES_SRV		 	Not Supported	Routing-based	
+ROW713|BEP	ZDEMO_EMP_ENTRY_SRV	1	Employee Entry	ZDEMO_EMP_ENTRY_SRV		 	Not Supported	Routing-based	
+ROW714|BEP	ZDEMO_FILE_SRV	1	File Upload Download	ZDEMO_FILE_SRV		 	Not Supported	Routing-based	
+ROW715|BEP	ZDEMO_SRV	1	demo OData	ZDEMO_SRV		 	Not Supported	Routing-based	
+ROW716|BEP	ZDOWNTIMECONFIRM_SRV	1	DownTime Confirmation	ZDOWNTIMECONFIRM_SRV		X	Not Supported	Routing-based	
+ROW717|BEP	ZDUMMY_SRV	1	DUMMY	ZDUMMY_SRV		 	Not Supported	Routing-based	
+ROW718|BEP	ZEAM_OBJPG_MAINTENANCEORDER_SRV	1	F2175: Find Maintenance Order	ZEAM_OBJPG_MAINTENANCEORDER_SRV		 	Not Supported	Routing-based	
+ROW719|BEP	ZFII009_FNF_JV_FILE_SRV	1	FNF JV	ZFII009_FNF_JV_FILE_SRV		 	Not Supported	Routing-based	
+ROW720|BEP	ZFII009_FNF_JV_SRV	1	FNF JV	ZFII009_FNF_JV_SRV		 	Not Supported	Routing-based	
+ROW721|BEP	ZFII009_FNFJV_SRV_02	1	F&F JV	ZFII009_FNFJV_SRV_02		 	Not Supported	Routing-based	
+ROW722|BEP	ZFII009_LOAN_JV_FILE_SRV	1	Monthly JV	ZFII009_LOAN_JV_FILE_SRV		 	Not Supported	Routing-based	
+ROW723|BEP	ZFII009_MONTHLY_JV_FILE_SRV	1	Monthly JV	ZFII009_MONTHLY_JV_FILE_SRV		 	Not Supported	Routing-based	
+ROW724|BEP	ZFIRST_ODATA_SRV	1	Get the PO Information	ZFIRST_ODATA_SRV		 	Not Supported	Routing-based	
+ROW725|BEP	ZFRI_1ST_ODATA_SRV	1	First odata service	ZFRI_1ST_ODATA_SRV		 	Not Supported	Routing-based	
+ROW726|BEP	ZGLB_DS4FI_SCRUMINVOICE_SRV	1	SCRUM - Vendor Invoice	ZGLB_DS4FI_SCRUMINVOICE_SRV		 	Not Supported	Routing-based	
+ROW727|BEP	ZGLB_DS4FI_SCRUMINVPOST_SRV	1	SCRUM - Post Vendor Invoice	ZGLB_DS4FI_SCRUMINVPOST_SRV		 	Not Supported	Routing-based	
+ROW728|BEP	ZGLB_ILMS_SRV	1	ILMS Data Services	ZGLB_ILMS_SRV		 	Not Supported	Routing-based	
+ROW729|BEP	ZGW_BILL_INFO_SRV	1	SAP Info Billing Service	ZGW_BILL_INFO_SRV		 	Not Supported	Routing-based	
+ROW730|BEP	ZGW_MATERIAL_INFO_2_SRV	1	Material Information	ZGW_MATERIAL_INFO_2_SRV		 	Not Supported	Co-deployed only	
+ROW731|BEP	ZGW_MATERIAL_INFO_3_SRV	1	Material Information	ZGW_MATERIAL_INFO_3_SRV		 	Not Supported	Co-deployed only	
+ROW732|BEP	ZGW_MATERIAL_INFO_SRV	1	Material Info	ZGW_MATERIAL_INFO_SRV		 	Not Supported	Routing-based	
+ROW733|BEP	ZHR_DARWIN_INTEGRATION_SRV	1	FR Darwin Integration	ZHR_DARWIN_INTEGRATION_SRV		 	Not Supported	Routing-based	
+ROW734|BEP	ZI_CUSTOM_JOIN_CDS_CDS	1	Balance Sheet/Income Statement - Multidimensional	ZI_CUSTOM_JOIN_CDS_CDS		 	Not Supported	Routing-based	
+ROW735|BEP	ZILMSDATASERVICES_SRV	1	ILMS Data Services	ZILMSDATASERVICES_SRV		 	Not Supported	Routing-based	
+ROW736|BEP	ZJI_ODATA_SRV	1	Simple OData	ZJI_ODATA_SRV		 	Not Supported	Routing-based	
+ROW737|BEP	ZMAY_2021_SRV	1	My First Odata Service	ZMAY_2021_SRV		 	Not Supported	Routing-based	
+ROW738|BEP	ZMM_SCRUM_SER_PO_SRV	1	Scrum to SAP Service PO	ZMM_SCRUM_SER_PO_SRV		 	Not Supported	Routing-based	
+ROW739|BEP	ZODATA_DEMO1_SRV	1	Odata Demo Service	ZODATA_DEMO1_SRV		X	Not Supported	Routing-based	
+ROW740|BEP	ZODATA_DEMO3_SADL_SRV	1	Sales Order	ZODATA_DEMO3_SADL_SRV		 	Not Supported	Routing-based	
+ROW741|BEP	ZODATA_EMP_RDS_SRV	1	OData for ETAG code based	ZODATA_EMP_RDS_SRV		 	Not Supported	Routing-based	
+ROW742|BEP	ZODATA_EMP_SRV	1	Employee Odata	ZODATA_EMP_SRV		 	Not Supported	Routing-based	
+ROW743|BEP	ZODATA_MEDIA_SRV	1	media handling	ZODATA_MEDIA_SRV		 	Not Supported	Routing-based	
+ROW744|BEP	ZODATA_SRV	1	1st odata	ZODATA_SRV		 	Not Supported	Routing-based	
+ROW745|BEP	ZOO_DATA_SRV	1	O DATA Test	ZOO_DATA_SRV		 	Not Supported	Routing-based	
+ROW746|BEP	ZPK_ZJI_ASSOCIATION_SRV	1	Association and Navigation Path	ZPK_ZJI_ASSOCIATION_SRV		 	Not Supported	Routing-based	
+ROW747|BEP	ZPK_ZJI_PODETAILS_SRV	1	Get PO Information	ZPK_ZJI_PODETAILS_SRV		 	Not Supported	Routing-based	
+ROW748|BEP	ZPO_API_DEMO_SRV	1	Po Details	ZPO_API_DEMO_SRV		 	Not Supported	Routing-based	
+ROW749|BEP	ZPO_HDR_INFO_CDS	1	Po Header Information	ZPO_HDR_INFO_CDS		 	Not Supported	Routing-based	
+ROW750|BEP	ZPO_INFO_SRV	1	Po Information	ZPO_INFO_SRV		 	Not Supported	Routing-based	
+ROW751|BEP	ZPSW001_PROJ_APPROVE_SRV	1	Project Approval	ZPSW001_PROJ_APPROVE_SRV		 	Not Supported	Routing-based	
+ROW752|BEP	ZRA_TEST_SRV	1	Test	ZRA_TEST_SRV		 	Not Supported	Routing-based	
+ROW753|BEP	ZSALES_DEMO_SRV	1	Sales Demo	ZSALES_DEMO_SRV		 	Not Supported	Routing-based	
+ROW754|BEP	ZSB_COMPANY	1		ZSB_COMPANY		X		Co-deployed only	
+ROW755|BEP	ZSB_EMP	1		ZSB_EMP		X		Co-deployed only	
+ROW756|BEP	ZSBD	1		ZSBD		X		Co-deployed only	
+ROW757|BEP	ZSBD1	1		ZSBD1		X		Co-deployed only	
+ROW758|BEP	ZSBD2	1		ZSBD2		X		Co-deployed only	
+ROW759|BEP	ZSBDATA2	1		ZSBDATA2		X		Co-deployed only	
+ROW760|BEP	ZSDDELVRY_FREIGHTUPDATE_SRV	1	Delivery APIFreight Update	ZSDDELVRY_FREIGHTUPDATE_SRV		 	Not Supported	Routing-based	
+ROW761|BEP	ZSERVICE	1		ZSERVICE		X		Co-deployed only	
+ROW762|BEP	ZSRV_BIND_EMP_DTLS	1		ZSRV_BIND_EMP_DTLS		X		Co-deployed only	
+ROW763|BEP	ZSRV_BOPF1_CDS	1	BOPF CDS Handling	ZSRV_BOPF1_CDS		 	Not Supported	Routing-based	
+ROW764|BEP	ZSUN_SRV	1	1st odata	ZSUN_SRV		 	Not Supported	Routing-based	
+ROW765|BEP	ZTEMPP_SRV	1	tem	ZTEMPP_SRV		 	Not Supported	Routing-based	
+ROW766|BEP	ZTEST_1_SRV	1	test dummy	ZTEST_1_SRV		 	Not Supported	Routing-based	
+ROW767|BEP	ZTEST_O_DATA_SRV	1	O DATA	ZTEST_O_DATA_SRV		 	Not Supported	Routing-based	
+ROW768|BEP	ZTEST_PI_SD_SRV	1	TEST FOR SD DOCUMENTS	ZTEST_PI_SD_SRV		 	Not Supported	Routing-based	
+ROW769|BEP	ZTEST_SRV	1	test	ZTEST_SRV		 	Not Supported	Routing-based	
+ROW770|BEP	ZTESTING_SRV	1	ztesting	ZTESTING_SRV		X	Not Supported	Routing-based	
+ROW771|BEP	ZTESTODATA_CDS	1	Publish CDS View as Odata	ZTESTODATA_CDS		 	Not Supported	Routing-based	
+ROW772|BEP	ZTESTODATA_SRV	1	TEST O DATA	ZTESTODATA_SRV		X	Not Supported	Routing-based	
+ROW773|BEP	ZTESTPG_SRV	1	J	ZTESTPG_SRV		 	Not Supported	Routing-based	
+ROW774|BEP	ZTMPPOSERVBIND	1		ZTMPPOSERVBIND		X		Co-deployed only	
+ROW775|BEP	ZUI_BATCH_01_SRV	1	Batch Example	ZUI_BATCH_01_SRV		 	Not Supported	Routing-based	
+ROW776|BEP	ZUI_BIND_CDS_01	1		ZUI_BIND_CDS_01		X		Co-deployed only	
+ROW777|BEP	ZUI_PS_APPROPRIATIONREQ_02	1		ZUI_PS_APPROPRIATIONREQ_02		 	Not Supported	Co-deployed only	
+ROW778|BEP	ZUI_RP_APP	1		ZUI_RP_APP		X		Co-deployed only	
+ROW779|BEP	ZZ_FREIGHT_BILL_GEN_SRV	1	Freight Bill Generation	ZZ_FREIGHT_BILL_GEN_SRV		 	Not Supported	Routing-based	
+ROW780|BEP	ZZ_TEST_CDS_SRV	1	cds test	ZZ_TEST_CDS_SRV		 	Not Supported	Routing-based	
+ROW781|BEP	ZZ_TEST_NSR_ODATA_CDS_CDS	1	TESTING	ZZ_TEST_NSR_ODATA_CDS_CDS		 	Not Supported	Routing-based	

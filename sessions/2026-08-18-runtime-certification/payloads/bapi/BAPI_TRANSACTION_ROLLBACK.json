@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_TRANSACTION_ROLLBACK",
+    "functionGroup": "BAPT",
+    "remoteEnabled": true,
+    "releaseStatus": "Released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [],
+    "EXPORT": [
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRET2",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARAMETER",
+            "position": "0011",
+            "dataElement": "BAPI_PARAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROW",
+            "position": "0012",
+            "dataElement": "BAPI_LINE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FIELD",
+            "position": "0013",
+            "dataElement": "BAPI_FLD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SYSTEM",
+            "position": "0014",
+            "dataElement": "BAPILOGSYS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "CHANGING": [],
+    "TABLES": [],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "INTERFACE_CAPTURED_NOT_EXECUTED",
+    "request": "<build from exact interface below using approved DEV test data>",
+    "successEvidence": "Inspect RETURN/BAPIRET* and business document state."
+  }
+}

@@ -1,0 +1,9 @@
+HTTP/1.1 201 Created
+content-type: application/json; charset=utf-8
+content-length: 941
+location: https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138597')
+dataserviceversion: 2.0
+sap-processing-info: ODataBEP=,crp=,RAL=,st=,MedCacheHub=Table,codeployed=X,softstate=
+sap-server: true
+sap-perf-fesrec: 1095530.000000
+

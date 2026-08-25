@@ -1,0 +1,27 @@
+{
+  "PurchaseOrderType": "UB",
+  "CompanyCode": "1000",
+  "PurchasingOrganization": "0001",
+  "PurchasingGroup": "001",
+  "SupplyingPlant": "PLQ3",
+  "DocumentCurrency": "INR",
+  "PurchaseOrderDate": "/Date(1755561600000)/",
+  "to_PurchaseOrderItem": [
+    {
+      "PurchaseOrderItem": "10",
+      "Material": "MAT18",
+      "Plant": "PLQ1",
+      "StorageLocation": "",
+      "PurchaseOrderItemCategory": "7",
+      "OrderQuantity": "1",
+      "PurchaseOrderQuantityUnit": "EA",
+      "to_ScheduleLine": [
+        {
+          "ScheduleLine": "1",
+          "ScheduleLineOrderQuantity": "1",
+          "ScheduleLineDeliveryDate": "/Date(1755993600000)/"
+        }
+      ]
+    }
+  ]
+}

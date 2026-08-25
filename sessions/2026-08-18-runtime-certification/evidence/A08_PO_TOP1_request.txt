@@ -1,0 +1,9 @@
+GET /sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder?$top=1&$format=json HTTP/1.1
+Host: (DS4 application server, resolved by /IWFND/GW_CLIENT)
+Accept: */*
+
+# executed in DS4 client 200 as QNOVATE8
+# transport: /IWFND/GW_CLIENT via SAP GUI scripting on the operator's existing session
+# no credentials, cookies or CSRF tokens were handled or stored by this harness
+# captured (local): 18-08-2026 13:28:41
+# result: HTTP 200 OK | content-type application/json; charset=utf-8 | content-length 20

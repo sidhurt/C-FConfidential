@@ -1,0 +1,302 @@
+# 14aug_1 - translate
+duration: 21:43  |  language: hi-IN  |  turns: 361
+
+[00:00] S3 : Now let's do one thing, let's have a discussion about the API, let's have a discussion about your API.
+[00:04] S2 : Who will do the discussion?
+[00:06] S3 : It is more than this.
+[00:06] S4 : From here.
+[00:07] S2 : It is ₹1000. Siddharth, where did you see this API from? ACGW Services Auditor
+[00:12] S3 : Apply it once.
+[00:13] S2 : Yes Show me. Put it on, show me. Tell me where you got it from.
+[00:14] S3 : Apply it a little. Let's finish it off, let's finish the API part, and those two things.
+[00:20] S2 : And those two, Ajay and others, and Ajay, the same.
+[00:22] S3 : Ajay is calling the same person.
+[00:24] S2 : Where is the AC guy?
+[00:26] S3 : The SD guy is hospitalized. He, he, you know, he has gone viral and he is bleeding. I, I also, as the information came during the day, I, yesterday you told me. So I was saying that he has been found with dengue symptoms. I'll call Karan Kakkar for SD, right?
+[00:50] S5 : Yes, it is currently in Karan's
+[00:50] S3 : Yes, Karan Kakkar is there now.
+[00:53] S5 : Who should I call?
+[00:56] S3 : I want to buy something. The joint that I mentioned, I said, sir, this is the reason.
+[01:03] S2 : Propose service, debt cleanup, receipt SRV, where did you make this proposal from?
+[01:08] S4 : These, these will be the names of the SEGW services, so the API name that was created in submit, these that have been discussed, will be between our T2 and S4. And in that, with whom was it discussed?
+[01:21] S2 : Who was this discussed with? I have not, sir, this is our court.
+[01:22] S0 : No, this is our own exercise. We have as many exercises as we have.
+[01:27] S2 : I mean, we won't go when we have the standard. Okay, fine, first you show the submit video.
+[01:33] S5 : Go one by one.
+[01:34] S2 : Yes, first take the submit memo.
+[01:35] S5 : You, first of all, you see.
+[01:38] S2 : Show, show the service, where did you check from? Open the system.
+[01:41] S5 : Why didn't you take the standard video?
+[01:42] S2 : Yes, why haven't you taken it? Why haven't you taken the standard?
+[01:44] S5 : Standard sir, are you talking about Bapi?
+[01:46] S2 : Hey, the standard API is available, right? The create delivery API is also available, the submit goods movement is also available, so why haven't you taken these?
+[01:50] S1 : These are also available, submit.
+[01:53] S4 : Sir, all of these are in this, these are SEGWO data services. Oh, that's what I'm saying.
+[01:57] S2 : Hey, that's what I'm saying, open the ACW. I showed this to him yesterday as well.
+[01:59] S4 : We won't be in that right now, sir, because there isn't even one in the quality system right now.
+[02:03] S2 : It will be available in Mumbai.
+[02:05] S4 : Such a machine.
+[02:05] S2 : Open it, open it, open it, open it, we will do my system. Okay, this is it, right?
+[02:13] S5 : Yes, yes, yes.
+[02:15] S2 : Okay, give it. Production Hmm, okay.
+[02:48] S3 : Got it, got it. Okay listen, send Karan Kakkar.
+[02:48] S2 : Got it, got it.
+[02:53] S3 : In the board.
+[02:54] S2 : No, this is better.
+[02:58] S3 : There is no access. There is no access. It is not in good quality.
+[03:00] S2 : There is no access. It is not in good quality.
+[03:06] S3 : What is not in the quality? There is no excess.
+[03:08] S4 : It's not like that, it's not like that, it's not present. Okay, it's not present.
+[03:08] S2 : No, no, no.
+[03:11] S3 : Okay, present. Yes, this was done. Keep this.
+[03:28] S5 : What is happening?
+[03:30] S4 : No, they had to be taught SEDW signals.
+[03:33] S0 : So Sudhanshu, we can't see anything here.
+[03:37] S2 : Exercise has to be done. Hey, let's do the project first. Do an open project. Folder second.
+[03:39] S5 : That means, sir, that Second, second, complete second. Inside that project, you have self-overdata services. That data service, then let's say, if it suffices your requirement, then it is fine. If it is not, then you have to customize, which we did that for shift to part decorations and all like this. The same way you have to proceed with the O data service.
+[03:58] S4 : Yes. Okay. Yes. So sir, which ones will be in this?
+[04:09] S2 : So you have to see.
+[04:09] S5 : I want to know that.
+[04:10] S2 : I want to know what was your mechanism to such that because look, for goods
+[04:13] S3 : So such that.
+[04:16] S2 : We will also do this project of ours. One
+[04:20] S3 : Here, it is a Z star.
+[04:20] S2 : Here is a jet star. This is cancellation.
+[04:22] S3 : No, no, no, no.
+[04:24] S2 : This is good.
+[04:25] S3 : Okay, for the project.
+[04:27] S2 : Requisition Goods Receipt Confirmation MM PUR REQ POND GR
+[04:31] S3 : Which project to select?
+[04:33] S5 : Here, right, Doctor, this English purchase reposition, look, it's given in the repository.
+[04:35] S2 : This is not open. Yes, these are the old ones that I
+[04:39] S4 : Yes, these are the old ones that I have in the design range.
+[04:42] S2 : Yes, okay. JAT Outbound Goods Posting, Meebo's, you will find it in this way.
+[04:45] S4 : Migo's is not in this.
+[04:47] S3 : And you also got a good posting, right? For sales orders, etc.
+[04:51] S2 : Sir, etc.
+[04:54] S3 : We need that, what we need.
+[04:57] S2 : No, why are you looking for Z? Why are you looking for Z? You are talking about the standard, aren't you?
+[04:58] S3 : Why are you looking for Z? I said, I hope they haven't taken something out of Z. I was cross-checking that.
+[05:06] S2 : Leave all this first, tell me this Siddharth, what was your approach when you prepared this sheet, you would have done some thought right? I am doing like this, so what was that?
+[05:16] S4 : Sir, so the SEGW services that were previously being shown in Quality, they were the custom ones, the Z ones, which were still visible, CRM, Sage Gate, etc. So sir, I researched all the classes, methods, and the way the data is modeled within them. And I figured out how the APIs we need to build, like Submit Migo etc., all these custom APIs will be built. So which structures are already existing?
+[05:21] S2 : They were the custom ones who Hmm Hmm. The concept structure is already existing. We won't do it, right? Look, kids, the most important thing here is what you have available in the standard. What is submit MIGO? Basically, what does it call in the background? Goods movement BAPI_Goods movement_create, that's what it calls, right? That's what it does, right? So, this is already available in the standard, so why are we going to custom? Why are we thinking in that direction? We go to custom when we see a gap, a delta, which is not happening in the standard. Correct?
+[05:55] S1 : Movement_create
+[06:11] S0 : Yes, sir.
+[06:11] S2 : So then we shouldn't have gone, and that was my objection that the payload etc. you created is completely flawed.
+[06:17] S0 : No, that was the first cut version. Definitely, we will show you that now.
+[06:19] S2 : Now we will show you. Look, Yogesh has already seen it. We will show you this. Wait a minute, I'll bring mine now.
+[06:21] S3 : Look, Yogesh just now
+[06:23] S1 : Also taken.
+[06:28] S3 : No sir, that
+[06:34] S4 : No sir, that wasn't the AI version. That whole response remained after the research.
+[06:37] S3 : So where is your Z guy, where is he? Where did you get him from?
+[06:41] S0 : No, they are not even using it, they are refusing. They are saying to use the standard one.
+[06:42] S4 : Mobile.
+[06:44] S3 : They are using it, but it must have taken it out from somewhere.
+[06:44] S4 : Yes. Sir, that was the whole thing about the custom build.
+[06:51] S3 : You will build.
+[06:53] S2 : How much effort will you put in? How much effort will you put in custom build? How many things are you getting?
+[06:53] S4 : Will you put it on top?
+[06:58] S3 : So, the best approach is the best approach.
+[07:00] S5 : So the best approach, the best approach is that you use the standard one. Let's say if you want to add a few more details which are not available in the standard one, then you can add on for that. Sir, give me the present API.
+[07:10] S4 : This is an add-on for that. Sir, I saw those present API ones.
+[07:15] S3 : This is the black one.
+[07:54] S2 : So look, it's painful here. Now, like I have Migo. Okay? Submit Migo. For goods posting, I will search with goods. Then I will get to know that there are so many here. Okay? Now, picking it up in this. Here it is. Outbound goods posting. Okay? This has been released by SAP as a standard in this. You can take this. Okay? For cancellation, it is visible right below it, MMIMGR cancellation. So, we have to explore this first, right? This is one, okay? Similarly, if you want to see DI, okay? Create delivery is there, create delivery will also be available. This is inbound, API outbound delivery, this is it. Now what has happened to my search, it has become limited to only two. I just want to see what is the difference between API outbound delivery 002 and 00 and the empty delivery because this latest one came out in 18 and that is in 17, so we have to check both, so my range has reduced, right? The standard is available, I will use this. Okay? And what was the third service? After create delivery, modify, modify.
+[09:35] S0 : Modified, it will be modified.
+[09:36] S2 : Modified delivery, so that will be available in change. Okay, that will also be available here.
+[09:38] S5 : Will be available.
+[09:39] S3 : Okay. This is a cloud, this is standard.
+[09:48] S2 : Yes, this is standard. Correct. So, we have to look at these two or four, right?
+[09:52] S3 : So, in this, picking up his...
+[09:54] S2 : Yes Look at this, Early SHP, OD, Create, Create, and Solve delivery.
+[10:01] S1 : Yes sir, for them too.
+[10:02] S3 : My shipment is done, yes.
+[10:04] S2 : Yes. Okay, now let's look at it for change as well.
+[10:10] S3 : Otherwise, you must be using all this somewhere or the other.
+[10:13] S2 : We are not getting the delivery created from outside, right? We are getting the order created, we have the order. How are you getting it created? Okay. Our delivery is made here at SAP. Understood.
+[10:15] S3 : Okay, we are creating an order, we have an order. Understood, yes. So, it's going to be the first time.
+[10:25] S2 : So, the first time, we will use the standard one, right? Yes, yes, absolutely.
+[10:27] S3 : Yes, yes, yes, absolutely, absolutely. If someone wants to add additional fields, it's not in the standard, so...
+[10:32] S2 : In the same way, we will find the change, we will get it in the change now.
+[10:35] S3 : That is still, yes sir, that is.
+[10:36] S4 : Yes sir, that will be done now. I didn't have the context for the projects in this before. I had the custom builds, which were previously CRM and all these things.
+[10:44] S2 : RM and all these were there.
+[10:45] S5 : We have made only two or four of those. Yes, those ones, those ones, after exploring.
+[10:47] S4 : Yes, after exploring those, I felt like I could do all of this.
+[10:52] S2 : No, and how do you create an empty sheet? You have to do this first, take one, suppose two or three are visible. Okay, first look in all three, put this in, put the payload in, and run the sample. What has it created, document, document, check and then see if all our fields coming from the CNF portal are being mapped to this structure or not.
+[10:53] S5 : We make it from cloth.
+[10:56] S4 : Yes sir, yes sir, its two or three. Hmm hmm. Yes. Do it and then.
+[11:14] S2 : Okay, then create the sheet. That sheet will be relevant, this will be the next step.
+[11:17] S4 : Yes sir, sure sir.
+[11:18] S2 : Okay, the third service, create change delivery is done. Create invoice, create invoice.
+[11:19] S4 : Create.
+[11:21] S0 : Create invoice.
+[11:22] S4 : Ready to invoice. Yes, of invoice correction.
+[11:25] S3 : When an invoice is created, then that is also created for you. What is the name, PGI, everything.
+[11:29] S4 : PG is there.
+[11:30] S2 : Hey, PGI will be done first, the invoice comes later. So PGI, but you don't do it, right? You have auto
+[11:32] S3 : So, you don't do this. Yes, to you.
+[11:35] S5 : It gets eliminated. Who eliminated whom? I mean, they do it, I mean, automated means automated is in SAP, man. If you go from the internet, then you will get it.
+[11:41] S3 : If we go to the internet, then for each of us, but no, now I'll tell you, I had a discussion with Bharat about this. Bharat was saying that all this information of yours, when it clicks on the invoice, when the invoice is made, all this information of yours is stored somewhere in the DSP or in the T1. Where is it, Bharat? Where is it stored?
+[11:45] S5 : Now I will tell you, in this my discussion
+[12:00] S0 : When an invoice is created, all the data goes into T1. Right? Its vehicle number, driver number, your event signal, right? After that, your e-way bill and all that is generated, its invoice, its information also goes to T1 through Stage Gate. So all that information is being received. One thing I wanted to confirm was, if I call the create invoice API, will all these other APIs, the e-invoice, the e-way bill, will they all happen on their own or will they do it for us independently?
+[12:26] S5 : It happens on its own.
+[12:27] S0 : It will be done, right? So I just need to create an invoice.
+[12:28] S5 : Need to create an invoice. No, then I am saying it again, first you understand the process, after your delivery there is a shipment number, shipment cost, PGI shipment number, shipment cost, shipment cost release, then PGI, then invoice.
+[12:41] S0 : Correct, correct.
+[12:42] S5 : You have to run all the programs up to here. So there is no automation.
+[12:45] S0 : So that Yes, automation.
+[12:48] S1 : What is the point is that currently all stages are going from
+[12:53] S5 : Leave the stage gate, the stage gate is different.
+[12:55] S1 : No, no, speed gauge is nothing, DI is, what is DI?
+[12:58] S5 : Stage gate is different, I am telling you again. So stage gate is, let's say your delivery is one stage gate. After that there is an allocation, then your invoice.
+[13:00] S1 : Yes Yes.
+[13:10] S5 : Before that, there are many things in between, right?
+[13:12] S0 : We do shipment calculation.
+[13:13] S1 : They don't need all that, they need this.
+[13:14] S5 : Goli ji, what kind of things are you saying?
+[13:16] S0 : No, I mean, in between that, between delivery and invoice, we are only calling an API for shipment calculation.
+[13:16] S5 : Meaning, in that you Shipment number, shipment cost, shipment cost release. You have to do this too.
+[13:26] S0 : We also need the shipment number, the shipment.
+[13:28] S2 : The shipment document will be generated. When the shipment document is generated, a shipment costing document will be created in it. Okay, that's a kind of pricing call. There's a pricing for shipment costing, right?
+[13:33] S0 : Six So how many, you are saying there are two calls. Three. There are three calls. Apart from the shipment cost, there are two more calls.
+[13:40] S2 : Three, three calls.
+[13:43] S5 : Look at the shipment, first listen again, delivery. After delivery, your shipment number, shipment cost, shipment cost released.
+[13:45] S0 : Yes.
+[13:52] S5 : Then take the invoice.
+[13:53] S1 : Correct.
+[13:53] S2 : I just said the same thing.
+[13:55] S5 : Yes, it will increase.
+[13:56] S1 : Where is it not written on our job?
+[13:57] S5 : Who didn't tell?
+[13:58] S1 : No, in this, our API, in one API, we all...
+[14:02] S5 : We have written on day one that we need a process like this.
+[14:04] S1 : No, no, I need it instantly, it's real-time.
+[14:06] S5 : So much
+[14:07] S3 : This is real-time, otherwise your invoice will not be generated.
+[14:10] S1 : Why didn't the invoice get generated?
+[14:11] S3 : Oh man, it won't happen. If your PGI doesn't happen, then how will I trade the invoice?
+[14:16] S0 : So see, ideally, how should it be? All these calls are happening in parallel. Right? So I agree with the shipment. But what you are saying, PGI, shipment release, if I make one call, shouldn't everyone do it on their own? I mean, ideally.
+[14:25] S1 : It is available.
+[14:26] S5 : I mean, such an idea. I am also saying the same thing. See, rather than
+[14:28] S1 : I am also saying the same thing.
+[14:29] S0 : See, rather than calling three APIs from the front end at a time, actually it should be one API.
+[14:33] S5 : Actually, it should be one API. You have to call certain test cases.
+[14:37] S3 : Requirement Madam
+[14:39] S5 : It doesn't matter if you want to see it.
+[14:40] S3 : Correct
+[14:41] S1 : He will tell from a business point of view. But the design you have to do in the system, right. That when those three things, right, all three things will have to be separated into one. If we separate it into one.
+[14:51] S0 : Yes, so that means if we do even one, then there will be only three calls.
+[14:54] S1 : Hey.
+[14:55] S0 : No, then there will be three different APs like this, right? It's not just one, is it?
+[14:59] S1 : Who said that?
+[15:00] S0 : That's what he is saying, there is a 3D print AP.
+[15:02] S1 : Yes, show me.
+[15:02] S3 : This is.
+[15:04] S0 : This is the link, shipment cost is this way, shipment release is there, PGI is there, you will do these three, after that you have to say create invoice. So before create invoice, these three calls have to be taken. What all is there in create invoice? That will be discussed in the APL now.
+[15:11] S3 : One.
+[15:14] S1 : What all information is there in the create BGM? That will be discussed in the APL right now. Yes, that's why the information came at that time.
+[15:22] S0 : There are only three calls, right? Because there are three names. Now, make one method and make three calls, and three other calls. That is a different thing. But they will also have three calls.
+[15:24] S1 : Now, three have come. Now, they are making three in one method.
+[15:29] S2 : But what about the team? This is another account, add another account, add another account, add another account, like this. It will be done. Okay, so you are creating an invoice from there.
+[15:42] S0 : Keep the invoice made from there.
+[15:45] S4 : Yes sir
+[15:45] S0 : So, I will have to create an invoice after completing this one.
+[15:46] S5 : This is mine.
+[15:46] S4 : I will complete this one.
+[15:49] S5 : See, the call is not matter, you send everything in one call. Test it too. After that, everything is fine. What do people want? That happens, sir, the client.
+[15:54] S0 : Yes.
+[15:57] S4 : Yes sir, yes sir. That happens, sir, in the client, GW client, I have all the documents with the payload, sir.
+[16:02] S2 : It is available for ₹10,000, sir, including payload.
+[16:04] S5 : Note down the document.
+[16:04] S3 : Note down the document.
+[16:07] S2 : I cannot make it.
+[16:08] S3 : Yes.
+[16:08] S5 : I don't want to do it. No, I want this now.
+[16:10] S4 : If I get this now, sir, it will be done. I didn't check this project one, the standard one, last time.
+[16:12] S3 : I need this project one, the standard one. Didn't do it last time. The flow runs inside the specialty. Now it's very important for you to understand the shape as a flow, otherwise it's wrong.
+[16:17] S5 : Now you understand the chain. Yes. So, after changing everything, you present with S.
+[16:26] S3 : SB, man, I, no, I also have some expertise, I have been in SB. I have seen all these processes, and I was sitting with him inside SB, so I pulled them. Look, this is how the flow works. From the entire SD's PO creation to GLN, which they receive, up to there.
+[16:44] S5 : The stage that you are talking about, here you see, in this you search for the Z one. If you search for Jaivara, then It already has a stage gate in it.
+[16:55] S0 : Hmm.
+[16:56] S5 : Look, look. No, no, that, that.
+[16:58] S0 : No no, I have seen that. I have seen that. Right now our discussion... I was just a little confused about these multiple calls.
+[16:59] S1 : I have seen that. I have seen that. Right now, our discussion is just about multiple
+[17:04] S2 : Don't keep it like that. You can keep it sequential push. Okay? How can you design that? If you are calling these three APIs sequentially, then there is no problem either. Okay? That's also fine. You have to take the capture.
+[17:20] S1 : You have to take the capture the request and then pass it in the SAP and then pass it.
+[17:23] S2 : Understand the process. Karan, you come here. Come here. Understand the process.
+[17:27] S1 : Come here.
+[17:29] S2 : He has a pending order.
+[17:34] S1 : No, no.
+[17:34] S3 : Take this, take this, take this.
+[17:39] S2 : You have a pending order. What will be the next step of the pending order?
+[17:44] S1 : DI
+[17:45] S2 : DI will be created, so how will DI be created? We have identified an API for this DI in the standard. DI has come and been created. Now, after DI is created, the system won't stop, right? What happens after DI? You will have to create a shipment. A shipment document will be created, its costing document will be created, and the cost will be released. You can get all three of these tasks done together.
+[18:04] S3 : No no no, after DI, we, this work below, that will be on invoicing. It will stop after becoming DI. Where will it be on invoicing? Yes sir, it's like that.
+[18:12] S0 : Yes sir, it is like that. No no, create DI is one call, create DI remains, it will only have the DI number. After that, you have to say create shipment. That is how the UI is designed.
+[18:20] S2 : Credit.
+[18:21] S3 : Design. One second, one second, I will show you my
+[18:23] S2 : So, you have kept the crate shipment separate? Yes, separate.
+[18:24] S0 : Yes, it is different.
+[18:25] S3 : The invoice is kept separately.
+[18:27] S0 : The same create shipment, create invoice is one and the same thing. Invoice is created in that.
+[18:29] S2 : It creates an invoice in that. So then you have three calls here. One call for delivery is done. Okay, this delivery is created and left in this, and you have picked up the number. Okay, what is the call after that? Shipment. Shipment. So this shipment batch is being separated. What is this doing? They have put in 'create' as if it's pending. Show the Figma once, please. Why are you saying shipment and invoice are the same? What is the reason?
+[18:35] S0 : Yes.
+[18:40] S1 : Shipment
+[18:41] S3 : I used to confirm the batch.
+[18:43] S1 : No, no, it's not a shipment. It is trending. Sir, because in the backend, when we create and keep the delivery, in one minute, present.
+[18:54] S0 : One minute, should I present it here?
+[18:55] S2 : Should I do it here? I should be a little clearer, it will bring clarity. Then we'll decide on the call. How have they designed the figure?
+[18:55] S0 : I will become a little clearer, clarity will come in that.
+[19:17] S3 : If we say that you should call all three together. Right? But your cost will be given to you. Or else, bring all my data and write it back inside, write one back first.
+[19:29] S0 : You were called.
+[19:31] S1 : We will see what you are showing now. Show the film, show the film. What are you doing?
+[19:33] S3 : Show me the picture once. What are you doing? You apply it, you apply it. Yes sir. Then you show it. Because they are having some difficulty.
+[19:38] S0 : Yes, sir.
+[19:43] S3 : I think Bharat must have restarted last time, I don't know.
+[19:46] S0 : No, no, it happens a little. Go to the order order screen. The screen where we show order deliveries and invoices.
+[19:57] S1 : That is the order fulfillment.
+[20:00] S3 : Pull Deep also in this. If you have any understanding of it. Pull Deep. This is available.
+[20:11] S2 : What is this?
+[20:12] S3 : These are pending orders for which.
+[20:13] S2 : Okay, okay. Now, let's say I have selected the first order number for the pending order.
+[20:17] S3 : Show the heading, show its heading, what is it, a little more.
+[20:20] S0 : Order.
+[20:20] S2 : Yes, the order is pending fulfillment. Okay. The pending list has arrived. The credit that is cleared.
+[20:25] S0 : The pending list has arrived. Here, going forward, there is a button, create design.
+[20:28] S2 : Show that too, move back.
+[20:29] S0 : Own. No, this.
+[20:31] S2 : Here it is, create. Yes, okay, create this.
+[20:31] S0 : Here it is, then this. Yes, okay. Quantity was put inside DI, and its DI was formed.
+[20:34] S2 : Okay. Okay.
+[20:36] S0 : DI number generated. So this is a call. There is nothing to do with invoicing here. Now come down.
+[20:37] S2 : Okay.
+[20:38] S3 : Okay.
+[20:43] S5 : No, now on the next side.
+[20:44] S0 : It will be on this side, this side.
+[20:45] S5 : It is not clear.
+[20:46] S2 : Yeah, okay, okay.
+[20:48] S5 : What progress?
+[20:51] S0 : It's here now, it will come here now. Once the DI is cut, then that DI one will come in progress.
+[20:56] S5 : Okay.
+[20:56] S0 : Here is a button, create shipment.
+[20:59] S5 : Okay.
+[21:00] S0 : So now the entire process of shipment is starting, now go to the next screen.
+[21:05] S5 : This shipment.
+[21:05] S0 : This is the shipment's first screen. Where we first do the batch determination.
+[21:08] S3 : This is not a shipment, it's a billing document, look above.
+[21:10] S5 : This is a building.
+[21:12] S3 : There is nothing to become.
+[21:13] S0 : That is the terminology value, if you click on shipment, you are seeing this screen.
+[21:17] S5 : So my terminology is that this is a delivery system. Yes, okay. Delivery, you have to fill up some information, after that only you can go to the shipment. Yes.
+[21:20] S0 : Yes, okay.
+[21:25] S3 : Yes.
+[21:26] S0 : Correct, correct.
+[21:27] S5 : Correct, this is a delivery.
+[21:27] S3 : Did you get the delivery from someone?
+[21:29] S5 : Yes.
+[21:29] S3 : Yes, so this delivery, I am making a shipment from the delivery.
+[21:30] S0 : Delivery, I am making shipments through delivery.
+[21:32] S5 : I am not making anything, I am just modifying the delivery.
+[21:36] S2 : You have only created the delivery, right now the delivery is being changed, in which the best determination is happening.
+[21:40] S3 : Gas contamination etc. is happening.

@@ -1,0 +1,5 @@
+BPRefAddrForDocSpcfcAddrUUID
+BusinessPartnerAddressUUID
+Message
+MessageId
+MessageType

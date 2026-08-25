@@ -1,0 +1,7 @@
+GET /sap/opu/odata/sap/API_MATERIAL_STOCK_SRV;v=1/$metadata HTTP/1.1
+X-System: QS4
+X-Client: 700
+X-User: QNOVATE8
+X-Executed-Via: /IWFND/GW_CLIENT via SAP GUI scripting
+X-Captured-Local: 24-08-2026 21:29:12
+X-Status: 200 OK

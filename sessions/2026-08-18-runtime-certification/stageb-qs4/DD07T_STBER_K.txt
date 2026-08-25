@@ -1,0 +1,13 @@
+﻿SESSION|QS4/700 located at connection[1] session[0]|user=QNOVATE8
+SELFIELD|ctxtI1-LOW=STBER_K
+TABLE|DD07T
+TITLE|Data Browser: Table DD07T Select Entries          6
+SBAR|
+ALV|rows=6|cols=9
+HDR|DOMNAME	DDLANGUAGE	AS4LOCAL	VALPOS	AS4VERS	DDTEXT	DOMVAL_LD	DOMVAL_HD	DOMVALUE_L	
+ROW0|STBER_K	D	A	0001	0000	nicht berechnet			A	
+ROW1|STBER_K	D	A	0002	0000	teilweise berechnet			B	
+ROW2|STBER_K	D	A	0003	0000	vollst�ndig berechnet			C	
+ROW3|STBER_K	E	A	0001	0000	Not calculated			A	
+ROW4|STBER_K	E	A	0002	0000	Partially calculated			B	
+ROW5|STBER_K	E	A	0003	0000	Fully calculated			C	

@@ -1,0 +1,10 @@
+﻿SCOPE|Function Module: SD_SCD_ITEM_CALCULATE|pressing Select All
+FM|SD_SCD_ITEM_CALCULATE
+RESULT_TITLE|Where-used Function Module SD_SCD_ITEM_CALCULATE (2 Hits)
+SBAR|
+NO_GRID|dumping labels
+  Program
+  Short description
+  LV54CF02
+  Include LV54CF02
+  LV54CF03

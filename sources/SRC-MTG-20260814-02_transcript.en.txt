@@ -1,0 +1,568 @@
+# 14aug_2 - translate
+duration: 32:29  |  language: hi-IN  |  turns: 655
+
+[00:00] S5 : So you are not even getting that verified.
+[00:01] S6 : We are getting the quantity done right here, sir.
+[00:02] S5 : Quantity.
+[00:04] S1 : Already, I mean. I was saving, and another one happened, right? That too, they are saying this is modified. Exactly.
+[00:08] S5 : Yes, that's what I'm saying, modify.
+[00:09] S4 : Exactly, my first quantity.
+[00:10] S0 : D8DI, modified DI.
+[00:13] S4 : Okay, it's changing there too, the rate is going up.
+[00:13] S1 : Okay, even there. Tell them, tell them, tell them slowly.
+[00:15] S0 : And this DI is not a real DI.
+[00:17] S4 : I understood create day, this is what you save in DI quantity.
+[00:19] S0 : This is a modified DI. What he said, right, put in 25 DI, now he's saying to make it 25 to 30. So this is a modified DI call.
+[00:21] S2 : When going to the PNC line
+[00:23] S4 : The voltage needs to be increased from 25 to 30. So, we go to the audience and change the quantity, right? So then, where else? Where else? Where is the calculation happening? You are sitting together, sir, you don't know.
+[00:28] S2 : They also change.
+[00:30] S0 : Where? Where?
+[00:34] S1 : Brother, you
+[00:37] S2 : You are sitting with support, sir.
+[00:38] S1 : Sir, one delivery, one delivery will be made. Hey, look, it's like this, there is no such thing, I mean, look, you made a delivery of 30 tons. In every case, it's not like I will change in the delivery.
+[00:39] S4 : Sir, one delivery, one delivery will be made. It is like that. Delhi
+[00:56] S5 : Absolutely, absolutely.
+[00:57] S1 : It could be 30% 30% change. Consider it 30 40. Then take 40.
+[00:57] S4 : 30% 30% can change. If you consider 40, then if a DI is becoming a member, then
+[01:03] S1 : So, out of ten thousand, a change can come in four thousand, it can happen, a change will come.
+[01:04] S4 : ₹4000, this is also ₹4000.
+[01:07] S3 : Okay, now it is checking with the order quantity.
+[01:10] S5 : Exactly, that's my, that's the thing. Then who will go? Let's create, create a DI. So, get the order quantity checked.
+[01:11] S1 : Same thing.
+[01:16] S4 : This is unnecessary, okay, it's not unnecessary.
+[01:18] S6 : No, no, we were putting it on this only, where it is inputting, right? I have kept the check there only.
+[01:20] S1 : My order is for 25 tons. That order is for 25 tons, so I cannot put 30 here.
+[01:29] S6 : Can't put it in.
+[01:29] S5 : Will not check.
+[01:29] S1 : Will check.
+[01:30] S5 : Yes, that error is somewhere, we will hit it on the front end. This error, I mean, it has been controlled in the front end.
+[01:31] S6 : We will hit it right on the front end.
+[01:36] S3 : Kamal, what have these people done? Look, there was a pending order. In pending orders, basically, it's a pending promise. Meaning, we have to deliver it. Now, my pending order was of 100 tons. They showed 100 tons here. Order quantity 100 tons. As soon as I entered 110 tons, it stopped it right there. It's not going to the front end. It's on the front end. It's on the front end. It's on the front end, right, Bharat? Yes, it is. Okay. Here, the pending promise, sorry, the pending order quantity was 100 tons. I put 110 in that quantity because of someone. The delivery one is over there, oh, it's right there.
+[01:38] S5 : Yes, yes, look.
+[01:46] S4 : Yes. It is valid. Stop it. It is not going to be given. Let's call it number 10. There is validation on the front end itself. Yes, that's it.
+[02:12] S0 : Will not let you put it in.
+[02:13] S3 : Okay, right? You have validated it here.
+[02:14] S0 : Yes, yes.
+[02:15] S6 : Yes, that thing is also in that.
+[02:15] S5 : It is front end in the country.
+[02:16] S0 : That is simple valuation of the front end.
+[02:17] S6 : Simple. Until this validation is passed here, less than or equal to, okay. If this blue tick doesn't appear, it won't allow moving forward.
+[02:18] S3 : Here. Less than or equal to, okay. Will not let it move forward.
+[02:24] S5 : This is a tray, let's go, let's go ahead.
+[02:25] S3 : Okay, I will move forward.
+[02:26] S5 : Now it will be locked, come down, come down, come down.
+[02:28] S3 : So, the stock one that we saw.
+[02:29] S5 : This change one will also come. In this, what is coming, if you wait, then the change, that change DI will go and this will happen.
+[02:36] S3 : It will be given to the patient.
+[02:37] S6 : Okay, okay.
+[02:38] S3 : Okay, okay, the quantity has been changed, okay. Okay sir, the batch we
+[02:39] S6 : Okay sir, we have selected the batch. So after that, this default SPI comes up. If you want to change the SPI, you can change the SPI from here. After that, this SPI
+[02:47] S5 : I need a little clarity.
+[02:49] S6 : What is the impact of SBI 01?
+[02:52] S5 : This is a special process.
+[02:52] S3 : These are special process indicators, these are used in delivery. So, you are giving this part to him as an SBI change option. This will be in both. It is also enabled with quantity change.
+[02:59] S5 : These two.
+[03:03] S6 : No, sir, this will only happen once, right? First, you change the quantity, only then will you determine the batch based on that quantity.
+[03:07] S2 : Both tabs are done, right sir, one DI quantity one.
+[03:09] S3 : No, in the DI quantity one, there is no option for FPI change.
+[03:12] S6 : No, just put the quantity there, and that's it. Coming here...
+[03:15] S3 : This one that they are giving, the SP indicator change, they are only giving it in the sign determination one. If I multiply the DI quantity, then there is an option to change the SP indicator. That's what they are doing.
+[03:23] S5 : It can only be done here.
+[03:28] S1 : I am saying, no, the third time again.
+[03:28] S5 : No, 30.
+[03:29] S3 : This is a fish.
+[03:30] S4 : Sir, even if the quantity of the order changes now, it will still go. Look, the first update happened, so we'll have to write how much the call was.
+[03:31] S3 : Yes, yes, yes.
+[03:32] S5 : Sir, even if the quantity of the order changes now, it will still go.
+[03:35] S1 : The first update was on the delivery period. So, it has to be written like this. I didn't even place an order, I changed the quantity of the order.
+[03:42] S4 : Quantity.
+[03:43] S5 : We will have to do the same processing from both.
+[03:46] S4 : Where have we kept the order change? We haven't kept the order change. No, there is no order change in this. There is no order. Delivery is going on.
+[03:49] S1 : No man, there is no order. Delivery is going on, delivery is going on. Modified delivery, modified delivery. And this third API will be called again when you submit it.
+[03:52] S0 : Body by delivery, body by delivery. Proceed to transporter due process. Yes, it's for the processing cost, right?
+[03:59] S1 : So, the transporter is different. Which means the third one.
+[04:03] S0 : This is the same, this is the same.
+[04:06] S4 : Abhinav Chak was there.
+[04:08] S1 : Yes, yes. It's the same thing. We have to go by matching the order. Change and submit.
+[04:09] S0 : Yes, yes.
+[04:11] S4 : Delete it. Okay, let's see then. If we have to do the calculation, then basically
+[04:19] S5 : So basically, no, my my question is that this, for us, for me, it's a master cut here. I mean, in my drop-down, ten must be visible. I will select one out of those ten.
+[04:27] S6 : It was in that.
+[04:29] S1 : Don't separate it from one. It depends on the story location which we already mentioned.
+[04:33] S5 : No, no, in the combination, the combination that is coming in permutation.
+[04:35] S6 : But sir, Yogesh Sir, just clarify one thing, SBI is not only dependent on storage location, it is also dependent on the type of product that you are using.
+[04:45] S1 : Nine
+[04:45] S6 : Yes, that's what he says, sir, that we don't use SPI One for premium products.
+[04:47] S1 : So we premium Who said it?
+[04:51] S6 : CNF has said.
+[04:52] S5 : Will do here.
+[04:53] S6 : We didn't, no, no.
+[04:53] S1 : No no, wait man, wait, don't do it, wait. There is some communication gap. We have to teach you about that, what does SP zero one mean? For what are you using it? One is your fare on your SP zero one, that is one. Second, our story location is mapped from SP zero one. That's it. If this is one is to one, sir.
+[04:56] S6 : Hmm
+[05:10] S3 : Yes.
+[05:11] S6 : If this is only one is to one, sir, that's why this question is coming up. If this is only one is to one mapping in the storage location, then I won't give it, right? Because I am selecting the storage location itself. If the storage location is selected
+[05:17] S1 : Because I am a storage person. I told you, you saw the custom table where one, yes, that's what I said.
+[05:23] S5 : One is to many.
+[05:24] S6 : Yes, that's what I'm saying, that if it were dependent only on the storage location, then it would be one is to one, right sir, otherwise it is depending on other things as well, that's what I'm saying.
+[05:30] S1 : It's on the entire location and your frame, right? Where is it on the product, but you're saying it's on the product.
+[05:36] S6 : Premium.
+[05:37] S1 : Where is this product?
+[05:38] S6 : For the premium, that's what they were saying, that sir, for the premium, I SP, but if here SP 01, if you are saying that it only happens on storage location, then it has multiple options, right?
+[05:48] S1 : What was it?
+[05:49] S6 : Here.
+[05:50] S0 : Can this be multiple here or not? The drop-down that is visible, SP01, can it be multiple below?
+[05:55] S1 : It can happen, right? It will happen, right?
+[05:56] S0 : It will happen, right? It's not one-to-one mapping, it's one-to-many.
+[05:58] S1 : Sir, first understand, what story location did you take? Did you take GDF?
+[06:01] S0 : Yes.
+[06:02] S1 : So, based on that, our custom table system will allow you to choose that option.
+[06:06] S0 : Yes.
+[06:07] S1 : Let's say if you selected SP09. Which does not have the mapping of GDF, the system will not allow you.
+[06:13] S0 : Yes, that won't come at all.
+[06:14] S1 : It won't come at all. Second is, the freight you are showing, that freight won't come either. My freight is of SP 01, so I will have to take SP 01 only.
+[06:14] S5 : Hi guys, Yes, correct.
+[06:21] S1 : That is okay, right?
+[06:22] S5 : My question is still open. You spoke absolutely correctly, this is my storage location. In this storage location, whatever mapping is in the Z table, that will come. But in this, in this screen, for me, there is a master data, a drop-down data only. Yes, okay. So I can select any drop-down, I, now the user is seeing two, so the user can select anything. Both storage locations are two.
+[06:31] S1 : Hmm hmm. I am telling you the same thing, I am talking about GTA.
+[06:44] S5 : I am alive.
+[06:45] S1 : In GDF, let's say I have SP 01 and SP 02 as well. So then, let's say I selected SP 02. My freight is in SP 01. It won't work, right?
+[06:47] S5 : And there is a scooter too. So, do you know this thing? Whoever hits the arrow ahead, that arrow will be visible.
+[06:57] S1 : Yes, tell me.
+[07:00] S5 : If SP01 comes here, if I do SP02 in drop top.
+[07:02] S1 : Yes, when I did SP02 in the drop-down, then as soon as I did SP02, this
+[07:06] S5 : So, as soon as you press SP02, it will turn blue. Yes, I mean, when you press OK, it will bring up the paint there.
+[07:09] S1 : Yes, I mean when it says okay.
+[07:11] S6 : So, it will help with the shipment.
+[07:13] S5 : Then the API will go. Then the rest of the gun will be there. Then the rest of the gun will see, check, and push the posting. So, if it gives an error, the error will come here.
+[07:14] S1 : It will go far away. Then the rest of the people will check the rest of the people.
+[07:22] S6 : It will come here, here. The estimated shipment plate that is coming, right?
+[07:24] S1 : The cement plate that is coming here.
+[07:26] S5 : So what all is here?
+[07:27] S6 : That will come in the recipe, the error that was thrown will come. You have created so many error screens, what all errors should come. I am putting in what you are customizing.
+[07:29] S2 : Yes, please.
+[07:30] S5 : You have created so many error screens, what errors should appear? I am putting in what you are customizing.
+[07:36] S2 : The screen has the value of the error. Okay, that error will appear.
+[07:38] S6 : Okay, that error will come.
+[07:41] S4 : Write that down, write that down. Now I am writing an error in it so that it is understandable.
+[07:45] S6 : No, I have written that sir, you have to show the error that occurs in SAP. But that
+[07:48] S5 : But that
+[07:48] S4 : That problem will be solved.
+[07:49] S6 : It is an error response.
+[07:50] S4 : Sponsor.
+[07:51] S5 : This is a little bit of error.
+[07:51] S6 : The error response that will come there, put it right here.
+[07:54] S2 : Okay, okay.
+[07:55] S5 : Okay, okay, okay, okay, he will pick it up from the API and install it, so he will put it in.
+[07:58] S1 : So, put that in.
+[08:01] S4 : Will be able to understand that error.
+[08:02] S1 : We also need to understand that.
+[08:04] S6 : Yes, we.
+[08:07] S5 : No, we can change that too. The error response that is coming back, we can edit it and change it. We can also create a C error. In SCP, in GDR, while displaying it here in WAPS.
+[08:13] S1 : Where in CIRR, in the SIP, right? In GDRK, in WAPSI. Yes, no.
+[08:19] S5 : No, engineer. Now I am saying that sir, now CNF is giving the same error. Both are like that. They know how to check. They know how to communicate it to the other. So, so, so, Yash's question was very stunning, what does it mean? It doesn't mean anything to us. This is a simple task for us. Will there be any relevance or not? No, no, relevance is to find out. To find out. Okay. These are two deliveries.
+[08:19] S1 : Now.
+[08:20] S6 : I am saying that sir, right now CNF is giving the same error. Both are like that. They know how to change. They know how to communicate it to the other. Meaning, so Yash's big What does this mean? It doesn't mean anything to us. Simple pastor's type.
+[08:41] S0 : Will there be storage relevance or not? No, no, relevance is for extracting the rate. If you select the one for extracting the rate, then I don't think so. Okay, these are the two deliveries, that's all.
+[08:51] S5 : But he says. Okay, alright. Understood. Now, for us, we are giving free to GNF. If mapping is behind it like this, the one that is coming on the screen will come there. If not, then it will come. Here we are on the custom screen. Deep, deep, deep, let's move forward.
+[08:54] S0 : Understood.
+[08:55] S4 : Now, this is ours.
+[08:56] S6 : If on this The one who is installing it like this is coming there. If it's not there, then we are going to the custom screen there. So sir, when he selects the SPS, he has to select a transporter SP forwarding agent. He will search for the transporter code or name and select it. Whatever it is. In the FTP case, he will self-select whatever his code is. Based on that, his shipment freight gets generated.
+[09:19] S5 : Come here, come here. Come here for a little while. What is this confirmed detail? What are the confirmed details?
+[09:24] S6 : Check the transporter code that you have selected once to see if it is correct or not.
+[09:27] S5 : That's right, and this transporter is
+[09:28] S3 : The transporter, there is no such thing for this, it is being pulled from the master itself. Yes, it is going from the master. Yes, okay. Okay, so you took the transporter code, you showed its details. Okay, then what is it, confirm details.
+[09:31] S6 : Yes, it is from the market.
+[09:36] S5 : You have.
+[09:37] S6 : I have shown the details. After confirming the details, they will send the shipment.
+[09:40] S5 : It can also be changed.
+[09:41] S3 : It can be changed too.
+[09:42] S5 : It can also be changed, the transporter details. Okay, okay, okay. So when it changes, then it will hit one. This is what the master takes.
+[09:47] S0 : This is the master, sir. This is the master, sir. This is the data we have.
+[09:49] S3 : Okay.
+[09:51] S5 : They have kept the truck, they changed it. Brother, this is not my truck, it's another truck. The truck doesn't even get started.
+[09:52] S3 : It is kept.
+[09:55] S0 : Drugs were not even given as training.
+[09:59] S5 : Okay.
+[09:59] S3 : Okay, if confirmed, then this estimated shipping, this freight, so this must be another call that has gone for freight.
+[10:02] S4 : That cost will come.
+[10:06] S1 : No, no, I am saying the same thing, this one that is showing, right, this is a part of it. One will go to submit, the third one is the submit one.
+[10:11] S3 : Submit.
+[10:12] S0 : Yes, submit.
+[10:15] S2 : No, no.
+[10:15] S1 : No, no.
+[10:15] S0 : No, no, no, no, where did you get the cost from?
+[10:15] S2 : No, no, no, no. One call will go, sir.
+[10:20] S0 : Whatever you say.
+[10:21] S2 : It will be taken, it will be taken. So, does that mean it's the shipment cost?
+[10:21] S4 : It will go, it will go.
+[10:22] S1 : So, it means it will go into this because in delivery, based on delivery.
+[10:26] S0 : Because delivery.
+[10:28] S3 : One minute, man.
+[10:30] S1 : So basically, on delivery, we also show your shipment cost. So either there are two options.
+[10:35] S3 : So why don't we take it before delivery?
+[10:37] S1 : That's what I'm saying, there are one or two options, one option is that when I created the delivery, based on that the combinations automatically the system will be updated the condition and showcase the freight. And at the time of picking back to your system that to change, the updated information that you are taking, you can show it there, so this call will be saved for you.
+[10:59] S4 : Meaning if
+[11:00] S3 : If it's different, then only call. Look, when we created the delivery first, okay? When the delivery was created, you'll get a response back at that time, right? What's in that response back? There's a number and a date. Delivery number, delivery date. Add one more response. Right, right, right. Okay? Do that. Now, as soon as you added the transporter, after adding the transporter, when you confirm, right? So first, check in cash if you had this, right?
+[11:12] S5 : Double delivery date.
+[11:15] S4 : Rate, rate, okay, perfect.
+[11:28] S0 : But we are putting transporters here, we are not putting transporters in create delivery.
+[11:33] S1 : No, no, no, sir, where are you putting it?
+[11:33] S0 : Where are you putting it? You were selecting the SPIB before that.
+[11:36] S5 : Go to the screen once.
+[11:38] S1 : Yes, yes. Let's go back a little. Go to Create DI once. When you created Create DI, sir, take a look at the screen once. You hit SAP. What number will you get for hitting SAP? You will get an SDI number.
+[11:38] S5 : Let's go back a little. Go to Create AI once. Sir, please take a look at the screen once.
+[11:48] S0 : DI number.
+[11:50] S1 : So along with that, you can take, able to take that freight rate also, right?
+[11:56] S0 : But how? I need to send the transporter code to calculate the rate.
+[11:56] S3 : Hello
+[11:58] S1 : No, no, transporter is an irrespective transporter. There is no such transporter concept in freight.
+[12:03] S0 : So, at that time, you were saying.
+[12:05] S1 : So at that time, you can also take the freight. The DA number, DA date, and whatever freight you want to take, you can take that too.
+[12:12] S5 : Do one thing, I'll stop right here on this. You connect yourself and open a delivery. I'll tell you once, I understand you, it will be safe from both sides.
+[12:15] S1 : You connect yourself and open a delivery. Yes, yes. I want to tell you.
+[12:25] S5 : This is the government, or you can show it in this.
+[12:25] S1 : This is the circle, okay.
+[12:32] S5 : Sir, hello.
+[12:32] S1 : Sir, hello.
+[12:34] S5 : Suresh ji, you
+[12:39] S0 : Yes.
+[12:40] S5 : Everyone will get a little clarity on that.
+[12:40] S0 : Everyone will get clarity on that.
+[12:44] S4 : Absolutely, absolutely.
+[12:46] S0 : Basically, what you are saying, I am saying in layman's terms.
+[12:46] S5 : Basically, what you are saying, I will explain it to the team in layman's language.
+[12:49] S0 : So, what is transport?
+[12:50] S4 : No, it's not like that.
+[12:50] S0 : No, it's not like that.
+[12:52] S5 : I mean, you just said to take the SPI.
+[12:55] S2 : It is like that, right? They face the threat.
+[12:58] S5 : He makes it himself, when he, what he means is, I explain it in layman's language. Okay? Now you are making it for the first time, right? No, no.
+[13:04] S1 : No, no, this is also a problem. Why is that? Because you didn't select S.K.
+[13:09] S5 : Yes, that's what I said. The display automatically comes up, right?
+[13:12] S0 : Hey, how will it come, sir? We were just selecting. There are multiple SPIs ahead of the storage location. We are doing that selection later, not before, right? Yes, we are going one by one.
+[13:13] S5 : Right now.
+[13:14] S2 : They were selecting.
+[13:20] S5 : Yes, it comes one by one. Absolutely right, yes. So, it won't happen.
+[13:24] S1 : So in the case of change, yes, we can get it updated because we have SBI at that time.
+[13:33] S2 : But in every delivery, we don't change the delivery quantity.
+[13:37] S1 : That, well, look, it's about the design, but you have to see.
+[13:38] S5 : Yes, yes, yes. Could you please show the delivery once? I want to make a change, a recommendation.
+[13:45] S1 : Sorry
+[13:48] S5 : My delivery is done, below my shipment, it must be showing black. They must be manually selecting SP01, SP02.
+[13:55] S3 : No, no, sorry, I missed it, what is it?
+[13:56] S1 : In that, I mean basically what happened is, the delivery was created in your CRM and from there it came to the SVP. We sent the number to the CRM. It's clear up to here. Now this is one one way call. Now next is that they fill up few more information.
+[13:56] S5 : I Yes.
+[14:14] S1 : And before that we don't have the this freight and all. So to get the freights and all again we need to call the APL.
+[14:23] S3 : Correct, correct, they put in the transporter and then they were showing an estimated shipping charge. That one will come, right?
+[14:27] S1 : Yes, that one call will come, then after that, a third call will come to Samit. There will be three calls, we will have to give them.
+[14:32] S3 : No, but when we create delivery, like we just did.
+[14:36] S1 : At that time, there was no SP.
+[14:37] S3 : Okay, SBI.
+[14:38] S2 : Where are you putting the SBI card?
+[14:39] S1 : I don't know the recipe, I don't know the story. Okay.
+[14:44] S5 : It will be 2 in 2 in.
+[14:50] S4 : Can't it come in this from before?
+[14:52] S5 : Now, in that, click on the shipment line item. In shipment.
+[14:56] S1 : Because he creates delivery, then SP selection is not possible.
+[14:58] S5 : Yes, yes.
+[14:59] S1 : You can give it. That means after the respective selection, there is a free delivery.
+[15:00] S5 : That means when it is after the respective selection. Processing material.
+[15:04] S1 : No, but the problem there, Bhavana ji, is that when I am creating delivery, should I check which batch of goods I have? Sir, then you have to create a design change, meaning it is like a change of process. Because I should know that I am cutting the delivery, okay, so whether it has stock or not. Whether it has freight or not, whether it has even today
+[15:12] S2 : Sir, then you have to tell the story, sir, then everything will be fine.
+[15:24] S5 : Even today, when a person does it.
+[15:26] S4 : He makes a video.
+[15:27] S1 : Yes.
+[15:28] S5 : When a person does a speech selection, right, how do they do it?
+[15:32] S1 : Like today, today.
+[15:33] S5 : Like, for example, now I am.
+[15:36] S1 : I see, now I am in the photo.
+[15:36] S5 : Now I am cutting the delivery in the order, right?
+[15:39] S1 : As a CFA, what I do is, I use MB 52, I check my stock first. What stock do I have, where is the stock, how much is it, okay? I check the delivery. He checked the stock. Delivery is done, after doing the delivery, when I come to update, I fill in the information here, fill in custom tab, fill in partner, then here in your shipment, here in shipment, I have checked the import term.
+[15:47] S5 : He was looking at the stock to buy oil, he saw it. I need to understand the situation.
+[16:04] S1 : Here, I will enter the SPS, and after entering the SPS, based on the store location only, the system will allow me to take the batch, appropriate batch. So, the batch will be assigned, and after the batch is assigned, it will be submitted.
+[16:19] S3 : Actually, you know what we have done in this Sigma, we have mimicked the entire SAP processor. If we could improve a little, then two calls would be saved.
+[16:25] S4 : Done.
+[16:27] S1 : If we improve it, then two calls
+[16:29] S4 : There is still an option.
+[16:30] S1 : Tell me.
+[16:30] S5 : Actually, when this was made, you guys weren't involved in it; it was made even before I arrived.
+[16:37] S1 : So, there was involvement, it's not like that. Everyone was involved, I mean, okay. It is like jointly we had decided that we will create dinner, then we will tell the words.
+[16:40] S5 : Okay, that's fine. Please don't take my words to heart because I feel I am getting a feeling for that.
+[16:49] S1 : Don't take it the other way, it is like a team. So everyone has decided, it was designed based on what they received. So now, now
+[16:56] S5 : Anyways, okay. So, what can you suggest to Sudhanshu ji now, what we are doing now?
+[17:03] S3 : I am thinking that now I should come late and
+[17:06] S1 : No, I mean, the API call will happen, see, the problem statement we thought that how we can save the the API calls. So API anyway it will be called. Whenever you are my point is
+[17:17] S0 : But this is still happening with my point, right?
+[17:20] S4 : Where will it happen? Not now, it is happening.
+[17:21] S0 : Yes, okay. This is all happening, right? Shipments are happening. I mean, the internet is also like this.
+[17:23] S4 : I mean, the internet is getting stuck, right?
+[17:26] S1 : No, I mean, they are talking about the system. As of today, in SAP, we don't have the cost of one day. So going forward, many times we will hit. So whenever you are submitted, it will be hit.
+[17:27] S4 : It is said to be an external system.
+[17:32] S2 : So, tell me what you want to say. It will come like this. Let's say 3 cm, now the rest is coming behind.
+[17:38] S1 : Let's say 378. If you submitted three times, then you got the APL three times. It got hit here internally. And that individual, you number of counts. Okay, okay, one one
+[17:45] S2 : It's happening repeatedly here, internally it's happening repeatedly.
+[17:49] S3 : Okay, okay, tell me one more thing. Which user are you taking this API from?
+[17:56] S1 : S.C.L.
+[17:57] S4 : No, we will change that. I mean, for the system, we will create a systematic system, yes, system.
+[18:00] S1 : Meaning, for the system.
+[18:02] S3 : Okay, let's go, yes, you'll take the system user, right?
+[18:04] S1 : Yes
+[18:05] S3 : The system itself has become slow over there.
+[18:06] S4 : They will easily give it to you.
+[18:09] S1 : Oh, but what are you thinking about this?
+[18:11] S3 : No, what are you thinking about this, what does it mean?
+[18:13] S4 : I mean, if you create it from any ID, then it means directly, directly.
+[18:16] S2 : Meaning, they are not doing it with the CNF user, is this your doubt?
+[18:20] S3 : Oh no no, one minute.
+[18:22] S1 : What were you thinking about licensing?
+[18:23] S3 : Yes, I am.
+[18:23] S4 : No, both, both, both will see, I mean, the license. Look, one second, one second.
+[18:27] S3 : Look, one second, one second. If From the dialogue user.
+[18:34] S1 : If you do that, then the license costs are separate.
+[18:37] S3 : And just see that the flush that is happening doesn't happen in one second. Otherwise, SAP won't be able to figure out that we have had it posted by the dialogue user, meaning the dialogue user, I think I am sitting and doing it, or the system is using the dialogue user.
+[18:52] S4 : Hello, it's getting system, it's getting system.
+[18:53] S3 : If this is a system user, then you won't be able to save the call, meaning you won't be able to save the cost. But if you keep a dialogue user in place of this system user, who is working as a system user, you will only have to keep one catch in that, that my posting should be at a difference of one or two seconds. Meaning, it's not like three deliveries were made in one second with a bang.
+[19:09] S4 : It's not like that. If it is in delivery, then it will be available, but they cannot confirm that.
+[19:14] S1 : Yes, right.
+[19:14] S3 : Right, so we will take that in round robin, right?
+[19:15] S5 : That will happen, sir.
+[19:18] S1 : No, but the problem with that is that you have an issue with the digital license. Yes, right, digital.
+[19:22] S3 : Yes, right, the digital license itself will be saved, right? Look, how is a digital license checked? I am sending a document. It's from SAP itself. Read all of it.
+[19:29] S1 : I mean, I read, I mean, I had read that digital license calls for you can't take the digital business, correct?
+[19:36] S3 : Correct, correct.
+[19:37] S4 : If any user has changed in the system, then that is a digital license.
+[19:41] S1 : Yes, yes, license. Any posting that is,
+[19:42] S3 : Any posting that is, any posting that is coming in SAP from outside systems, okay?
+[19:43] S4 : Any posting.
+[19:44] S1 : It is coming in the recipe from the outside system. The recipe is also coming in the recipe, so that cost
+[19:49] S3 : He will only accept a digital license, but you
+[19:49] S5 : Digital license. But don't you have that document in which it shows the money per lining tub? That one? No, no.
+[19:56] S1 : No no, an ICP has given a notice.
+[19:58] S5 : Yes.
+[19:59] S4 : So they can see.
+[19:59] S3 : I am sending this to everyone, read this. We are just thinking a little bit out of it because this is it. WhatsApp it to me too. We are taking round robins. Okay. Shuvendu, we will talk about this separately. We will. Yes.
+[20:09] S4 : Okay. We will do it. Yes. This is what, that is, that is the last, last, last approach. What if because the call
+[20:18] S3 : Because the call is being made, let it be made, but money will be saved.
+[20:20] S5 : But during the DI time, can't I get these patches etc. checked outside during the DI? Sir, it's not even in the design, sir. It happened, but they refused.
+[20:25] S2 : It's not just in the design, sir, it happened but they refused. Everyone had made it a business. This is it, right?
+[20:31] S1 : The business had refused. This is the rate, right? This is a different rate, I mean. In fact, whatever call we make,
+[20:34] S4 : In fact, whoever we call, they will take money from them.
+[20:38] S1 : No, it will cost money for this too. But that will be a different rate. I mean, both will be indirect plus this.
+[20:39] S4 : It will cost money for this too. Meaning both indirect plus indirect. It's the writing of both, right?
+[20:45] S3 : Don't tell me your ID.
+[20:45] S5 : Your ID is not created.
+[20:47] S3 : We have the mail ID.
+[20:47] S5 : It has become one.
+[20:48] S3 : It's done.
+[20:48] S2 : It's done.
+[20:49] S5 : Meaning.
+[20:49] S4 : What is the development?
+[20:50] S5 : The most expensive are accounting documents and PO documents.
+[20:53] S3 : What idea is coming?
+[20:54] S5 : Okay, tell me.
+[20:54] S4 : Okay, tell me. But look, maybe in driving licensing, it's happening, maybe D.H.E.S. in driving licensing.
+[20:58] S5 : In that, I am licensing myself.
+[21:00] S1 : In the same way, sir.
+[21:01] S5 : It's the same rate, sir. One.
+[21:05] S1 : What does indirect valuation mean?
+[21:06] S3 : Meaning, he didn't even know from here. He came directly.
+[21:08] S1 : Now it has started, sir. Okay, let's finish this further. Okay.
+[21:10] S3 : You can do any transaction.
+[21:15] S4 : What is it, sir? Let's finish this. Okay, let's finish this. Okay, okay. Okay, what is it now? Show.
+[21:24] S3 : Okay, what is it now? Show, this is Deep, so now write. So we, okay, the estimated freight has been shown. For that, a call went, then submitted.
+[21:36] S0 : Then we directly, I mean, we assumed that a create invoice would be created in which we would pass all the details. No, we didn't do that either. Now, behind this, you were telling that. You were telling that that day.
+[21:41] S2 : No, that too. That day you were saying that internally you will make a
+[21:49] S3 : Yes, I will tell you. We will think of two options for you now.
+[21:52] S1 : What is the problem? The happy path is okay, you can proceed with that. The negative path, let's say your shipment number was created, it got stuck there due to some reason. So then, who will initiate his hit, I mean, who will initiate that again?
+[22:08] S2 : You will definitely respond.
+[22:11] S1 : I have given you the same shipment number, I have given you the shipment number.
+[22:13] S2 : Segment number, I hate you for having to create an invoice.
+[22:17] S1 : Will make it. From the back, from the back.
+[22:17] S2 : From the back, from the back, from the back, you have three document calls.
+[22:21] S1 : Only one out of three was made, and it got stuck there.
+[22:23] S2 : Yes, so then if one gets stuck, you will give a response in that reply that it failed because of so and so reason. So then from here, an action point of that will be invoked again. What needs to be done now?
+[22:32] S5 : Will do it again.
+[22:33] S6 : If we do it again, from which point will it start?
+[22:36] S2 : That's what happened, man, even on the side, that coding got handled.
+[22:39] S6 : No, no, our front end. Then you will see, right?
+[22:41] S5 : A tick has been placed, there is a response coming from behind it, right?
+[22:42] S2 : So the response is coming, right? So the response is coming, meaning that can be handled.
+[22:45] S5 : That will come, already generated the document.
+[22:47] S2 : I mean, what you are saying, you can always do that. I mean, we can also simulate all these three calls. Again, those three calls will go through SSPI. That's that's that's all.
+[22:55] S1 : Yes, it keeps happening.
+[22:58] S3 : Now, up to here, it was just about delivery, right? It hasn't initiated the shipment yet.
+[23:04] S0 : Yes, they came, then I came.
+[23:05] S3 : This is just, this is just, I took a batch, checked the stock and
+[23:09] S0 : Stock.
+[23:10] S4 : So, and
+[23:11] S1 : Transporter Dal.
+[23:12] S3 : Just submitted it after inserting the transporter. So this delivery is still changed. If you consider it, this VL02 has been terminated here as well.
+[23:15] S1 : This is your delivery.
+[23:20] S5 : Yes.
+[23:21] S3 : What is your next?
+[23:22] S6 : Sir, once this cost is generated, after that, you have to fill in the information that you had kept in some custom tabs. LR number, GR number. LR, GR number.
+[23:29] S5 : LRGR number.
+[23:33] S6 : Yes, LRGR number, date, vehicle number, driver code, driver name, and for FTP, a pickup code etc. has to be entered.
+[23:39] S5 : One more API.
+[23:41] S0 : And here.
+[23:41] S6 : And here, here, like
+[23:42] S5 : Like here, I am not doing it, right? No, we are doing it, right?
+[23:45] S0 : It's not here, sir. We are only capturing the information. We are only taking information for now. Listen, listen, one minute.
+[23:47] S1 : What is it? No, no, listen, listen, one minute, one minute. You got an API call done on the shipment. Now, in the end, you will submit this and that together, right? Yes, correct, correct, correct. Okay, let's move forward, let's move forward.
+[23:59] S3 : Okay, let's move on, let's move on, it's a single call, okay.
+[24:01] S6 : So sir, as soon as this happens, then the invoice will be given.
+[24:02] S3 : Sir, as soon as Put in the trunk quality, okay.
+[24:06] S6 : If everything is entered, then the invoice will be generated here.
+[24:08] S1 : It will be here. From here, the same three.
+[24:09] S3 : It will be here.
+[24:09] S6 : From there, then it will be the same. There will be three steps, and then. If everything becomes a happy path, then the invoice will be sent.
+[24:12] S1 : If everything is happy. Okay, if there are three steps, then I will respond to all three. This number is formed, this is formed. That screen, no no, this number.
+[24:18] S6 : That screen.
+[24:19] S2 : No, no, not this number, it's together.
+[24:20] S6 : Sir, the document.
+[24:21] S1 : Okay, so suppose one didn't come in one.
+[24:25] S0 : No, here we are only taking the invoice number. That will be part of the response. Here it's just the invoice number. Then the e-way bill that is being generated, the e-invoice that is being generated, you are saying that the process is stuck.
+[24:25] S1 : Voice number.
+[24:26] S2 : So that will be part of the response, right? No, no, no, we are talking about EGI.
+[24:34] S1 : Not in Mumbai, we are talking about PGI. Shipment number, shipment cost, PGI.
+[24:36] S0 : Yes.
+[24:38] S1 : There are four steps: shipment number, shipment cost, shipment cost release, and PGI with invoice.
+[24:43] S3 : But tell me one thing, Yogesh, this shipment number is not showing anywhere.
+[24:47] S1 : Show it, show it, show it.
+[24:48] S3 : Showing the shipping number.
+[24:49] S5 : Yes, it is showing, this is it.
+[24:50] S1 : Yes, it is showing, it is showing, that's it.
+[24:52] S3 : Yes, yes.
+[24:53] S1 : Yes, the user is just creating a number. And suppose, oh, you are showing it differently.
+[24:56] S5 : Hey, you are showing it differently, you are not showing it on any screen.
+[24:58] S2 : It's not showing on the screen. It's not showing on the screen.
+[24:59] S5 : Hey, it's happening today, right? It's not on the screen.
+[25:02] S3 : Showing the output.
+[25:04] S5 : Show the document flow. I didn't see it here. Brother, show the document flow.
+[25:05] S3 : Why are you showing the documents?
+[25:08] S2 : It looks simple here, your invoice is ready.
+[25:11] S3 : No, no, that's what I'm saying, here neither your shipment document is visible, nor is any cost related to it visible. Okay? So only its visibility of CNF, if suppose he doesn't have SIP access, then what is in his visibility is only the delivery change mode, meaning first he created a number, he updated all the details on it, and then he doesn't see the middle process of delivery and invoice, only invoice is visible.
+[25:15] S5 : Yes. No man, show that screen, man, where these people are on this.
+[25:42] S6 : These people are the same.
+[25:43] S2 : Speak on the process right here, that's different. When you brought it by fetching, now we are talking about creation.
+[25:43] S6 : They are speaking on the process. This is the order fulfillment process.
+[25:49] S5 : No, no, you have done this.
+[25:51] S6 : Yes, after that, if you tell me to go to the next page, I will go to the next page.
+[25:51] S5 : Next. Show the bunny after it's made.
+[25:55] S2 : First, let's finish here.
+[25:55] S3 : Yes, yes.
+[25:58] S5 : While making it, you see passages like e-way bill iron etc. here.
+[26:02] S1 : Then
+[26:02] S3 : It's a matter of later, first the invoice has to be made, right now it's before the shipment. Yes, before the shipment.
+[26:03] S5 : It's a matter of today, right? Before that. Before that, it is PGI.
+[26:08] S2 : So what is the doubt right now, a little bit? The doubt is that
+[26:10] S3 : No, the doubt is that those three calls are happening, right? If we send those three calls separately, where will you capture them when you are not even showing them here?
+[26:16] S2 : No, so there is no requirement right now. But if you, if you tell me now that no, show me the statement first.
+[26:22] S6 : Who said this is not a requirement? That is a major requirement. Sir, all these processes will happen, I am just giving its visibility here.
+[26:28] S2 : That's a matter for later, when I am bringing out the list of invoices.
+[26:29] S0 : I am bringing out the list of these boys. Right now, only the order is being discussed, only the order screens are being discussed.
+[26:33] S4 : No, in this process that has been done, no call has gone anywhere in this process.
+[26:37] S2 : Yes, no.
+[26:38] S4 : And this that you are saying, it has been reverse created.
+[26:38] S6 : And this that you are saying, right? It is visible here. The document flow is visible here to him, the four things that are visible in our SAP, right? We are showing that visibility here.
+[26:41] S4 : Now we will go to the next step.
+[26:48] S2 : It is a screen. That is a different screen.
+[26:49] S6 : Screen.
+[26:51] S4 : You are saying four, right?
+[26:51] S5 : This is a four.
+[26:52] S6 : You are saying, right? Release, yes, information will come on this and they can download it.
+[26:53] S5 : That, yes, this is just information on this. Can download these balls. Yes, okay. One, two, three. When did this come?
+[26:58] S4 : When did this come? When did the data come?
+[27:00] S6 : When they send the invoice from there.
+[27:01] S4 : Yes, the invoice pattern has been written and it is visible here.
+[27:02] S5 : Yes, yes, the invoice data is written.
+[27:05] S2 : Yes, yes, perfect. This is a different link, right? I clicked on a different link, ordered.
+[27:08] S5 : Anyway, this screen should appear immediately after that. No, the shipment costing document has already come. So, we are doing its activity.
+[27:12] S3 : So, what is its activity? We are just saying that we will show the output inside it. Go, yes, it will show, right? We just have to see it.
+[27:15] S5 : So, the output inside it is visible.
+[27:17] S4 : When, yes.
+[27:18] S5 : Just look at it.
+[27:20] S4 : So, when they were creating the invoice, they were creating a separate one.
+[27:23] S3 : No, no, its button is going, right?
+[27:23] S4 : The button is going into this, right? It's getting created at this time.
+[27:26] S1 : Going and getting upgraded at this time. In the third, in the third, that is. Now, this is okay, not of SAP, I am saying, what mechanism have they kept to extract this, what are they thinking? This, this, this document flow, when and how was it updated and when was it updated?
+[27:28] S3 : Now, this is fine, not SAP's, I am saying they have this extract. What mechanism have you kept for doing it? What are you thinking? How was it updated and when did the invoice come?
+[27:40] S4 : The invoice API call has come, right?
+[27:42] S3 : No, tell me this, tell me, tell me. You tell me, how was the document flow updated? I mean, when did you
+[27:43] S4 : Yes, yes, yes.
+[27:47] S1 : When?
+[27:47] S3 : This is decreasing, what is the document flow updation?
+[27:47] S1 : This is decreasing.
+[27:50] S2 : Now this screen is the order fulfillment screen.
+[27:51] S0 : The payment screen. Sorry, this screen is a little new for me because earlier there was an invoices screen here. As far as I remember, where we used to show DI number, invoice number, e-way bill, all that. Now this screen, even I have to look at how it is.
+[28:04] S1 : Deepak.
+[28:05] S5 : I will tell you.
+[28:05] S6 : I will tell you.
+[28:07] S0 : Wait, brother, this thing has just arrived, brother, it's on the screen.
+[28:07] S1 : That's a lot, brother, this thing.
+[28:10] S5 : So sir, I
+[28:11] S6 : Sir, let me explain, one minute, first understand the process.
+[28:12] S5 : First, understand the process. Yes, understand the first process.
+[28:15] S6 : Sir, as soon as he filled in the invoice details, as soon as he submitted it, three or four things go into the background, right? The PGI shipment, cost shipment number, invoice, e-way bill, all these things happen. We are saying that as soon as he entered from there, it is also possible that some steps may fail and some steps may pass, right? So its visibility, as soon as he submits it there and whatever message comes on it, that thing will flow in this screen. Okay.
+[28:21] S5 : Isn't it?
+[28:42] S2 : But you are asking a question, how to do it?
+[28:43] S0 : How will we do it, that's the question. Okay, because earlier, if I remember, we used to show invoices here.
+[28:45] S6 : Okay, this.
+[28:46] S2 : Because earlier, this process that you are explaining, here, if I remember.
+[28:50] S6 : No, that is invoice management, sir.
+[28:52] S0 : Yes, that's different, but in these three tabs, here, first, I had seen it a little bigger.
+[28:55] S5 : Increase it a little.
+[28:57] S6 : Yes, a little bit.
+[28:58] S0 : Where you are checking, you are checking internally, why is this screen showing this screen? When is the data coming? So this is the KPI call line.
+[28:58] S4 : You check it, you internally check why this is coming on the screen. This is a crowbar, son.
+[29:03] S5 : So, this is the KGI shipment number. Okay, if I click on this, the shipment number, like this one came up, 120934874, so will it open the shipment of the loan?
+[29:13] S6 : Right. No, no. Sir, the CNF doesn't need to look as much as we've been told. The CNF just needs to know if it's done or not. If it's wrong, then they should point out that, sir, this is wrong.
+[29:16] S3 : So, eat. That sir, this is the collector.
+[29:24] S5 : Yes.
+[29:25] S1 : The cost will be visible here.
+[29:27] S6 : Nothing was in the segment.
+[29:28] S5 : Nothing at all, sir. I just asked, do you see the document flow in SD? Yes, the one that goes up, no, but in that I
+[29:31] S4 : Asked.
+[29:35] S6 : Yes, you can go inside it, we don't have to go inside.
+[29:35] S5 : Yes, you can go inside that, we have to go inside, we are not going in that.
+[29:38] S4 : That will also be on different screens. They are giving lightweight, right? This is lightweight for the users.
+[29:43] S5 : Users, users, the user should have the confidence that my work is done.
+[29:44] S4 : There should be confidence that my card is valid.
+[29:47] S5 : And you will say that the e-way bill has come, right?
+[29:49] S4 : Yes, yes, yes.
+[29:52] S3 : It will be generated in the system, whatever design you want.
+[29:55] S5 : Now the issue is this, right?
+[29:56] S3 : Now, the issue is this, right? Look, Deep, go there for a minute. The issue is that the process you were showing us over there, it has changed in DI, the transported details have been done in DI, submitted. After that, the next step is the invoice.
+[29:58] S5 : Look, Deep, go there for a minute.
+[30:13] S3 : Okay, it will only see that the invoice has been created. These middle things are not visible. But you are showing the middle things here, so these three documents, whenever it is happening, meaning we have to push each trigger on it.
+[30:17] S4 : Yes, but Showing.
+[30:25] S1 : I will have to push it. I am saying one thing, Happy Path is fine, there is no problem. Let's say your shipment cost is wrong, it got stuck at point zero one, a number was created, how will you reverse it? Sir, that will be reversed.
+[30:37] S6 : Sir, that will do secondary logistics.
+[30:40] S1 : Hey no, what does she do today, second class stage?
+[30:42] S6 : So CNF, CNF, this is what was told, that sir, give him these things, whatever they are.
+[30:46] S1 : I don't know, brother. I am just telling you who does it today, you see that. Whether he does it or not, because this is the company's
+[30:53] S5 : You are saying that you are from the company, I also know and from us.
+[30:56] S1 : Sir, I don't know, I don't go to the ground and tell you who it is. I mean, you should ask the CA, the logistics guy, he will tell you.
+[30:58] S4 : I mean, I won't be able to tell.
+[31:04] S1 : The logistics guy says if he does it, then it's okay, that is okay. And if he doesn't do it, then you have to give an option.
+[31:11] S5 : And even that day when you and I were sitting, when we called Bharat, I was only concerned about this screen.
+[31:16] S4 : Tell me how you will bring this data.
+[31:17] S5 : Tell me that too. No, no, so this
+[31:18] S0 : No, no, so this, see, inside this, this invoice number, the e-way bill number, this is pushed in T1. From SAP's e-bank, right? So we get this data. Yes, this whole thing, this PGI shipment number, shipment cost, doesn't go to T1 right now, so we will have to do this. Hey, right now you have to create
+[31:19] S1 : Yes, inside this, this noise. Yes, this. If it doesn't go to even, then this
+[31:31] S4 : Hey, even if you are creating an invoice number right now, it's still coming. Whatever, depending on that, you will get the invoice number directly.
+[31:37] S0 : You accept it. We have done all the accounting. It's not like you can get it from here or there. Yes, it can also happen from SAP, so you won't get that.
+[31:40] S4 : You can take it from here or take it from there. But where will you get these three things from? Then we'll have to put in the data. This data will have to be put in.
+[31:45] S0 : Yes, then this data will have to be entered, this data will have to be entered.
+[31:50] S4 : Yes.
+[31:50] S0 : Yes, yes.
+[31:51] S4 : I am saying the same thing about these three, what about the rest?
+[31:52] S0 : I am saying the same thing, the rest. And who should make it like this? No, wait, who should make it like this?
+[31:57] S5 : After that, he gave the land number, which he submitted in voice.
+[31:58] S0 : Exactly, exactly, exactly.
+[32:03] S6 : After that, he gave some information in the step tab, gave the land number, submitted the invoice. That submit invoice, like, when will it come?
+[32:12] S5 : It is visible on the other side, isn't it?
+[32:17] S6 : It is visible in the photo, right? At that time, at that time, for this, we dedicated a stamp.
+[32:20] S4 : Friends, we have to create a colleague for this.
+[32:27] S3 : Right.
+[32:28] S4 : Likewise.

@@ -18,7 +18,7 @@ Become a dependable SAP backend integration contributor who converts approved wo
 - observable, idempotent, testable transactional behavior;
 - clear traceability from requirement to SAP document and downstream data.
 
-AI is intended to serve as project memory, analysis support, drafting support, and—only after explicit approval—a bounded test/inspection assistant.
+AI is intended to serve as project memory, analysis support, and drafting support before approval. After Siddharth gives an unambiguous, target-specific instruction, AI becomes a bounded execution assistant and should use available authorized access for the approved SAP inspection, test, or change. QAS and PRD writes require separate explicit authority.
 
 ## Known landscape
 
@@ -30,9 +30,18 @@ AI is intended to serve as project memory, analysis support, drafting support, a
 | Datasphere contains replicated, modeled, or analytical data used by the product | Verified from conversation context | Existing access and BRD summary |
 | Siddharth and another ABAP developer form part of the SAP backend team | Verified from conversation context | Team description |
 | A CPI consultant and a Basis consultant exist | Verified from conversation context | Team description |
-| A proposed `ZCNF_AGENT_SRV` and `ZCNF_*` object set exists in a technical document | Supported, not system-verified | Prior document summary |
-| No matching CNF objects were found in the currently inspected Quality client | Observed, limited scope | Manual SE80/SEGW search |
-| The API build may be greenfield or not yet transported | Strong inference | Proposed naming plus absence in QAS |
+| QS4 exposes 2,626 SAP SEGW design-time projects in the unrestricted Open Project catalogue | Verified system observation | `SRC-SYS-20260815-01` catalogue export |
+| Gateway registration is a separate runtime fact: the normalized local catalogue contains 522 registered services, not 2,626 callable endpoints | Verified system observation | `SRC-SYS-20260805-02` and Tier-A findings |
+| The leading released integration candidates are `API_MATERIAL_DOCUMENT`, `API_OUTBOUND_DELIVERY_0002`, `API_BILLING_DOCUMENT`, `API_PURCHASEORDER_PROCESS`, and `API_MATERIAL_STOCK` | Verified design-time fit; runtime unproven | `sessions/2026-08-15-standard-api-discovery/` |
+| The five released services above are not registered in the observed QS4 Gateway catalogue | Verified local runtime-catalogue observation | `CNF_STANDARD_API_MATRIX.tsv` |
+| `MMIM_MATDOC_SRV` and `SD_CUSTOMER_INVOICES_CREATE` are registered, but registration alone does not prove callability or integration suitability | Verified registration; runtime unproven | Tier-A deep dives |
+| The prior proposed `ZCNF_AGENT_SRV` / `ZCNF_*` portfolio is a historical technical proposal, not the current build plan | Superseded implementation assumption | 2026-08-15 standard-first pivot |
+
+## Current implementation posture
+
+Use standard SAP services for the covered document operations, activate and prove them in DEV, and build only the residual behavior that the standard contracts cannot supply. The residual work is material: CPI/T2 idempotency and error shaping, multi-stage dispatch orchestration, client configuration mapping, stock-ageing source correction, statutory commands, and a shipment-calculation endpoint if the existing `BAPI_SHIPMENT_COST_ESTIMATE` path is validated and no approved OData surface exists.
+
+“Project exists in SEGW,” “service is registered,” “`$metadata` returns,” and “business transaction succeeded” are four different evidence levels. Only the last two support a Monday runtime claim.
 
 ## Candidate business capabilities
 

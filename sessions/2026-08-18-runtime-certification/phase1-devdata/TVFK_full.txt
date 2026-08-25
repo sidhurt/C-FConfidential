@@ -1,0 +1,14 @@
+﻿DIALOG|accepted SE16 field-selection prompt (read-only, >40 fields)
+TABLE|TVFK
+TITLE|Data Browser: Table TVFK Select Entries         83
+SBAR|
+cscript.exe : C:\Users\sidmy\Downloads\shree-cement-cnf-agent-cowork-20260729T062834Z-1-001\shree-cement-cnf-agent-cowo
+rk\sessions\2026-08-18-runtime-certification\scripts\se16_read_list.vbs(104, 5) SAP Frontend Server: The enumerator of 
+the collection cannot find an element with the specified index.
+At line:2 char:3
++   cscript.exe //nologo .\scripts\se16_read_list.vbs $t 400 2>&1 | Out ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\sidmy\...pecified index.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+

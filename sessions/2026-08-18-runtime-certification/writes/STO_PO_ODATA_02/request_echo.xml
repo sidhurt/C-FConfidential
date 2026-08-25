@@ -1,0 +1,19 @@
+<REQUEST_DATA><HTTP_HEADER><_-IWFND_-SUTIL_PROPERTY><NAME>Content-Type</NAME><VALUE>application/json</VALUE></_-IWFND_-SUTIL_PROPERTY><_-IWFND_-SUTIL_PROPERTY><NAME>~request_method</NAME><VALUE>POST</VALUE></_-IWFND_-SUTIL_PROPERTY><_-IWFND_-SUTIL_PROPERTY><NAME>~request_uri</NAME><VALUE>/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV/A_PurchaseOrder</VALUE></_-IWFND_-SUTIL_PROPERTY></HTTP_HEADER><HTTP_BODY>{
+  "PurchaseOrderType": "UB",
+  "CompanyCode": "1000",
+  "PurchasingOrganization": "0001",
+  "PurchasingGroup": "001",
+  "SupplyingPlant": "PLQ3",
+  "DocumentCurrency": "INR",
+  "to_PurchaseOrderItem": [
+    {
+      "PurchaseOrderItem": "10",
+      "Material": "MAT18",
+      "Plant": "PLQ1",
+      "PurchaseOrderItemCategory": "7",
+      "OrderQuantity": "1",
+      "PurchaseOrderQuantityUnit": "EA"
+    }
+  ]
+}
+</HTTP_BODY></REQUEST_DATA>

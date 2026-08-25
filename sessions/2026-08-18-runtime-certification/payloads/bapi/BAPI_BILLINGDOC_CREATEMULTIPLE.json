@@ -1,0 +1,784 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_BILLINGDOC_CREATEMULTIPLE",
+    "functionGroup": "VBRK",
+    "remoteEnabled": true,
+    "releaseStatus": "Released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "CREATORDATAIN",
+        "associatedType": "BAPICREATORDATA",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Date Order Taken",
+        "structureFields": []
+      },
+      {
+        "parameter": "POSTING",
+        "associatedType": "POSTING_TYPE_CT",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Posting category: post directly",
+        "structureFields": []
+      },
+      {
+        "parameter": "TESTRUN",
+        "associatedType": "BAPIVBRKTESTRUN-TESTRUN",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Simulation Run ('X'), Update Run (' ')",
+        "structureFields": []
+      }
+    ],
+    "EXPORT": [],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "BILLINGDATAIN",
+        "associatedType": "BAPIVBRK",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table for Item Data to be Processed",
+        "structureFields": [
+          {
+            "field": "SALESORG",
+            "position": "0001",
+            "dataElement": "VKORG",
+            "checkTable": "TVKO",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DISTR_CHAN",
+            "position": "0002",
+            "dataElement": "VTWEG",
+            "checkTable": "TVTW",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DIVISION",
+            "position": "0003",
+            "dataElement": "SPART",
+            "checkTable": "TSPA",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_TYPE",
+            "position": "0004",
+            "dataElement": "AUART",
+            "checkTable": "TVAK",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDBILLTYP",
+            "position": "0005",
+            "dataElement": "FKARA",
+            "checkTable": "TVFK",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_DATE",
+            "position": "0006",
+            "dataElement": "FKDAT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SOLD_TO",
+            "position": "0007",
+            "dataElement": "KUNAG",
+            "checkTable": "KNA1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM_CATEG",
+            "position": "0008",
+            "dataElement": "PSTYV",
+            "checkTable": "TVPT",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ACCTASGNMT",
+            "position": "0009",
+            "dataElement": "KTGRM",
+            "checkTable": "TVKM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PRICE_DATE",
+            "position": "0010",
+            "dataElement": "PRSDT",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COUNTRY",
+            "position": "0011",
+            "dataElement": "ALAND",
+            "checkTable": "T005",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PLANT",
+            "position": "0012",
+            "dataElement": "WERKS_D",
+            "checkTable": "T001W",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_TO",
+            "position": "0013",
+            "dataElement": "KUNRE",
+            "checkTable": "KNA1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PAYER",
+            "position": "0014",
+            "dataElement": "KUNRG",
+            "checkTable": "KNA1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHIP_TO",
+            "position": "0015",
+            "dataElement": "KUNWE",
+            "checkTable": "KNA1",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC",
+            "position": "0016",
+            "dataElement": "VGBEL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL",
+            "position": "0017",
+            "dataElement": "MATNR18",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_QTY",
+            "position": "0018",
+            "dataElement": "KWMENG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0019",
+            "dataElement": "WAERK",
+            "checkTable": "TCURC",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SHORT_TEXT",
+            "position": "0020",
+            "dataElement": "ARKTX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXCL_1MAT",
+            "position": "0021",
+            "dataElement": "TAXM1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_ITEM",
+            "position": "0022",
+            "dataElement": "VGPOS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STAT_GROUP",
+            "position": "0023",
+            "dataElement": "VERSG",
+            "checkTable": "TVSG",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NO_MATMAST",
+            "position": "0024",
+            "dataElement": "NO_MARA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ADDR_NO",
+            "position": "0025",
+            "dataElement": "CADNR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TITLE",
+            "position": "0026",
+            "dataElement": "ANRED",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NAME",
+            "position": "0027",
+            "dataElement": "NAME1_GP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NAME_2",
+            "position": "0028",
+            "dataElement": "NAME2_GP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "POSTL_CODE",
+            "position": "0029",
+            "dataElement": "PSTLZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONSUMCTRY",
+            "position": "0030",
+            "dataElement": "ELAND",
+            "checkTable": "T005",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CITY",
+            "position": "0031",
+            "dataElement": "ORT01_GP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DISTRICT",
+            "position": "0032",
+            "dataElement": "ORT02_GP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "STREET",
+            "position": "0033",
+            "dataElement": "STRAS_GP",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REGION",
+            "position": "0034",
+            "dataElement": "REGIO",
+            "checkTable": "T005S",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PROD_HIER",
+            "position": "0035",
+            "dataElement": "PRODH_D",
+            "checkTable": "T179",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_UNIT",
+            "position": "0036",
+            "dataElement": "VRKME",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PROFIT_CTR",
+            "position": "0037",
+            "dataElement": "PRCTR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAXJURCODE",
+            "position": "0038",
+            "dataElement": "TXJCD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PURCH_ORD",
+            "position": "0039",
+            "dataElement": "BSTKD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DOC_NUMBER",
+            "position": "0040",
+            "dataElement": "VBELN_VA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITM_NUMBER",
+            "position": "0041",
+            "dataElement": "POSNR_VA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORIGINDOC",
+            "position": "0042",
+            "dataElement": "VBELV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ITEM",
+            "position": "0043",
+            "dataElement": "POSNV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CREATED_BY",
+            "position": "0044",
+            "dataElement": "ERNAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_EXTERNAL",
+            "position": "0045",
+            "dataElement": "MGV_MATERIAL_EXTERNAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_GUID",
+            "position": "0046",
+            "dataElement": "MGV_MATERIAL_GUID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_VERSION",
+            "position": "0047",
+            "dataElement": "MGV_MATERIAL_VERSION",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS1",
+            "position": "0048",
+            "dataElement": "BAPIINCO1",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2",
+            "position": "0049",
+            "dataElement": "BAPIINCO2",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXCHANGE_RATE",
+            "position": "0050",
+            "dataElement": "BAPIKURSK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PAYMENT_TERMS",
+            "position": "0051",
+            "dataElement": "DZTERM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "HG_LV_ITEM",
+            "position": "0052",
+            "dataElement": "BAPIUEPOS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC_CA",
+            "position": "0054",
+            "dataElement": "VBTYP_V",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ORDERID",
+            "position": "0055",
+            "dataElement": "AUFNR",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PROFIT_SEGM_NO",
+            "position": "0056",
+            "dataElement": "RKEOBJNR_NUMC_RFC",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COSTCENTER",
+            "position": "0057",
+            "dataElement": "KOSTL",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "WBS_ELEM",
+            "position": "0058",
+            "dataElement": "PS_PSP_PNR",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_DEPART_CTY",
+            "position": "0059",
+            "dataElement": "LANDTX",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_DEST_CTY",
+            "position": "0060",
+            "dataElement": "LAND1TX",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SERV_DATE",
+            "position": "0061",
+            "dataElement": "FBUDA",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CONT_ACCT",
+            "position": "0062",
+            "dataElement": "CORR_VKONT_KK",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARALLEL_QTY",
+            "position": "0063",
+            "dataElement": "/CWM/MENGE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARALLEL_UOM",
+            "position": "0064",
+            "dataElement": "/CWM/MEINS",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC_CA_LONG",
+            "position": "0065",
+            "dataElement": "VBTYPL_V",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMSV",
+            "position": "0066",
+            "dataElement": "INCOV",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS2L",
+            "position": "0067",
+            "dataElement": "INCO2_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "INCOTERMS3L",
+            "position": "0068",
+            "dataElement": "INCO3_L",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MATERIAL_LONG",
+            "position": "0069",
+            "dataElement": "MATNR40",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "CCARDDATAIN",
+        "associatedType": "BAPICCARD_VF",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table for Method of Payment to be Processed",
+        "structureFields": []
+      },
+      {
+        "parameter": "CONDITIONDATAIN",
+        "associatedType": "BAPIKOMV",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table for Conditions to be Processed",
+        "structureFields": []
+      },
+      {
+        "parameter": "ERRORS",
+        "associatedType": "BAPIVBRKERRORS",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Information on Incorrect Processing of Preceding Items",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXTENSIONIN",
+        "associatedType": "BAPIPAREX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Ref. structure for BAPI parameter ExtensionIn/ExtensionOut",
+        "structureFields": []
+      },
+      {
+        "parameter": "NFMETALLITMS",
+        "associatedType": "/NFM/BAPIDOCITM",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "PARTNERDATAIN",
+        "associatedType": "BAPIVBRKPARNR",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table for Partners to be Processed",
+        "structureFields": []
+      },
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRET1",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table for Processing Errors",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "SUCCESS",
+        "associatedType": "BAPIVBRKSUCCESS",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Table for Successfully Processed Items",
+        "structureFields": [
+          {
+            "field": "REF_DOC",
+            "position": "0001",
+            "dataElement": "VGBEL",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_DOC_ITEM",
+            "position": "0002",
+            "dataElement": "VGPOS",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_DOC",
+            "position": "0003",
+            "dataElement": "BILL_DOC",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "BILL_DOC_ITEM",
+            "position": "0004",
+            "dataElement": "BILL_DOC_ITEM",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_VALUE",
+            "position": "0005",
+            "dataElement": "BAPINETWR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_VALUE",
+            "position": "0006",
+            "dataElement": "BAPITAX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY",
+            "position": "0007",
+            "dataElement": "WAERS",
+            "checkTable": "*",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "CURRENCY_ISO",
+            "position": "0008",
+            "dataElement": "WAERS_ISO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NET_VALUE_ITEM",
+            "position": "0010",
+            "dataElement": "BAPINETWR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "TAX_VALUE_ITEM",
+            "position": "0011",
+            "dataElement": "BAPITAX",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "GRO_VALUE_ITEM",
+            "position": "0012",
+            "dataElement": "BAPIGRVAL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "TEXTDATAIN",
+        "associatedType": "BAPIKOMFKTX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Communication Structure Texts for Billing Interface",
+        "structureFields": []
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "SIMULATION_ONLY",
+    "request": {
+      "TESTRUN": "X",
+      "POSTING": "",
+      "BILLINGDATAIN": [
+        {
+          "REF_DOC": "<DEV delivery>",
+          "REF_DOC_CA": "<confirm category>",
+          "REF_ITEM": "000010",
+          "BILL_DATE": "<YYYYMMDD>",
+          "BILL_TYPE": "<confirm billing type>",
+          "REQ_QTY": "<quantity>",
+          "SALES_UNIT": "<unit>"
+        }
+      ]
+    },
+    "successEvidence": "RETURN/ERRORS contain no E/A messages and SUCCESS describes the simulated billing outcome; no billing document is posted."
+  }
+}

@@ -1,0 +1,85 @@
+﻿SESSION|QS4/700 located at connection[1] session[0]|user=QNOVATE8
+DIALOG|accepted SE16 field-selection prompt (read-only, >40 fields)
+TABLE|T161
+TITLE|Data Browser: Table T161 Select Entries         78
+SBAR|
+ALV|rows=78|cols=74
+HDR|MANDT	BSTYP	BSART	BSAKZ	PINCR	NUMKI	NUMKE	BREFN	REFBA	ABVOR	STAFO	UPINC	STAKO	PARGR	NUMKA	HITYP	LPHIS	GSFRG	VARIANTE	SHENQ	KZALE	ABGEBOT	KORNR	UMLIF	KOETT	AR_OBJECT	KOAKO	OICSEGI	OIRFQREQ	WVVKZ	XLOKZ	CP_AKTIVE	CPTYPE	FLS_RSTO	MSR_ACTIVE	RDP_PROFILE	NUMKC	QTN_FOL_DOC_DRAFT_AUTOM	QTN_FOL_DOC_ACTIVE_AUTOM	QTN_FOL_DOC_MANUALLY	RFQ_PROCESS_TYPE	SCNR_BASED_WFL	RFX_PROCESSING_CD	AIC_VCM_TYPE	CONF_WFL	PO_ATP_BULK_PROCESSING	ITMAC	/SAPMP/CEACT	/SAPMP/PDACT	/SAPMP/PPROT	/SAPMP/PUSER	/SAPMP/PAUSW	/SAPMP/ATNAM	/SAPMP/GAUF	TOLSL	FSH_VAS_ACT	FSH_VAS_KALSM	FSH_VAS_DEL	FSH_VAS_DETDT	FSH_EXCL_RETURN	FSH_VAR_KALSM	FSH_DPR_DETPRO	FSH_PO_IDOC	FSH_VAS_CORR	FSH_AUTO_DC	FSH_VM_ACT	RFM_CONTRACT_CONS	RFM_CONTRACT_DETR	MILL_OMKZ	CNTRL_CONF_WFL	SGT_CONT_SEG_IGNORE	WRF_ENABLE_DATELINE	RFM_ENABLE_ODS	%_BATXT	
+ROW0|700	A	AB		00010			ANA			SAP	00000										X																																																				Request for GP Bid	
+ROW1|700	A	AN		00010			ANA	AN		SAP	00000	X																																																													RFQ	
+ROW2|700	A	CPL		00010			ANAR			SAP	00000	X																																																													Stock inquiry	
+ROW3|700	A	RAN		00010			ANAR			SAP	00000	X																																																														
+ROW4|700	A	ZQ01		00010	31		ANA			SAP	00000		ZPOS																																																													
+ROW5|700	A	ZQ02		00010	32		ZNA			SAP	00000		ZPOS																																																													
+ROW6|700	B	FO		00010	01	02	FOF				00000							SRV																																																								
+ROW7|700	B	NB		00010	01	02	NBB	NB			00000																																																															
+ROW8|700	B	RV	R	00010	01	02	RVB	RV			00000																																																															
+ROW9|700	B	WRF		00010			NBB				00000																																																															
+ROW10|700	B	ZR01		00010	11		ZR02				00000						X																								X																																	
+ROW11|700	B	ZR02		00010	12		ZR02				00000						X																								X																																	
+ROW12|700	B	ZR03		00010	13		FOB				00000							SRV																							X																																	
+ROW13|700	B	ZR04		00010	14		NBB				00000						X																								X																																	
+ROW14|700	B	ZR05		00010	15		FOB				00000							SRV																							X																																	
+ROW15|700	B	ZR06		00010	16		ZR06				00000						X																								X																																	
+ROW16|700	B	ZR07		00010	17		PT3B				00000						X																								X																																	
+ROW17|700	B	ZR08		00010	18		NBB				00000						X																								X																																	
+ROW18|700	B	ZR09		00010	19		NBB				00000						X																								X																																	
+ROW19|700	B	ZR10		00010	20		ZR10				00000						X	SRV																							X																																	
+ROW20|700	B	ZR11		00010	21		NBB				00000						X																								X																																	
+ROW21|700	B	ZR12		00010	22		ZR02				00000						X																								X																																	
+ROW22|700	B	ZR13		00010	23		ZR02				00000						X																								X																																	
+ROW23|700	B	ZR14		00010	24		ZR02				00000						X																								X																																	
+ROW24|700	C	MK		00010	47		MKC				00000																																																															
+ROW25|700	C	WK		00010	47		WKC				00000																																																															
+ROW26|700	F	DB		00010			NBF	NB		SAP	00001				A																																																											
+ROW27|700	F	ENB		00010			NBF			SAP	00000																																																															
+ROW28|700	F	EUB	T	00010			UBF			SAP	00000												X																																																			
+ROW29|700	F	FO		00010			FOF			SAP	00000							SRV																																																								
+ROW30|700	F	NB		00010			NBF	NB		SAP	00000				A																																																											
+ROW31|700	F	NB2		00010			NBF			SAP	00000																						X	X																																								
+ROW32|700	F	NB2C		00010			NBF2			SAP	00000																						X	X																																								
+ROW33|700	F	NBAI		00010			NBAI			SAP	00000		0002																																																													
+ROW34|700	F	NBC7		00010			NBF2			SAP	00000																						X																																									
+ROW35|700	F	NBIC		00010			NBF			SAP	00000		0002																														ICO_STOCKTRANSFER																															
+ROW36|700	F	NBR8		00010			NBF2			SAP	00000																						X																																									
+ROW37|700	F	NBXE		00010			NBF			SAP	00000																																																															
+ROW38|700	F	NBXI		00010			NBF			SAP	00000																																																															
+ROW39|700	F	UB	T	00010			UBF	UB		SAP	00000																																																															
+ROW40|700	F	UB2	T	00010			UBF2			SAP	00000																						X	X																																								
+ROW41|700	F	ZP01		00010	51		ZRAW			SAP	00000		ZPOS																												X																																	
+ROW42|700	F	ZP02		00010	52		NBF			SAP	00000		ZPOS																												X																																	
+ROW43|700	F	ZP03		00010	53		FOF			SAP	00000		ZPOS					SRV																							X																																	
+ROW44|700	F	ZP04		00010	54		NBF			SAP	00000		ZPOS																																																													
+ROW45|700	F	ZP05		00010	55		FOF			SAP	00000		ZPOS					SRV																							X																																	
+ROW46|700	F	ZP06	T	00010	56		UBF			SAP	00000		ZSTS																																																													
+ROW47|700	F	ZP07		00010	57		ZSUB			SAP	00000		ZPOS																												X																																	
+ROW48|700	F	ZP08		00010	58		RBF			SAP	00000		ZPOS																																																													
+ROW49|700	F	ZP09		00010	59		NBF			SAP	00000		ZPOS																												X																																	
+ROW50|700	F	ZP10		00010	60		FOF			SAP	00000		ZPOS					SRV																																																								
+ROW51|700	F	ZP11		00010	61		NBF			SAP	00000		ZPOS																												X																																	
+ROW52|700	F	ZP12		00010	62		NBF			SAP	00000		ZPOS																												X																																	
+ROW53|700	F	ZP13		00010	63		ZPPB			SAP	00000		ZPOS																																																													
+ROW54|700	F	ZP14		00010	64		NBF			SAP	00000		ZPOS																												X																																	
+ROW55|700	F	ZP15		00010	65		ZINT			SAP	00000		ZPOS																																																													
+ROW56|700	F	ZP16		00010	66		FOF			SAP	00000		ZPOS					SRV																							X																																	
+ROW57|700	F	ZP17		00010	67		NBF			SAP	00000		ZPOS																												X																																	
+ROW58|700	F	ZP18		00010	68		NBF			SAP	00000		ZPOS																												X																																	
+ROW59|700	F	ZP19		00010	69		NBF			SAP	00000		ZPOS																												X																																	
+ROW60|700	K	MK		00010			MKK	MK	A	SAP	00000																																																															
+ROW61|700	K	WK		00010			WKK	WK	A	SAP	00000																																																															
+ROW62|700	K	ZC01		00010	41		WKK		A	SAP	00000		ZPOS																												X																																	
+ROW63|700	K	ZC02		00010	42		WKK		A	SAP	00000		ZPOS																												X																																	
+ROW64|700	K	ZC03		00010	43		WKK		A	SAP	00000		ZPOS																																																													
+ROW65|700	K	ZC04		00010	44		WKK		A	SAP	00000		ZPOS																																																													
+ROW66|700	K	ZC05		00010	45		WKK		A	SAP	00000		ZPOS																																																													
+ROW67|700	K	ZC06		00010	46		WKK		A	SAP	00000		ZPOS																																																													
+ROW68|700	K	ZC07		00010	47		WKK		A	SAP	00000																																																															
+ROW69|700	L	LP		00010	55	56	LPL	LP		SAP	00000	X																																																														
+ROW70|700	L	LPA		00010	55	56	LPL			SAP	00000	X				X																																																										
+ROW71|700	L	LPXE		00010	55	56	LPL			SAP	00000	X				X																																																										
+ROW72|700	L	LPXI		00010	55	56	LPL			SAP	00000	X				X																																																										
+ROW73|700	L	LU	T	00010	55	56	LUL	LU		SAP	00000	X																																																														
+ROW74|700	O	RE		00010	80						00000																																																															
+ROW75|700	O	RQ		00010	80						00000																																																															
+ROW76|700	R	RE		00010	70						00000																															E																																
+ROW77|700	R	RQ		00010	70						00000																															I																																

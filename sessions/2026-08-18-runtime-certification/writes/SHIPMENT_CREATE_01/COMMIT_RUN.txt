@@ -1,0 +1,16 @@
+﻿INPUT|WAIT|txt[34,9]|X
+POST_COMMIT|title=Test Function Module: Result Screen
+POST_COMMIT|sbar=
+  lbl[0,0] = 'Test for function group'
+  lbl[29,0] = 'BAPT'
+  lbl[0,1] = 'Function module'
+  lbl[29,1] = 'BAPI_TRANSACTION_COMMIT'
+  lbl[0,2] = 'Case-sensitive'
+  lbl[0,4] = 'Runtime:'
+  lbl[16,4] = '194,849 Microseconds'
+  lbl[0,6] = 'RFC Target'
+  lbl[2,9] = 'Import parameters'
+  lbl[34,9] = 'Value'
+  lbl[2,11] = 'WAIT'
+  lbl[34,11] = 'X'
+  lbl[2,14] = 'Export parameters'

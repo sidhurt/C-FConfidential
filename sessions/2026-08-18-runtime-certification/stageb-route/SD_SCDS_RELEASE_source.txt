@@ -1,0 +1,4 @@
+﻿TITLE|Function Builder: Display SD_SCDS_RELEASE
+----BEGIN----
+SAPGUI.AbapEditor.1
+----END----

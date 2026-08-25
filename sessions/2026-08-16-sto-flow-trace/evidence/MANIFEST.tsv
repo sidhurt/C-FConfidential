@@ -1,0 +1,50 @@
+File	Bytes	SHA256	Modified	System	Client	User	Mode
+03_EKKO_sample.tsv	224848	9A78C03E291B64E28E3FEBA171727C8143FA0C42444CFF63592DB32563D0AA7B	2026-08-16T16:32:13	QS4	700	QNOVATE8	read-only
+04_EKPO_5600084208.tsv	10226	2014473BC0C6F05BA89F4DEB28B076B8E7007429FC5062BD88DC18100CA9DD18	2026-08-16T16:33:22	QS4	700	QNOVATE8	read-only
+05_EKBE_5600084208.tsv	5068	DCF42CF14DDDF28D365379F4DE2DC06836A159AC4B97C7C8B603531459A1292A	2026-08-16T16:34:21	QS4	700	QNOVATE8	read-only
+06_LIKP_9004953077.tsv	7552	7239AF157894FE4BF8E117332EFC496DBFC3A5E473222CDFFE915B28BDAF9455	2026-08-16T16:35:08	QS4	700	QNOVATE8	read-only
+07_LIPS_9004953077.tsv	13678	39F713C201AE4E084FCBB2FCF8C7273FF0307257098E80686CE88F0DF8AFCCF6	2026-08-16T16:35:19	QS4	700	QNOVATE8	read-only
+08_VBFA_9004953077.tsv	26762	3A9277399313D45BFA75A73B5A3B71BA9E10BF511CA060BC240AAA3EF19E036E	2026-08-16T16:35:33	QS4	700	QNOVATE8	read-only
+09_EKBE_5600084209.tsv	2072	9651FDA60B1BBC95973CFA378AD0288AE0F69416024D7715E1F23298626C763E	2026-08-16T16:35:39	QS4	700	QNOVATE8	read-only
+10_ME2W_1002_ZP06.tsv	67712	D44C3EADA5A28A858893DBA52BDEA60CBB3410E0079938AFC6155057D073850C	2026-08-16T16:38:21	QS4	700	QNOVATE8	read-only
+11_EKBE_5600000339.tsv	25218	391BB0FBDD0D11800DCAD07B5AD76BCDEAEDFDC55C913FCB6645022D7B7591D9	2026-08-16T16:39:13	QS4	700	QNOVATE8	read-only
+12_LIKP_0080019087.tsv	7512	CE6AEF56B2846F51E5BFA667EC6B56027FA700680776882460018BE6DFCE2FEC	2026-08-16T16:39:50	QS4	700	QNOVATE8	read-only
+13_T001K_1002.tsv	406	6AE855C830F2A813AB9C8A79F8004E10D3134066F2B954A5EBAC3A1DF9650A5B	2026-08-16T16:39:55	QS4	700	QNOVATE8	read-only
+14_T001K_5412.tsv	406	54087738182FB7B88571A05A898286F6FC5548830D0AEE37D7FEBC7A7FD9E007	2026-08-16T16:40:01	QS4	700	QNOVATE8	read-only
+15_VBFA_0080019087.tsv	22362	7B5C5366F4BDCABAA6F4B98F4961639D88C9C440619066911543E75AA57F110C	2026-08-16T16:40:45	QS4	700	QNOVATE8	read-only
+16_VBFA_VBELV_0080019087.tsv	2460	E437172CCADB5BD2E9568CEAA3AF436098F2D285B67A0A6D47493DB13DEE8915	2026-08-16T16:57:50	QS4	700	QNOVATE8	read-only
+17_EKBE_5600000339_full.tsv	683892	EE416AEF36E7F909940E3270A81FB68992C59E84DBEA981A8D2BF765803F3DFE	2026-08-16T17:01:23	QS4	700	QNOVATE8	read-only
+18_MSEG_5000018851.tsv	6442	0A9A20DC68CBE87CDFFB00A01399B4A34BF64D050E8FA9D0A8B892A448335E9E	2026-08-16T17:03:44	QS4	700	QNOVATE8	read-only
+19_VBRK_1100012896.tsv	3800	32294EF3E81DCA6901ECB5230A5DFB1C4F6A775AF61C06BAC4E4A10E01928617	2026-08-16T17:02:50	QS4	700	QNOVATE8	read-only
+20_VBRP_1100012896.tsv	7694	2CE61C1219F602AD8ADE110065A96DECBCE2570A9B529A050A2546A28E57ECC2	2026-08-16T17:02:58	QS4	700	QNOVATE8	read-only
+CNF_API_Request_Response_Specification_v1.8.xlsx	73861	214BD4F18B879A97BE74BDC095061BA1E84A3E38465A2820D9A38BBE38B5DB35	2026-08-17T12:42:43	-	-	-	deliverable (v1.8 AUTHORITATIVE)
+
+# v1.8 sanity pass 2, 2026-08-16. Changes: Overview columns C/D/E/G re-derived from the twelve sheets (v1.7 S/C/X taxonomy and POST-for-reads convention superseded); API-05 GET; API-12 PATCH; API-10 recorded as observed SD billing type ZSTO; API-02 recorded as STO-only proven scope.
+# API-03: QuantityInBaseUnit corrected to ActualDeliveredQtyInBaseUnit + BaseUnit per the local SEGW extraction (OUTBOUND_DELIVERY_DELTA.md A_OutbDeliveryItemType property list; symmetric inbound PutawayOneItemWithBaseQuantity signature). Cost release added as an explicit sub-step of stage B. Unsupported route-liveness wording removed.
+# API-09: leading discriminator is DeliveryDocumentType=ZNL; ReferenceSDDocumentCategory=V retained as supporting evidence only (V proves a purchase-order predecessor, not an STO one). ZNL population validation and DATE-grain delta remain OPEN.
+# API-11: RequisitionNumber mapping is FUNCTIONALLY OPEN - neither EKPO-BEDNR nor PurchaseRequisition is settled from one sample; both are listed as do-not-implement.
+# API-12: positive test now requires a delivery that has NOT been batch-determined; main-item versus split-item targeting remains OPEN.
+# Sample-size caveat added to Overview: only the 22,378 ZP06 item-row count is population-scale; all other observations rest on one or two documents.
+# Explicit blockers recorded on Overview: API-01 GoodsMovementCode; API-02 creation path and Trade/Non-trade mapping; API-10 AUBEL->SalesDocument; API-11 RequisitionNumber; API-09 ZNL population and delta grain.
+# Audit: 12/12 sheets pass. Tokens $metadata x16, $filter x5, $expand x3, $inlinecount x9. ZCNF_: 7 mentions, all superseded history, 0 active.
+# Visual QA: 13 sheets opened in Microsoft Excel via COM; max computed row height 203pt against the 409pt clipping ceiling; no vertical clipping; wrap on all populated cells. Independent load verified in LibreOffice.
+# NOT FROZEN. Label: requirements discovery and standard-API solution mapping complete; local runtime certification and several contract details remain open.
+# NOTHING IS PROVEN CALLABLE. No OData call has been made and no service is activated.
+# Evidence pass: QS4 client 700, user QNOVATE8, 2026-08-16, read-only. No SAP document created, changed or posted.
+# 18_MSEG_5000018851.tsv was written twice: a first attempt used wrong control ids and its unfiltered result was replaced by the correctly filtered capture. No other evidence file was overwritten.
+# Sanity pass 3, 2026-08-17: API-02 CORRECTED - Trade, Non-trade and STO are ALL confirmed business scope; only the field-level EVIDENCE is STO-only. The earlier 'not proven scope' wording was wrong and has been removed.
+# API-03 PickOneItemWithBaseQuantity signature VERIFIED first-hand in the local SEGW extract SRC-SYS-20260814-01: ActualDeliveredQtyInBaseUnit (unit ref BaseUnit), BaseUnit, DeliveryDocument, DeliveryDocumentItem. PickAndBatchSplitOneItem verified as a DIFFERENT signature (Batch, DeliveryDocument, DeliveryDocumentItem, SplitQuantity) and added to the sheet.
+# Evidence-tier correction: OData entity types, properties and function-import signatures for the screened projects are LOCALLY EXTRACTED SEGW design-time evidence from QS4/700, not vendor documentation. What remains unproven is RUNTIME only - registration, activation, ICF, authorization and call behaviour.
+# Housekeeping: tmp/build_v18_sto.ps1 (superseded appendix-era generator) deleted. Exactly one v1.8 workbook exists.
+# Sanity pass 4, 2026-08-17: Overview now carries the FIVE-LEVEL FIELD EVIDENCE MODEL. Levels 1-3 (property exists / DDIC field / key-creatable-updatable-nullable-filterable role) are PROVEN from the local SEGW extracts; level 4 (business value) from QS4 tables; only level 5 (live call acceptance) is runtime-unproven. RUNTIME-UNPROVEN now means level 5 only.
+# Three blockers reclassified as EXTRACT-ANSWERABLE rather than runtime-blocked: API-12 writable quantity property, API-09 DeliveryDocumentType filterability, API-10 SalesDocument->AUBEL mapping. Open until the mining pass confirms them.
+21_SEGW_PROPERTY_INDEX.tsv	558992	888BDF976EEF5BDC46A68B9BF25B877F3DB39C2CC9095B63DBDA8F33B9330C63	2026-08-17T12:04:07	QS4	700	QNOVATE8	mined from SEGW extracts
+CNF_v1.8_STUDY_GUIDE.md	29381	B94A3E8B74E9E7E07E1CB591B36CA4F8EC513C62DB612F21997EA33C4FCCF3AA	2026-08-17T12:02:16	-	-	-	deliverable (companion study guide)
+# MINING PASS 2026-08-17: all 16 local SEGW extracts parsed into evidence/21_SEGW_PROPERTY_INDEX.tsv - 4,557 property rows. Columns: Project, GridKind, Owner, Property, EdmType, Prec, Scale, MaxLen, IsKey, Creatable, Updatable, Sortable, Nullable, Filterable, UnitProp, AbapField.
+# Index reliability boundary: property name, EDM type, precision, scale, max length and ABAP field are populated for ALL rows. IS_KEY populated throughout. Creatable/Updatable/Filterable/Sortable are captured ONLY for the delivery-family projects; blank on SADL/CDS-exposed services means NOT CAPTURED, never false.
+# Mining closed 2 of 3 predicted blockers: API-09 DeliveryDocumentType is FILTERABLE (ZNL discriminator valid); API-12 ActualDeliveryQuantity is UPDATABLE (writable property confirmed). API-10 AUBEL did NOT close - ABAP_FIELD gives the CDS view field name, not the source table field.
+# CROSS-PILLAR CORRECTION 2026-08-17: STO scope drift corrected. Trade, Non-trade and STO are three equally important pillars sharing one outbound spine. Every sheet now carries an APPLIES TO block.
+# Shared across all three pillars: API-02, API-03, API-04, API-05, API-06, API-07. API-12 shared is PROVISIONAL. STO-specific: API-08, API-09, API-10, API-11. API-01 is the inbound side and its pillar relationship is OPEN.
+# Three labels used for every pillar statement: CONFIRMED (we know it), STO-OBSERVED (seen on a stock transfer document, may not hold elsewhere), OPEN (nobody has checked). ZP06, ZNL, ZSTO, ZSTON, 641 and all document numbers are STO-OBSERVED and must never be copied onto Trade or Non-trade.
+# Removed as unsupported: that Trade/Non-trade documents reach the portal from T1; that Trade/Non-trade have no goods receipt; that API-05/06/07 pillar differences are minimal.
+# Plain-language pass applied to all twelve sheets. Invented labels and cross-references replaced with ordinary sentences. Fact check: 2 genuine facts dropped and restored (HSN 25232910, API_INBOUND_DELIVERY_SRV); remaining diffs are removed ALL-CAPS phrasing, not facts.

@@ -1,0 +1,5 @@
+﻿SELFIELD|ctxtI1-LOW=V54*
+TABLE|TFDIR
+TITLE|Data Browser: Table TFDIR: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

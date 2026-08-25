@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Pre-PGI Study Guide</title>
+<style>
+/* ============================================================
+   Pre-PGI document design system
+   Print target: A4, Chromium headless
+   ============================================================ */
+
+@page { size: A4; margin: 18mm 16mm 16mm 16mm; }
+
+* { box-sizing: border-box; }
+
+:root {
+  --ink:      #15191E;
+  --ink-soft: #4A555F;
+  --ink-mute: #77848D;
+  --primary:  #0F4C5C;
+  --primary-l:#1B6E82;
+  --accent:   #B3402A;
+  --gold:     #8A6A00;
+  --green:    #2A6049;
+  --rule:     #DCE4E8;
+  --rule-soft:#EDF2F4;
+  --surface:  #F6F9FA;
+  --surface-2:#EEF4F6;
+}
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.2pt;
+  line-height: 1.58;
+  color: var(--ink);
+  margin: 0;
+  hyphens: none;
+}
+
+p { margin: 0 0 9pt 0; orphans: 3; widows: 3; }
+strong, b { font-weight: 600; color: var(--ink); }
+em, i { font-style: italic; }
+
+/* ---------- Cover ---------- */
+.cover { page-break-after: always; }
+.cover-band {
+  height: 7mm; background: var(--primary);
+  margin: 0 -16mm 14mm -16mm;
+}
+.cover-kicker {
+  font-size: 8.5pt; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--primary-l); font-weight: 700; margin-bottom: 8mm;
+}
+.cover h1 {
+  font-size: 33pt; line-height: 1.1; font-weight: 300;
+  color: var(--primary); margin: 0 0 6mm 0; border: 0; padding: 0;
+  letter-spacing: -0.01em; page-break-before: auto;
+}
+.cover h1 b { font-weight: 700; }
+.cover-sub {
+  font-size: 13pt; line-height: 1.45; color: var(--ink-soft);
+  font-weight: 300; margin-bottom: 14mm; max-width: 145mm;
+}
+.cover-meta {
+  display: table; width: 100%; border-top: 1.5pt solid var(--primary);
+  border-bottom: .5pt solid var(--rule); padding: 5mm 0; margin-bottom: 12mm;
+}
+.cover-meta div { display: table-cell; width: 25%; padding-right: 6mm; vertical-align: top; }
+.cover-meta .lbl {
+  font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 700; display: block; margin-bottom: 1.5mm;
+}
+.cover-meta .val { font-size: 10.5pt; color: var(--ink); font-weight: 600; }
+
+.headline {
+  background: var(--primary); color: #fff; padding: 8mm 9mm;
+  margin-bottom: 8mm;
+}
+.headline .lbl {
+  font-size: 8pt; letter-spacing: .16em; text-transform: uppercase;
+  opacity: .72; font-weight: 700; display: block; margin-bottom: 3mm;
+}
+.headline p { font-size: 13.5pt; line-height: 1.45; font-weight: 300; margin: 0; color: #fff; }
+.headline p b { font-weight: 600; color: #fff; }
+
+.cover-note {
+  font-size: 9pt; color: var(--ink-mute); line-height: 1.5;
+  border-left: 2.5pt solid var(--rule); padding-left: 5mm;
+}
+
+/* ---------- Contents ---------- */
+.toc { page-break-after: always; }
+.toc h2 { border: 0; margin-top: 0; }
+.toc-grid { display: table; width: 100%; }
+.toc-row { display: table-row; }
+.toc-row > div { display: table-cell; padding: 2.6mm 0; border-bottom: .5pt solid var(--rule-soft); vertical-align: top; }
+.toc-num { width: 14mm; color: var(--primary-l); font-weight: 700; font-size: 9.5pt; }
+.toc-ttl { font-size: 10pt; }
+.toc-ttl span { display: block; font-size: 8.5pt; color: var(--ink-mute); margin-top: .6mm; }
+
+/* ---------- Headings ---------- */
+h1 {
+  font-size: 19pt; font-weight: 300; color: var(--primary);
+  margin: 0 0 7mm 0; padding: 0 0 3mm 0;
+  border-bottom: 2pt solid var(--primary);
+  page-break-after: avoid; page-break-before: always;
+  letter-spacing: -0.005em;
+}
+h1.nobreak { page-break-before: auto; }
+h1 .h1num {
+  display: inline-block; min-width: 11mm; font-weight: 700; color: var(--primary-l);
+}
+h2 {
+  font-size: 12.5pt; font-weight: 600; color: var(--primary);
+  margin: 9mm 0 3.5mm 0; page-break-after: avoid;
+}
+h2 .h2num { color: var(--primary-l); font-weight: 700; margin-right: 2.5mm; }
+h3 {
+  font-size: 10.4pt; font-weight: 700; color: var(--ink);
+  margin: 6mm 0 2.5mm 0; page-break-after: avoid;
+}
+h4 {
+  font-size: 9.6pt; font-weight: 600; color: var(--ink-soft);
+  margin: 5mm 0 2mm 0; page-break-after: avoid; font-style: italic;
+}
+
+/* ---------- Code ---------- */
+code {
+  font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
+  font-size: 8.8pt; background: var(--surface-2); color: #0B3A46;
+  padding: .4mm 1.2mm; border-radius: 1.5pt; white-space: nowrap;
+}
+pre {
+  font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
+  font-size: 8.4pt; line-height: 1.5; background: #0E2A33; color: #D7E6EA;
+  padding: 5mm 6mm; margin: 4mm 0; border-radius: 2pt;
+  page-break-inside: avoid; overflow: hidden;
+}
+pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+pre .c { color: #7FA8B4; }
+pre .hi { color: #F2B441; font-weight: 600; }
+pre .ok { color: #7FD1A8; }
+
+/* ---------- Tables ---------- */
+table {
+  border-collapse: collapse; width: 100%; margin: 4mm 0 6mm 0;
+  font-size: 9.1pt; page-break-inside: avoid;
+}
+thead { display: table-header-group; }
+th {
+  background: var(--primary); color: #fff; text-align: left;
+  padding: 2.4mm 3mm; font-weight: 600; font-size: 8.6pt;
+  letter-spacing: .02em; border: 0;
+}
+td {
+  border-bottom: .5pt solid var(--rule); padding: 2.2mm 3mm;
+  vertical-align: top; line-height: 1.45;
+}
+tbody tr:nth-child(even) td { background: var(--surface); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.compact { font-size: 8.7pt; }
+table.compact td, table.compact th { padding: 1.8mm 2.4mm; }
+
+/* ---------- Callouts ---------- */
+.box { padding: 4.5mm 5.5mm; margin: 5mm 0; page-break-inside: avoid; border-radius: 2pt; }
+.box p:last-child { margin-bottom: 0; }
+.box .tag {
+  display: block; font-size: 7.6pt; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 2mm;
+}
+.box-key  { background: #FDF8E7; border-left: 3pt solid var(--gold); }
+.box-key .tag { color: var(--gold); }
+.box-warn { background: #FDF3F0; border-left: 3pt solid var(--accent); }
+.box-warn .tag { color: var(--accent); }
+.box-good { background: #EFF6F2; border-left: 3pt solid var(--green); }
+.box-good .tag { color: var(--green); }
+.box-quote {
+  background: var(--surface); border-left: 3pt solid var(--primary-l);
+  font-size: 10.6pt; line-height: 1.5; font-weight: 300; color: var(--ink-soft);
+}
+
+/* ---------- Pills / status ---------- */
+.pill {
+  display: inline-block; font-size: 7.6pt; font-weight: 700; letter-spacing: .04em;
+  padding: .5mm 2mm; border-radius: 6pt; white-space: nowrap;
+}
+.pill-yes { background: #DCEFE4; color: var(--green); }
+.pill-no  { background: #FBE3DE; color: var(--accent); }
+.pill-warn{ background: #FBF0D2; color: var(--gold); }
+.pill-mute{ background: var(--surface-2); color: var(--ink-mute); }
+
+/* ---------- Timeline ---------- */
+.timeline { margin: 5mm 0 7mm 0; page-break-inside: avoid; }
+.tl-row { display: table; width: 100%; }
+.tl-time {
+  display: table-cell; width: 20mm; font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 8.6pt; color: var(--primary-l); font-weight: 700; padding: 1.6mm 0;
+  vertical-align: top;
+}
+.tl-mark { display: table-cell; width: 8mm; position: relative; vertical-align: top; padding-top: 1.6mm; }
+.tl-dot {
+  width: 2.6mm; height: 2.6mm; border-radius: 50%; background: var(--primary);
+  display: block; margin: 1mm auto 0 auto;
+}
+.tl-dot.hi { background: var(--accent); width: 3.4mm; height: 3.4mm; margin-top: .6mm; }
+.tl-line { border-left: 1pt solid var(--rule); height: 100%; position: absolute; left: 3.7mm; top: 4mm; bottom: -2mm; }
+.tl-body { display: table-cell; padding: 1.6mm 0 1.6mm 2mm; vertical-align: top; border-bottom: .5pt solid var(--rule-soft); }
+.tl-body .t { font-weight: 600; font-size: 9.6pt; }
+.tl-body .d { font-size: 8.6pt; color: var(--ink-mute); }
+
+/* ---------- Chain diagram ---------- */
+.chain { margin: 5mm 0; page-break-inside: avoid; }
+.chain-node {
+  border: .8pt solid var(--rule); border-left: 3pt solid var(--primary);
+  padding: 3mm 4mm; margin-bottom: 0; background: #fff;
+}
+.chain-node.bad { border-left-color: var(--accent); background: #FEF7F5; }
+.chain-node .n { font-weight: 700; font-size: 9.6pt; }
+.chain-node .m { font-size: 8.6pt; color: var(--ink-mute); }
+.chain-arrow { text-align: center; color: var(--ink-mute); font-size: 11pt; line-height: 1; padding: 1.5mm 0; }
+
+/* ---------- Stat bar ---------- */
+.statbar { margin: 5mm 0 7mm 0; page-break-inside: avoid; }
+.statbar .bar { height: 9mm; width: 100%; display: table; border-collapse: collapse; }
+.statbar .seg { display: table-cell; vertical-align: middle; text-align: center;
+  font-size: 8.2pt; font-weight: 700; color: #fff; }
+.statbar .legend { display: table; width: 100%; margin-top: 2.5mm; font-size: 8.4pt; }
+.statbar .legend > div { display: table-cell; }
+.statbar .sw { display: inline-block; width: 3mm; height: 3mm; margin-right: 1.5mm; vertical-align: -.3mm; }
+
+.bignum {
+  font-size: 34pt; font-weight: 200; color: var(--accent); line-height: 1;
+  letter-spacing: -0.02em;
+}
+.bignum-l { font-size: 9pt; color: var(--ink-mute); letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+
+/* ---------- Misc ---------- */
+ul, ol { margin: 0 0 9pt 0; padding-left: 5mm; }
+li { margin-bottom: 2mm; padding-left: 1mm; }
+.meta { font-size: 8.4pt; color: var(--ink-mute); line-height: 1.5; }
+.rule { border: 0; border-top: .5pt solid var(--rule); margin: 7mm 0; }
+.two { display: table; width: 100%; }
+.two > div { display: table-cell; width: 50%; vertical-align: top; }
+.two > div:first-child { padding-right: 5mm; }
+.avoid { page-break-inside: avoid; }
+.newpage { page-break-before: always; }
+
+</style>
+</head><body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="cover-band"></div>
+  <div class="cover-kicker">Internal study guide · full technical detail</div>
+  <h1>Pre-PGI Process,<br>Callable Surface<br>and the <b>One-API Decision</b></h1>
+  <div class="cover-sub">What SAP actually does between delivery and goods issue, which parts of it can be called, and why the pre-PGI span should be a single interface.</div>
+
+  <div class="cover-meta">
+    <div><span class="lbl">Systems</span><span class="val">DS4 / 200<br>QS4 / 700</span></div>
+    <div><span class="lbl">Date</span><span class="val">18 Aug 2026</span></div>
+    <div><span class="lbl">Writes performed</span><span class="val">None</span></div>
+    <div><span class="lbl">Companion</span><span class="val">Stakeholder brief<br>(sections align 1:1)</span></div>
+  </div>
+
+  <div class="headline">
+    <span class="lbl">The finding that decides it</span>
+    <p>Four of the six pre-PGI steps have <b>no callable SAP interface at all</b>. Custom development is mandatory either way — the only question is how many doors we cut.</p>
+  </div>
+
+  <div class="cover-note">
+    Every figure and document number in this document is a live system read. Nothing is estimated or inferred from documentation.<br><br>
+    <b>How to use this.</b> The stakeholder brief carries the same section numbers with less depth. Read this one fully; present that one. If challenged on any claim in the brief, the supporting detail is in the matching section here.
+  </div>
+</div>
+
+<!-- ============ CONTENTS ============ -->
+<div class="toc">
+  <h1 class="nobreak">Contents</h1>
+  <div class="toc-grid">
+    <div class="toc-row"><div class="toc-num">1</div><div class="toc-ttl"><b>How this was established</b><span>Access, evidence standard, tools</span></div></div>
+    <div class="toc-row"><div class="toc-num">2</div><div class="toc-ttl"><b>What SAP actually does before PGI</b><span>Six states, a real chain, status semantics, document linkage</span></div></div>
+    <div class="toc-row"><div class="toc-num">3</div><div class="toc-ttl"><b>What is callable, and what is not</b><span>OData services, BAPIs, internal modules, the verdict</span></div></div>
+    <div class="toc-row"><div class="toc-num">4</div><div class="toc-ttl"><b>What we found that is not currently known</b><span>10,496 stranded · cost type · the PGI gate · existing implementation</span></div></div>
+    <div class="toc-row"><div class="toc-num">5</div><div class="toc-ttl"><b>Comparison with the v1.8 specification</b><span>Corrections, the §4 gap, API-by-API status</span></div></div>
+    <div class="toc-row"><div class="toc-num">6</div><div class="toc-ttl"><b>The decision: one pre-PGI API</b><span>The question, four arguments, the contract, three conditions</span></div></div>
+    <div class="toc-row"><div class="toc-num">7</div><div class="toc-ttl"><b>What remains open</b><span>Unproven items, the DS4 blocker, what we need</span></div></div>
+    <div class="toc-row"><div class="toc-num">8</div><div class="toc-ttl"><b>Quick reference</b><span>Document numbers, sentences to use, traps to avoid</span></div></div>
+  </div>
+</div>
+
+<!-- ============ 1 ============ -->
+<h1><span class="h1num">1</span>How this was established</h1>
+
+<h2><span class="h2num">1.1</span>Systems, access and what was touched</h2>
+<table class="compact">
+<thead><tr><th>System</th><th>Client</th><th>User</th><th>Access</th><th>Writes performed</th></tr></thead>
+<tbody>
+<tr><td>DS4 — development</td><td>200</td><td>QNOVATE8</td><td>Write-authorised</td><td><span class="pill pill-mute">None — all reads</span></td></tr>
+<tr><td>QS4 — quality</td><td>700</td><td>QNOVATE8</td><td>Strictly read-only</td><td><span class="pill pill-mute">None</span></td></tr>
+</tbody></table>
+<p>No SAP document was created, changed, posted, committed or reversed in either system. Every finding comes from reading metadata, function-module interfaces, repository indexes and existing document tables.</p>
+
+<h3>Why two systems</h3>
+<p>DS4 is where we are authorised to write, so it is where runtime certification must eventually happen — but it has almost no business data, which is itself a finding (see 7.2). QS4 has millions of real documents but is read-only. The pattern throughout is therefore: <b>learn the mechanism in DS4</b> (metadata, interfaces, repository indexes), <b>observe the behaviour in QS4</b> (real documents, real statuses).</p>
+
+<h2><span class="h2num">1.2</span>What counts as evidence</h2>
+<p>This distinction is the difference between “we think” and “we know”, and it is what will be tested in the room.</p>
+<table class="compact">
+<thead><tr><th style="width:50%">Counts as evidence</th><th>Does <i>not</i> count</th></tr></thead>
+<tbody>
+<tr><td>A live <code>$metadata</code> response with status captured</td><td>A service appearing in a catalogue or SEGW list</td></tr>
+<tr><td>An SE37 interface read from the live system</td><td>A payload generated from that interface</td></tr>
+<tr><td>A where-used result <i>with a control</i> proving the index covers the object type</td><td>A where-used result with no control — scope silently excludes types</td></tr>
+<tr><td>An SE16 hit count from the result title</td><td>A row sample from a lazy-loading grid treated as population-scale</td></tr>
+<tr><td>A document chain traced field by field</td><td>Two close timestamps inferred to be one transaction</td></tr>
+</tbody></table>
+
+<div class="box box-warn">
+<span class="tag">Terms that get confused — and the difference changes the answer</span>
+<p><b>Remote-enabled ≠ released.</b> <code>TFDIR-FMODE = R</code> means callable over RFC. Release status is a separate attribute meaning SAP commits to interface stability across upgrades. Three modules here are remote-enabled but <i>not</i> released — adopting them is a supportability decision.</p>
+<p><b>HTTP 200 ≠ business authorisation.</b> A <code>$metadata</code> 200 proves registration, an active ICF node and a resolving alias. It proves nothing about whether the business operation will succeed.</p>
+<p><b>Empty result ≠ no data exists.</b> It means no rows matched <i>that request</i> under <i>that user's</i> authorisations.</p>
+</div>
+
+<h2><span class="h2num">1.3</span>The tools, and what each one told us</h2>
+<table class="compact">
+<thead><tr><th style="width:30%">Tool</th><th style="width:32%">What it answers</th><th>Used here for</th></tr></thead>
+<tbody>
+<tr><td><code>/IWFND/GW_CLIENT</code></td><td>Is this OData service live, and what is its exact contract?</td><td><code>$metadata</code> for all seven services; filtered GETs</td></tr>
+<tr><td><code>/IWFND/MAINT_SERVICE</code></td><td>Registered, with which alias and ICF state?</td><td>Confirmed local registration under <code>$TMP</code></td></tr>
+<tr><td>SEGW</td><td>What design-time model exists?</td><td>The 2,626-project catalogue v1.8 was built from</td></tr>
+<tr><td>SE37</td><td>Real interface, release status, RFC flag</td><td>15 BAPI interfaces + the entire <code>SD_SCD*</code> family; two BAPIs executed</td></tr>
+<tr><td><b>Where-Used (SE37 / SE24)</b></td><td><b>Who actually calls this?</b></td><td><b>The decisive tool</b> — found the internal family and proved who calls it</td></tr>
+<tr><td>SE16</td><td>What does the data actually look like?</td><td>Status distributions, document chains, config tables, the 10,496 count</td></tr>
+<tr><td><code>DD03L</code> / <code>DD07L</code> / <code>DD07T</code></td><td>What does this field <i>mean</i>?</td><td>Corrected the project's single biggest misunderstanding — see 2.3</td></tr>
+</tbody></table>
+
+<!-- ============ 2 ============ -->
+<h1><span class="h1num">2</span>What SAP actually does before PGI</h1>
+
+<h2><span class="h2num">2.1</span>The six states</h2>
+<p>The portal presents one action. SAP performs six independently committed state transitions. Each is a separate database commit; none can be undone by a rollback once committed.</p>
+<table>
+<thead><tr><th style="width:6%">#</th><th style="width:26%">State</th><th style="width:28%">Stored in</th><th>Proof it completed</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Shipment created</td><td><code>VTTK</code> header, <code>VTTP</code> assignment</td><td><code>TKNUM</code> exists</td></tr>
+<tr><td>2</td><td>Cost document created</td><td><code>VFKK</code> header, <code>VFKP</code> item</td><td><code>FKNUM</code> exists</td></tr>
+<tr><td>3</td><td>Calculated</td><td><code>VFKP</code></td><td><code>STBER = C</code> + <code>DTBER</code>/<code>UZBER</code></td></tr>
+<tr><td>4</td><td>Account assigned</td><td><code>VFKP</code></td><td><code>STFRE = C</code> + <code>DTFRE</code>/<code>UZFRE</code></td></tr>
+<tr><td>5</td><td>Settled / transferred</td><td><code>VFKP</code> + MM</td><td><code>STABR = C</code>, <code>EBELN</code> + <code>LBLNI</code> populated</td></tr>
+<tr><td>6</td><td>Goods issue (PGI)</td><td><code>MKPF</code>/<code>MSEG</code>, <code>LIKP</code></td><td>Material doc, movement 601; <code>WBSTK = C</code></td></tr>
+</tbody></table>
+
+<h3>The shipment-level mirror</h3>
+<p>The shipment header carries its own summary of steps 3 and 5, which lets you assess a shipment without joining to the cost tables:</p>
+<ul>
+<li><code>VTTK-FBGST</code> — shipment cost <b>calculation</b> status</li>
+<li><code>VTTK-ARGST</code> — shipment cost <b>settlement</b> status</li>
+</ul>
+<p>Shipment <code>1100605471</code>: both <code>C</code>. Shipment <code>2100005093</code>: <code>FBGST = C</code>, <code>ARGST</code> absent — calculated, never settled.</p>
+
+<h2><span class="h2num">2.2</span>A real completed chain, end to end</h2>
+<p>Delivery <code>9004953084</code>, QS4, 17 August 2026. This is the reference example — these numbers recur throughout both documents.</p>
+
+<div class="timeline">
+  <div class="tl-row"><div class="tl-time">10:26:23</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Delivery 9004953084 created</span><br><span class="d">Type ZLF · shipping point 7683 · ship-to 0020105990 · route E36881</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:28</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Shipment 1100605471 created</span><br><span class="d">Type Z001 · planning point 7683 · carrier 0013000730 · 484 KM · ZZVEHICLE_NO HR55AZ3800</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:28</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Cost document 1100608871 created, calculated, account assigned</span><br><span class="d">FKART Z001 · 7,460.00 INR</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:30</div><div class="tl-mark"><span class="tl-dot hi"></span></div>
+    <div class="tl-body"><span class="t">Cost settled — transferred to MM</span><br><span class="d">Freight PO 6000105831 · service entry 1003382363</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:31</div><div class="tl-mark"><span class="tl-dot hi"></span></div>
+    <div class="tl-body"><span class="t">PGI material document 4918168265</span><br><span class="d">Movement 601</span></div></div>
+  <div class="tl-row"><div class="tl-time">11:11:32</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Billing 1108024764</span><br><span class="d">VBTYP M</span></div></div>
+  <div class="tl-row"><div class="tl-time">12:33–14:48</div><div class="tl-mark"><span class="tl-dot"></span></div>
+    <div class="tl-body"><span class="t">Five cancel / re-invoice cycles</span><br><span class="d">VBTYP N → M · outside pre-PGI scope, but real API-07 evidence</span></div></div>
+</div>
+
+<div class="box box-key">
+<span class="tag">Two seconds</span>
+<p>Shipment created to cost settled took <b>11:11:28 → 11:11:30</b>. This is not a long-running process needing external checkpointing between steps. It is a fast sequential chain — which matters directly for the decision in section 6.</p>
+</div>
+
+<h2><span class="h2num">2.3</span>Status fields — the correction that changes the project's vocabulary</h2>
+
+<div class="box box-warn">
+<span class="tag">Most important correction in this document</span>
+<p>The project has treated <code>VFKK-STFRE</code> as the “cost release” field for weeks. <b>It is not. It is the account assignment status.</b></p>
+</div>
+
+<p>Read from the data dictionary, not from field names. Domain texts via <code>DD07T</code>:</p>
+<table class="compact">
+<thead><tr><th>Field</th><th>Domain</th><th>Actual meaning</th><th>blank</th><th>A</th><th>B</th><th>C</th></tr></thead>
+<tbody>
+<tr><td><code>STBER</code></td><td><code>STBER_K</code></td><td>Calculation</td><td>not relevant</td><td>not calculated</td><td>partial</td><td>fully calculated</td></tr>
+<tr><td><code>STFRE</code></td><td><code>STFRE_K</code></td><td><b>Account assignment</b></td><td><b>not relevant</b></td><td>not completed</td><td>partial</td><td>completed</td></tr>
+<tr><td><code>STABR</code></td><td><code>STABR_K</code></td><td><b>Transfer / settlement</b></td><td><b>not relevant</b></td><td>not transferred</td><td>partial</td><td>fully transferred</td></tr>
+</tbody></table>
+
+<h3>Three consequences, each of which has already burned us</h3>
+<ol>
+<li><b><code>STFRE</code> is not release.</b> The name resembles German <i>Freigabe</i> (release); the domain text says <i>Kontierung</i> (account assignment). Field names lie; domains do not.</li>
+<li><b>Blank means “not relevant”, not “not done”.</b> An earlier analysis found 999 of 999 sampled documents blank on <code>STFRE</code> and concluded release never happens. Invalid — blank meant those documents were never <i>supposed</i> to be account-assigned.</li>
+<li><b><code>VFKK</code> has no release field at all.</b> It has exactly 18 fields. What the business calls “cost release” is the <b>transfer</b> step, <code>STABR</code> — whose function module is literally named for it (see 3.3).</li>
+</ol>
+
+<h2><span class="h2num">2.4</span>How the documents link — and a join that was wrong</h2>
+<div class="box box-warn">
+<span class="tag">Correction</span>
+<p>Earlier project notes recorded <code>FKNUM = REBEL = TKNUM</code> — cost document number equals shipment number. <b>This is false.</b></p>
+</div>
+<table class="compact">
+<thead><tr><th>Cost doc <code>FKNUM</code></th><th><code>VFKP-REBEL</code></th><th>Actual shipment</th></tr></thead>
+<tbody>
+<tr><td>1100608871</td><td>1100605471</td><td>1100605471</td></tr>
+<tr><td>2100005093</td><td>2100005099</td><td>2100005099 — <i>not</i> 2100005093</td></tr>
+<tr><td>1300105310</td><td>1300105363</td><td>1300105363</td></tr>
+</tbody></table>
+<p><b>The correct join is <code>VFKP-REBEL → VTTK-TKNUM</code>.</b> The number ranges overlap closely enough that the two look interchangeable — exactly how the error got in. Any reporting or reconciliation logic keyed on <code>FKNUM = TKNUM</code> will silently produce wrong results.</p>
+<p class="meta">Full linkage path: <code>VFKK/VFKP</code> → <code>REBEL</code> → <code>VTTK</code> → <code>VTTP</code> → <code>VBELN</code> → <code>LIKP/LIPS</code> → <code>VBFA</code> → material document and billing.</p>
+
+<!-- ============ 3 ============ -->
+<h1><span class="h1num">3</span>What is callable, and what is not</h1>
+
+<h2><span class="h2num">3.1</span>The OData services</h2>
+<p>Seven services registered and live in DS4/200. All returned HTTP 200 for <code>$metadata</code> through <code>/IWFND/GW_CLIENT</code>. Host <code>vhresds4ci.sap.shreecement.com:44300</code>. Registered locally under package <code>$TMP</code> — acceptable for development, <b>not</b> a transportable deployment.</p>
+<table class="compact">
+<thead><tr><th>Service</th><th>Ver</th><th class="num">Metadata</th><th>Serves</th></tr></thead>
+<tbody>
+<tr><td><code>API_MATERIAL_DOCUMENT_SRV</code></td><td>1</td><td class="num">40,835 B</td><td>API-01 goods receipt</td></tr>
+<tr><td><code>API_OUTBOUND_DELIVERY_SRV</code></td><td><b>2</b></td><td class="num">159,228 B</td><td>API-02, API-03 picking/PGI, API-09, API-12</td></tr>
+<tr><td><code>API_BILLING_DOCUMENT_SRV</code></td><td>1</td><td class="num">143,849 B</td><td>API-03 read-back, API-10</td></tr>
+<tr><td><code>API_PURCHASEORDER_PROCESS_SRV</code></td><td>1</td><td class="num">119,171 B</td><td>API-08, API-11</td></tr>
+<tr><td><code>API_MATERIAL_STOCK_SRV</code></td><td>1</td><td class="num">16,608 B</td><td>API-05 book stock</td></tr>
+<tr><td><code>MMIM_MATDOC_SRV</code></td><td>1</td><td class="num">71,809 B</td><td>API-01 read-back companion</td></tr>
+<tr><td><code>SD_CUSTOMER_INVOICES_CREATE</code></td><td>1</td><td class="num">225,238 B</td><td>API-03 billing create (application-internal)</td></tr>
+</tbody></table>
+<p>Parsed from those responses: <b>1,854 properties · 110 entity sets · 23 function imports · 81 navigation properties.</b></p>
+
+<div class="box box-key">
+<span class="tag">The delivery service must be version 2</span>
+<p>Exact runtime path: <code>/sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/</code>, generated from SEGW project <code>API_OUTBOUND_DELIVERY_0002</code>. Version 1 exists under the identical technical name and <b>lacks the batch-split operations</b>. It would activate cleanly and then fail on first real use.</p>
+</div>
+
+<h3>Write capability, from the service's own annotations</h3>
+<table class="compact">
+<thead><tr><th>Entity set</th><th>Create</th><th>Update</th><th>Delete</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>A_MaterialDocumentHeader</code></td><td><span class="pill pill-yes">yes</span></td><td>false</td><td>false</td><td>Deep insert from header only</td></tr>
+<tr><td><code>A_MaterialDocumentItem</code></td><td><span class="pill pill-no">false</span></td><td>false</td><td>false</td><td>Items cannot be posted standalone</td></tr>
+<tr><td><code>A_OutbDeliveryHeader</code></td><td><span class="pill pill-yes">yes</span></td><td>yes</td><td>yes</td><td>API-02 create supported</td></tr>
+<tr><td><code>A_OutbDeliveryItem</code></td><td><span class="pill pill-no">false</span></td><td>yes</td><td>yes</td><td>API-12 PATCH supported; no standalone create</td></tr>
+<tr><td><code>A_PurchaseOrder</code> + item + schedule</td><td><span class="pill pill-yes">yes</span></td><td>yes</td><td>yes</td><td>API-11 deep create supported</td></tr>
+<tr><td><code>A_MaterialStock</code>, <code>A_MatlStkInAcctMod</code></td><td>false</td><td>false</td><td>false</td><td>API-05 read-only, as required</td></tr>
+<tr><td><b>All 8 <code>A_BillingDocument*</code> sets</b></td><td><span class="pill pill-no">false</span></td><td><span class="pill pill-no">false</span></td><td><span class="pill pill-no">false</span></td><td><b>Billing cannot be created here</b></td></tr>
+</tbody></table>
+<div class="box box-warn">
+<span class="tag">Load-bearing</span>
+<p><code>API_BILLING_DOCUMENT_SRV</code> is read-only apart from its <code>Cancel</code> function import. Billing creation must go through <code>SD_CUSTOMER_INVOICES_CREATE</code> or <code>BAPI_BILLINGDOC_CREATEMULTIPLE</code>. Any design assuming the billing API can create is wrong.</p>
+</div>
+
+<h3>Delivery v2 function imports — exact runtime signatures</h3>
+<p>All are <b>POST</b> (<code>m:HttpMethod</code> from live metadata, not inferred from the name). The only GET in the entire set is billing <code>GetPDF</code>.</p>
+<table class="compact">
+<thead><tr><th>Function import</th><th class="num">Params</th><th>Signature</th></tr></thead>
+<tbody>
+<tr><td><code>PostGoodsIssue</code></td><td class="num">1</td><td><code>DeliveryDocument</code></td></tr>
+<tr><td><code>ReverseGoodsIssue</code></td><td class="num">2</td><td>+ <code>ActualGoodsMovementDate</code></td></tr>
+<tr><td><code>ConfirmPickingAllItems</code></td><td class="num">1</td><td><code>DeliveryDocument</code></td></tr>
+<tr><td><code>ConfirmPickingOneItem</code></td><td class="num">2</td><td>+ <code>DeliveryDocumentItem</code></td></tr>
+<tr><td><code>PickAllItems</code> / <code>PickOneItem</code></td><td class="num">1 / 2</td><td>document, item</td></tr>
+<tr><td><code>PickOneItemWithBaseQuantity</code></td><td class="num">4</td><td>+ <code>ActualDeliveredQtyInBaseUnit</code>, <code>BaseUnit</code></td></tr>
+<tr><td><code>PickOneItemWithSalesQuantity</code></td><td class="num">4</td><td>+ <code>ActualDeliveryQuantity</code>, <code>DeliveryQuantityUnit</code></td></tr>
+<tr><td><code>SetPickingQuantityWithBaseQuantity</code></td><td class="num">4</td><td>base qty + unit</td></tr>
+<tr><td><code>PickAndBatchSplitOneItem</code></td><td class="num"><b>5</b></td><td>+ <code>Batch</code>, <code>SplitQuantity</code>, <b><code>SplitQuantityUnit</code></b></td></tr>
+<tr><td><code>CreateBatchSplitItem</code></td><td class="num"><b>6</b></td><td>+ <code>PickQuantityInSalesUOM</code>, <code>ActualDeliveryQuantity</code>, <code>DeliveryQuantityUnit</code></td></tr>
+</tbody></table>
+<p class="meta">Both bolded counts correct v1.8, which listed four parameters for <code>PickAndBatchSplitOneItem</code>. <b>Not yet proven:</b> parameter encoding — OData V2 POST function imports conventionally use the query string, but no executed call has confirmed it here.</p>
+
+<h2><span class="h2num">3.2</span>The BAPIs</h2>
+<p>Fifteen interfaces captured live from SE37 in DS4/200. All remote-enabled. <b>Three are not released.</b></p>
+<table class="compact">
+<thead><tr><th>BAPI</th><th>Released</th><th>Role in the flow</th></tr></thead>
+<tbody>
+<tr><td><code>BAPI_SHIPMENT_CREATE</code></td><td><span class="pill pill-yes">Yes</span></td><td><b>The one pre-PGI step with a proper standard API</b></td></tr>
+<tr><td><code>BAPI_SHIPMENT_CHANGE</code></td><td><span class="pill pill-no">No</span></td><td>Change shipment; <i>not</i> proven to perform cost release</td></tr>
+<tr><td><code>BAPI_SHIPMENT_COST_ESTIMATE</code></td><td><span class="pill pill-no">No</span></td><td>Estimate only — creates no document</td></tr>
+<tr><td><code>BAPI_GOODSMVT_CREATE</code> / <code>_CANCEL</code></td><td><span class="pill pill-yes">Yes</span></td><td>API-01 receipt / reversal</td></tr>
+<tr><td><code>BAPI_OUTB_DELIVERY_CREATE_STO</code> / <code>_SLS</code></td><td><span class="pill pill-yes">Yes</span></td><td>API-02 alternatives</td></tr>
+<tr><td><code>BAPI_OUTB_DELIVERY_CHANGE</code></td><td><span class="pill pill-no">No</span></td><td>API-12 alternative</td></tr>
+<tr><td><code>BAPI_OUTB_DELIVERY_CONFIRM_DEC</code></td><td><span class="pill pill-yes">Yes</span></td><td>Picking confirmation</td></tr>
+<tr><td><code>BAPI_PO_CREATE1</code></td><td><span class="pill pill-yes">Yes</span></td><td>API-11</td></tr>
+<tr><td><code>BAPI_BILLINGDOC_CREATEMULTIPLE</code> / <code>_CANCEL1</code></td><td><span class="pill pill-yes">Yes</span></td><td>Billing</td></tr>
+<tr><td><code>BAPI_MATERIAL_AVAILABILITY</code></td><td><span class="pill pill-yes">Yes</span></td><td>ATP — <b>not</b> book stock</td></tr>
+<tr><td><code>BAPI_TRANSACTION_COMMIT</code> / <code>_ROLLBACK</code></td><td><span class="pill pill-yes">Yes</span></td><td>LUW control</td></tr>
+</tbody></table>
+
+<h3><code>BAPI_SHIPMENT_CREATE</code> — the input surface</h3>
+<p>Imports: <code>HEADERDATA</code> (<code>BAPISHIPMENTHEADER</code>), <code>ITEMDATA</code>, <code>STAGEDATA</code>, <code>HEADERDEADLINE</code>, <code>STAGEDEADLINE</code>, <code>ADDRESS</code>, <code>HDUNHEADER</code>, <code>HDUNITEM</code>, <code>ITEMONSTAGE</code>. Exports: <code>TRANSPORT</code> (shipment number), <code>SHIPMENTGUID</code>, <code>RETURN</code>.</p>
+<div class="box box-key">
+<span class="tag">The client's transport fields live here</span>
+<p><code>BAPISHIPMENTHEADER</code> carries the customer append fields <code>ZZVEHICLE_NO</code>, <code>ZZDRIVER_NAME</code>, <code>ZZDRIVERMOB</code>, <code>ZZLR_GR_NO</code>, <code>ZZLR_GR_DATE</code>, <code>ZZGROSS_WT</code>, <code>ZZNET_WT</code>, <code>ZZTARE_WT</code>. v1.8 §8 parked these as “belonging to the unidentified Stage-B route”. <b>They are now placed</b> — the shipment-create call is their request surface.</p>
+</div>
+<div class="box box-warn">
+<span class="tag">No simulation mode</span>
+<p>There is <b>no <code>TESTRUN</code> parameter</b>. The first execution of this BAPI creates a real shipment. Plan the DS4 demo accordingly.</p>
+</div>
+
+<h3><code>BAPI_SHIPMENT_COST_ESTIMATE</code> — what it actually needs</h3>
+<p>Inputs: <code>HEADERDATA</code>, <code>ITEMDATA</code>, <code>STAGEDATA</code>, deadlines, <b>plus</b> <code>DLVHEADER</code> and <code>DLVITEMS</code>. Exports <code>RETURNCOSTS</code> and <code>RETURN</code> — and notably <b>no <code>TRANSPORT</code></b>, consistent with creating nothing.</p>
+<div class="box box-warn">
+<span class="tag">Not a delivery-only call</span>
+<p>You cannot pass a delivery number and get a freight quote. You must construct an in-memory shipment. Any API-04 design assuming “send the DI and the transporter, get a price” is wrong about the input shape. Its non-posting behaviour is also <b>asserted, not proven</b> — we have not yet compared <code>VFKK</code>/<code>VFKP</code> key counts before and after a call.</p>
+</div>
+
+<h3>The two BAPIs actually executed</h3>
+<table class="compact">
+<thead><tr><th>BAPI</th><th>Input</th><th>Output</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>BAPI_MATERIAL_AVAILABILITY</code></td><td><code>15000177</code>/<code>1002</code>/<code>TO</code></td><td><code>WM3351 Material not maintained in plant</code>; ATP <code>0.000</code></td><td>QS4 master data absent from DS4</td></tr>
+<tr><td>same</td><td><code>MAT18</code>/<code>PLQ3</code>/<code>EA</code></td><td>no error; ATP <code>0.000</code></td><td>Callable and authorised; DEV material has zero ATP</td></tr>
+<tr><td><code>BAPI_PO_CREATE1</code><br><code>TESTRUN=X</code></td><td><code>POHEADER-DOC_TYPE = ZP06</code></td><td><code>I MMPUR_BASE 054</code><br><code>E MEPO 002</code><br><b><code>E ME 013 Document type ZP06 not allowed with doc. category F</code></b><br><code>W W5 005</code></td><td>ZP06 not configured in DS4</td></tr>
+</tbody></table>
+<p><b>Read <code>ME 013</code> precisely.</b> It does not say “document type does not exist”. It says the type is not <i>allowed for document category F</i> — the purchase-order category. That is a configuration statement, not a BAPI defect. <code>EXPPURCHASEORDER</code> came back blank and no commit occurred, exactly as <code>TESTRUN</code> should behave. The BAPI also echoed <code>ZP06</code> back unchanged in <code>EXPHEADER</code> — it accepted the value into the interface and rejected it at validation.</p>
+
+<h2><span class="h2num">3.3</span>The internal function modules — the heart of the problem</h2>
+<p>Steps 2 to 5 are performed by SAP function modules in function groups <code>V54C</code>, <code>V54R</code>, <code>V54U</code>, <code>V54B</code>, <code>V54K</code>, <code>V54S</code>, <code>V54O</code>. The complete <code>SD_SCDS_*</code> family is nine modules:</p>
+<table class="compact">
+<thead><tr><th>Function module</th><th>Program</th><th>SAP short text (German)</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td><b><code>SD_SCDS_CREATE</code></b></td><td><code>SAPLV54C</code></td><td>Frachtkosten anlegen (online, batch)</td><td><b>Creates the cost document</b></td></tr>
+<tr><td><code>SD_SCDS_CHANGE</code></td><td><code>SAPLV54C</code></td><td>—</td><td>Change</td></tr>
+<tr><td><b><code>SD_SCDS_RELEASE</code></b></td><td><code>SAPLV54R</code></td><td><b>Überleitung der Frachtkostenpositionen</b></td><td><b>Transfer / settlement</b></td></tr>
+<tr><td><code>SD_SCDS_REVERSE</code></td><td><code>SAPLV54R</code></td><td>Storno der Frachtkostenpositionen</td><td>Cancel / reverse</td></tr>
+<tr><td><code>SD_SCDS_SAVE</code></td><td><code>SAPLV54U</code></td><td>Frachtkosten sichern</td><td>Persist</td></tr>
+<tr><td><code>SD_SCDS_SHIPMENT_UPDATE</code></td><td><code>SAPLV54U</code></td><td>Fortschreiben von Transporten</td><td>Writes <code>VTTK-FBGST</code>/<code>ARGST</code></td></tr>
+<tr><td><code>SD_SCDS_CHECK_CHANGES</code> / <code>_CHECK_COMPLETE</code></td><td><code>SAPLV54U</code></td><td>—</td><td>Validation</td></tr>
+<tr><td><code>SD_SCDS_HEAD_DETERMINE_STATUS</code></td><td><code>SAPLV54S</code></td><td>—</td><td>Status determination</td></tr>
+</tbody></table>
+<p>Plus at item level: <code>SD_SCD_ITEM_CALCULATE</code> (V54B), <code>SD_SCD_ITEM_ACCT_ASSIGNMENT</code> (V54K), <code>SD_SCD_HISTORY_SETTLEMENT</code> (V54O), and roughly 30 further <code>SD_SCD_*</code> helpers.</p>
+
+<div class="box box-good">
+<span class="tag">The release question, settled by SAP's own naming</span>
+<p><b>“Überleitung” is German for <i>transfer</i>, not release (“Freigabe”).</b> <code>SD_SCDS_RELEASE</code> maps to <code>STABR</code>. So what the business calls “cost release” is technically the <b>transfer of freight cost items into MM</b> — which is exactly why completing it produces a freight purchase order and a service entry sheet.</p>
+</div>
+
+<h3>Interfaces, and what they say about wrappability</h3>
+<table class="compact">
+<thead><tr><th>Module</th><th>Key parameters</th><th>Coupling</th><th>Wrappable?</th></tr></thead>
+<tbody>
+<tr><td><code>SD_SCDS_CREATE</code></td><td><code>I_FKART</code>, <code>I_PRSDT</code>, <code>I_BUDAT</code>, <code>I_OPT_COMMIT</code>, <code>C_REFOBJ_RANGE</code>, <code>E_REFOBJ_RANGE_LOCKED</code></td><td>No dialog dependency; own commit flag; range-based</td><td><span class="pill pill-yes">Best candidate</span> built for “online, batch”</td></tr>
+<tr><td><code>SD_SCDS_RELEASE</code></td><td><code>I_REFOBJ_TAB</code>, <code>I_TCODE</code>, <code>C_SCD_TAB</code></td><td>No <code>T180</code>; needs document structure prepared</td><td><span class="pill pill-warn">Moderate</span></td></tr>
+<tr><td><code>SD_SCDS_SAVE</code></td><td><b><code>I_T180</code></b>, <code>I_OPT_UPDATE_TASK</code></td><td>Requires screen-sequence control</td><td><span class="pill pill-warn">Dialog-bound</span></td></tr>
+<tr><td><code>SD_SCD_ITEM_CALCULATE</code></td><td><b><code>I_T180</code></b>, <code>I_REFOBJ</code>, <code>I_FKART</code>, <code>I_OPT_CALC_TYPE</code></td><td>Requires screen-sequence control</td><td><span class="pill pill-warn">Dialog-bound</span></td></tr>
+<tr><td><code>SD_SCD_ITEM_ACCT_ASSIGNMENT</code></td><td><code>I_TRTYP</code>, <code>I_CALLING_PROGRAM</code>, <code>I_CUA_ROUTINE_EXT</code>, <code>E_FCODE</code></td><td><b><code>T185</code>/<code>T185V</code> screen-flow, <code>SY-CPROG</code>, CUA codes</b></td><td><span class="pill pill-no">Do not wrap directly</span></td></tr>
+<tr><td><code>SD_SCD_HISTORY_SETTLEMENT</code></td><td><code>I_VFKP</code> → <code>E_SETTL_HIST</code></td><td>None</td><td><span class="pill pill-yes">Clean read API</span> for freight PO / service entry</td></tr>
+</tbody></table>
+
+<div class="box box-key">
+<span class="tag">SAP itself refuses to split create and save</span>
+<p>Where-used on <code>SD_SCDS_SAVE</code> returns <code>LV54CU10</code> — which is <code>SD_SCDS_CREATE</code>'s own include. <b><code>SD_SCDS_CREATE</code> calls <code>SD_SCDS_SAVE</code> internally.</b> Create and persist are one operation at the SAP level. Exposing them as two endpoints would invent a boundary SAP does not have.</p>
+</div>
+
+<h2><span class="h2num">3.4</span>The callability verdict</h2>
+<table>
+<thead><tr><th style="width:24%">Step</th><th style="width:30%">Mechanism</th><th>Released</th><th>RFC</th><th>Callable today</th></tr></thead>
+<tbody>
+<tr><td>1 · Shipment create</td><td><code>BAPI_SHIPMENT_CREATE</code></td><td>Yes</td><td>Yes</td><td><span class="pill pill-yes">YES</span></td></tr>
+<tr><td>— · Freight estimate</td><td><code>BAPI_SHIPMENT_COST_ESTIMATE</code></td><td><b>No</b></td><td>Yes</td><td><span class="pill pill-warn">With risk</span></td></tr>
+<tr><td>2 · Cost doc create</td><td><code>SD_SCDS_CREATE</code></td><td>No</td><td><b>No</b></td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>3 · Calculate</td><td><code>SD_SCD_ITEM_CALCULATE</code></td><td>No</td><td><b>No</b></td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>4 · Account assign</td><td><code>SD_SCD_ITEM_ACCT_ASSIGNMENT</code></td><td>No</td><td><b>No</b></td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>5 · Settle</td><td><code>SD_SCDS_RELEASE</code></td><td>No</td><td><b>No</b></td><td><span class="pill pill-no">NO</span></td></tr>
+<tr><td>6 · PGI</td><td>OData <code>PostGoodsIssue</code></td><td>Yes</td><td>—</td><td><span class="pill pill-yes">YES</span></td></tr>
+</tbody></table>
+
+<h3>How we know — and why the method matters</h3>
+<ol>
+<li><b>RFC status:</b> <code>TFDIR-FMODE</code>. Control: <code>BAPI_SHIPMENT_CREATE</code> returns <code>R</code>; every <code>SD_SCDS_*</code> module returns blank. The control proves we are reading the right column.</li>
+<li><b>Search completeness:</b> patterns <code>SD_SCD*</code>, <code>SD_SCDS*</code>, <code>*SHIPMENT_COST*</code>, <code>*SHIPMENTCOST*</code>, <code>BAPI_SHIPMENT*</code>, <code>V54*</code>. An earlier narrow search using only <code>*SHIPMENTCOST*</code> found nothing and produced the incorrect claim “no such BAPI exists”.</li>
+<li><b>Where-used completeness:</b> full scope, all object types selected. Control: where-used on <code>SD_SCD_ITEM_CALCULATE</code> returned SAP-standard includes <code>LV54CF02</code> and <code>LV54CF03</code> — proving the index covers standard code, so a custom-only result elsewhere is a real finding, not an index gap.</li>
+</ol>
+<div class="box box-warn">
+<span class="tag">Phrase it as a claim about the search</span>
+<p>The defensible sentence is: <i>“no shipment-cost create or release BAPI was discovered through the searches performed”</i> — patterns and where-used both listed. <b>Never</b> “no BAPI exists”.</p>
+</div>
+
+<div class="box box-good">
+<span class="tag">The conclusion that drives section 6</span>
+<p><b>Four of the six pre-PGI steps have no callable SAP interface. Custom ABAP development is therefore mandatory, regardless of how many endpoints we expose.</b> This is not a design preference — it is a property of the system.</p>
+</div>
+
+<!-- ============ 4 ============ -->
+<h1><span class="h1num">4</span>What we found that is not currently known</h1>
+
+<h2><span class="h2num">4.1</span>10,496 stranded cost documents</h2>
+<p>True <code>SE16</code> hit counts on <code>VFKK</code> in QS4/700, full table:</p>
+
+<div class="statbar">
+  <div class="bar">
+    <div class="seg" style="width:52.4%; background:#2A6049;">52.4% settled</div>
+    <div class="seg" style="width:47.4%; background:#8FA6AF;">47.4% not relevant</div>
+    <div class="seg" style="width:0.18%; background:#B3402A;"></div>
+  </div>
+  <div class="legend">
+    <div><span class="sw" style="background:#2A6049"></span><b>3,021,454</b> fully transferred</div>
+    <div><span class="sw" style="background:#8FA6AF"></span><b>2,737,318</b> not relevant</div>
+    <div><span class="sw" style="background:#B3402A"></span><b>10,496</b> stranded (0.18%)</div>
+  </div>
+</div>
+
+<table class="compact">
+<thead><tr><th><code>STABR</code></th><th>Meaning</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+<tbody>
+<tr><td><code>C</code></td><td>Fully transferred</td><td class="num">3,021,454</td><td class="num">52.4%</td></tr>
+<tr><td>blank</td><td>Not relevant for transfer</td><td class="num">2,737,318</td><td class="num">47.4%</td></tr>
+<tr><td><b><code>A</code></b></td><td><b>Relevant, not transferred</b></td><td class="num"><b>10,496</b></td><td class="num"><b>0.18%</b></td></tr>
+<tr><td><code>B</code></td><td>Partially transferred</td><td class="num">0</td><td class="num">—</td></tr>
+<tr><td colspan="2"><b>Total</b></td><td class="num"><b>5,769,268</b></td><td></td></tr>
+</tbody></table>
+
+<div class="box box-warn">
+<span class="tag">State the 0.18% yourself, first</span>
+<p>If you present 10,496 as if it were systemic and someone divides by 5.77 million, the number turns against you and takes the rest of the briefing with it. Presented honestly it is a strong argument. Presented as a crisis it is a liability.</p>
+</div>
+
+<div class="box box-quote">
+This 0.18% is the <b>best case</b>. It comes from ABAP running inside SAP, in the same program context, with no network between the steps, tuned over years of production. It still leaves 10,496 documents stranded. A new integration that splits these steps across a network boundary, with an orchestrator that cannot read <code>VFKK</code>, will not beat 0.18%.
+</div>
+
+<p>At the 4,000 logistics calls per day cited on 17 August, 0.18% is roughly <b>7 stranded documents per day, about 2,600 a year</b> — each with calculated freight cost that never reached MM. No freight purchase order, no service entry sheet, no accrual cleared. That is a financial exposure, not a rounding error.</p>
+
+<h3>The traced example — know this chain cold</h3>
+<div class="chain">
+  <div class="chain-node bad"><span class="n">VFKK 1300105310</span> &nbsp; <code>FKART Z003</code> &nbsp; <code>STBER=C</code> <code>STFRE=A</code> <code>STABR=A</code><br>
+    <span class="m">Calculated · account assignment RELEVANT but not done · transfer RELEVANT but not done</span></div>
+  <div class="chain-arrow">↓ <span class="meta">VFKP item 000001 · <code>FKPTY Z002</code> · 12,144.00 INR · <code>TDLNR 0013000913</code> · <b>EBELN blank · LBLNI blank</b></span></div>
+  <div class="chain-node"><span class="n">Shipment 1300105363</span><br><span class="m">via VFKP-REBEL</span></div>
+  <div class="chain-arrow">↓ <span class="meta">VTTP</span></div>
+  <div class="chain-node bad"><span class="n">Delivery 0080387199</span> &nbsp; <code>LFART ZLF</code> &nbsp; <code>WBSTK=C</code> &nbsp; <code>FKSTK=C</code><br>
+    <span class="m"><b>PGI COMPLETE and invoiced — while the freight cost was never transferred</b></span></div>
+</div>
+<p class="meta">All 200 rows sampled from this population showed <code>FKART = Z003</code>, <code>STBER = C</code>, <code>STFRE = A</code>, <code>STABR = A</code>. A consistent state, not scattered failures.</p>
+
+<h2><span class="h2num">4.2</span>Cost type is not a constant — and it is a hole in the contract</h2>
+<p>Any cost-posting call takes a shipment cost type as a <b>mandatory</b> input. Four types were observed behaving differently:</p>
+<table class="compact">
+<thead><tr><th><code>FKART</code></th><th>Observed lifecycle</th><th>Sample</th></tr></thead>
+<tbody>
+<tr><td><code>Z001</code></td><td><b>Completes fully</b> — all three statuses <code>C</code>; freight PO and service entry created</td><td>Settled sample, Sep–Oct 2024</td></tr>
+<tr><td><code>Z003</code></td><td><b>Strands</b> — calculated, then <code>STFRE=A</code>/<code>STABR=A</code></td><td>The 10,496 population</td></tr>
+<tr><td><code>Z006</code></td><td>Calculates; settlement not relevant</td><td>201 rows, all 31.03.2026, one batch</td></tr>
+<tr><td><code>Y003</code></td><td>Calculated only</td><td>Doc 2100005093, Feb 2024</td></tr>
+</tbody></table>
+<div class="box box-key">
+<span class="tag">New information for the room</span>
+<p>On 17 August the client described release as <i>“a tick inside the transaction, not a separate BAPI”</i>. Accurate for the GUI. But the <b>callable</b> form requires a cost type to be chosen and supplied — and <b>v1.8 §4 has no field for it</b>. Either it is derived from the shipment or planning point, or it becomes a caller-supplied request field. This must be decided.</p>
+</div>
+
+<h2><span class="h2num">4.3</span>Settlement is not a technical prerequisite for PGI</h2>
+<p>An open question for weeks. Now closed — and the answer is counter-intuitive.</p>
+<div class="box box-good">
+<span class="tag">Proven</span>
+<p><b>SAP does not block goods issue on unsettled freight cost.</b> Cost document <code>1300105310</code> has <code>STABR = A</code> — settlement <i>relevant</i> and <i>incomplete</i> — while its delivery <code>0080387199</code> shows <code>WBSTK = C</code>, PGI complete.</p>
+</div>
+
+<h3>Why an earlier counter-example did not prove this</h3>
+<table class="compact">
+<thead><tr><th></th><th>First attempt</th><th>The valid one</th></tr></thead>
+<tbody>
+<tr><td>Delivery</td><td><code>0180915535</code></td><td><code>0080387199</code></td></tr>
+<tr><td>Delivery type</td><td><code>EL</code> — not a dispatch type</td><td><b><code>ZLF</code></b> — real dispatch, same family as the settled reference</td></tr>
+<tr><td><code>STABR</code></td><td>blank = <i>not relevant</i></td><td><b><code>A</code> = not transferred</b></td></tr>
+<tr><td>Proves</td><td>PGI proceeds when settlement is irrelevant — trivially true</td><td><b>PGI proceeds when settlement is relevant and incomplete</b></td></tr>
+</tbody></table>
+<p>The distinction is the entire argument. <b>Do not present the first version.</b></p>
+<p><b>Design consequence:</b> “release before PGI” is a <b>business rule, not a SAP constraint</b>. If CNF wants it enforced, CNF must enforce it. Equally, an orchestration that blocks waiting for settlement is imposing a constraint SAP does not impose — that should be a deliberate choice, not an inherited assumption.</p>
+<p class="meta">Limit of the claim: it proves PGI is <i>possible</i> without settlement in this configuration. It does not prove no configuration anywhere in the landscape would block it.</p>
+
+<h2><span class="h2num">4.4</span>This pattern is already implemented here</h2>
+<p>Where-used on <code>SD_SCDS_CREATE</code> returned <b>eight callers, every one custom Z code</b> — and no SAP standard caller. Classes <code>ZCLDACE_POST_UTILITY</code>, <code>ZCLDACE_WT_TRNASFER</code>, <code>ZDACE_CL_STO_PROCESS</code> (each with a method <code>SHIP_COST_CRT</code>); programs <code>ZLEIILMSDOCUMENTS_SHIPMENTCOST</code>, <code>ZLEIILMSDOCUMENTS_INTERCOMPANY</code>, <code>ZLERA2SALAUTO</code>, <code>ZLERBTSTSALAUTO</code>, <code>ZSDC013_SHIPMENT_UPLOAD_SUB</code>.</p>
+
+<h3>The closest precedent — <code>ZDACEFM_SHIP_COST</code></h3>
+<table class="compact">
+<thead><tr><th style="width:32%">Attribute</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Function group</td><td><code>ZDACEFG_SHIP_COST</code> — “Shipment Cost FG”</td></tr>
+<tr><td>Package</td><td><code>ZDEL_ACE</code></td></tr>
+<tr><td>Short text</td><td>“Shipment Cost Posting FM”</td></tr>
+<tr><td>Last changed</td><td>08.05.2025</td></tr>
+<tr><td>Remote-enabled</td><td><span class="pill pill-no">No</span></td></tr>
+<tr><td><b>Interface</b></td><td><code>I_TKNUM</code> (mandatory) · <code>I_FKART</code> (mandatory) · <code>I_COMMIT</code> (optional)</td></tr>
+<tr><td><b>Exports</b></td><td><b>None. No <code>RETURN</code> parameter at all.</b></td></tr>
+</tbody></table>
+<p>One shipment in, cost document posted, commit under caller control. <b>This is the shape we are proposing, and it already exists and runs in this system</b> — a feasibility proof we did not have to construct.</p>
+<div class="box box-warn">
+<span class="tag">Two caveats you must state, unprompted</span>
+<p><b>1.</b> This object belongs to the weighbridge programme, which is <b>out of C&amp;F scope</b>. Cite it as evidence the pattern is proven and the shape is known — <b>not</b> as a CNF asset to reuse, and <b>not</b> as proof that CNF needs only a thin wrapper.</p>
+<p><b>2.</b> It has <b>no <code>RETURN</code> parameter</b>. It cannot tell its caller what it created or why it failed. That is a genuine defect for integration use, and precisely what our version must fix. <b>Copy the shape; do not copy the silence.</b></p>
+</div>
+
+<!-- ============ 5 ============ -->
+<h1><span class="h1num">5</span>Comparison with the v1.8 specification</h1>
+
+<h2><span class="h2num">5.1</span>Corrections v1.8 requires</h2>
+<table class="compact">
+<thead><tr><th style="width:4%">#</th><th style="width:32%">v1.8 / prior belief</th><th style="width:44%">Runtime evidence</th><th>Impact</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>VFKK-STFRE</code> is the cost release status</td><td>It is <b>account assignment</b> (<code>STFRE_K</code>); blank = “not relevant”</td><td><span class="pill pill-no">High</span></td></tr>
+<tr><td>2</td><td><code>FKNUM = REBEL = TKNUM</code></td><td>False. Join is <code>VFKP-REBEL → VTTK-TKNUM</code></td><td><span class="pill pill-no">High</span></td></tr>
+<tr><td>3</td><td>Release evidence is <code>STFRE</code>/<code>STABR</code> alone</td><td>Add <code>VTTK-FBGST</code>/<code>ARGST</code> and <code>VFKP-EBELN</code>/<code>LBLNI</code></td><td><span class="pill pill-warn">Medium</span></td></tr>
+<tr><td>4</td><td><code>PickAndBatchSplitOneItem</code> has 4 parameters</td><td><b>5</b> — <code>SplitQuantityUnit</code> missing</td><td><span class="pill pill-warn">Medium</span> call would fail</td></tr>
+<tr><td>5</td><td><code>CreateBatchSplitItem</code> unspecified</td><td><b>6</b>, including <code>PickQuantityInSalesUOM</code></td><td><span class="pill pill-warn">Medium</span></td></tr>
+<tr><td>6</td><td><code>GoodsMovementCode</code> unknown</td><td><code>T158G</code> has 7 values; <code>01</code> = MB01 goods receipt for PO — <b>candidate pending a run</b></td><td><span class="pill pill-warn">Medium</span></td></tr>
+<tr><td>7</td><td>Billing creatable via <code>API_BILLING_DOCUMENT_SRV</code></td><td><b>Impossible</b> — all 8 entity sets <code>creatable=false</code></td><td><span class="pill pill-no">High</span></td></tr>
+<tr><td>8</td><td>Stage-B transport fields have no home</td><td>Append fields on <code>BAPISHIPMENTHEADER</code></td><td><span class="pill pill-no">High</span> unblocks §4</td></tr>
+<tr><td>9</td><td>Cost type not mentioned</td><td><code>FKART</code> is a <b>mandatory</b> input and varies by scenario</td><td><span class="pill pill-no">High</span> missing field</td></tr>
+<tr><td>10</td><td>Stage B route “unidentified”</td><td>Identified: <code>SD_SCDS_CREATE</code> → <code>SD_SCDS_RELEASE</code>, neither callable</td><td><span class="pill pill-no">High</span></td></tr>
+</tbody></table>
+
+<h2><span class="h2num">5.2</span>The gap in v1.8 §4</h2>
+<p>API-03 §4 (Request properties) has field-level rows for stages A, C, D and E — and <b>nothing for stage B</b>, only a prose note that the route is unidentified. §8 parks the <code>ZZ*</code> transport fields as belonging to that unidentified route.</p>
+<p><b>Both are now fixable.</b> The stage-B request contract is <code>BAPISHIPMENTHEADER</code> (including the <code>ZZ*</code> fields) plus <code>ITEMDATA</code> referencing the delivery, plus a decision on how <code>FKART</code> is supplied. This is the concrete next deliverable — produced as a delta report, <b>not</b> by editing the v1.8 workbook directly.</p>
+
+<h2><span class="h2num">5.3</span>API-by-API status</h2>
+<p>Counting rule: an operation is validated only when a representative input was executed, the raw response captured, and the result reconciled to an SAP document. <b>On that rule, two operations are validated.</b></p>
+<table class="compact">
+<thead><tr><th style="width:11%">API</th><th style="width:22%">Purpose</th><th style="width:30%">Mechanism</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>API-01</td><td>Goods receipt (MIGO)</td><td><code>API_MATERIAL_DOCUMENT_SRV</code> deep insert</td><td>Blocked — no valued material; <code>GoodsMovementCode</code> candidate <code>01</code></td></tr>
+<tr><td>API-02</td><td>Create delivery</td><td><code>API_OUTBOUND_DELIVERY_SRV;v=2</code></td><td>Blocked — no predecessor documents</td></tr>
+<tr><td><b>API-03</b></td><td><b>Invoice chain</b></td><td><b>Composite — section 6</b></td><td><b>Pre-PGI half requires custom development</b></td></tr>
+<tr><td>API-04</td><td>Freight estimate</td><td><code>BAPI_SHIPMENT_COST_ESTIMATE</code></td><td>Not released; in-memory shipment required; non-posting unproven</td></tr>
+<tr><td>API-05</td><td>Stock availability</td><td><code>API_MATERIAL_STOCK_SRV</code></td><td>Contract correct and read-only; no stock in DS4</td></tr>
+<tr><td>API-06 / 07</td><td>E-way / correction</td><td>DigiGST / EY eDocument</td><td>Existing route; boundary not traced</td></tr>
+<tr><td>API-08</td><td>STO PO read</td><td><code>API_PURCHASEORDER_PROCESS_SRV</code></td><td>Service works; no ZP06 data in DS4</td></tr>
+<tr><td>API-09</td><td>STO delivery read</td><td><code>API_OUTBOUND_DELIVERY_SRV;v=2</code></td><td>Service works; ZNL absent in DS4</td></tr>
+<tr><td>API-10</td><td>STO invoice read</td><td><code>API_BILLING_DOCUMENT_SRV</code></td><td><code>SalesDocument</code> exists; VBRP-AUBEL mapping unproven</td></tr>
+<tr><td>API-11</td><td>Create STO PO</td><td><code>BAPI_PO_CREATE1</code> / OData</td><td>ZP06 rejected — <code>ME 013</code> configuration gap</td></tr>
+<tr><td>API-12</td><td>Update DI quantity</td><td>PATCH <code>A_OutbDeliveryItem</code></td><td>Quantity updatable; <b>unit is not</b>; ETag untested</td></tr>
+</tbody></table>
+
+<!-- ============ 6 ============ -->
+<h1><span class="h1num">6</span>The decision: one pre-PGI API</h1>
+
+<h2><span class="h2num">6.1</span>The question, stated precisely</h2>
+<p>Scope is <b>shipment creation → freight estimate → cost document creation and calculation → cost release</b>, ending immediately before PGI. Billing, e-invoice, e-way and the Hybris repair cron are outside this decision.</p>
+<p>The question is whether CNF calls SAP <b>once</b> for that span, or <b>three times</b>.</p>
+
+<h2><span class="h2num">6.2</span>Why one — four arguments</h2>
+
+<h3>1 · Custom development is required either way</h3>
+<p>Four of six steps have no callable interface. Three endpoints means three custom wrappers, not fewer. The choice is only how many doors we cut in the wall, not whether we cut any. <b>“Use standard APIs instead” is not an available option</b> — and we can now prove that rather than assert it.</p>
+
+<h3>2 · SAP has already merged two of the steps</h3>
+<p><code>SD_SCDS_CREATE</code> calls <code>SD_SCDS_SAVE</code> internally. Splitting create from persist would invent a boundary SAP does not have. This also matches what the room agreed on 17 August: costing-document creation and costing release merged into one call, reducing four calls to three.</p>
+
+<h3>3 · State lives in SAP, so the caller cannot own it</h3>
+<p>Chain state is in <code>VTTK</code>, <code>VFKK</code>/<code>VFKP</code> and <code>LIKP</code>. Only SAP can answer “how far did this get”. Three calls means CPI or the portal holding a state machine for data it cannot read. One call that reads those documents and continues from where it finds itself is <b>naturally idempotent</b> — the single most valuable property this interface can have.</p>
+
+<h3>4 · The 10,496</h3>
+<p>Splitting steps is survivable; SAP's own implementation survives it at 0.18%. But nothing about three endpoints makes that number smaller, and two things make it larger: a network boundary between the steps, and an orchestrator that cannot see the cost tables.</p>
+
+<h2><span class="h2num">6.3</span>What the API must return</h2>
+<p>Modelled on the real completed chain in 2.2:</p>
+<pre><span class="c">{</span> <span class="hi">"shipment"</span><span class="c">:</span>        <span class="ok">"1100605471"</span><span class="c">,</span>
+  <span class="hi">"costDocument"</span><span class="c">:</span>    <span class="ok">"1100608871"</span><span class="c">,</span>
+  <span class="hi">"costType"</span><span class="c">:</span>        <span class="ok">"Z001"</span><span class="c">,</span>
+  <span class="hi">"calculated"</span><span class="c">:</span>      true<span class="c">,           // VFKP-STBER = C</span>
+  <span class="hi">"accountAssigned"</span><span class="c">:</span> true<span class="c">,           // VFKP-STFRE = C</span>
+  <span class="hi">"settled"</span><span class="c">:</span>         true<span class="c">,           // VFKP-STABR = C</span>
+  <span class="hi">"freightPO"</span><span class="c">:</span>       <span class="ok">"6000105831"</span><span class="c">,   // VFKP-EBELN</span>
+  <span class="hi">"serviceEntry"</span><span class="c">:</span>    <span class="ok">"1003382363"</span><span class="c">,   // VFKP-LBLNI</span>
+  <span class="hi">"stage"</span><span class="c">:</span>           <span class="ok">"READY_FOR_PGI"</span><span class="c">,</span>
+  <span class="hi">"messages"</span><span class="c">:</span>        <span class="c">[ SAP message class + number + text ]</span> <span class="c">}</span></pre>
+<p><b>Stage-level status, not a boolean.</b> Every step that completed is named with the document it produced. A failure returns the step it stopped at plus SAP's own message — exactly what the two-class error taxonomy agreed on 17 August needs to route functional versus technical errors.</p>
+
+<h2><span class="h2num">6.4</span>Three conditions to state alongside it</h2>
+<ol>
+<li><b>It is not atomic, and cannot be.</b> Once the shipment commits, it is committed. Recovery is reversal, not rollback. Equally true of one API or three — so not an argument between them, but it will be held against the design later if nobody wrote it down now. The word “rollback” appeared in the 17 August readout; <b>withdraw it before it is tested</b>.</li>
+<li><b>It is resumable, not fire-and-forget.</b> Re-invoking reads <code>VTTK</code>/<code>VFKK</code>/<code>VFKP</code>, determines what already exists, and continues. This is what prevents a duplicate shipment and what prevents another 10,496.</li>
+<li><b>The SAP wrapper does not own process state.</b> No process id, no stage ledger, no replay store in ABAP. SAP holds no cross-step process state and cannot roll back a committed PGI however the ABAP is written. Process orchestration belongs to the orchestrator — which the 17 August meeting placed in Hybris.</li>
+</ol>
+<div class="box box-key">
+<span class="tag">On naming</span>
+<p>The business stopped the <code>ZCNF_*</code> custom OData portfolio on 14 August, and v1.8 was rebuilt to drop those names. The engineering here is justified and the evidence supports it — but frame it as <b>exposing internal SAP function modules that have no released interface</b>, which is narrow and defensible. Presenting a new custom service tree reopens a decision that already went against the project.</p>
+</div>
+
+<!-- ============ 7 ============ -->
+<h1><span class="h1num">7</span>What remains open</h1>
+
+<h2><span class="h2num">7.1</span>Open items, ranked</h2>
+<table class="compact">
+<thead><tr><th style="width:4%">#</th><th style="width:34%">Question</th><th style="width:28%">Why it matters</th><th>How to close it</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Does <code>BAPI_SHIPMENT_CREATE</code> trigger cost-document creation on save?</td><td>If yes, the exposed surface shrinks materially</td><td>Inspect <code>SAPLV56I_BAPI</code>; where-used is evidence against but does not exclude a dynamic call</td></tr>
+<tr><td>2</td><td>Is <code>BAPI_SHIPMENT_COST_ESTIMATE</code> genuinely non-posting?</td><td>API-04 depends on it creating nothing</td><td><code>VFKK</code>/<code>VFKP</code> key counts before and after a call</td></tr>
+<tr><td>3</td><td>What invokes <code>SD_SCDS_RELEASE</code>?</td><td>Completes the settlement call path</td><td>Zero static callers at full scope — needs a runtime trace during a real VI02 settlement</td></tr>
+<tr><td>4</td><td>How is <code>FKART</code> determined?</td><td>Mandatory input, currently unspecified</td><td>Functional decision plus configuration read</td></tr>
+<tr><td>5</td><td>Function-import parameter encoding</td><td>Affects every delivery v2 call</td><td>One executed call settles it</td></tr>
+</tbody></table>
+
+<h2><span class="h2num">7.2</span>The DS4 blocker</h2>
+<p>DS4/200 cannot currently run a single pre-PGI evidence run. Configuration is present; master and transaction data are not.</p>
+<table class="compact">
+<thead><tr><th>Object</th><th>Table</th><th class="num">Rows</th><th>Blocks</th></tr></thead>
+<tbody>
+<tr><td><b>Vendors / forwarding agents</b></td><td><code>LFA1</code></td><td class="num"><b>0</b></td><td><b>Everything from shipment onward — no transporter can be entered</b></td></tr>
+<tr><td>Storage-location stock</td><td><code>MARD</code></td><td class="num">0</td><td>Picking, PGI</td></tr>
+<tr><td>Material valuation</td><td><code>MBEW</code></td><td class="num">0</td><td>Any goods movement</td></tr>
+<tr><td>Batches</td><td><code>MCHA</code></td><td class="num">0</td><td>Batch split</td></tr>
+<tr><td>Material/plant views</td><td><code>MARC</code></td><td class="num">2</td><td><code>MAT18</code>, <code>MAT19</code>, both plant <code>PLQ3</code> — STO needs one material in two plants</td></tr>
+<tr><td>Sales orders / deliveries</td><td><code>VBAK</code> / <code>LIKP</code></td><td class="num">0</td><td>All predecessors</td></tr>
+</tbody></table>
+<p>Present and usable: <code>TVTK</code> 7 shipment types · <code>TTDS</code> 30+ planning points · <code>TVRO</code> 25+ routes · <code>TVFT</code> 6 cost document types · <code>T161</code> 35 PO types including standard <code>UB</code>/<code>UB2</code>.</p>
+<p>CNF-specific types are <b>absent</b>, each proven with a positive control so the filter itself is trustworthy: <code>ZP06</code> (rejected by BAPI with <code>ME 013</code>), <code>ZNL</code> (control <code>LF</code> returned exactly 1 row), <code>ZSTO</code> (control <code>F2</code> returned exactly 1 row).</p>
+
+<h3>The decision this forces</h3>
+<table class="compact">
+<thead><tr><th style="width:22%"></th><th>Option A — generic</th><th>Option B — CNF parity</th></tr></thead>
+<tbody>
+<tr><td>Uses</td><td>Standard <code>UB</code>, standard delivery and billing types</td><td><code>ZP06</code>, <code>ZNL</code>, <code>ZSTO</code> transported into DS4</td></tr>
+<tr><td>Proves</td><td>API mechanics, payload shape, commit boundaries, retry</td><td>Actual CNF behaviour and derivations</td></tr>
+<tr><td>Does not prove</td><td><b>Anything about ZP06/ZNL/ZSTO determination</b></td><td>—</td></tr>
+<tr><td>Speed</td><td>Fast once master data exists</td><td>Requires a customizing transport</td></tr>
+</tbody></table>
+<p><b>Recommendation: A now, B before sign-off.</b> Option A unblocks most steps immediately and is reversible. Option B is required before anyone signs a contract naming ZP06, ZNL or ZSTO. Option A results must never be presented as CNF configuration parity.</p>
+
+<h2><span class="h2num">7.3</span>What we are asking for</h2>
+<p>The minimum disposable test chain in DS4/200: one valued material with stock in a named plant and storage location; a batch-managed variant with two batches; a customer and a sales order or STO; one delivery not yet PGI-complete; <b>at least one vendor with partner function <code>SP</code></b>; a route; freight condition records so a real rate returns; and confirmation of which shipment type, planning point and cost document type to use.</p>
+<p>Plus one process answer no technical inspection can produce: <b>which transaction or job the business actually runs to create and settle shipment costs</b>.</p>
+<p class="meta">Full field-level list: <code>PRE_PGI_EVIDENCE_RUN_BLOCKER_PACKET.md</code>, 15 items.</p>
+
+<!-- ============ 8 ============ -->
+<h1><span class="h1num">8</span>Quick reference</h1>
+
+<h2><span class="h2num">8.1</span>Document numbers to know cold</h2>
+<table class="compact">
+<thead><tr><th style="width:22%">Number</th><th style="width:34%">What</th><th>Use it to show</th></tr></thead>
+<tbody>
+<tr><td><code>9004953084</code></td><td>Delivery, <code>ZLF</code>, 17.08.2026</td><td>The complete reference chain</td></tr>
+<tr><td><code>1100605471</code></td><td>Shipment</td><td>Created 11:11:28</td></tr>
+<tr><td><code>1100608871</code></td><td>Cost document, <code>Z001</code></td><td>Settled 11:11:30</td></tr>
+<tr><td><code>6000105831</code> / <code>1003382363</code></td><td>Freight PO / service entry</td><td>What settlement actually produces</td></tr>
+<tr><td><code>4918168265</code></td><td>PGI material doc, movement 601</td><td>11:11:31 — one second after settlement</td></tr>
+<tr><td><b><code>1300105310</code></b></td><td>Cost document, <code>Z003</code>, <code>STABR=A</code></td><td><b>The stranded example</b></td></tr>
+<tr><td><b><code>0080387199</code></b></td><td>Delivery, <code>ZLF</code>, <code>WBSTK=C</code></td><td><b>PGI'd despite unsettled freight</b></td></tr>
+<tr><td><code>2100005093</code></td><td>Cost document, <code>Y003</code></td><td>Calculated, never settled; <code>REBEL</code> ≠ <code>FKNUM</code></td></tr>
+</tbody></table>
+
+<h2><span class="h2num">8.2</span>Sentences to use verbatim</h2>
+<ul>
+<li>“Four of the six pre-PGI steps have no callable SAP interface. Custom development is mandatory either way.”</li>
+<li>“<code>VFKK-STFRE</code> is account assignment, not release. Blank means not relevant, not not-done.”</li>
+<li>“Cost release is technically the transfer of freight cost into MM — that is why it produces a purchase order and a service entry sheet.”</li>
+<li>“0.18% is the best case, from code running inside SAP with no network between the steps.”</li>
+<li>“SAP does not block PGI on unsettled freight. Release before PGI is your business rule, not SAP's constraint.”</li>
+<li>“No shipment-cost create or release BAPI was discovered through the searches performed.”</li>
+</ul>
+
+<h2><span class="h2num">8.3</span>Traps — things not to say</h2>
+<table class="compact">
+<thead><tr><th style="width:44%">Do not say</th><th>Because</th></tr></thead>
+<tbody>
+<tr><td>“with rollback”</td><td>Post-commit there is no rollback, only reversal</td></tr>
+<tr><td>10,496 presented as systemic</td><td>It is 0.18% — state that yourself, first</td></tr>
+<tr><td>“the existing class proves CNF needs only a wrapper”</td><td>It is out-of-scope precedent, nothing more</td></tr>
+<tr><td>“released” for a remote-enabled module</td><td>Different attributes; three here are RFC but not released</td></tr>
+<tr><td>“validated” on metadata or an empty 200</td><td>Neither proves business behaviour</td></tr>
+<tr><td>“no BAPI exists”</td><td>Say “none discovered through the searches performed”</td></tr>
+</tbody></table>
+
+<hr class="rule">
+<p class="meta">Evidence base: <code>sessions/2026-08-18-runtime-certification/</code> — <code>stageb-qs4/</code> document traces and status counts · <code>stageb-route/</code> where-used results and captured interfaces · <code>evidence/</code> OData metadata and read responses · <code>analysis/</code> parsed runtime indexes.</p>
+
+</body></html>
+

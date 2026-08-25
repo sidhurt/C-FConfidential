@@ -1,0 +1,294 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_OUTB_DELIVERY_CREATE_STO",
+    "functionGroup": "V50I",
+    "remoteEnabled": true,
+    "releaseStatus": "Released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "DEBUG_FLG",
+        "associatedType": "BAPIDLVCONTROL-DEBUG_FLG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Debugging Flag",
+        "structureFields": []
+      },
+      {
+        "parameter": "DUE_DATE",
+        "associatedType": "BAPIDLVCREATEHEADER-DUE_DATE",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Delivery Creation Date",
+        "structureFields": []
+      },
+      {
+        "parameter": "NO_DEQUEUE",
+        "associatedType": "BAPIFLAG-BAPIFLAG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "' '",
+        "shortText": "Indicator: Do Not Unlock",
+        "structureFields": []
+      },
+      {
+        "parameter": "SHIP_POINT",
+        "associatedType": "BAPIDLVCREATEHEADER-SHIP_POINT",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Shipping Point",
+        "structureFields": []
+      }
+    ],
+    "EXPORT": [
+      {
+        "parameter": "DELIVERY",
+        "associatedType": "BAPISHPDELIVNUMB-DELIV_NUMB",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "NUM_DELIVERIES",
+        "associatedType": "BAPIDLVCREATEHEADER-NUM_DELIVERIES",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      }
+    ],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "CREATED_ITEMS",
+        "associatedType": "BAPIDLVITEMCREATED",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Generated Delivery Items",
+        "structureFields": []
+      },
+      {
+        "parameter": "DELIVERIES",
+        "associatedType": "BAPISHPDELIVNUMB",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Generated Delivery Numbers",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXTENSION_IN",
+        "associatedType": "BAPIPAREX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Reference Structure for BAPI Parameters EXTENSIONIN/EXTENSIONOUT",
+        "structureFields": []
+      },
+      {
+        "parameter": "EXTENSION_OUT",
+        "associatedType": "BAPIPAREX",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Reference Structure for BAPI Parameters EXTENSIONIN/EXTENSIONOUT",
+        "structureFields": []
+      },
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRET2",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Return Parameter(s)",
+        "structureFields": [
+          {
+            "field": "TYPE",
+            "position": "0001",
+            "dataElement": "BAPI_MTYPE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ID",
+            "position": "0002",
+            "dataElement": "SYMSGID",
+            "checkTable": "T100A",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "NUMBER",
+            "position": "0003",
+            "dataElement": "SYMSGNO",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE",
+            "position": "0004",
+            "dataElement": "BAPI_MSG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_NO",
+            "position": "0005",
+            "dataElement": "BALOGNR",
+            "checkTable": "BALHDR",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "LOG_MSG_NO",
+            "position": "0006",
+            "dataElement": "BALMNR",
+            "checkTable": "BALM",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V1",
+            "position": "0007",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V2",
+            "position": "0008",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V3",
+            "position": "0009",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "MESSAGE_V4",
+            "position": "0010",
+            "dataElement": "SYMSGV",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "PARAMETER",
+            "position": "0011",
+            "dataElement": "BAPI_PARAM",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "ROW",
+            "position": "0012",
+            "dataElement": "BAPI_LINE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "FIELD",
+            "position": "0013",
+            "dataElement": "BAPI_FLD",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SYSTEM",
+            "position": "0014",
+            "dataElement": "BAPILOGSYS",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "SERIAL_NUMBERS",
+        "associatedType": "BAPIDLVSERIALNUMBER",
+        "optional": true,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Serial Number",
+        "structureFields": []
+      },
+      {
+        "parameter": "STOCK_TRANS_ITEMS",
+        "associatedType": "BAPIDLVREFTOSTO",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Delivery Item with Reference to a Stock Transport Order",
+        "structureFields": [
+          {
+            "field": "REF_DOC",
+            "position": "0001",
+            "dataElement": "RFBEL_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REF_ITEM",
+            "position": "0002",
+            "dataElement": "RFPOS_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DLV_QTY",
+            "position": "0003",
+            "dataElement": "LFIMG",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_UNIT",
+            "position": "0004",
+            "dataElement": "VRKME",
+            "checkTable": "T006",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "SALES_UNIT_ISO",
+            "position": "0005",
+            "dataElement": "ISOCD_VRKME",
+            "checkTable": "T006I",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELIV_NUMB",
+            "position": "0006",
+            "dataElement": "VBELN_VL",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "EXTENSION_ID",
+            "position": "0007",
+            "dataElement": "LESHP_BAPI_EXTENSION_ID",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "INTERFACE_CAPTURED_NOT_EXECUTED",
+    "request": "<build from exact interface below using approved DEV test data>",
+    "successEvidence": "Inspect RETURN/BAPIRET* and business document state."
+  }
+}

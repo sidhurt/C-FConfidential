@@ -1,0 +1,68 @@
+# 14aug_4 - translate
+duration: 05:32  |  language: hi-IN  |  turns: 85
+
+[00:00] S0 : When we are moving forward, a shipment document. When a truck is allocated, it goes back to the state gate. Right, so within that, we get this driver number, DI number, invoice, invoice number is not there here, truck number, how much has been allocated, all that information is available to the transporter as well. After this, another stage comes for the invoice. I have the invoice number for the invoice document.
+[00:26] S3 : So, there should be a stage gate between these two that will give you shipment costing and GI details.
+[00:31] S0 : So that
+[00:31] S1 : So that's it, that's it, so no, put it in the one below, in the invoice one, this one.
+[00:33] S3 : It's the same, it's the same, so no, not in the one below, in the invoice.
+[00:36] S0 : You can put it here as well.
+[00:37] S1 : Put it in this, we will put it in this because it is a statement document.
+[00:37] S3 : We will put it in the invoice because the shipment will be after the document. Yes, exactly, exactly. The GI will be after the process. We will put it in the invoice one.
+[00:39] S1 : Yes, exactly, exactly. Yes. Yes, the invoice person will get the exchange.
+[00:45] S3 : It will be clear, then this will be finished. Look at this.
+[00:49] S1 : Okay.
+[00:49] S3 : No, no.
+[00:51] S4 : No, we people who
+[00:52] S1 : Whose screen was this?
+[00:53] S3 : The API list, right, whatever it is.
+[00:53] S4 : The UPI list, right? The API list that is there, when we write, we will write in it, the screen will disappear.
+[00:59] S1 : Did you make the screen disappear?
+[01:00] S3 : It must have been taken out.
+[01:01] S4 : So I told everyone.
+[01:07] S0 : So, it remains connected.
+[01:10] S1 : Put all of this in it.
+[01:10] S0 : Put all of it in this.
+[01:13] S1 : It was in this.
+[01:14] S4 : Okay.
+[01:16] S0 : So, we will put it here. Along with this, there are many others, like the LRB or number, you can see it's not coming. The e-way bill status, the e-way bill date, expiry date, all of that is also not there. So, there are eight-nine fields, along with that, these three more new fields will come, we will pass all of them here.
+[01:31] S3 : We can't do this, we will have to get it aligned with that on the take-out once. Have you kept any call with him or how to do it?
+[01:37] S0 : No, I am making a list right now. Once, like today, three more attributes came back, right? Like, once it reaches a mature stage, then we will send them.
+[01:44] S3 : Hey, tell him that too, please.
+[01:44] S4 : Hey, Mr. Vimal.
+[01:51] S0 : Now, let me discuss another point, invoice cancellation. The invoice gets cancelled in SAP today. We can send a similar response back from SAP to T1. Where you see this status, this status code invoice will be cancelled in another place. So the invoice will be cancelled, then I will move it to the DI stage. So the DI will be deducted there again. Okay? I always have a status skill to know what the document status is. The invoice cancellation is not going through right now.
+[02:25] S4 : So, after going there, we will have to go again.
+[02:28] S0 : Not API, ask such things. Oh, that's right, API only. Yes, correct, you can say that.
+[02:30] S4 : Yes, that's it, exactly, that's the lead. Yes, correct, you can say that. So, a new interface will be created for that.
+[02:39] S0 : An interface will not be created; an event trigger will have to be created in the interface.
+[02:43] S4 : So, in the end, they also have to accept it.
+[02:45] S0 : Will have to do.
+[02:46] S1 : Yes, so you are saying that you will use this interface or make a new one, so that's it.
+[02:50] S0 : This JSON will be separate for invoice correct cancellation. It will be separate, right? It will be separate for that.
+[02:55] S1 : It will be made differently, right? Yes, that's enough.
+[02:57] S2 : In cancellation, then your e-way bill number will become blank, the e-way bill number will also become blank.
+[03:03] S0 : This is clear, the code will be cancelled from the invoice status code. Once the invoice is cancelled, the document will be cancelled.
+[03:07] S3 : The cancelled document will come, the number changes separately. The cancelled document is separate. The reference number will come, but the university reference number will come.
+[03:11] S2 : It's been a long time.
+[03:12] S4 : The reference number will come, but. The document type will also be changed.
+[03:16] S2 : And if you want to take the act done, then you will know that it has been canceled on this invoice.
+[03:20] S3 : It happened on this date.
+[03:22] S2 : Correct
+[03:26] S3 : Okay, show the service again now. Okay, how are you showing the document flow, sir? What was shown. How will we see it as a CLF agent if I want to see any document flow from any order, from the pending order that I made today. By evening, all these processes will be done, so how do I see the document flow?
+[04:02] S0 : Yes, I'll tell you. So all these stage gates are being pushed. As they are being pushed, the data is coming.
+[04:07] S3 : No, where in Sigma is that place to call that document flow?
+[04:11] S0 : That was an order, right? This order was in fulfillment, right? Show it.
+[04:13] S1 : The order was in fulfillment, right? Show it. It's showing now, it's showing. This is a little.
+[04:18] S3 : Okay, layer below. This is below.
+[04:20] S0 : No, it won't be visible.
+[04:22] S1 : These are also showing, these are the layers of the figma. Remove this once and then check, do it.
+[04:35] S2 : How is it?
+[04:38] S1 : No, no, there is a reservation.
+[04:39] S2 : Okay, okay.
+[04:42] S1 : You are after the apple. What has been extended in this? Don't extend it.
+[05:01] S3 : They were also mirroring.
+[05:02] S1 : There won't be a problem in the mirror, in the stand, in the X stand. Main display is done, no no, main display.
+[05:12] S2 : Mine too.
+[05:12] S1 : Mirror, so that it captures your resolution. Right now, it's capturing the screen's resolution.
+[05:23] S3 : It will be done. Here it is, sir. Like we did in pending water.
+[05:27] S0 : We had shown pending orders earlier, whose DI was not deducted. After that, the one whose DI was deducted will get a recharge.

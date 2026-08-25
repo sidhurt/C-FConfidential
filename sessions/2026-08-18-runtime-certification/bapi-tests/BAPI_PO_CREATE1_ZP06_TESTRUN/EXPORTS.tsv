@@ -1,0 +1,6 @@
+Parameter	Kind	RawValue	Note
+EXPPURCHASEORDER	Export	(blank)	No PO number returned - expected under TESTRUN = X
+EXPHEADER	Export	              ZP06 918.08.2026QNOVATE8    00010          ENEN     0  0  0 0.000 0.000                             18	Raw concatenated structure value as rendered by SE37
+EXPPOEXPIMPHEADER	Export	(blank)	
+RETURN	Table	input 0 Entries / Result: 4 Entries	See RETURN.tsv
+POITEM	Table	input 0 Entries	Not populated by this test

@@ -1,0 +1,6 @@
+Parameter	Field	GuiFieldId	ValueSet	Readback
+TESTRUN	(scalar)	wnd[0]/usr/txt[34,12]	X	X
+POHEADER	DOC_TYPE	wnd[0]/usr/txt[17,3] (Structure Editor: Change POHEADER from Entry)	ZP06	ZP06
+POHEADERX	DOC_TYPE	wnd[0]/usr/txt[5,3] (Structure Editor: Change POHEADERX from Entry)	X	X
+MEMORY_UNCOMPLETE	(scalar)	wnd[0]/usr/txt[34,13]	(not populated)	
+MEMORY_COMPLETE	(scalar)	wnd[0]/usr/txt[34,14]	(not populated)	

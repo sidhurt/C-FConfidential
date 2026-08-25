@@ -1,0 +1,306 @@
+﻿[00:01] S0: So let's have an open discussion now. First, tell me where the confusion is? Whoever has any confusion, tell me.
+[00:08] S1: Yes. I need some time from the Paris stop. About the question given. Okay?
+[00:15] S0: So you are talking about the entire skill, sir. No, no, I mean the base.
+[00:17] S1: No no, I mean base, I mean base, oh I know that much, I am going to the plant, sir.
+[00:21] S0: Now I'll talk about the project. We'll come to the tech skill later, right? Where is the confusion in the project?
+[00:27] S0: Open to everyone, business is clear.
+[00:30] S2: Yes sir
+[00:31] S0: Full 100%.
+[00:32] S0: I will ask then, that need to make you uncomfortable. If you know, then speak, if you know, if you don't know, then speak, if you don't know. Whatever confusions are there, note them down, where clarity is needed. What work do I have to do, how will I do the work, tomorrow I said Siddharth start on the area development, you know what you have to do from A to Z.
+[00:35] S2: For the treatment, they will say yes.
+[00:54] S2: Sir, uh
+[00:54] S0: Where is the API being called?
+[00:56] S2: Sir, the end point of SAP to CPI that I want to expose, the API that I want to expose, regardless of the server that is connected to me from SAP, the same APIs will be exposed from my side, no matter what.
+[01:11] S0: Okay, you gave me the submit API, right? Yes sir. You had mentioned request and response. Now, explain each and every attribute of that request that you have mapped, how it will come.
+[01:14] S2: Yes sir.
+[01:23] S0: You open your document. You have given me a request, let's take submit me. Let's let's start with submit me.
+[01:29] S3: Yes, sir, I want to know.
+[01:32] S0: See, our work is not just about tech development. I should know where my work is impacted. I will only know that when the business is clear. Like you said I am creating a plan to storage location, but what is its use?
+[01:47] S0: What are we using it for?
+[01:49] S1: We are taking the date, meaning the products, from the plant to the warehouse. I have asked a simple question regarding that step.
+[01:56] S0: I have asked a simple question. You have created the plant storage location. We are doing it with DSP. What is its usage? Don't go by the material. There is a plant, storage location, there are only two features in it. What is their significance? Meaning, if a plant is assigned 10 storage locations, then what should I do with it?
+[02:01] S1: Yes
+[02:11] S1: With that, we can easily access the data, like what is being delivered to us, what is coming in, and what is going out.
+[02:17] S0: Dude, Anuj, don't talk like that, man. There's no point in talking like that and working like that. There's no point, don't do it, leave it. Take a pause, go back. Don't move forward, go back. Have you seen Figma? Where are you showing the plan to storage location, tell me. Which screen are you showing it on? If you had seen Figma, you wouldn't have this response.
+[02:38] S0: Did you talk to Karan? What does 'plant to soaring location' mean?
+[02:42] S1: There was no currency discussion.
+[02:43] S0: So why aren't you doing it?
+[02:45] S1: Because I had told a story, but that was also going on busy.
+[02:49] S0: He asked if you have ever seen this happen? No no no, I don't understand, man, what's the problem?
+[02:51] S1: No, no, no.
+[02:53] S4: We are using the storage location so that we can extract the mRNA data. How much mRNA is present at that storage location on that plant.
+[03:01] S0: No sir, that is not used.
+[03:01] S3: No, no.
+[03:02] S4: MRI.
+[03:03] S3: Storage location, so how many at once, when you do MeeGo, you will take it inward in different storage locations.
+[03:10] S0: When you use MeeGo, you take it in MeeGo to see how much I am inverting in which storage locations.
+[03:15] S4: According to that, we are getting the MN data.
+[03:19] S0: That MRF data has happened before that. Storage location, plan to storage location is used for your MeeGo transaction. That now I have to do MeeGo, I am sitting in my depot. My car is parked outside. Now I have to invert it. So I will do a submit MeeGo.
+[03:34] S4: Both are used, both have reference.
+[03:37] S0: I mean, it is related in a way, sir. Everything is related like that, sir. I mean, I am saying it like this.
+[03:40] S4: I mean, I am saying that
+[03:43] S0: So Anuj. Each and every thing that you are making, the vehicle master you are making, what is its use, where will it be used in our place?
+[03:50] S1: It will be completely helpful in vehicle transportation. For example, what vehicle number do we have, what is it going through, and what are its details?
+[03:58] S0: You answer very casually, man. I asked a very pinpointed question, you have to give a pinpointed answer.
+[04:05] S0: Have you seen Figma or not?
+[04:07] S0: Otherwise, how can such a response come? Regarding vehicle details.
+[04:09] S1: Regarding the vehicle details, whatever information there is, like I had also seen the mapping, so whatever vehicle details are there, they are in the vehicle master. And that data from there...
+[04:17] S0: You are talking about the same thing again, man. I asked a simple thing, you are bringing the vehicle details, where are we using it in Figma?
+[04:25] S0: Where is it being used?
+[04:27] S1: During transportation.
+[04:29] S0: During what transportation?
+[04:31] S0: When do we do transportation?
+[04:34] S1: When delivering the product.
+[04:36] S0: Hey, what kind of product delivery is this, man? What kind of product is this? Are we making this on Amazon or something?
+[04:45] S3: Guys, I
+[04:45] S0: Guys, I am asking clearly. Has everyone seen Figma and BRD? Or haven't you seen it? Have you seen it?
+[04:50] S3: You saw.
+[04:51] S0: Look, man.
+[04:53] S0: Why aren't you looking at Gujarat right now? You have to work on DSP, right?
+[04:58] S0: You are bringing data from DSP. Now, that data where I am using in my end system, we should be aware of that, right? If someone wakes up tomorrow and a problem arises, then you can say the data is coming from here, it looks like this, that's why it's visible from here.
+[05:11] S0: So, Figma is mandatory, BRT also you have to read. Everybody has to read Figma and BRT. Siddharth, is it clear to you?
+[05:17] S2: Yes sir
+[05:17] S0: Have you seen this picture? Yes sir. Completely clear. When am I calling your submit me?
+[05:18] S2: Yes sir
+[05:22] S2: Sir, the submit Migo T2 to SAP which
+[05:26] S0: Hey, I asked when I am calling, when am I calling from the system?
+[05:31] S2: Sir, when this process of ours is complete, of the delivery.
+[05:40] S3: In Figma, where we have the Migos screens, there is a list of Migos, when you click on that.
+[05:43] S0: I have been speaking on the call for so long, I don't know if there is any meaning to me telling in the call or not.
+[05:46] S3: I have been following for so long.
+[05:52] S0: Okay, let's explain it again, is this board someone's own?
+[05:56] S0: DSP is written, Commerce DSP is written.
+[05:59] S3: Someone from us used this.
+[06:02] S0: Yes.
+[06:02] S3: Yes.
+[06:03] S0: Is there anything here?
+[06:06] S0: Bring something if you have it, we will discuss it completely. We have two processes. Both processes are end-to-end clear. There is an ego process and there is an order fulfillment process.
+[06:09] S3: Where does it happen?
+[06:17] S0: We should have clarity on each and every aspect of it. I think at this point of time, they should even have an attribute clarity.
+[06:24] S0: What is that to us?
+[06:27] S2: Sir, from my perspective, which is in my context, to expose the APIs of the SAP side, in that, sir, I have read all these documents and the entire process flow. And I also took BRD access from them, from Gitanj and Sujal. And I studied all that, but sir, apart from that, like in every conversation, in every meeting, with them also, there were some changes, meaning the confusions I had were also being tackled a bit, like T2, T1, which are also commerce applications, DCP, DSP, which are
+[06:57] S2: And how will that connect? Then the people here
+[07:02] S2: I can't remember his name. Yes, Suvendu sir had once asked me how to expose the SAP ERP, their main ERP, with the application. He had told me the options: cloud connector, CPI, or SAP warehouse, data warehouse.
+[07:19] S0: They were taking your interview.
+[07:20] S2: Yes. So sir, in that, it's the same, I mean, like us, we have configured the CPI in this. And I gave them the same answer that we have configured the CPI, but the operations that are pulled from SAP are also done in the cloud connector, and they said that we have two instances of the cloud connector. So all those, sir, in between, I mean, the architecture that is main, I have a little bit of confusion in that, but for this, the things that will remain clear from my side in the end will always be that the APIs will be exposed. That
+[07:50] S2: It depends on the interface because the endpoint SAP will remain the same. From the CPI side also, any consumable will remain the same.
+[07:55] S0: Any consumable from the CPI side as well.
+[07:58] S0: It will be the same. You are coming to the tag side, so I am saying go back a little. Everyone go back a little, don't run ahead. Anuj, how much time has it been for you in the project? Has it been over a month?
+[08:00] S2: Everyone a little bit.
+[08:07] S0: Even in a month, your BRD and understanding are not clear, meaning why aren't you looking? I am not understanding.
+[08:13] S1: Sir, I have seen, eventually, what is the biggest problem I have, should I tell you? Like you said to give BRD, I have seen transportation. So now I probably don't know how to navigate a little.
+[08:23] S0: Gitanj is here, Sujal is here.
+[08:26] S1: And now, like I am telling you, Geetan is here.
+[08:27] S0: No no. Geetan is here. How many times have you called Geetan, you must have had a meeting. How many times have you talked to Sujal?
+[08:33] S1: I had once understood from Sujal, so she had told me the basics of BRD, so I have the recording, so I keep listening to it, I mean, like, so then...
+[08:41] S0: There shouldn't be so many confusions, man. You guys are so co-located, there should never be any confusion.
+[08:48] S1: So maybe in navigation, I have a face here.
+[08:50] S0: And you have an issue with navigation. Did you ask him to clarify? That yes brother, I know how to use it in Sigma. I know each navigation on a single screen. Did you ask him this?
+[09:05] S0: I don't understand, man, what's the problem?
+[09:17] S0: Get a screen from Sigma and give it to Lovable, man, he'll create the whole HTML and give it to you, how much time does that take?
+[09:24] S0: I, nobody needs to tell you, you know, to do this. You have to do it on your own.
+[09:43] S3: Did you find the marker?
+[09:44] S0: Leave it, man, we won't proceed with this right now. Come on, I'll give you your book, I'll explain it to you on this. So,
+[09:54] S0: There are two processes we need to understand. One is MIGO, right? And one is order of configuration.
+[10:03] S0: Now understand, this is a depot, right? My depot has an office, a warehouse outside, and it's all filled with cement sacks. And I am a CNF agent who is going to use this application. Right? I only have two tasks: one is to put the goods that are coming in, inside me, and the customer's orders, I have to fulfill them.
+[10:22] S0: These are the only two tasks I have, right? So, there are two processes for this. One is the MIGO process, and the other is the order fulfillment process, right? What is MIGO? My goods are arriving.
+[10:32] S0: Right now, I am a CNF agent, so the depot I am working at has a depot ID. We can call it warehouse ID, plant ID, depot ID, whatever. It also has a name.
+[10:42] S0: Right? Like, suppose I am sitting in some office in Gurgaon, so I will have an ID, a name, an address, my mobile number, whatever, right? I will enter the mobile number, an OTP will come in the application, I will log in.
+[10:52] S1: Yes.
+[10:52] S0: Correct. How is Migo coming now? Somebody has raised a purchase order. Someone has raised an STO, and the main plant, like it's coming from Raj. Raj Rajasthan has sent it here to Gurgaon. So, against that STO, he has generated a Migo.
+[11:00] S1: Hmm.
+[11:07] S0: MIGO is also called as MRM. This is Movement Reference Number.
+[11:11] S0: It is in simple terms, goods are moving from one place to another.
+[11:16] S0: This, it is not a money transaction, it is a business movement. But here, if I sent 30 tons of goods, a plant, Raas sent it, then it has to account, you know, that I have sent it. Similarly, this goods have arrived at the depot.
+[11:31] S0: First, do you understand the difference between a depot and a plant? What will the depot person do with the plant? A plant is where goods are manufactured. In a depot, they are not manufactured, they are just stored. Right, like a warehouse, right? So, the plant sent the goods, sent 30 tons of goods from there. It came here. My car is parked outside. Whatever record of my movement will be there, all the details will be there. What is its movement reference number, what is the vehicle car number. What is its delivery number?
+[11:38] S3: I mean,
+[11:41] S3: It is stored.
+[11:43] S3: Like a bear house.
+[12:01] S0: How many tons of goods are there, what material is there, every information is there in that movement reference record. Which we call MRM. So, he will go to the screen and say MRM, he will see all the records. Which are marked against his plant.
+[12:14] S2: Yes
+[12:15] S0: Right, you could also be in CNF, so I won't see yours. Only what is marked against my plan will be visible.
+[12:20] S2: Yes.
+[12:20] S0: Right, I should see that. Then what should I do? So, that one, the screen you are seeing of MRM, we have two in it, one is pending and one is completed. Completed means what I have already done.
+[12:33] S0: Pending means what is remaining, there is also a partial. 30 tons of goods came, I am currently doing 12 accounts and the remaining 18 later, right? So this will go into partial.
+[12:45] S0: Now, it is a storage location concept another which I just asked. Every plant has a set of storage locations assigned. Right, in that you can see, there is GDF, there is RK, cut and thorn, meaning some goods came, inside it some bags are torn. Some are of sacks, so I will not take the goods, I will put them in cut and thorn.
+[12:59] S1: Hmm hmm hmm
+[13:03] S0: Right, he is saying 30 tons of goods, I unloaded it, but it is only 28 tons. So, I will put 2 tons in shortage.
+[13:10] S0: Right, somewhere I have to, I am accountable for this MRI.
+[13:13] S2: Yes
+[13:14] S0: Right? So this is called MIGO. So I saw an MRN, I said initiate MIGO. I initiated MIGO.
+[13:22] S0: I put all of this against the storage location, this entire quantity, 12 and 18, and said that only then your API call is happening.
+[13:30] S2: Yes.
+[13:30] S0: Now, in this Beast process, you see everything from a tech perspective, what all is happening. Where is the MRM data coming from? It's coming from DSP, right?
+[13:39] S0: What are you doing? Reading DSP? What are you doing? Exposing the API of Highbrisk. Did you read DSP? Pushed on Highbrisk, came into Highbrisk.
+[13:43] S1: I am exposing its API.
+[13:45] S1: What?
+[13:49] S0: What did the front end do? It queried the high brace, and it showed MRM.
+[13:54] S0: Your role hasn't come up anywhere in this yet. Right? This is how you have to interlink. So look at Figma. Then you map your technical interfaces. Then you'll get complete clarity. Right? So I did pending, then I did initiate me go. When I did initiate me go, I got all the storage locations against that plant which you are returning.
+[14:10] S0: Right? Same process. Then I killed it. Then I told submit me, then I am making your request.
+[14:17] S3: Yes sir
+[14:18] S0: Then I submitted, I got a call, your call happened, end of story. You submitted it. Again from SAP, this data will be synced to DSP. He will pull the data, again it will go to MRM, I will see, okay, it's completed.
+[14:32] S0: If you create a complete cycle like this and map it with Figma, you'll get complete clarity on who is doing what and what effect my work is having. Now, in the middle of this process, you have to understand, look at Figma, look at each and every field of MRM.
+[14:47] S0: Document number, the delivery number, vehicle number, LRGR number are also there. Each and every field should be very clear as to where it is coming from and how it is being used.
+[14:59] S0: Is this clear? Yes, sir.
+[15:00] S1: Yes sir
+[15:00] S0: Right, so now everything is clear about the role of DSP, SAP in this. Now, order fulfillment. Order fulfillment is, I am sitting in the depot, I also have to fulfill the customer's orders.
+[15:09] S0: Right? I have to fulfill. Now there are three types of order. You always, always have to give a trade.
+[15:17] S0: Trade, non-trade, and STO.
+[15:22] S0: The application that we currently have, which we call T1 or DMS portal. Which dealers use to place their orders.
+[15:31] S0: They place both trade and non-trade orders.
+[15:35] S0: So, in T1, you have both trade and non-trade.
+[15:38] S0: But it does not have STU.
+[15:42] S0: So, the use case of our STO order will not be fulfilled by T1, right? So, let's remove STO now. Let's talk about order fulfillment for trade and non-trade orders. Everyone knows the difference between trade and trade non-trade order.
+[15:54] S2: Yes sir
+[15:54] S0: What is a trade order and what is a non-trade order?
+[15:57] S2: Sir, trade order in which
+[16:09] S3: You tell me, sir, two.
+[16:10] S2: Sir, the order that exists between two businesses is called a trade order.
+[16:17] S1: You tell me.
+[16:17] S1: Sir, in a trade order, there is direct involvement, meaning the product goes into the mass, and it goes to specific business requirements. In a non-trade order, it is possible that small orders are placed, and so on.
+[16:33] S0: You tell me.
+[16:37] S0: Sir, we have confusion between trade and non-trade. How will you work with these guys? They will tear it apart.
+[16:44] S0: They will say to send the whole team home. We don't know the trade noted order at this stage of the project. And we are saying we want to start development.
+[16:53] S0: Think about it, it's not that I am criticizing, you have to ask yourself.
+[16:59] S0: We don't even know what trade and non-trade orders are, you tell me.
+[17:03] S4: Trade happened, like where it came from the plant to a depot, and after coming from the depot, the customer made a deal, so that became trade. And non-trade happened, like direct dealing with the plant happened.
+[17:13] S4: So, I trade daily.
+[17:13] S3: The dealer is placing the trade order, and the
+[17:16] S4: It has become non-trade. If it is non-trade, then there are big companies like L&T or Shobha Builders.
+[17:17] S3: Big, big.
+[17:17] S0: It happens that big companies like L&T, Shobha Builders, or DLF, they won't buy from dealers.
+[17:23] S0: They directly buy from the company, we call that non-rate.
+[17:26] S2: Yes, sir.
+[17:27] S3: In a bogie.
+[17:27] S0: How will you work? You are laughing, it is one thing. They will tear you apart. They will say the same thing the next day, to remove the whole team. How are we working? I am not understanding, man.
+[17:40] S0: I am asking you this question, you can ask people, no?
+[17:44] S0: What is an ST order? You tell me, what is an ST order? You tell me.
+[17:50] S3: Storage tool.
+[17:52] S0: Sir, all these terminologies, we have to be very clear.
+[17:55] S0: That is why I am telling you to talk to people. You talk to Deep, Sujay, he will also clarify a little bit for you, right? STO is your intra warehouse movement, the MRM we are sending, the plant that is sending to Deep, that is an STO order.
+[18:12] S0: I don't know how we are working, man, I am really worried. So, do it yourself a little, brother. I don't think it is a problem of the customer, it is a problem of our team that we don't know. The customer is saying correctly that you people don't know.
+[18:26] S0: How will you work?
+[18:31] S0: Is trade non-trade clear now?
+[18:32] S1: Yes, sir.
+[18:33] S0: So, because trade and non-trade orders are both in T1, what we are doing is, when we are bringing order fulfillment orders by making calls from the front end, we are bringing that from T1.
+[18:47] S0: We are not going to DSP, we are not going to SAP, right? It is a T1 which is a high-breach system. So this is a high-breach to high-breach communication.
+[18:56] S0: Right? So all trade non-trade orders are visible to the dealer from T1, right? So what attributes are visible to him here? Order ID is visible, his material is visible, quantity is visible.
+[19:08] S0: Is it visible or not, right? Which plant it came from, that is visible.
+[19:09] S1: Right?
+[19:11] S1: It is visible.
+[19:13] S0: All these attributes are visible to him. After that, there is a button on the order screen. It is called Create DI button. What is Create DI? Creating the delivery instructions for that order, right?
+[19:24] S0: What will he do then? Again, it is a call to AC. He is cutting a DI against the order.
+[19:27] S1: It is a call to AC.
+[19:31] S0: Right? So, in the order, like I have put 30 tons of goods, here it is called metric ton. So I made a DI of 18, so a delivery number is being created. One order can have multiple deliveries, correct? Is this relation clear? And within one order, there is only one product, a line item. I mean, I cannot say that I need Magna and Rock Strong Cement, there will be only one line item. I mean, like the cart that is made in Amazon, inside that, I mean, here multiple, not multiple products, only one product will be there, right? As a
+[20:01] S0: It is like that.
+[19:41] S1: People Deliveries
+[19:57] S3: Yes, inside it.
+[19:58] S3: Multi.
+[20:03] S0: Correct? So this is the rule. Irrespective of the order, whether trade, non-trade, STO, it's all the same.
+[20:09] S3: One lakh.
+[20:11] S0: So, multiple deliveries can be placed against one order, right? So, as soon as I cut the DE DI, I called your API, I got the DI number.
+[20:18] S1: Yes, sir.
+[20:20] S0: Understand the entire architecture now.
+[20:23] S0: This is T1.
+[20:26] S0: This is T2.
+[20:28] S0: Correct? This is SCPI.
+[20:32] S0: And this is SAP.
+[20:35] S0: Right? I just cut the DI from T2. So what will I do? I brought the order from here.
+[20:41] S0: The orders came from here, I cut the DI against this order.
+[20:45] S0: Will the call come to SAP? This call will then come to SAP. DI has been created in SAP. Currently, our existing interface integration is already running between SAP and T1.
+[20:56] S0: What it does is, whenever a DI is issued, an invoice is created, or there is any tampering within the order, it directly triggers it.
+[21:04] S0: So, what will SAP say? Okay, its DI is done, let me trigger.
+[21:07] S0: So, it sends the trigger to the SCPI, and goes back to T1. In T1, the order that was there, which I brought from here, a delivery record will be created against that.
+[21:18] S0: So the next time I fetch deliveries from T1, I will get that updated delivery. So this whole flow is going like this.
+[21:28] S0: See, this you have to understand, no?
+[21:32] S0: Is there confusion in this right now?
+[21:35] S0: Did you bring the order from here, from T1? Did you cut the DI of that same order? Was it made in SAP? Did SAP send the same update to T1?
+[21:43] S2: Yes sir
+[21:44] S0: Where am I showing the deliveries from? I am showing all the order deliveries and invoices from T1.
+[21:47] S2: Yes, yes.
+[21:50] S0: So that delivery, because it has come here as well, I will get the updated delivery.
+[21:53] S1: Yes, sir.
+[21:54] S0: Same thing for invoice. I will make a shipment for that delivery. In the shipment, I will put all my world-class attributes like vehicle number, driver number, mobile number, LRGS, everything.
+[22:05] S0: The call went back from Titu, the invoice was cut, the invoice was made. SAP came, SAP.
+[22:06] S1: Invoice cut, invoice.
+[22:10] S1: Hmm.
+[22:10] S0: Did the invoice come with D1 during the same delivery? Did SAB send it back, or did it go back here? Where am I taking the invoice from? From D1.
+[22:20] S0: Are you understanding this whole cycle now?
+[22:22] S2: Yes sir
+[22:24] S0: What are you making right now, what effect is it having? Tomorrow, someone will wake up and ask you, 'Hey, I have created the DI, but it's not showing here on T1.' So how will you debug? You have to see, 'Okay, I have created the delivery, but the report that went against that delivery in the SEPI, he will debug whether it came in the SEPI or not.' He will debug whether I got the signal.
+[22:37] S2: The code has gone to SIPI, he will debug SIPI.
+[22:41] S2: I will look at the complete health of that endpoint, the endpoint of SAP, and how its status code is coming.
+[22:47] S0: You will check the internal details, but you have to understand the overall process.
+[22:48] S2: Yes
+[22:51] S0: I am not saying that you see what is happening in SCPI. That he has to but this whole process, we should know that, right? That everybody should know. You should also know. You should also know. Everybody should know.
+[23:02] S0: Otherwise, you won't be able to figure out how things are going. Is it clear to you, Abhishek?
+[23:08] S3: Yes, sir.
+[23:09] S0: Is there any confusion? Digest this first, how the entire life cycle of the order is going. Right now, you are sitting with Figma. Relate to Figma, how, how, how, what is being created.
+[23:20] S0: This is already created. What happens in the current process with this interface?
+[23:26] S0: From T1, the dealer is only creating the order. But its DI and invoicing happen in SAP. The dealer cannot create the invoice and the delivery for it. That all is done in SAP. So when DI is created in SAP, its data keeps getting pushed.
+[23:31] S1: It happens.
+[23:32] S1: E-voice and the
+[23:39] S1: Hmm.
+[23:39] S0: What's happening in CNF? It's creating delivery, creating invoices, not creating orders.
+[23:46] S0: The CNA agent is the employee of Shree Cement, right? So, he will create the delivery.
+[23:48] S2: Yes
+[23:50] S0: That order, he will make the invoicing. He will not make the order. The order is being made by the dealer. But the work that was happening in SAP is now happening here.
+[23:52] S2: Hmm hmm.
+[24:02] S0: That is why the process of becoming a DI is now via API. I am not doing it by going into SAP right now.
+[24:10] S0: Is this getting clear?
+[24:11] S3: Yes sir
+[24:14] S0: Is it clear? So, these two processes are getting cleared now.
+[24:19] S0: Now do one thing, stick to these two processes, just look at two screens. MeeGo and Order Fulfillment, which is built in our Figma. Right now, there are many screens for Order Fulfillment. How the order is appearing, what its attributes are, when I am creating a DI, what input it is asking for.
+[24:37] S0: After that, once I become a DI, then I will create invoicing, so what inputs is it asking for in the invoicing?
+[24:43] S0: Then you have to map it. Right, forget about STO for now, we will create STO later. So I will tell you, even STO I have confusion. Right now, we only have to create two, MIGO and Orderful Films.
+[24:57] S0: Is it clear?
+[24:57] S2: Yes
+[25:00] S0: Anuj
+[25:05] S0: Abhishek, is it clear? So you also take access to Figma. You ask Sujay, he will give you the Figma. Do you have access to BRT?
+[25:11] S3: He had given the B.I.D document, sir.
+[25:13] S0: So, you have that and use AI, you know.
+[25:17] S0: Use AI to ask for help. It will summarize the document for you, it will help you understand.
+[25:27] S0: So brother, this should be clear to everyone right now. Because these people can come and ask anytime. If you don't know, then there will be a lot of confusion.
+[25:37] S0: Is the current clear now?
+[25:40] S0: To you.
+[25:41] S3: I just wanted to ask, when the DI number, when the deliveries are saved in T1, will we show the data on the front end at this time? We only need the DI number.
+[25:52] S0: Yes.
+[25:52] S3: Because it is showing us a message, right, DI created with this number.
+[25:56] S0: When I call SAP's API as a part of the response, it will return me the DIN number.
+[26:00] S0: So, I will show that to you immediately.
+[26:03] S0: The one who is selling to SAP.
+[26:04] S3: We will show it by taking it from the response itself. We don't need T1 at that time.
+[26:06] S0: Yes, it's a T1 game, that's why.
+[26:07] S0: Nine.
+[26:08] S0: That is your synchronous call. See, all these calls are synchronous. They are not asynchronous. So, no business process etc. is running in this.
+[26:18] S0: Is it clear?
+[26:19] S3: Yes sir.
+[26:21] S0: If you say so, I could even give you a Figma walk-through, but you can ask Sujal, but she's not here, right? I think somebody is there.
+[26:31] S0: You can ask somebody. You ask Sujal how to get a kick mask walk-through done.
+[26:34] S1: How to get a walk-through done?
+[26:38] S2: Sir, this asynchronous and his question was that discussions are going on till now, meaning in the meeting, that which processes, how calls will be made, meaning how much time will be there in between. So, according to that, the SAP APIs that will be created, is there complete clarity in them, sir, right now or
+[26:59] S0: But what does it have to do with synchronous and asynchronous?
+[27:03] S0: What is the definition of synchronous?
+[27:06] S2: Sir, I mean, there is no such thing as time in this, sir, I mean, it's a real-time operation.
+[27:15] S0: And what is asynchronous?
+[27:17] S2: Sir, I mean, near real time.
+[27:19] S0: How will it be near real-time? Asynchronous means I have left it to one thing, a process is running in my background. Which is asynchronous and continuing.
+[27:23] S2: In everything.
+[27:26] S1: is being given
+[27:27] S0: I am not expecting immediate out of it.
+[27:29] S3: Yes sir
+[27:30] S0: That is asynchronous. Synchronous means I am immediately expecting. I have submitted MeeGo, so I need the MRN number, I have to show it.
+[27:32] S3: I am expecting.
+[27:38] S3: Hmm.
+[27:39] S0: That is synchronous. If you cut the DI, then I have to show the DI number.
+[27:43] S0: That is synchronous, so what does that have to do with your SAP API?
+[27:45] S2: It shouldn't be taken like that.
+[27:47] S0: That will be interfered with from our side regarding the design, right?
+[27:48] S2: It will interfere with the design, right?
+[27:50] S0: You have to do the API that you need to do.
+[27:52] S2: It has to be done.
+[27:53] S0: Right.
+[28:02] S0: Is there clarity now, brother?
+[28:04] S3: Yes sir
+[28:07] S0: Digest it a little, if it's not fat, then we'll clarify it now. Is there clarity in the technical implementation from this now?
+[28:16] S2: Yes sir

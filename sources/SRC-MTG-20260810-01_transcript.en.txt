@@ -1,0 +1,412 @@
+﻿[00:00] S3: So, this will be our partner function. Below, you can use the transport code or transport name.
+[00:05] S3: When you search, you will get a detail below.
+[00:08] S3: You will go to confirm details after validating that.
+[00:10] S1: After confirming the details, your shipment
+[00:13] S3: A freight first will come based on whatever we have put in.
+[00:16] S2: Because we
+[00:17] S3: So either you go back, if you want to change something, we are giving the previous button below, and you will confirm proceed to shipment.
+[00:25] S2: And there are shipment terms too, right?
+[00:28] S1: Shipment Terms
+[00:28] S3: Meaning, we are going to bring it from FTP etc.
+[00:28] S2: Meaning.
+[00:30] S2: FTP, etc.
+[00:32] S1: FTP, okay, FTP, FTP, all this, that was when the dealer sent the order, it was already done.
+[00:34] S2: Yes.
+[00:36] S2: That has already happened.
+[00:37] S3: I will show it on the screen where they have been given the terms.
+[00:41] S1: Here, above, STP is already there.
+[00:42] S3: This is already present. You will see it on every screen.
+[00:44] S2: Yes, this is it.
+[00:46] S1: They have the option to change the term in SAP, but here we don't have that option.
+[00:49] S2: So,
+[00:50] S2: Okay.
+[00:51] S1: These were to be changed. Now, when once you click confirm here, you have validated this amount. After this, finally you have to enter all this, like what is the LRGR number, what is the vehicle number, driver name, driver number. So, after entering all these things
+[01:10] S1: Uh, you can go ahead and the system will on its own make PGI, e-way bill, or invoice.
+[01:18] S3: All three together.
+[01:20] S1: So, in
+[01:20] S2: So the entire CFA, meaning the orders that were made well in Udaan, are complete, which has been done in SAP, meaning, on top of that, the CNF agent who is on the ground there, only he has to interact with it, right? The things beyond that.
+[01:34] S3: That is counted as a pending order sum. Half of its DI has been deducted or not at all.
+[01:36] S2: Yes.
+[01:39] S2: Hmm hmm hmm hmm.
+[01:40] S1: Then comes the document flow, the third tab.
+[01:43] S3: So, the third one is a tab that we have created, which will be the document flow. In this, you will get the status of each step, whether it is completed or not. So, we will mark it in green and show it with the number below. Sometimes it happens that the invoice cannot be made, and along with that, the e-way bill also cannot be made. So, in that, we will show the cross. Some are running asynchronously behind us. It is in processes, so we will show it in processing.
+[02:05] S2: Hmm hmm hmm
+[02:08] S1: And from here, that PDF
+[02:09] S3: So, the entire structure will be completely okay, which is our first record. We are also giving a download option along with it, through which you can download your PDF. So, we have kept a document flow for this.
+[02:21] S0: So, in this, the invoice number
+[02:22] S0: Yes, it is.
+[02:24] S1: In the bill.
+[02:25] S1: What is the particular difference?
+[02:26] S3: Yes, okay.
+[02:27] S3: The e-way bill that we need is a kind of GST bill, which we will send with the truck drivers. In case the RTO people catch you in the middle of the road, this e-way bill is with them. Invoice is normal invoicing that we do, what products are there, what billing is there. In this, it becomes a little proof for the government that our travel, which is there, is there. This e-way bill will come from the government side.
+[02:31] S2: The reasoning is that RTO
+[02:35] S2: This is on their road.
+[02:45] S2: What is the travel job?
+[02:49] S3: E-way bill and invoice number, we will create the invoice ourselves in our system. The invoice number inside the e-invoice is within the e-invoice.
+[02:50] S1: Number.
+[02:52] S0: This.
+[02:55] S1: So the e-invoice that you are going to download, that is the actual e-invoice that you download. Inside that, a QR comes, which has the invoice number, e-way bill number, all of it.
+[03:05] S3: Show that screen on the screen as well.
+[03:07] S1: I don't have the skill of PDF.
+[03:08] S3: How many minutes?
+[03:09] S1: India's cinema.
+[03:10] S3: No, show it through voice management, it's very important.
+[03:13] S1: So basically, there is a download option from here as well, and here there is a dedicated invoice tab for invoice management.
+[03:22] S3: Look, the work we will have is mostly based on these two processes. We will look at the remaining minor ones because then perhaps the DSP and CPI connection will be reduced.
+[03:32] S3: This will be a higher price connection, including editing and all.
+[03:36] S1: As soon as we go into invoice management, we have two tabs. One is to view generated invoices, and the second is details correction.
+[03:44] S3: So, in the generated list, many invoices will come, whose DI and all are done well, they will reach here.
+[03:49] S1: Yes, here you will see the same invoices which have zero errors. Everything is completely different, what they call the happy path.
+[03:57] S1: That is, the same invoices will be visible here. If you click on any of them, then this pop-up will open. All its details will be visible here, and then you can download premium from here.
+[04:05] S0: This pop-up will open.
+[04:10] S3: Okay, I need one more thing, when is the MRN number generated? When you send some goods from the plant, it becomes a PO.
+[04:19] S3: Along with the PEO, the MRN will also create a plant for you. Pending MRN is when sometimes the truck reaches your warehouse, but you haven't taken Migo. Migo is movement in, good out.
+[04:31] S3: Now the truck is parked at your warehouse, but sometimes, brother, the guy there or the lazy person who is showing off, I will also leave after half an hour. For half an hour, he will be lying in pending MRI, that the plant had sent the MRI made, but the warehouse guy did not take Migo.
+[04:48] S3: Is the concept clear? No, it's a little bit.
+[04:50] S1: MIGO is a process. This process of taking material inward is called MIGO. Plant Seer is available. MRN stands for Material Receipt Note. So, when you take the goods inward and the number is generated, that is MRN.
+[04:56] S3: They speak.
+[04:57] S0: Plant Xavier, until today.
+[05:08] S3: No, India told us something else, right?
+[05:11] S0: Material references.
+[05:11] S3: Material, material.
+[05:14] S1: The material received is not and the same thing will happen. So as soon as you take the goods inward, the stock is being updated in the system. That is your SIP.
+[05:15] S0: It's the same, that's what it means.
+[05:21] S3: So your SIP, this SAP that you will create after taking MeeGo, submit MeeGo from this plant.
+[05:26] S0: From the plant to the cow, the process is.
+[05:30] S1: Migo is just the name of the process because the T-code in this SAP, of this process, that is Migo.
+[05:35] S0: Consumption.
+[05:36] S2: Om.
+[05:36] S3: That is a question, what is pending MRN in that case?
+[05:40] S1: There is no number like a pending MRN. You always
+[05:44] S3: In the visibility, you are going to show the MRI reports. What are you going to show inside this?
+[05:49] S1: So whatever DI the plant had made while sending the goods. Whatever invoice was made.
+[05:55] S3: That's what I am telling you, the one who is sending after making something.
+[05:56] S1: Whatever PO is making and sending. So we see these three numbers. But apart from this, there is no separate pending number.
+[06:04] S3: Okay, we will start with MeeGo, whatever we have.
+[06:10] S1: And now we have come here to invoice management. We have seen this one that it can be downloaded from here. And there is one more functionality here, invoice details correction. Suppose if you have ever a user has entered the wrong vehicle number. Like we have put validation that he has to enter four digits equally, if he doesn't enter that, he cannot proceed further, but he has entered the wrong vehicle number, leaving your car and entering their car's number. So it has to be corrected, he has 24 hours of time. Invoice
+[06:40] S1: Near the creation.
+[06:41] S3: Okay, I have a question in this, in the middle.
+[06:43] S3: That's why he put it in wrong.
+[06:46] S3: So how will I remember it later? I have to enter it correctly.
+[06:48] S1: When the car arrives, it needs to be loaded.
+[06:52] S3: Who put this wrong? The CNF guy. Where has the CNF car arrived now?
+[06:54] S1: Yes, yes.
+[06:57] S1: The car came to the warehouse. You are getting it loaded. You handed over the invoice to the driver, he will see. That brother, my car's number is...
+[07:04] S0: Meaning, at any physical moment.
+[07:05] S3: So that means the driver needs to check these things. That, brother, is up to him. He will check, he will make his own light and return. Otherwise, someone will check there too, right? At the warehouse too. While loading the goods, someone will check there too.
+[07:13] S1: Yes, yes.
+[07:16] S1: There is no check during the loading time.
+[07:18] S0: There must be someone from the other side.
+[07:19] S1: Because while loading, they will see which car to load into, and the number of the car that has arrived.
+[07:22] S3: Yes
+[07:23] S3: Okay, so we are assuming that he has entered it wrong. So, this is going on to correct it.
+[07:27] S0: 24 hours.
+[07:28] S1: So if 24 hours pass, then you
+[07:31] S3: Okay, one more question, sorry. Like, if he entered it wrong, then an e-way bill was also created.
+[07:36] S1: Yes.
+[07:36] S3: The invoice was also made incorrectly, and the e-way bill was also made incorrectly.
+[07:39] S3: Correct?
+[07:41] S3: So then, these two things will be correct here.
+[07:43] S1: So, earlier we had given it the feature of invoice cancellation here as well.
+[07:47] S1: That has also been removed now, which indeed
+[07:50] S3: Can't we put a double sure on the vehicle number, like, are you sure this is a correct vehicle number, kind of stuff, so that it becomes a double sure that yes, what I have entered.
+[07:57] S2: One, they enter bank account numbers, and in one, they do cross-cross transactions.
+[08:00] S3: Meaning, that's a suggestion that you can discuss with your people. Understood? Because
+[08:02] S1: Yes, this.
+[08:03] S2: Understood, right?
+[08:05] S3: These things will reduce them in that case. If he doesn't put it in correctly, then more will not come here, there won't be a need to correct it much.
+[08:12] S2: Like when we enter bank account details, once entered, it gets crossed over, then when you enter it again, it gets confirmed.
+[08:17] S3: You get the bank account number rechecked twice. I mean, I'm not saying twice here, but at least when you fill this and confirm below, a message remains asking if you are double sure, meaning if it's an issue with the vehicle number itself.
+[08:29] S1: Hmm, but
+[08:31] S3: But for that, you'll have to open another screen.
+[08:33] S1: That's the problem, Dad is also saying.
+[08:34] S3: Or, or show it below that box.
+[08:37] S1: I am watching this, asking.
+[08:37] S3: I am watching this. Let's move forward.
+[08:40] S1: So here, when you click on anything, there are two part A and part B drop-downs in which you can either update the vehicle number or update the distance.
+[08:53] S3: This transport master that we are going to fetch, bro. This is kind of a transport name, transport ID that will come pre-filled below. So we are going to take it from those things, from your transport master.
+[09:05] S1: E-way bill is made based on distance. This is average, right? That the distance is exact.
+[09:12] S3: The distance will be kind of average, not even average, I mean it will be very close to the latitude.
+[09:15] S1: Lokesh.
+[09:16] S0: It is needed.
+[09:20] S1: And you can update the vehicle number, then as soon as you update it, the system will update it and then...
+[09:26] S3: So here we are updating the details. So this is our SAP getting a call again, this is a complete
+[09:33] S2: This entire part also exists in SAP.
+[09:37] S3: So, on update details, when you click, there is a message appearing below: 'Invoice details have been successfully collected.' This has been collected in your SAP SBI, right? And SAP will send something.
+[09:44] S2: That is the same.
+[09:46] S2: Yes.
+[09:48] S2: Because this process exists in the SAP, it also has part A and part B, and the fields that these people have kept editable are also the same fields that exist in SAP.
+[09:56] S3: You should check that completely once. Yes, that has been done.
+[09:57] S2: Yes, that conversation happened in the meeting itself.
+[10:01] S1: As soon as this thing gets updated, we initially took the driver's phone number to input. So as soon as you updated anything, the driver was updated like this.
+[10:10] S3: Once it's not updated, it will be updated in all the previous places as well, right?
+[10:15] S1: Yes, so now if the driver has already left. So the updated invoice, the e-invoice, it reaches him through his SMS. From where does it download?
+[10:26] S3: When, at what stage will it go on that?
+[10:28] S1: After you updated.
+[10:30] S3: So, we will click on this, it got updated in the app.
+[10:33] S3: The one that the boss is generating. You will send that to someone.
+[10:35] S1: At what time?
+[10:36] S1: Regarding this point, like when this message comes, you continue, they send an SMS.
+[10:40] S3: Don't continue, click somewhere else outside.
+[10:43] S1: Besides this, we haven't given anything else.
+[10:43] S0: Submit.
+[10:46] S0: It won't be easy to submit then, actually it won't be.
+[10:48] S3: It will have to be continued.
+[10:51] S3: So write something like, 'Press continue to send', write something like that, he will understand.
+[10:55] S1: Understood.
+[10:57] S1: But basically, this is an update button trigger point, like.
+[11:01] S3: This is for the user's skill, that he understands that the invoice has been updated again, so he has to send it to the truck driver.
+[11:10] S1: And so this was the only process.
+[11:15] S1: Next is e-way bill management. Now, many times what happens is, your vehicle has left to reach a location, and the e-way bill is made based on its distance, like if it was 500 kilometers, then assume that the person will reach in two days, but they won't. So
+[11:34] S1: You have to get its e-way bill extended.
+[11:37] S3: So, there can be many reasons for not reaching. In between, the car broke down, there was an accident, some natural calamities occurred, so he stopped right there. So, something like that can happen.
+[11:47] S1: So, if you click on e-way bill management, then whatever e-invoices, e-way bills have been created, that entire list will appear. If you click on any one of these, or the specific one that you want to update, here you can search with the invoice number. With the DI number, with the invoice number. This, this screen will open after that.
+[12:07] S1: If you go to the Extend e-way bill, you have to fill all these mandatory fields again.
+[12:12] S1: What is the vehicle number because what happens is, if there is an accident, then he cannot take the same car.
+[12:18] S2: Hmm.
+[12:18] S1: So, if it is going in another vehicle, then you will have to update that number.
+[12:22] S3: So we had that discussion, right, that we will change the vehicle number only when the accident result is below. Was there any such discussion?
+[12:29] S1: Yes, Madam, I have all that in the meeting.
+[12:29] S2: Yes, all of that is in the meeting.
+[12:31] S3: Okay, fine.
+[12:31] S1: If it's the same, then let it remain the same.
+[12:33] S3: Okay, okay.
+[12:34] S1: And e-way bill always feels like you don't enter the source location every time. If you are in between
+[12:41] S2: Wherever you spit, put it there.
+[12:42] S1: It will be made from where you stopped.
+[12:43] S3: It will be made from there.
+[12:46] S1: So, in the 'from' place, that location will come, state, all these pin codes you will enter, extension reason code which is already in their reasons.
+[12:53] S2: It is in lockdown.
+[12:54] S3: Along with the reason, you will also take the remarks below as to what happened and why.
+[12:58] S1: You tell me, how much more time can it take, whatever you need.
+[13:00] S3: Yes, yes.
+[13:02] S1: And if you extend it, then you can extend every e-way bill for only 24 hours.
+[13:10] S0: So, suppose, for example, I have a delivery that needs to be completed in 48 hours, by inspection of any zone, which is 700 kilometers or 800 kilometers.
+[13:20] S0: So, the car broke down while going. So, if you suppose the expected time is in the middle, like on the highway. So, more or less, it will take one to two days there, one day for the car to go. So, a minimum of 24 hours is not less, it's not like that.
+[13:35] S1: And extend.
+[13:35] S3: So, you will have to make it again. Do it with this, right? That truck guy.
+[13:36] S0: So, we will have to make it again.
+[13:38] S0: Okay.
+[13:40] S3: The CNF guy will have to call the place from where he left, saying, "Please extend my e-way bill."
+[13:45] S0: Okay, so the minimum extent is one time because it is behind the government.
+[13:47] S3: It's a waste of time because they are giving so much time from the government portal itself.
+[13:50] S0: Okay.
+[13:51] S2: These are all standard practices in SAP, that's why all this is kept.
+[13:55] S3: So, he will keep increasing it because this thing also has accountability, right? Whether the delivery time reached within 24 hours or not.
+[13:55] S2: It is written on the photo.
+[13:59] S0: It was the delivery time.
+[14:03] S1: So currently, this intravarous movement is currently
+[14:07] S3: Who will update in SAP, like they are removing SAP now?
+[14:11] S2: Okay, and what else is there?
+[14:11] S3: Okay, and what else is there?
+[14:12] S0: Include that.
+[14:13] S3: We are automating the SAP using our APIs. This is a process of SAP that
+[14:16] S2: This is a process of SAP that they, the SCNF agent who already does it, does it in SAP.
+[14:21] S3: Remove that. They are transferring that functionality into this. They find this screen very difficult, like putting in a table number, for everything. They will get a good screen. They will get a great screen. Figma means they will get this application that is being created. It will remain connected to Figma, like this, and then we, yes.
+[14:22] S2: They are transferring that functionality into this.
+[14:28] S2: For every single thing.
+[14:29] S1: They will get the phone.
+[14:31] S2: Figma means they will get this application that is being created.
+[14:35] S2: Then we, yes.
+[14:38] S1: Now, this functionality is the intra-warehouse movement one.
+[14:43] S3: I don't know, there is no need to apply it right now.
+[14:45] S1: Yes, but if they say tomorrow that they will get it done.
+[14:47] S3: Okay, tell me.
+[14:48] S1: So I'll just tell you. Should I not tell you? I'll tell you when it happens.
+[14:52] S3: Tell them, we are going to tell the STO later, not now.
+[14:55] S1: So this is it, the STO is that if, understand, many times it happens that the goods are less at one warehouse and it takes a lot of time to come from the plant, then these people send them from a nearby warehouse.
+[15:07] S3: People call and say, "Hey, give us this IC."
+[15:09] S1: So, in this case, you won't count the trade order inside; it's going from warehouse to warehouse. So, it means first, purchase order. Like normally, you get an order from Udaan on your platform, so that's a normal trade order. So, you have to create an order from somewhere that you are going to fulfill, so that is a purchase order.
+[15:15] S0: July
+[15:28] S0: We are going to fill it.
+[15:30] S1: So you have created a purchase order here, all of this is
+[15:35] S3: Is Udaan their app, or is it just Udaan?
+[15:37] S1: They got this made. Going into the intra warehouse movement, this display that is happening, these are the POs whose DIs have not been cut yet.
+[15:46] S3: Hmm hmm
+[15:47] S1: So if you want to create a new PO, you can create a new one. All this info that you still fill in SAP.
+[15:54] S3: Yes
+[15:55] S1: You will fill this and a PO number will be generated, which will come in this list.
+[16:03] S1: Then from this, after you click on this as well, the same process is followed. You will create the DI first. Then you will enter its billing information, just like it used to happen in order fulfillment. So from which batch it has to be given, which transporter will take it, you will do all this again from the beginning.
+[16:15] S3: It will start again.
+[16:17] S3: Okay.
+[16:18] S1: And the order fulfillment will be the same. So this is intra warehouse movement.
+[16:25] S3: Which we call HQ.
+[16:26] S1: You want to order a stock transfer.
+[16:29] S2: So that's it, meaning the STO, you have to do it between two warehouses of the same company, but its PO also has to be made, that whole formality has to be followed.
+[16:35] S0: You have to follow the entire formality. Because a CNF has two warehouse accesses, so it can easily do that.
+[16:43] S1: Yes, but regardless, if you want to send it to anyone, any warehouse, you can send it.
+[16:49] S1: And this is done. Besides this, there is another process that CNF does, which is Physical Inventory Reconciliation. This is not currently done in SAP. We have had it made in this.
+[17:03] S3: But this that is coming from the system, that is coming from SAP, right?
+[17:06] S1: Yes, whatever is coming from the stock, it is coming from behind like this, information.
+[17:07] S3: Just talk.
+[17:11] S1: Now, it happens that many times
+[17:14] S3: So, we will have to call SAP, right?
+[17:18] S2: That will be his, yes. But this final calculation etc., we don't do in SAP right now.
+[17:23] S1: So, many times it happens that the stock you have in real, that amount is different than what is showing in SAP. If the goods are cut and broken, whatever it is, anything can happen to your goods on the way. So, a variance comes in your real goods and what is showing in the system.
+[17:38] S1: So, to fix this thing, inventory reconciliation has to be done. So, as soon as you press on post new reconciliation, first of all, if you have multiple warehouses mapped, you as a CNF user, you will have to select a warehouse here.
+[17:55] S3: Which warehouse are you counting, in a way, that this much is being shown in the system and how much I have, that's the thing.
+[18:02] S1: And the name of the reconciler has to be entered.
+[18:05] S3: It is about to turn on, it will be named.
+[18:08] S1: So here we are going to do reconciliation product and storage location wise. Like now this product first came. This is mapped in your warehouse. So this came and in every storage location how much stock is there, they write by counting this. So usually they count bags. So we have put this validation that however many bags he has counted, he will put the bag number, the system itself.
+[18:08] S3: Here we are.
+[18:32] S3: We already knew that 0.05 is equal to one bag of ours. So whatever he puts in, if we multiply it by 0.05, it will be shown in our metric ton.
+[18:36] S0: Hmm
+[18:41] S1: So if you put that in, then your metric ton quantity will come. So for every product, he will have to do this, like however many products are mapped to his warehouse. He will do this and finally post it. So there is one more thing in this.
+[18:53] S3: So there is one more thing in this, okay, tell me about the variance one below, the error one. Some variance comes.
+[18:59] S1: Yes, it will show it right here. When it is posted, the overall variance will be written here.
+[19:04] S3: No. Like, there's one more thing, that this variance means that our system quantity and what we have entered, is it equal or not? Yes. In case the system shows two hundred and our bags are less. Or more.
+[19:12] S2: Yes.
+[19:16] S0: Yes, so
+[19:17] S2: So then
+[19:17] S3: No, no, he will get it submitted, but he will show you the variance. He will show you the variance, and you will have to give a reason for the variance, like why it is so much in the system and why you have less or more. That you need to give.
+[19:20] S2: So, it will show you the variance.
+[19:24] S2: Yes.
+[19:25] S2: If you have
+[19:30] S3: So, when it proceeds, it will be visible on your dashboard that this was your variance.
+[19:34] S1: Now, the list that is being displayed here, this is the audit history that you have done a reconciliation. If you click on any of these, then this screen opens. Just as a record, you can see that this product had this much system quantity, I had this much, this much variance. In every storage location, you can just view it.
+[19:53] S3: So when we change this product, what happens to the bottom one automatically?
+[19:59] S3: It's made beautifully, isn't it?
+[20:01] S1: And then last is visibility.
+[20:04] S0: So, who made all of this?
+[20:07] S3: This has been going on for 3 months. Screens have been created, now the one that has come, the Spartacus guy. Okay, like that, 2-3 people will come, they will make this real life.
+[20:08] S2: It has been running for 3 months.
+[20:19] S1: So this
+[20:20] S3: So, this is all our functionality section, as much as you know. Now, we have created one more section, which we will call the visibility section.
+[20:27] S1: So, in this, we are still working on its visibility. So, the basic thing is that whatever reports are visible in SAP, tell the CNF users to call them stock reports. We have created another thing, like aging reports.
+[20:44] S3: Like in PSP, when reporting happens, we have a good one, right? So, as we are talking about aging, we will call PSP for aging stock aging.
+[20:48] S2: Yes, yes.
+[20:52] S2: Hmm
+[20:52] S3: Near real time or real time, whatever it is. And we will show that here. We will show that as a report here.
+[20:59] S1: Okay, for the report also.
+[21:00] S0: We will use this for the report as well.
+[21:02] S3: Yes, everything is reported in the visibility. Whatever five things are in the visibility, all of them are reported in the market.
+[21:06] S0: Meaning, in this, everything should be DI grade, everything should be there, and then later show the report after the high bridge.
+[21:08] S3: Everything should be of DI grade, everything should be there.
+[21:12] S3: Yes, and sir, Bismillah.
+[21:12] S0: Yes, but in this.
+[21:15] S1: So, there is an option for all reports, the download report, which will be downloaded in Excel for the user.
+[21:21] S3: Because these people sometimes ask, I mean, the CNF people, that we need a
+[21:25] S2: Hmm hmm.
+[21:25] S3: That document should also be available. So that's why we have given this option that if you click on download, then whatever fields you have selected above for the filter, it will show only that much data to them in Excel.
+[21:37] S1: So, can dashboards etc. also be made in this?
+[21:39] S3: Whose?
+[21:40] S1: Meaning, like a test of reports. Yes, but now
+[21:41] S2: Yes, but it hasn't been asked for yet.
+[21:43] S3: It is the same as the reports' dead body.
+[21:45] S2: No, they are saying that
+[21:45] S3: No, they are saying that visualization data visualization.
+[21:47] S2: Visualization, data visualization.
+[21:50] S1: No.
+[21:50] S3: That is the command center, we will give it to the IT people from now on. Work is in progress on that right now.
+[21:55] S1: Now back to the main first screen which is the dashboard.
+[21:59] S3: Now let's go back to the first screen that we skipped.
+[22:02] S1: So, all of this is visible here, STO in transit.
+[22:05] S2: This is basically the diet, whatever.
+[22:06] S1: Whatever goods you have in transit, the stock transfer order, it is showing here in metric tons, and you are also showing the number of orders here. There are 4 orders, this much is in metric tons.
+[22:16] S3: Mixing all four together, it should be this much in the material.
+[22:18] S1: Hmm, pending orders credit-free as in, uh, which are still within the credit limit.
+[22:24] S0: We can order this much.
+[22:26] S3: Hmm.
+[22:26] S1: No, no.
+[22:28] S3: The orders whose credit is not blocked, the ones with free credit, that much quantity of theirs is pending.
+[22:35] S1: Okay.
+[22:36] S3: There are a total of 12 orders, of which the total quantity is 47.
+[22:40] S1: In process orders whose DI you have cut off, and they are still just lying in the list whose invoices have not been made yet. They are this many, there are 25 orders. And EPOD, this is electronic proof of delivery. So, this is currently not activated on many warehouses. But they want to do this. It happens that in the case of FTB, meaning in the case of stock transfer, goods reach from one warehouse to another warehouse. So, how does this person know?
+[23:10] S1: That the goods have arrived.
+[23:12] S1: So there is a code that comes, which these people call E.P.O.D.
+[23:16] S3: Like even now, if there is some open box delivery or anything, they first ask for a code, saying, 'I'll tell you the code, and we'll deliver it to you,' something like that.
+[23:24] S1: So, after inputting the code, it gets validated in the system that this order has been fulfilled, it has been completed. This is EP only. Now, how these people want to get it validated, how these people want to get it done, there hasn't been a discussion on this. So, it will be known after this happens.
+[23:34] S3: This is money.
+[23:38] S1: And this is build quantity. We have given three metrics for this, that how much quantity is needed tomorrow. This is kind of your answer.
+[23:47] S3: This is kind of your answer that, I mean, this is for how much billing is happening per day for which products, we are going to show that in this.
+[23:55] S1: So, tomorrow, today, and the month.
+[23:58] S3: Let me tell you, the real-time will keep changing, right, like today's. Whenever the screen refreshes, it changes.
+[24:05] S2: And are their products multiple or are they just four or five?
+[24:08] S1: There are like
+[24:09] S3: How many of these are there? 12.
+[24:10] S1: 12, excuse me.
+[24:11] S1: 12 to 18, there are 18 SKUs, but not all 18 are in every warehouse.
+[24:12] S3: Wow, okay.
+[24:17] S3: So, different things happen.
+[24:20] S1: And here is the aging stock in warehouse. So how much stock is there in less than 15 days? So and 16 to 30 days like this. This is also a real time stock.
+[24:25] S3: Hmm hmm.
+[24:28] S3: This is also a real-time strategy.
+[24:31] S3: Aging every year, you will have to bring it near your time, right?
+[24:34] S1: So first we
+[24:35] S2: Meaning, it happens every day, right?
+[24:37] S3: If it's not every day, then if you want to change every refresh, let's say, then we have a changing one.
+[24:41] S1: But we had kept that for aging, right?
+[24:43] S2: If it is kept day-wise, then
+[24:45] S1: I had kept minus one.
+[24:47] S0: D minus one.
+[24:50] S1: And product-wise is given below. The aging bucket was given overall here, and product-wise is given below.
+[24:58] S1: This is it. And in every single thing, I mean like in the aging one and in the peeling one and in this one. In this one, you can see the storage location.
+[25:06] S3: Okay, I have one more question.
+[25:07] S1: Select, yes.
+[25:09] S3: Available stock.
+[25:12] S3: In any of the cases, the stock's availability could not be shown from behind.
+[25:19] S3: So, he will see the old stock, the available stock, right? Looking at this, he can also guess that I have so much stock lying in this place, in this location, in this warehouse.
+[25:30] S3: That will also become easy for him from here, to see that okay, I will fulfill this much today.
+[25:35] S3: If it never gets refreshed.
+[25:38] S1: It didn't refresh, but okay, you're saying it didn't refresh on the dashboard, but it will refresh in the system.
+[25:43] S3: He will do it in the system. Then this, this is just for display purpose.
+[25:48] S2: Yes, because when
+[25:48] S1: Because when he goes to fulfill the order, now there is no stock in the system, so the batch doesn't get determined.
+[25:52] S3: Sometimes it happens, right, that a person shows laziness, like, I'll just watch from here, okay, I'm lying here, I'll start it.
+[25:57] S1: But with the batch, they won't be able to go further.
+[25:58] S3: They will stop it later.
+[26:02] S3: So all the games are from there, this is just for display purposes.
+[26:05] S1: If nothing is showing up, then this is our screen.
+[26:09] S3: Okay
+[26:10] S3: Kind of maintenance screen unable to retrieve data.
+[26:15] S1: And here, this part that is on top, in this you can select the warehouse.
+[26:21] S3: This is a warehouse selector, that if one person has more than one warehouse assigned, then they will select four together, like I have to see the data of these four today and fulfill it.
+[26:29] S2: Have to do.
+[26:30] S3: So, from above.
+[26:31] S2: You can select it, the notification is also the same.
+[26:33] S3: They will take those four and what is this below?
+[26:37] S1: These are notifications.
+[26:39] S3: And pending orders.
+[26:41] S1: Whatever new pending order comes, a new STO has come, there is a pending MRN.
+[26:47] S3: That notification will appear in the bell, and it will keep showing up there.
+[26:48] S1: It came in the bell.
+[26:49] S1: And we will keep some configuration time for the notifications, that after this much time it should get deleted.
+[26:54] S3: should be deleted or removed from here.
+[26:56] S1: It will be removed from here.
+[26:57] S3: We are not deleting the notifications behind, right?
+[26:59] S1: So he asked me, "For how long will you keep the blog notifications?"
+[27:03] S3: Okay, it's okay, they are anyway going there, we will fetch it from there.
+[27:08] S1: So, that was the overall CRF.
+[27:10] S3: So guys, any doubts or anything? I guess the process is understood.
+[27:13] S0: Understood.
+[27:15] S0: Why didn't I get two options like that here?
+[27:19] S3: Hmm.
+[27:19] S0: Like you showed the structure here. So why didn't you give it to me from here? It will seem a little bit like this.
+[27:25] S3: No, no, you won't see it on the side, you'll only see a visibility on the side.
+[27:29] S0: That's what I need.
+[27:31] S0: Okay, okay.
+[27:35] S3: Any doubts, guys? It's a little clear now. The rest, you guys look at each screen personally.
+[27:43] S3: Questions will be sure.
+[27:44] S1: All the validations that are related to each screen are in BRD. All the returns are in BRD.
+[27:48] S3: Now, the return B.I.D. and this one, you can map it. Take any one screen and place it inside it.
+[27:53] S0: The steps that we have are like this, right?
+[27:56] S0: I mean, in sequence, right?
+[27:57] S1: Yes, from above. And if you read anything in BRD and it's not clicking, then tell me, I will solve it right now.
+[28:08] S2: I just need to do the Figma thing once, like how to navigate exactly. Like this one.
+[28:16] S2: Okay.
+[28:16] S1: Okay.
+[28:17] S2: Yes.
+[28:20] S2: No, I mean, let me show you like this. Like, just this screen that you were showing.
+[28:26] S2: Now I have to go to the other one, so I will try to go through this.
+[28:29] S3: No, look, the rest are all frames. Some will have 'frame' written on them, some will be discarded. So you don't need to look at all that. The one with 'section' written on it will be your main one.
+[28:37] S2: So how do I go to the other one? I want to go to the one with the checkmigo.
+[28:41] S3: So, up there, you know, where the dashboard is written, scroll down there.
+[28:46] S3: Scroll up and down.
+[28:48] S2: Okay, yes, alright, alright.
+[28:51] S3: It has created a prototype, click on prototype, so that is kind of a journey that if you click on this, then you will go forward, so you can follow that too.
+[28:58] S1: Complete.
+[28:59] S3: It didn't complete a little bit, it only happened a little bit.
+[29:02] S2: Hmm, okay.
+[29:09] S3: We will read the BID ourselves, and then map it from the BID, right?
+[29:17] S3: Thank you, brother, thank you.
+[29:18] S2: Thank you.

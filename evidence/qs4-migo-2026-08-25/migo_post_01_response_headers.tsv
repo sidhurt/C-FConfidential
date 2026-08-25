@@ -1,0 +1,12 @@
+NAME	VALUE
+~status_code	400
+~status_reason	Bad Request
+content-encoding	gzip
+content-length	475
+content-type	application/json;charset=utf-8
+dataserviceversion	1.0
+sap-original-protocol	h2
+sap-perf-fesrec	745629.000000
+sap-server	true
+~server_protocol	HTTP/1.1
+~grid_title	HTTP Response - Processing Time = 768  ms

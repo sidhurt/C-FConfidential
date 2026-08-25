@@ -1,315 +1,230 @@
-# Handover — Complete Current-State Briefing for an AI Agent
+# Handover — Current-State Briefing
 
-**Version:** 3.0 · **Date:** 2026-08-04
-**Supersedes:** v2.0 (2026-08-03), which predates all system-observed evidence
-**Status:** Current state only. Superseded beliefs are removed, not annotated — except §10, which lists them explicitly so nobody re-derives them.
-
----
-
-## 0. Navigate this repository before reasoning about it
-
-### 0.1 Register-ID precedence
-
-| System | Where | Status |
-|---|---|---|
-| **`API-01`..`API-10`** | `deliverables/CNF_API_Classification.xlsx` | **Authoritative** — the API inventory, aligned 1:1 with the client's process register |
-| **`Q-001`..`Q-048`** | `OPEN_QUESTIONS.md` | **Authoritative** — open questions |
-| **`D-001`..`D-026`** | `DECISION_LOG.md` | **Authoritative** — decisions and established facts |
-| `A-01`..`A-15` | Planning workbook → Assumptions | Current |
-| `C-1`..`C-10` | Various | Current — conflicts |
-| `V-01`..`V-29` | Planning workbook → Validation Register | Parallel to Q-items. **Where V and Q disagree, Q wins** |
-| `IF-`, `R-` | `_archive/` | **Retired.** Mapping in `_archive/README.md` |
-
-### 0.2 Stale — do not trust
-
-- `MASTER_PLAN.md`, `NEXT_MOVE.md`, `SEGW_ODATA_PLAN.md`, `BAPI_CANDIDATES.md`, `CPI_CONTRACTS.md` — written before any client documentation arrived. Method sound; SAP specifics are pre-evidence guesses
-- `SAP_API_DOSSIER.md` — Part A (32-defect review of the vendor spec) is accurate and still useful. Part C's API set is superseded
-- `_archive/` — provenance only
-
-**Trust order:** this file → `DECISION_LOG.md` → `OPEN_QUESTIONS.md` → `DOMAIN_GLOSSARY.md` → `SYSTEM_OF_RECORD_MATRIX.md` → `PROJECT_BRAIN.md` (conceptual model) → the two deliverable workbooks.
-
-### 0.3 Evidence hierarchy — this project now has four tiers
-
-Introduced 2026-08-04, when direct system access began producing evidence that contradicted documents. **Higher tiers override lower ones.**
-
-| Tier | Source | Examples |
-|---|---|---|
-| **1. System observation** | Read directly from QS4 — SE11, SE16, SE38, SE93, System→Status | S/4HANA 2022; `ZLETSPIMAP` contents; no `ZCNF*` objects |
-| **2. Client documents** | Configuration written by the client's own SAP team | KDS catalogue, feature→SAP mapping, architecture deck |
-| **3. Direct statement** | Siddharth in conversation, tagged `SRC-SID-*`. Logged **Verified**; preserve any hedge he states | DI = delivery; Option C selected |
-| **4. Meeting reconstruction** | Secondhand from transcripts | 28 July decisions D-001..D-006 |
-
-**Tier 4 is fragile here.** The 28 July recordings are lost from disk, so D-001 to D-006 can never be re-adjudicated. Treat them as needing business re-confirmation.
-
-### 0.4 Source documents — `sources/`
-
-Originals prefixed by source ID; plain-text extractions in `sources/extracted/`. Index and caveats in `sources/README.md`.
-
-`SRC-TECH-001` vendor spec · `SRC-DOC-20260803-01` feature→SAP mapping · `SRC-DOC-20260803-02` **the KDS catalogue** · `SRC-ARCH-20260803-01` architecture options · `SRC-MTG-20260803-01` UI walkthrough transcripts · **`SRC-CODE-20260804-01` SE38 source of `ZLE_MRN_PENDING_REPORT`, `ZSD_PENDING_ORDER_REP_PP`, `EDOC_COCKPIT`**
-
-**Never supplied to anyone:** the BRD (`SRC-BRD-001`) and CPI workbook (`SRC-CPI-001`). Largest documentary gap.
+**Version:** 5.0 · **Date:** 2026-08-15
+**Supersedes:** v4.1. Adds the unrestricted 2,626-project catalogue, completed Tier-A deep dives, the standard-first solution map and the runtime-proof gate.
+**Status:** Current briefing. Where an older section conflicts with §0, §0 wins.
 
 ---
 
-## 1. The project
+## 0. Standard-first correction — read before every older section
 
-**Client:** Shree Cement Ltd (Bangur). **Program:** C&F Agent Interface — a portal for Clearing & Forwarding depot agents. **Namespace:** `ZCNF_*` (nothing built yet).
+- QS4 has **2,626 SEGW design-time projects** and a separate **522-service registered Gateway catalogue**. The six projects inspected on 5 August were not the complete surface; D-028 is superseded on that claim.
+- The custom `ZCNF_*` portfolio is not the current implementation plan. Five released candidates lead the transactional core: `API_MATERIAL_DOCUMENT_SRV`, `API_OUTBOUND_DELIVERY_SRV;v=2`, `API_BILLING_DOCUMENT_SRV`, `API_PURCHASEORDER_PROCESS_SRV`, and `API_MATERIAL_STOCK_SRV`.
+- None of those five is registered in the observed QS4 catalogue. “Exists,” “registered,” “returns `$metadata`,” and “completes the business transaction” are separate proof levels.
+- Registered Fiori services are not automatic substitutes. The Tier-A evidence rejects `LE_SHP_OD_CREATE`, `LE_SHP_QC_DLVREF`, and `MMIM_STO` for the target operations. `SD_CUSTOMER_INVOICES_CREATE` is a genuine but conditional internal billing-create route; `MMIM_MATDOC_SRV` is a read-back complement.
+- The current implementation and test plan is `deliverables/CNF_STANDARD_API_SOLUTION_AND_TEST_PLAN.md`. Material evidence lives in `sessions/2026-08-15-standard-api-discovery/`.
 
-**Siddharth:** the **only** SAP ABAP developer on this workstream. Has **QS4 read access** (user QNOVATE8, client 700). No DEV access. No formal written assignment.
+---
 
-**Business chain:**
+## 1. Navigate
 
-```text
-Sales Order / STO
-  → Outbound Delivery ("DI")        VL01N · LIKP/LIPS
-  → storage location + batch allocation
-  → transporter · route · freight
-  → Post Goods Issue                mvt 601 · MATDOC
-  → Shipment                        VT01N · VTTK/VTTP/VTTS
-  → Shipment Cost                   VI01 · VFKK/VFKP
-  → Billing                         VF01 · VBRK/VBRP → FI
-  → e-Invoice (IRN) + E-Way Bill    SAP eDocument + DigiGST
-  → status · download · correction
+The repository was consolidated on 2026-08-07 from 29 root files to 15. Everything retired is in `_archive/` with a note saying what replaced it. **Never reason from `_archive/`.**
+
+| Register | Holds | IDs |
+|---|---|---|
+| `PROJECT_BRAIN.md` | The mental model, the four systems, who owns what, live conflicts | `C-nn` |
+| `DECISION_LOG.md` | Decisions and established facts | `D-001`..`D-038` |
+| `OPEN_QUESTIONS.md` | What is unresolved, and who owns it | `Q-001`..`Q-057` |
+| `DOMAIN_GLOSSARY.md` | What the client's terms actually mean | — |
+| `MEETING_INGEST.md` | Source index | `SRC-*` |
+| `SYSTEM_OF_RECORD_MATRIX.md` | Which system owns which data | — |
+
+`deliverables/` is client-facing output. `sources/` is primary evidence. `API-01`..`API-10` live in `deliverables/API_SPECIFICATION_PROPOSAL.md` and the request/response workbook.
+
+**Evidence tiers, higher overrides lower:** (1) system observation from QS4 · (2) client documents · (3) direct statement from Siddharth, tagged `SRC-SID-*` · (4) meeting transcript, secondhand and ASR-noisy.
+
+---
+
+## 2. The project in one page
+
+A new operational portal for Shree Cement's C&F agents — roughly 600 users across 35+ depots — over existing SAP dispatch processes.
+
+**Two current user journeys.** The 10 Aug KT frames the immediate work as inbound receipt (Pending MRN → storage-location allocation → Submit MIGO) and outbound trade/non-trade fulfilment (T1 order → Create DI → batch/shipment → invoice/e-documents). STO creation is being sequenced later; this is not yet signed scope.
+
+The outbound operational spine is:
+
+```
+Sales Order / STO → Delivery ("DI") → one storage location, 1..n batches
+  → transporter · route · freight → PGI · shipment · shipment cost · billing
+  → e-Invoice (IRN) · E-Way Bill → status · download → correction · extension
 ```
 
-Peripheral: inbound goods receipt (MIGO), plant→depot STO transfer, reports.
+Adjacent: warehouse-to-warehouse STO creation, physical inventory reconciliation, reports and dashboard/notification surfaces.
+
+**The central thesis, unchanged and still correct:** *a BAPI will not repair a semantically wrong payload.* A technically valid call carrying a business value that means the wrong thing posts successfully, errors nothing, and surfaces weeks later as wrong stock or a disputed invoice. The KDS catalogue largely closes reference-data semantics; the BRD/field-lineage gap and C-14 show that process payload semantics are still open.
 
 ---
 
-## 2. Landscape and architecture
+## 3. Landscape — verified
 
-### 2.1 Confirmed by system observation (D-018)
+**Backend (D-018).** S/4HANA 2022 on-premise, ABAP Platform 2022, HANA 2.00.087, Fiori FES 2022 SP04. Three systems: **DS4** (dev) · **QS4** (quality) · **PS4** (production), confirmed independently by the TMS destinations. Work processes are throttled to 6 in DS4 versus 15 in QS4/PS4 — **any performance measured in DEV is ~2.5× pessimistic.**
 
-**SAP S/4HANA 2022 on-premise** · ABAP Platform 2022 · HANA 2.00.087 · Fiori FES 2022 SP04 · Linux/x86_64 · Unicode.
+**Commerce (D-027).** "T" = Terminal. **T1** is the existing *Udaan* Hybris instance — order booking and aggregation between clients, customers and supply-chain logisticians. **T2** is the CNF portal being built: aggregates from T1, applies sourcing logic, lands orders in S/4, and holds a persistent store of recurring SAP/DSP/T1 data. Both are Hybris instances of the Udaan estate.
 
-**Three-system landscape: `DS4` (dev) → `QS4` (quality) → `PS4` (production).** The vendor spec claimed two-system DEV→PRD. Wrong.
+**Integration (D-034).** CPI is confirmed present — destinations `CPI_IDOC` ("IDOC Connection to CPI"), `CPI_OVS`, `CPI_WB`. An IDoc channel already exists alongside whatever OData carries. A BTP connection exists (`ADS` on SCP).
 
-Consequences: released A2X APIs and CDS views exist; **RAP is available and SEGW is deprecated for new development** (Q-046); `MATDOC` is the material document table, not `MKPF`/`MSEG`.
+**Statutory (D-023, D-035).** Both frameworks are live. SAP's eDocument framework is installed (`EDOC_COCKPIT`, `EDOCUMENT`, `ZEDOC_DCC_SRV` registered) and **DigiGST** — published by EY — supplies the India layer. Roughly **50 `EY_*` HTTP destinations** already cover e-Invoice generate/cancel and E-Way Bill generate/cancel/extend/Part-B/multi-vehicle/consolidate.
 
-### 2.2 Gateway reality
+**Analytics (D-038).** SAP → Datasphere replication is live: extraction-enabled ABAP CDS views → ODP delta queue → HANA Smart Data Integration → tenant `DWCTZ8YIB`, connection `SAP_S4_QA`. Currently replicating billing header (`ZVBRK_CDS_DW`, active) and customer master (`ZKNA1_CDS_VW`, idle). Vehicle master (`ZLETVEHICLECDSDW`) is built and extraction-enabled but **not yet subscribed**.
 
-Only **7 A2X services registered**: `API_SALES_ORDER_SRV`, `API_BUSINESS_PARTNER`, `API_CV_ATTACHMENT_SRV`, plus four PM/PP. **Not registered:** `API_OUTBOUND_DELIVERY_SRV`, `API_BILLING_DOCUMENT_SRV`, `API_MATERIAL_DOCUMENT_SRV`, `API_MATERIAL_STOCK_SRV`.
+**Also present, previously unmentioned by anyone:** a BW system (`QS4CLNT500`), EWM (`S4HEWMQ*`), and CIF connections.
 
-They exist in S/4HANA 2022 — they are simply not activated here. **Available ≠ activated.** Activation is a small Basis task (Q-045) and should happen before any decision to build custom.
+**Gateway.** Deny-by-default. The 522-row registered catalogue is materially smaller than the 2,626-project design-time catalogue. The five leading released services—including `API_PURCHASEORDER_PROCESS_SRV`—are absent from the observed registration and need DEV provisioning plus runtime proof (Q-045/Q-067). Embedded vs hub remains unconfirmed (Q-002).
 
-Client Gateway convention: every service is `Z<name>` technical with the SAP name as External Service Name.
-
-### 2.3 Option C — the selected data-integration pattern (D-014)
-
-| Data | Portal reads from | Freshness |
-|---|---|---|
-| **Orders, Deliveries, Invoices** | **Hybris T1 (CRM)** — live OCC | Real-time |
-| Invoice PDF download | Hybris T1 | Real-time |
-| Pending MRN, STO List | T2, synced from Datasphere | 15 min |
-| Stock Ageing | T2, from Datasphere | Daily |
-| Depot→Sloc, Vehicle, Transporter masters | T2, from Datasphere | Daily |
-
-**Option C removes most read APIs from SAP scope.** What remains: the write commands, two real-time reads (Stock Availability, Shipment Cost estimate — **neither appears on the Option C diagram**, Q-038), and a **new unowned outbound flow**: S/4 → T1 push for deliveries and invoices (**Q-037**).
-
-CPI is confirmed in the runtime path. An early vendor document showed a direct storefront→Gateway connection — that reading is wrong.
-
-### 2.4 Created-in vs read-from
-
-S/4 **creates** deliveries and invoices; the portal **reads** them from T1. Never conflate. Commerce T2 owns depot, user, geography, material alias, Incoterms, storage location, depot-SL, SL-SPI — these are **inputs** to SAP APIs. Datasphere owns MRN, STO, plant-SL, ageing. Full table in `SYSTEM_OF_RECORD_MATRIX.md`.
+**Option C (D-014)** is the selected data-integration pattern: orders, deliveries and invoices served live from T1 via OCC; Pending MRN and STO List DSP→T2 every 15 min; stock ageing and masters daily. It removes most read APIs from SAP scope and leaves write commands plus two real-time reads.
 
 ---
 
-## 3. The ABAP role
+## 4. The ABAP role
 
-### 3.1 The thesis
+**Owns:** SAP source selection and document execution · released API/BAPI choice · ABAP classes and SEGW/RAP services · locking, commit policy, idempotency, correlation · the API error contract.
 
-> **A BAPI will not repair a semantically wrong payload.**
+**Does not own:** business rules and document semantics (SD/MM) · iFlows (CPI team) · Datasphere models (DSP team) · landscape, roles, destinations, service activation (Basis) · portal behaviour (Commerce) · functional sign-off.
 
-Client seniors pushed back on the work being scoped as "field mapping and BAPI posting". They were right. The semantic gap is now largely closed by the KDS catalogue and system observation — but the principle stands.
+Full map in `PROJECT_BRAIN.md` §Who owns what.
 
-### 3.2 Scope
-
-**In:** S/4 source analysis; ABAP classes; OData services (SEGW or RAP — undecided, Q-046); API/BAPI selection; SAP-side validation, error mapping, logging, idempotency; commit policy; CPI-facing contracts; tests.
-
-**Out:** frontend, iFlow construction, Datasphere modelling, Basis parameters/roles, functional sign-off, GSP credential ownership, production postings.
-
-**Standing rule:** collaborate across every boundary, but do not silently accept ownership.
-
-### 3.3 The live boundary question
-
-"You own the SAP T2 APIs" was said without an entity list. Three readings, and they must be distinguished:
-
-1. **OData services T2/CPI call into SAP** — always his. Coherent.
-2. **Outbound push from S/4** (Q-037) — coherent as his, but **new scope in no estimate.** Name it, don't absorb it.
-3. **End-to-end including CPI iFlows and Commerce ingestion** — **not** his scope.
-
-Note that under Option C, T2 reads from Datasphere, not S/4 — so a literal "S/4→T2" read path barely exists.
+**The standing risk is unowned work at boundaries.** `ZCRM_STAGEGATE_SRV` proves a pull-shaped progression path. A 10 Aug meeting separately claims an existing trigger-shaped SAP→CPI→T1 full-document projection. They may coexist, but the latter is not named or observed; Q-037 now asks for both paths' identities, owners, payloads, retry and latency. Two further SAP-side gaps remain outside the estimate: **Datasphere extraction views** (Q-053) and **ILMS ownership** (Q-054).
 
 ---
 
-## 4. Verified knowledge base
+## 5. Verified knowledge base
 
-### 4.1 System-observed (tier 1)
+### 5.1 The first six registered CNF-adjacent services (D-028, completeness claim superseded)
 
-| Fact | Detail |
+These six SEGW projects were the first registered CNF-adjacent surface inspected. Five are custom, all originating in DS4 from the IBM ABAP pool. They are useful precedent, but **not** the complete catalogue; D-056 records the later 2,626-project export.
+
+| Service | What it is |
 |---|---|
-| Backend | S/4HANA 2022 on-premise, ABAP Platform 2022, three-system DS4/QS4/PS4 |
-| `ZCNF*` objects | **None exist.** Greenfield confirmed (D-019) |
-| **SPI** | **Special Processing Indicator**, data element `SDABW`, a **delivery item field** (`LIPS-SDABW`). `ZLETSPIMAP` keys `MANDT`+`LGORT`+`SDABW` is a **valid-combinations** table — GDF permits five SPIs (RLCO, RLMI, SP01, SP04, SP08). Storage location alone does **not** determine SPI (D-020, Q-044) |
-| Storage locations | Literal 4-char `T001L` codes: ASST, CLYC, CUT, DMG, DRD, DTP, FRSH, GDF, GDRK, PRST, RCPT, RMYD, RSD, SOW, STG |
-| Material document | **`MATDOC`** on S/4, not `MKPF`/`MSEG` |
-| Registered A2X services | 7 only; the delivery/billing/material ones are absent |
+| `ZCRM_STAGEGATE_SRV` | **The stage-gate model.** 6-field composite key → `deliveriesItems`, 32 fields |
+| `ZCRM_SO_REJECT_SRV` | T1 **writes into** S/4 — order-item rejection (`Vbeln`, `Posnr`, `Abgru`, `Msg`) |
+| `ZCUSTOMER_DETAIL_SRV` | Customer master to CPI. `LastUpdateDate` → delta-pull |
+| `ZAPI_PLANT_WEIGHBRIDGE_RMC_SRV` | Material master feed to the RMC weighbridge system |
+| `ZMM_SCRUM_SER_PO_SRV` | Service POs from an external system |
+| `API_SALES_ORDER_SRV` | The one SAP-delivered service; SADL/CDS, approval function imports |
 
-### 4.2 Source-verified (tier 1, from `SRC-CODE-20260804-01`)
+**None of the six implements any of API-01..API-10.** They supply pattern, correlation keys and precedent — not implementations.
 
-| Fact | Detail |
-|---|---|
-| **"Pending MRN"** | **In-transit quantity on plant→depot movement** = dispatched − received, per delivery. Chain: STO (`EBELN`) → outbound delivery from supplying plant → goods issue → in transit → goods receipt **mvt 101** at receiving plant, linked via `MATDOC-VBELN_IM` (D-021, closes Q-004) |
-| **Existing CDS views** | **`zsd_mrn_pending_cds_opt`** (main, all filters) · `zle_di_inv_details` (dispatched qty) · `zle_mrn_goods_reciet_cds` (received qty). **Directly consumable** |
-| **`ZSD_PENDING_ORDER_FM`** | **RFC-enabled** FM returning `zsd_st_pending_order_out`; called via `DESTINATION IN GROUP` for parallel processing (D-022) |
-| Plant authorization | Custom object **`ZLE_PLNT`**, field `WERKS`. Already in use — reuse, don't reinvent (D-024) |
-| Vehicle / LR-GR | **`VTTK-ZZVEHICLE_NO`**, **`VTTK-ZZLR_GR_NO`** — Z-fields on the **shipment header** (D-025) |
-| E-Way Bill number | **`/DIGIGST/OWARD_H-EWBNUMBER`** |
-| Statutory frameworks | **Both present.** SAP eDocument installed (standard `EDOC_COCKPIT`, `EDOCUMENT`, `CL_EDOC_COCKPIT_UI`, `ZEDOC_DCC_SRV`) **and** DigiGST for India (D-023) |
-| Credit status | **`CMGST`** + `DDTEXT`. Multi-valued — the portal's two-value display is lossy (D-026) |
-| Quantity chain | contract `ZMENG` → `ORDER_QTY` → `SCHEDULE_QTY` → `DEL_QTY` → `INV_QTY` → `REJ_QTY` → **`BAL_QTY`**. Six steps, not D-001's three (D-026, Q-048) |
-| Man-made state | `ZSDTPRICE-ZREGION` / `ZREGION_TEXT` — client regional grouping, distinct from SAP region |
-| Landmine | **`TVARVC` name `ZLE526_EXCLUDE_DI`** — hardcoded delivery exclusions added under a ticket in Apr 2026. Plus a residual `MATDOC` reconciliation loop amended three times across 2024–25. **Reimplementing "pending" without these gives subtly wrong numbers** (Q-047) |
+### 5.2 What the implementation classes revealed
 
-### 4.3 Document-verified (tier 2, KDS catalogue)
+Three `*_DPC_EXT` classes read in full (`SRC-CODE-20260805-01`). The highest-yield source in the project.
 
-**Material master — plain fields in `MVKE`, texts in `TVM1`–`TVM5`. Not classification characteristics.**
+- **Generic CRUD nodes prove nothing (D-029).** `ZCRM_SO_REJECT` shows five operations in the SEGW tree and implements **two**.
+- **An API-06-shaped orchestration already exists (D-030).** `ZMM_SCRUM_SER_PO` runs `BAPI_PO_CREATE1` → `BAPI_ENTRYSHEET_CREATE` → `BAPI_INCOMINGINVOICE_PARK` behind one OData call, three documents, three commits, with process state in Z-table `zmm_scrum_ser_po`. **No compensating rollback; the final invoice commits without checking success.** The sequencing was never the hard part.
+- **Nothing is idempotent (D-031).** No write API carries a request ID or replay guard. `ZCRM_SO_REJECT` is safe by accident — setting a rejection reason is a state-set. `BAPI_PO_CREATE1` is not.
+- **`ZCRM_STAGEGATE` is a read wearing a POST (D-032).** `create_deep_entity`, writes nothing. POST because OData V2 GET can't carry a compound key. **This is the house pattern for composite reads.**
+- **Stage gates come from ILMS, not SAP (D-033).** `ZLETILMSDELIVERY` / `ZLETILMSTOKEN` / `ZLETILMSTRANS`, with a `stageid` field. Fallback path reads `LIKP-ZZVEHICLE_NO` and `LIKP-ZZDRIVERMOB` and the forwarding agent from `VBPA` partner function `SP`.
+- **No authorization check anywhere — four of four (D-036).** Empty `auth_check` FORM, `#NOT_REQUIRED` on the CDS view, no `AUTHORITY-CHECK` in either DPC_EXT. `ZLE_PLNT` (D-024) is the exception, not the rule.
 
-| Field | Meaning | Values |
+### 5.3 Source-verified from the SE38 reports (`SRC-CODE-20260804-01`)
+
+- **Pending MRN = invoiced minus goods-received, per delivery** (D-021). Base view `zsd_mrn_pending_cds_opt`, plus `zle_di_inv_details` and `zle_mrn_goods_reciet_cds`. Derived — stored nowhere.
+- **Goods receipts must match on `VBELN_IM`, not `EBELN` alone** — production defect `SR/ME/45764`, Sept 2025, when one PO had several deliveries.
+- **`ZSD_PENDING_ORDER_FM` is RFC-enabled** (D-022) — directly callable. Its caller is a parallel-RFC job slicing one task per day with a **1200-second wait ceiling**, and an **empty authorization check**.
+- **The quantity chain is seven steps** (D-026): contract (`ZMENG`) → order → schedule → delivery → invoice → rejected → **balance (`BAL_QTY`)**. `D-001`'s `Order = DI + Pending` is a simplification.
+- **`ZLETSPIMAP` is a valid-combinations table, not a determination table** (D-020). One storage location permits several SPIs; the determination rule doesn't exist (Q-044).
+- **Vehicle and LR are Z-fields on the shipment header** (D-025), **and `ZZVEHICLE_NO` also exists on `LIKP`** (D-037).
+- **E-Way Bill number reads from `/DIGIGST/OWARD_H-EWBNUMBER`** (D-023).
+
+### 5.4 Document-verified (KDS catalogue, `SRC-DOC-20260803-02`)
+
+Brand is `MVGR3`, grade `MVGR2`, product type `MVGR1`, pack type `MVGR4` — plain material groups, **not** classification characteristics (D-016). Trade/non-trade is on the material at `MVGR5` and separately on the customer at `KDGRP` (D-015). Storage-location codes, sales-area mappings (`TVKWZ`, `TVKBZ`), customer groups (`T151`) all documented in `DOMAIN_GLOSSARY.md`.
+
+### 5.5 What the 10 Aug meetings add (Tier 4, not decisions)
+
+- **Immediate command vs later read model.** Create DI and Submit MIGO are intended to return an S/4 identifier synchronously; delivery/invoice lists later reflect T1 and MIGO status later reflects DSP/T2.
+- **MIGO classification and posting.** D-054 establishes the portal states: the list is cumulative receipt position; a Partial modal separates prior inward history from the new classification delta. Line values use 0.05-MT increments and their handled total cannot exceed displayed pending. D-052 resolves the STG/DMG semantics: both appear like storage-location buckets but are rejected/non-stock outcomes. They do not increase inventory and instead feed pending replacement goods for a later Order→DI→MIGO cycle. The API must therefore distinguish handled/classified quantity from GR-posted quantity. Exact pending-ledger destination, posting reference and returned identifier remain Q-066/Q-004/C-14.
+- **Display stock is not transactional stock.** Dashboard/ageing can be stale/D-1; system batch determination must block unavailable stock (Q-014/Q-038).
+- **Invoice status is explicitly multi-state.** Document Flow shows success/number, failure and Processing; Generated Invoices is success-only, so the failure/retry gap in Q-035 is real.
+- **MRN terminology is now a live conflict (C-14).** The meetings offer three incompatible models; source-derived D-021 remains current.
+- **The BRD exists outside this repository.** Team access is reported and it contains screen validations/returns. Obtain the controlled version as `SRC-BRD-001`.
+
+---
+
+## 6. The API model
+
+The formal manager/team register contains **seven** T2→S/4 operations (D-047). The evidence-backed design workbook v1.6 expands this into workflow contracts, but those extra workflow IDs are not automatically separate SAP interfaces. `CAND-08` is explicitly a research appendix, not an approved endpoint (D-055/Q-063).
+
+Legacy classification and effort totals must be recalculated only after the seven-formal-to-workbook mapping is approved.
+
+Class **S** means the *business operation* is delivered by SAP — not that the work is zero. Protocol, authorization, idempotency, error shaping and logging sit on top of every API regardless.
+
+**Where the effort actually is:**
+
+- **API-06 invoice orchestration (25–35d).** Every stage is standard. The resumable, observable, idempotent process across four units of work and two external calls is not. A precedent exists (§5.2) and lacks exactly the parts that make it hard.
+- **Current v1.7 API-04 shipment calculation (historically API-05, 12–18d estimate).** Standard shipment costing is document-bound. The catalogue has no credible SEGW candidate; validate `BAPI_SHIPMENT_COST_ESTIMATE` and the client's LE/TM configuration before building a narrow simulation endpoint. Create-then-reverse remains rejected.
+- **Idempotency (NFR-01).** No standard SAP facility. Every command API depends on it. Most underestimated item in the set, and §5.2 proves it isn't done anywhere today.
+- **API-01 and API-04 composites.** All underlying reads standard; the joined shape is not.
+
+**Scope reduction found 2026-08-05:** Invoice/e-document correction and E-Way Bill extension can reuse destinations that already exist (`EY_CANCEL_EINV`, `EY_GENERATE_EINV`, `EY_EWB_EXT_CF`, `EY_EXTENDEWBVALIDITY`). The statutory client is not being built. Existing plumbing does not prove a separate portal-facing e-Invoice correction endpoint.
+
+**Current evidence-backed deliverable:** `outputs/cnf_api_contract_v16/CNF_API_Request_Response_Specification_v1.6.xlsx`. API-07 is functionally aligned to the validated Figma; SAP identifier/type and cancel/regenerate mechanics remain open. The older `deliverables/` workbook is retained as provenance, not the current freeze candidate.
+
+---
+
+## 7. Open questions, ranked
+
+| Rank | Q | Why it leads |
 |---|---|---|
-| `MVGR1` | Product type | OPC, PPC, PSC, CC, AAC, RMC, Clinker, Rubble, Mortar, Raw Material, Scrap, Synthetic Gypsum, Limestone, Misc |
-| `MVGR2` | **Grade** | OPC43, OPC53, PPC, PSC, CC, PPC PREMIUM, PPC POWER, PPC CS, CLINKER, AAC BLOCK, MORTAR, OPC 53 S |
-| `MVGR3` | **Brand** | SHREE, BANGUR, ROCKSTRONG, MAGNA |
-| `MVGR4` | Pack type | HDPE, LPP, LOOSE |
-| `MVGR5` | **Trade / Non-trade** | `1` TRADE, `002` NON TRADE |
-
-**Org structure:** Sales org `1000` = Shree Cement Ltd (`TVKO`). Company codes `1000`, `1300` (`T001`) — relayed as sales orgs, documented as company codes, **conflict C-10 / Q-040**. Division `10` = Cement. Distribution channels `10`, `20`, `99`. Sales area→plant via `TVKWZ`; →sales office via `TVKBZ`.
-
-**Customer groups** (`KNVV-KDGRP` / `T151`), 45 values. `10` Dlr-Wholesale · `11` Dealer-Retail · `13` Retailer/Sub Dealer · `14` Institutional · `19` Obligatory Non Trade · `27` Transporter · `28` Depot · **`31` Handling Agent**. The C&F agent is enrolled as **both vendor and customer** — group `31`, account group `ZDOM`, via `ZMDM_BP`.
-
-**Other:** Material Freight Group `MFRGR`/`TMFG` (A0000001 Cement Packed … A0000022 Cement Loose (F)) drives shipment cost. Material Pricing Group `KONDM`/`T178`. Nielsen Indicator `MARC`/`TNLS` linked to `MVGR3` via condition table `KOTG508` and an **`MV45AFZZ` user exit**. Incoterm maintained as condition type **`ZISP`** via VK11/12/13 — distribution FTP 330, FTB 57, EXP 9, EXW 2, EXR 1.
-
-**Transport:** classic LE-TRA (VT01N) and shipment costing (VI01). MIGO movement types 101/102/311/313/315/122/551. STO document type `ZP06`.
-
-### 4.4 Approved business rules
-
-D-001 `Order = DI + Pending` (simplification, see D-026) · D-002 one storage location per DI, batches sum **exactly** · D-003 E-Way extension Road-only, 24h, repeatable · D-004 Part B editable during validity · D-005 only DI quantity editable while open · D-006 FleetX tracking · D-007 **DI = outbound delivery, `LIKP-VBELN`** · D-009 **quantity change resets batch determination** · D-010 DI leaves In-Progress on success *or* failure · D-011 keyed on DI number, not order · D-013 shipment cost estimate is read-only.
-
-D-009 to D-013 came from a UI/UX design review, **not** a business decision owner, and that session stated the design is not a final handoff.
+| 1 | **Q-032** | Invoice-chain latency, never measured. Decides whether API-06 is synchronous or submit-and-poll — the contract cannot be written without it. Two traced documents gave 21 seconds and 3 days |
+| 2 | **Q-010 / NFR-01** | Nothing prevents duplicates today (D-031). Every command API depends on the answer |
+| 3 | **Q-050** | No compensating rollback in the existing multi-stage orchestration. API-06 has the same shape |
+| 4 | **Q-004 / C-14** | MIGO reference, multi-SLoc allocation and returned identifier are not semantically settled |
+| 5 | **Q-037** | Identify the claimed SAP→CPI→T1 projection and distinguish it from stage-gate pull |
+| 6 | **Q-038** | Stock availability for batch allocation appears nowhere in Option C |
+| 7 | **Q-031** | DI predecessor by trade/non-trade/STO branch. STO is currently deferred |
+| 8 | **Q-045 / Q-046** | Activate standard APIs; settle SEGW vs RAP |
+| 9 | **Q-053 / Q-054** | Unowned SAP-side work: Datasphere extraction views, ILMS |
+| 10 | **Q-006** | MIGO + fulfilment is only a working sequence; formal assignment/acceptance remains absent |
 
 ---
 
-## 5. The API model
-
-| ID | API | Class | Position |
-|---|---|---|---|
-| API-01 | Check MIGO | **W** | **Upgraded.** Expose existing CDS `zsd_mrn_pending_cds_opt`. Must honour the TVARVC exclusion list and the residual reconciliation loop |
-| API-02 | Submit MIGO | **S** | `BAPI_GOODSMVT_CREATE` / `API_MATERIAL_DOCUMENT_SRV`. Does **not** derive MRN |
-| API-03 | Create DI | **S** | Predecessor is **both SO and STO**. Branch on `_CREATE_SLS` / `_CREATE_STO` |
-| API-04 | Stock Availability | **C** | Unrestricted stock at batch grain. **Absent from Option C — Q-038** |
-| API-05 | Shipment Cost | **X / S** | Estimate mode has **no standard equivalent** (costing is document-bound). Use condition-technique simulation |
-| API-06 | Invoice Creation | **X** | Staged orchestration, 4 SAP LUWs + 2 external calls. Hardest item |
-| API-07 | Invoice Correction | **S** | Standard order type **RK** (Invoice Correction Request) exists for this |
-| API-08 | E-Invoice Correction | **T** | DigiGST + SAP eDocument. IRN cannot be amended — cancel-and-reissue in window, credit note outside |
-| API-09 | E-Way Bill Extension | **?** | Stated "not core SAP" — **may be out of ABAP scope** |
-| API-10 | Modify DI *(proposed)* | **S** | Quantity change **resets batch determination** (D-009) |
-| **NEW** | **S/4 → T1 push** | **unowned** | Deliveries/invoices read from T1 but created in S/4. No trigger, mechanism or owner. **Q-037** |
-
-**Tiers:** `S` standard · `C` composite over standard sources · `X` no standard equivalent · `W` wrap existing client artifact · `T` third-party add-on.
-
-### 5.1 API-03 design — settled
-
-Both BAPIs verified from source. Structurally identical; three differences only:
-
-| | `_SLS` | `_STO` |
-|---|---|---|
-| Reference table | `SALES_ORDER_ITEMS` (`BAPIDLVREFTOSALESORDER`) | `STOCK_TRANS_ITEMS` (`BAPIDLVREFTOSTO`) |
-| Input BAdI | `badi_dlv_create_sls_extin` | `badi_dlv_create_sto_extin` |
-| Internal FM | `SHP_DELIVERY_CREATE_FROM_SLS` | `SHP_DELIVERY_CREATE_FROM_STO` |
-
-Everything else identical — `SHIP_POINT`, `DUE_DATE`, `NO_DEQUEUE`, `EXTENSION_IN`/`OUT` (`BAPIPAREX`), shared output BAdI `badi_dlv_create_extout`, `DELIVERIES`/`CREATED_ITEMS`.
-
-**Three design consequences:**
-1. **Strategy pattern** — one interface, two reference-table builders. Derive the predecessor type from the document number; do not trust the caller.
-2. **`EXTENSION_IN` + BAdI is the custom-field path** — vehicle/driver/transporter go through it, **inside the LUW**. This eliminates the vendor spec's second-commit Z-table hole. (Though `VTTK` Z-fields suggest the shipment is the real home.)
-3. **There is no `sales_order` importing parameter** — the reference is a table. The vendor spec would not have compiled. One call can create **multiple deliveries** (`NUM_DELIVERIES`), so the contract cannot assume 1:1.
-
-### 5.2 API-06 — required components
-
-No standard orchestration exists. Needs: process state persistence, stage engine with preconditions, per-stage guards, process-level idempotency on an external request ID, **a business lock on the DI number** (not only the request ID — two different valid requests can target one delivery), reconciliation for "SAP committed, response lost", and retryable-vs-terminal error classification per stage.
-
-Likely simplification: the client indicates the sequence is staged "with some automated". If IRN fires automatically on billing save, API-06 **drives stages 1–4 and observes 5–6**.
-
-### 5.3 Cross-cutting
-
-**Idempotency has no standard SAP equivalent** — custom by necessity, and the most underestimated item. Use the standard Business Application Log for logging (not Z-tables). Reuse `ZLE_PLNT` for plant authorization. Standard document authority fires inside the BAPIs regardless.
-
----
-
-## 6. Open questions, ranked
-
-**Critical:** Q-037 (what pushes S/4→T1) · Q-038 (real-time stock availability, absent from Option C) · Q-031 (SO vs STO branch determination) · Q-027 (SD/MM KT — **Sujal** named) · Q-012 (master/reference code dictionaries — largely served by the KDS catalogue)
-
-**High:** Q-046 (**SEGW or RAP** — biggest technical decision) · Q-045 (activate the four released A2X services) · Q-044 (SPI determination when a storage location permits several) · Q-042 (DigiGST integration surface; is API-09 in scope) · Q-039 (does DSP replicate raw tables or a CDS view) · Q-035 (queryable invoice status; where a failed invoice retries) · Q-034 (FTP/FTB/EX configuration) · Q-032 (measured invoice latency — nobody has measured it) · Q-033 (pickup code, conflict C-8)
-
-**Medium:** Q-047 (TVARVC exclusion list) · Q-048 (six-step quantity chain vs D-001) · Q-040 (1000/1300 sales org vs company code) · Q-041 (ODN confirmation) · Q-025 (Modify DI in scope)
-
-**Closed by system observation:** Q-001, Q-002, Q-004, Q-013, Q-043.
-
----
-
-## 7. Live conflicts
+## 8. Live conflicts
 
 | ID | Conflict |
 |---|---|
-| **C-8** | Pickup code "disabled in FTP" vs "only present in FTP", stated seconds apart. The KDS index says `ZISP` *"drives DI and FTP pickup-code logic"*, leaning to the second |
-| **C-9** | D-005 says editable "while DI is open"; D-009 says editing resets batch determination — implying the window closes at or reaches through batch determination |
-| **C-10** | `1000`/`1300` — sales organisations (relayed) vs company codes (KDS document) |
+| **C-11** | T2 as persistent store (D-027) versus Option C's direct-query design (D-014). The 4 Aug meeting contradicts itself within 35 minutes |
+| **C-12** | STO/MRN source three ways — DSP→T2 per D-014, S4→T2 and DSP→T2 four minutes apart in the meeting, and no delta queue exists for either |
+| **C-13** | Stage-gate scope in CNF — *"there is no such thing as a stage gate"* contradicted three minutes later, and by the existence of `ZCRM_STAGEGATE_SRV` |
+| **C-14** | MRN identity/lifecycle — source code says derived Pending-MRN position; the 10 Aug meetings variously place MRN before MIGO, after MIGO, expand it as Movement Reference Number and expect it as an API response |
+| **C-8** | Pickup code: disabled in FTP, or present only in FTP |
+| **C-10** | `1000` / `1300` — sales organisations or company codes |
 
 ---
 
-## 8. What to do next
+## 9. Beliefs held earlier that are now known wrong
 
-1. **Re-read `DECISION_LOG.md` and `OPEN_QUESTIONS.md`** — this file goes stale the moment new evidence arrives.
-2. **Read the remaining report sources**: `ZLE_MRN_REPORT`, `ZSD_SALES_REGISTER_N`, `ZMM_INVENTORY_AGING_REPORT`. Two of three checked so far revealed consumable artifacts underneath.
-3. **Trace one real delivery in QS4** — VL03N → document flow → VF03. Check `LIPS-SDABW` on a live record to see how SPI actually lands.
-4. **Ask Basis to activate the four released A2X services** (Q-045). Small, concrete, and shrinks the custom surface before any build decision.
-5. **Form a position on SEGW vs RAP** (Q-046) and bring it rather than defaulting.
-6. **Raise Q-037 in the next architecture conversation.** A real gap in the chosen design, unnamed by anyone else.
-7. **Do not generate speculative deliverables unasked.** The set is sufficient.
+Removed from the current documents. Listed here only so nobody re-derives them.
 
----
-
-## 9. Constraints on an AI agent here
-
-Per `AI_OPERATING_RULES.md`: plan and draft only until explicit approval. Never enable SAP GUI scripting or change RZ11/profile parameters — **always prohibited regardless of approval level**. Never modify roles. Never post, release, activate or transport without specific approval. QAS and PRD writes require separate authority.
-
-No agent in this project has SAP connectivity. All system evidence is Siddharth reading screens and pasting results.
+- SPI is a shipping point, or a transcription of SCPI — **no**, Special Procurement Indicator (D-025 area, Q-025).
+- Brand and grade are classification characteristics — **no**, plain material groups (D-016).
+- SAP Document and Reporting Compliance is the statutory framework — **no**, DigiGST/EY, alongside SAP's eDocument framework (D-017, D-023).
+- The landscape is two systems, DEV→PRD, per the vendor spec — **no**, three (D-018).
+- `ZLETSPIMAP` is a determination table — **no**, valid combinations only (D-020).
+- Pending MRN derives from gate entry — **no**, invoiced minus received (D-021).
+- Nothing exists on the S/4→T1 boundary — **no**, `ZCRM_STAGEGATE_SRV` serves it (Q-037).
+- CPI is barely present in the architecture — **no**, three destinations including an IDoc channel (D-034). This was inference from one transcript; the destination list disproves it.
+- Stage gates map onto the seven `VBFA` document hops — **no**, they are ILMS operational checkpoints (D-033).
+- `E8H_000` indicates a hub Gateway — **no**, routinely present and insignificant (Q-049, closed).
 
 ---
 
-## 10. Beliefs held earlier that are now known wrong
+## 10. What to do next
 
-Listed so no successor re-derives them.
-
-| Was believed | Actually |
-|---|---|
-| SPI = shipping point (`VSTEL`), or a mis-transcription of SCPI | **Special Processing Indicator**, `SDABW`, a delivery item field |
-| `ZLETSPIMAP` maps storage location → SPI | **Valid combinations.** One storage location permits several |
-| Brand/grade are classification characteristics (class type 022) | Plain material group fields `MVGR3`/`MVGR2` |
-| Client uses SAP Document Compliance **or** DigiGST | **Both.** SAP handles document lifecycle, DigiGST the India statutory layer |
-| MRN relates to Gate Entry (`ZDACE_GE_MIGO`) | **In-transit quantity** on plant→depot movement, dispatched − received |
-| Material documents are `MKPF`/`MSEG` | **`MATDOC`** on S/4HANA |
-| The client Z-reports can be wrapped as services | T-codes are report programs — **but a CDS view and an RFC-enabled FM sit underneath them.** Look past the transaction to what it calls |
-| Landscape is two-system DEV→PRD (vendor spec) | **Three systems**: DS4 / QS4 / PS4 |
-| "S/4HANA means released APIs are available" | Available in the product, **not activated** on this Gateway |
+1. **Measure the invoice chain** (Q-032). Highest-value single action available. Trace real documents through `VBFA` and compare stage timestamps.
+2. **Measure a single-slice call to `ZSD_PENDING_ORDER_FM`.** Determines whether the parallel wrapper is load-bearing for a narrow portal query.
+3. **Ask Basis to activate the four A2X services in DEV** (Q-045) — may remove several custom builds from scope.
+4. **Settle SEGW vs RAP** with the ABAP lead (Q-046) before any service is created.
+5. **Name owners** for Q-053 and Q-054 before they default to the ABAP developer.
+6. **Get Q-006 answered.** Ask every meeting.
+7. **Obtain the approved BRD/Figma revision** and ingest `SRC-BRD-001`; team access now exists.
+8. **Resolve Q-004/C-14 with MM/SD** before freezing Submit-MIGO request/response.
+9. **Observe the claimed SAP→CPI→T1 projection** and record its object, trigger, payload, correlation and latency (Q-037).
 
 ---
 
 ## 11. What would invalidate this document
 
-- DEV access — converts design intent into buildable fact
-- Arrival of the BRD or CPI workbook — never supplied
-- An answer to Q-037 or Q-038 — either changes SAP scope materially
-- A decision on Q-046 (SEGW vs RAP) — changes every service's construction
-- Formal design handoff — the 3 Aug UI review was explicitly **not** final
+- Production (PS4) turning out to differ materially from QS4 (Q-052) — the structural findings would hold, line-level detail would not.
+- Option C being replaced, which would reshape every read API.
+- A decision to build on RAP rather than SEGW, which changes the service model but not the business findings.
+- The approved BRD or CPI workbook being ingested. BRD access is reported among team members, but no controlled copy is held here; the CPI workbook remains absent.

@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "system": "DS4",
+    "client": "200",
+    "user": "QNOVATE8",
+    "functionModule": "BAPI_MATERIAL_AVAILABILITY",
+    "functionGroup": "W61V",
+    "remoteEnabled": true,
+    "releaseStatus": "Released",
+    "capturedFrom": "SE37 display + DD03L in live DS4/200",
+    "executionPolicy": "READ or TESTRUN only. Never call BAPI_TRANSACTION_COMMIT for simulation cases."
+  },
+  "interface": {
+    "IMPORT": [
+      {
+        "parameter": "BATCH",
+        "associatedType": "BAPICM61V-CHARG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Batch",
+        "structureFields": []
+      },
+      {
+        "parameter": "CHECK_RULE",
+        "associatedType": "BAPIT441V-PRREG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Checking rule",
+        "structureFields": []
+      },
+      {
+        "parameter": "CUSTOMER",
+        "associatedType": "BAPIKNVVKY-CUSTOMER",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Customer number",
+        "structureFields": []
+      },
+      {
+        "parameter": "DEC_FOR_ROUNDING",
+        "associatedType": "BAPICM61M-ANDEC",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "No. of decimal places to which rounding should be performed",
+        "structureFields": []
+      },
+      {
+        "parameter": "DEC_FOR_ROUNDING_X",
+        "associatedType": "BAPIUPDATE",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Updated information in related user data field",
+        "structureFields": []
+      },
+      {
+        "parameter": "DOC_NUMBER",
+        "associatedType": "BAPISDHEAD-DOC_NUMBER",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Document number",
+        "structureFields": []
+      },
+      {
+        "parameter": "ITM_NUMBER",
+        "associatedType": "BAPISDITM-ITM_NUMBER",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Item number",
+        "structureFields": []
+      },
+      {
+        "parameter": "MATERIAL",
+        "associatedType": "MATNR18",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Material number",
+        "structureFields": []
+      },
+      {
+        "parameter": "MATERIAL_EVG",
+        "associatedType": "BAPIMGVMATNR",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "MATERIAL_LONG",
+        "associatedType": "MATNR40",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "PLANT",
+        "associatedType": "BAPIMATVP-WERKS",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Plant",
+        "structureFields": []
+      },
+      {
+        "parameter": "READ_ATP_LOCK",
+        "associatedType": "BAPICM61V-VFPST",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Control indicator for availability check",
+        "structureFields": []
+      },
+      {
+        "parameter": "READ_ATP_LOCK_X",
+        "associatedType": "BAPIUPDATE",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Updated information in related user data field",
+        "structureFields": []
+      },
+      {
+        "parameter": "REQ_SEG_LONG",
+        "associatedType": "BAPISDITM-REQ_SEG_LONG",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Requirement Segment",
+        "structureFields": []
+      },
+      {
+        "parameter": "SGT_RCAT",
+        "associatedType": "BAPISDITM-REQ_SEGMENT",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Requirement Segment",
+        "structureFields": []
+      },
+      {
+        "parameter": "STGE_LOC",
+        "associatedType": "BAPICM61V-LGORT",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Storage location",
+        "structureFields": []
+      },
+      {
+        "parameter": "STOCK_IND",
+        "associatedType": "BAPICM61V-SOBKZ",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Special Stock Indicator",
+        "structureFields": []
+      },
+      {
+        "parameter": "UNIT",
+        "associatedType": "BAPIADMM-UNIT",
+        "optional": false,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "Unit of measure for display",
+        "structureFields": []
+      },
+      {
+        "parameter": "WBS_ELEM",
+        "associatedType": "BAPISDITM-WBS_ELEM",
+        "optional": true,
+        "passByValue": true,
+        "defaultValue": "",
+        "shortText": "WBS Element",
+        "structureFields": []
+      }
+    ],
+    "EXPORT": [
+      {
+        "parameter": "AV_QTY_PLT",
+        "associatedType": "BAPICM61V-WKBST",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "DIALOGFLAG",
+        "associatedType": "BAPICM61V-DIAFL",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "ENDLEADTME",
+        "associatedType": "BAPICM61M-WZTER",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      },
+      {
+        "parameter": "RETURN",
+        "associatedType": "BAPIRETURN",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "",
+        "structureFields": []
+      }
+    ],
+    "CHANGING": [],
+    "TABLES": [
+      {
+        "parameter": "WMDVEX",
+        "associatedType": "BAPIWMDVE",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Output table (date and ATP quantity)",
+        "structureFields": [
+          {
+            "field": "BDCNT",
+            "position": "0001",
+            "dataElement": "NUMC5",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_DATE",
+            "position": "0002",
+            "dataElement": "DAT04",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_QTY",
+            "position": "0003",
+            "dataElement": "MNG05",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COM_DATE",
+            "position": "0004",
+            "dataElement": "DAT05",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "COM_QTY",
+            "position": "0005",
+            "dataElement": "MNG06",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      },
+      {
+        "parameter": "WMDVSX",
+        "associatedType": "BAPIWMDVS",
+        "optional": false,
+        "passByValue": false,
+        "defaultValue": "",
+        "shortText": "Input table (date and quantity)",
+        "structureFields": [
+          {
+            "field": "REQ_DATE",
+            "position": "0001",
+            "dataElement": "DATPR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "REQ_QTY",
+            "position": "0002",
+            "dataElement": "MNGPR",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "DELKZ",
+            "position": "0003",
+            "dataElement": "DELKZ",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          },
+          {
+            "field": "YLINE",
+            "position": "0004",
+            "dataElement": "XLINE",
+            "checkTable": "",
+            "value": "<populate only when required by the scenario>"
+          }
+        ]
+      }
+    ],
+    "EXCEPTIONS": []
+  },
+  "cnfScenario": {
+    "mode": "READ_ONLY_EXECUTED",
+    "request": {
+      "PLANT": "PLQ3",
+      "MATERIAL": "MAT18",
+      "UNIT": "EA",
+      "WMDVSX": []
+    },
+    "observedResponse": {
+      "AV_QTY_PLT": "0.000",
+      "DIALOGFLAG": "",
+      "RETURN": "",
+      "interpretation": "Valid DEV material/plant master; no ATP quantity returned."
+    }
+  }
+}
