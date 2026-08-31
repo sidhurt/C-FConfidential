@@ -1,0 +1,365 @@
+﻿[00:10] S3: We will do double room, we will do it in hybrid. Hybrid is available. Hybrid is available. One or two people can take it according to their own schedule. Yes, that's it.
+[00:20] S3: When the meeting happened.
+[00:34] S4: Yes, the same 32 extensions have to be checked. That's why I said, let's check on the various, they will understand where it is going.
+[00:42] S3: They must have done an extension for the business.
+[00:48] S3: Just bring it from here, take it from the reference of the model. Now you system by default.
+[00:56] S4: Yes, yes, yes.
+[01:01] S3: And and in this, the rules are also possible for you. Brother, either take one bag. Yes. Even take one bag. Like this, short one bag. I have to tell you, if there are 10 people, then tell them.
+[01:08] S4: Quantity.
+[01:19] S4: People have become happy.
+[01:36] S3: Those are all drones, meaning they are talking. Yes sir. Okay, okay. It seems like that, right?
+[01:47] S0: Yes sir.
+[01:53] S3: You are watching the case movement, right?
+[01:55] S4: Look, look.
+[02:03] S0: One minute sir, I am now extracting from another system, first examples of its STO for Migo.
+[02:14] S3: I told him that I want to move forward.
+[02:24] S3: And something else, and five or six people will eat.
+[02:33] S3: All the things that are there, meaning not food, meaning a kind of snacks from today's history.
+[02:45] S3: You and your
+[02:46] S2: Your
+[02:54] S3: They are arresting them.
+[03:02] S3: So, the government has been given the rights.
+[03:08] S3: The officer says that he makes money from the police.
+[03:18] S3: They have created a momentum.
+[03:34] S3: So, your body gets wasted. And it's completely finished, white. It becomes completely white, very white. The body doesn't get fat, right? So, the cleanliness of your body remains. This hot water, you all
+[03:52] S1: Yes, yes, thank you.
+[04:06] S3: What happened? Okay, in the morning, eat in the evening. I don't have any problem with that. I don't have any problem with that.
+[04:22] S3: Okay, so today we will discuss with you, right?
+[04:37] S1: This was a question I had, maybe to the larger forum, that if I am giving the delivery number here, then why do I need the purchase order, purchase order item? Because the delivery number will always be unique, right?
+[04:49] S3: That's why I am telling you Bharat, so our concern is that if you pass that purchase order number here, so so.
+[05:02] S2: More than the DA country also you can able to take it. System will allow you to take tax. So that is the fundamental of understanding is that...
+[05:12] S3: Your quantity should not be more than this space. 100 units. No, no.
+[05:19] S1: No, no, that won't come anyway because we won't allow it from the UI itself. It will be blocked from the UI itself.
+[05:25] S3: It won't come, it will come, the system will allow it.
+[05:30] S1: No, it won't be allowed by the UI itself, right? I mean, our API won't be hit anyway, that you are putting more of it, its quantity is more. That system will block ours, right?
+[05:41] S3: No no no no. See what a system block is, it's a bad thing. So in the reference document what you have selected, let's say if you selected that purchase order number.
+[05:53] S3: So the purchase order quantity is 50000. So now the delivery quantity is 50 only. So it doesn't mean that you can be able to take that 50 quantity with you only. You can take till 50000 quantity. Okay.
+[06:08] S4: It's all in the hands of the doctor.
+[06:10] S3: Yes, so so. Now look, this, this thing of yours, this is not working.
+[06:20] S0: It's going on, sir, it's going on, one minute.
+[06:22] S3: Yes, sir, it is.
+[06:24] S0: Sir, let's check the error message once.
+[06:33] S1: They say they passed, they also understand that, man. So we will understand.
+[06:39] S1: Show the request once. Show the request once, Siddharth, this will be submitted.
+[06:43] S0: Yes sir
+[06:50] S3: It's a bad request error 400.
+[06:55] S3: That is when my key authorization issue.
+[07:03] S3: The token is showing your invalue, what is this material document?
+[07:06] S1: He is saying something about the material document header text.
+[07:10] S0: Yes sir, yes sir, I am checking.
+[07:13] S3: Now, they have kept this with them.
+[07:17] S3: The door that is there, right? It feels like it's from below.
+[07:24] S0: Like many players, right?
+[07:28] S3: You have to come at 11:00 AM, so that I can meet you outside. I couldn't keep it at 11:00 AM. I couldn't help. So, you come and meet the members.
+[07:44] S0: Thank you.
+[07:49] S3: Phone?
+[07:53] S1: Yes, look at this value, is it material document header text?
+[07:57] S0: Sir, it's actually in its environment and it was, I mean, it was backspaced, it got deleted yesterday. I just have to change it with this.
+[08:09] S4: Hey Kamal
+[08:12] S1: Kamal is not in the call, what happened?
+[08:15] S4: Okay Bharat, you guys work this out a little, man. These are basic problems. We can't overhaul or sort this out. Siddharth, you work this out and show it to us tomorrow.
+[08:26] S4: This should be working and this should be working. Sir, it's working, sir.
+[08:27] S0: Sir, it's working, sir.
+[08:30] S1: This is working, Sudhanshu, we have tested it, look, it's coming. Sir, this is posing now. Here it is.
+[08:33] S0: Sir, this pose is done now.
+[08:36] S3: Here it is.
+[08:37] S0: 201 created.
+[08:40] S3: This is the material document created.
+[08:42] S0: The material document is created in SAP.
+[08:45] S3: Hey, stop, stop, brother, don't do anything. Show the payload, first show the payload, what was passed in the input? Show the phone.
+[08:57] S1: Show the request once. Yes, here is the request.
+[09:00] S4: Hey, we don't have to put this in, right? We won't put in the pure one, that will be for the full quantity. We have to go for delivery specific.
+[09:06] S4: Delhi's number.
+[09:06] S1: The delivery number is also below, the delivery number is also below.
+[09:08] S4: Yes.
+[09:10] S4: Yes.
+[09:11] S2: Why, why do you want to take it? What is your name? Bharat.
+[09:11] S4: Why, why do you want to take it?
+[09:15] S2: What is this? This is the GATT method. How will you get to know the material document number ten first?
+[09:22] S1: No, no, this is a GATT post, right? It's in the post submit.
+[09:25] S0: This was posted after the gate, they fill this entire thing from the gate first.
+[09:29] S2: He is filling it from the gate first, right? Yes. He is filling the whole gate. Even that day, on day one, he told me that he doesn't understand technical things much. You are the experts in the technicality part. But you should understand the terminology where we need to use what. So submit Migo means what? It is a post method for me, right? Why do we need to require the gate method on this?
+[09:31] S0: Yes.
+[09:31] S4: Yes.
+[09:32] S4: The whole thing.
+[09:51] S1: No no no, one minute, so I will clarify. This call from the front end will be a post. Get, he has used this method to get the data so that he gets the right data so that he can post. Otherwise, he will not get the right data. And sir, CSRS token.
+[10:06] S0: And sir, to fetch the CSRF token, a get method has to be applied.
+[10:09] S2: You have to apply the brake. Will it cost money for the method or not? Tell me why it's so simple.
+[10:13] S1: Yes, it will be needed, but that calling should not be done.
+[10:15] S2: You don't want to apply it, right? Why we need to require that, I tell me, tell me one thing, let me complete this. 10 tons of Migo was done, 10 tons were dispatched. You already have the information of the pending Migo. So why do we require that kind of method?
+[10:20] S1: Yes
+[10:20] S1: Okay
+[10:31] S1: Oh, we do not need, I am saying the same thing, write this in the postman so that he needs the data. This will never be a get better call. It is only for testing and getting the, it won't be, that's what I am saying. From the front end, only the post will be called, submit me go, that's it.
+[10:46] S2: The PO is not available in this Pailwan.
+[10:51] S2: In this, tell me now, I'll tell you a simple screen of Megu in front of you. In that, tell me this. What I pass, what do I pass? Food received against what? For issue order, outbound returning, inbound returning. So, where we are passing this.
+[11:11] S1: So, the purchase order is already passed above. It is a purchase order item.
+[11:14] S2: It is a purchase order item, it is of 300 tons, I don't want to let them take more than 45 tons, dispatch. Can I stop it? Can't you stop it?
+[11:26] S1: They come one by one, Yogesh ji, they come one by one. If your, if my quantity is fifty, then my request will never go above fifty from the front end. He will stop it right there.
+[11:26] S2: They come one by one.
+[11:37] S2: This, this, man, this doesn't seem logically right to me. I am telling you frankly. It is not logically correct. Okay?
+[11:46] S2: So, the last thing to correct is that the preference is important. So, we should take the, we go against the delivery only. Okay, that is one, one of the parameters. Again, the delivery is there, right?
+[11:58] S1: Again, it's delivery, right? The last second parameter is delivery. Look, delivery and delivery items. Look, last, last, last and last second.
+[12:08] S2: One one minute, I'll show my screen. If you want to coordinate a little, I am not able to understand or you are trying to explain something. Okay? I will share my screen now.
+[12:19] S1: Tell me one thing, is this purchase order and purchase order item mandatory for this request? If I don't pass this and just pass the delivery item and delivery number, will this work or not?
+[12:34] S0: Sir, generally PO is also used in SAP.
+[12:38] S4: It generally won't happen. Here, we can pass implicit by reference. Look at our screen.
+[12:44] S2: Okay. I am not much of a person to see Google, but I am saying that what is being done doesn't seem right. Is it visible? Look. Yes, yes. Look, I am saying. It's not visible.
+[12:55] S3: It is not visible.
+[12:57] S0: It's not visible, sir, the screen is not visible.
+[12:59] S3: Three minutes.
+[13:01] S2: Okay, return it, return it. Wait a minute, look at the money, man.
+[13:12] S2: Something went wrong here, let's go back.
+[13:18] S3: It is available.
+[13:23] S2: This error is coming, man. From your side, no one...
+[13:25] S4: Yes.
+[13:28] S4: Hey, is this something like a presenter ride?
+[13:28] S2: Yes.
+[13:30] S2: Round the light.
+[13:38] S4: The screen goes ahead, right, the window?
+[13:44] S4: Hey, it's okay, man. No problem. You say something like this, what's your name?
+[13:46] S3: No problem, you do one thing.
+[13:52] S4: Yes, yes.
+[13:56] S4: The quality is not that great.
+[13:58] S1: Yes, yes, he is doing it, he is doing it. Siddharth, just share the screen and open SAP, no?
+[14:15] S0: Sir, is the screen visible?
+[14:17] S1: Yes, we can see here.
+[14:20] S2: Yes, yes, one here.
+[14:26] S2: Yes, it's good. Migo Ligo, Migo Ligo, this is Police Migo.
+[14:30] S2: Wait. So here you can see that A4 display, instead of A4, select 01, A01.
+[14:40] S2: Now here, there is a multiple option in situ of purchase order, choose the outbound delivery. So here, wait, wait, wait, just wait for the drop-down option. Wait for drop-down option, click on the drop-down option. Wait here. So Bharat, here you have 10 options, with this, accordingly you can receive.
+[15:07] S2: You can take it from purchase orders, you can take it from outbound delivery, you can take it from inbound delivery, and others are there, they leave it. So now we need to take the MIGO for CNF against outbound delivery only.
+[15:24] S0: Okay sir.
+[15:25] S1: So you are saying that this purchase order and the purchase order item should not be passed in the request, or should be optional.
+[15:31] S4: Yes, yes.
+[15:33] S1: So, is this optional? That was my question, whether it is mandatory now, the PO number and... No sir, PO.
+[15:37] S0: No sir, PO is not mandatory. Let me clarify to you once, Yogesh ji, that the example I was using, it had an STO. So STO PO, it had derived fields in it. And I mean, there was no different PO or its involvement in it. But I used the example by looking at tables where MIGO can be done. I chose from what I got. So for this, there were purchase order fields present. But apart from
+[16:06] S2: Okay, listen, listen, listen, Siddharth, listen. Now, the delivery option that you have taken, we perform it here, and if it matches with the move, I will be aligned. If it is not, then you should do your homework, then it comes to us. Okay? Align now.
+[16:26] S0: Yes sir.
+[16:26] S2: Five lakh.
+[16:27] S2: Okay, select the photo.
+[16:27] S4: Okay.
+[16:33] S2: The number was in the 500 column.
+[16:36] S0: What, sir?
+[16:37] S2: What number should I dial here?
+[16:40] S1: You can bring any delivery number you know and enter it.
+[16:43] S2: No, I have taken an example, take that one, the postman. Yes, yes, correct.
+[16:49] S2: Look, we are telling you from our experience that if you are not speaking from home, then we will have to prove it.
+[16:55] S1: We do it, sir, we do it. We will not do the right work, we will not do anything wrong.
+[16:58] S2: No, no, it's okay, man, I'm just kidding a little bit, man, on one side. So look, what's his name, Siddharth.
+[17:06] S0: Yes sir.
+[17:06] S2: So what is the error for gate or for?
+[17:10] S0: Four
+[17:10] S2: Okay? What does it mean that now you cannot take, able to take the MeeGo against this delivery? Okay? Why? There is a system-given error. Okay? It's generic.
+[17:25] S2: This is.
+[17:27] S0: Sir, your voice was broken. It is deliberately said.
+[17:27] S2: What is the sound?
+[17:30] S2: Back, back, back.
+[17:31] S0: Okay
+[17:32] S2: Go back. Go back, Siddharth. B L zero three N. B L zero three N.
+[17:39] S2: VL, L for London, 03N.
+[17:44] S2: Pass the delivery.
+[17:48] S2: Document flow.
+[17:52] S2: X I, is it the third or fourth button?
+[17:56] S2: Angular. Next, click F7.
+[18:01] S2: So here you can see the delivery already taken, already taken. Last document, click on that, click on display document.
+[18:10] S2: Pay the description document above, above, above.
+[18:13] S3: Yes
+[18:15] S2: So you have already taken it, now the system will not allow you to take the MeeGo. How you take the MeeGo, I don't understand. No, no, one minute Yogesh ji. MeeGo is already done, he has given the API.
+[18:28] S1: Sir, we are the ones who passed this. We did it, right? This one, we took the header text.
+[18:28] S0: Sir, we are the ones who passed this.
+[18:32] S0: This is the header text we entered, right sir, CNF live demo. This is today's.
+[18:34] S2: This is today's NF Live demo. One minute, one minute, tell me, one minute. They take each other's delivery, which I didn't get. Yes. So how is this?
+[18:45] S2: India.
+[18:46] S1: Sir, I have a test pending, I need a delivery.
+[18:46] S0: Sir, I need to test.
+[18:50] S0: Sir, let me check once.
+[18:51] S3: Check it.
+[18:52] S3: Yes, what is it?
+[18:53] S1: It is on the hand.
+[18:58] S1: So, is it a referee's call?
+[19:00] S2: Groaning.
+[19:04] S3: Okay, okay, Deepika, no.
+[19:08] S2: Deepika, so Deepika's
+[19:19] S4: I request you to leave.
+[19:30] S4: Today, near the place.
+[19:33] S3: This is good.
+[19:36] S3: Okay, now it's going.
+[19:47] S3: This is the activity.
+[19:50] S3: Okay, okay.
+[19:52] S2: Bharat, Bharat Madam, what happened to you?
+[19:56] S1: Yes, yes, one minute. Siddharth, will you check if that number is in the chat?
+[20:01] S2: And look, I am trying to make a group of him.
+[20:05] S1: Yes, okay. So, one one this delivery number, right, so Siddharth, do one thing, your postman request, inside that, PO number, PO order order item number, don't put it, just put this delivery number, is it happening? Migo submit, let's check that.
+[20:19] S2: Yes, that's it.
+[20:23] S2: Personal.
+[20:25] S1: Yes, for the delivery item, remove both the purchase order and the purchase order item.
+[20:30] S0: Sir, but its
+[20:31] S1: But its
+[20:33] S2: Two minutes, I am talking.
+[20:34] S0: Its material and all this will also have to be put in, right?
+[20:37] S2: Will have to put it in, right?
+[20:38] S1: You will have to enter the material, you will have to enter the material number.
+[20:41] S2: Yes, we are talking about that.
+[20:42] S1: So we will add it.
+[20:44] S2: Nothing, just the number and the line icon, just the degree number.
+[20:48] S1: No, the material also needs to be passed, right? Which material are you doing it in?
+[20:52] S2: Yes
+[20:54] S3: Let's see, pass it.
+[20:57] S2: You will see the delivery number and delivery item.
+[21:02] S2: Look.
+[21:05] S2: Siddharth.
+[21:07] S0: Yes sir
+[21:08] S2: Siddharth
+[21:10] S2: I speak a little correctly, correct me if I am wrong. So the details of where we need to take the MIGU in which locations, everything, we don't have that knowledge, right? So my humble request is to involve the functional team also in this. Second is that first you need to fill up the BAPI or the OTA services as it is, as it is itself only first.
+[21:40] S2: Do the postman and all, that is like an interface for me. If your postman is running in SAP, and you understand it, then you can do it everywhere. The rest of the material and all, that is, that information is already at least in that delivery itself only. So, I don't feel it's right, whether you are filling up the balance or because the delivery I have given is different material. Let's see, I'm suggesting that material is the wrong material here, definitely. How you will get to know which
+[22:05] S0: Yes sir
+[22:10] S2: Material against I am taking the material. Okay, okay, Yogesh ji, I understand. Yes sir, exactly sir, the same material is in this.
+[22:11] S1: Okay, okay, Yogesh ji.
+[22:13] S0: Yes sir, exactly sir, the same material and its information will have to be put in it.
+[22:19] S2: Friend, I had picked it up from the delivery. Sir, one minute, one minute, one minute. Sir, I, look, one minute, I, I have its remaining
+[22:21] S1: One minute, one minute, one minute, I am telling you.
+[22:26] S1: Siddharth, wait, wait, wait, I, I, Siddharth, an order that is there, right, inside it there can be only one line item and in one line item there can be only one material. Yes sir. So we are not allowing multiple order entries. There is only one order entry. And if I am deducting its delivery, then already the material is on the delivery date because there are no different materials.
+[22:29] S3: Yes sir
+[22:35] S3: Yes sir.
+[22:48] S0: Yes sir, so I'll check its material and all and put it in this, right? Then from here, from VL03N.
+[22:53] S1: Hey Siddharth, Siddharth. We are telling you that the material should not be mandatory at all. To submit a MIGO, the material purchase order number, order ID number, they should not be mandatory.
+[23:06] S2: Siddheshwar
+[23:08] S2: Siddharth, Siddharth.
+[23:09] S0: Yes sir
+[23:11] S2: I'll tell you a simple way. Understand it technically. If you just drive the SC 37, there's a function model, Bapi_boots_movement_under.
+[23:21] S0: Underscore movement underscore create, do you know sir?
+[23:23] S2: Okay, create a text directory in it. The text directory is already available. Use it. First, check what form has been filled up in it. Then you will get the Azad Sobh correctly there.
+[23:36] S0: Sir, I
+[23:36] S2: Sir, I
+[23:40] S4: There is a lot of screen that I told you about, the one for the minors. In that, we are just selecting the delivery document and entering the delivery number. On that basis, the minors are able to do the transaction.
+[23:52] S0: Yes sir, yes sir, I have done it sir, I have used that in AC 37, I have used it in Bapi as well.
+[23:56] S2: What is this?
+[23:57] S3: Straight.
+[23:58] S2: What must have happened, I am not sure, I am sure about that. So in the program you will get
+[24:04] S3: Pass the delivery in that LIMES and LIMES so we get that information. That is fine. Now it is not easy to understand and digest that part for me.
+[24:18] S3: Okay?
+[24:19] S0: Yes sir
+[24:19] S3: So I am not able to correlate that, man.
+[24:24] S0: Yes sir, I have understood all your grievances and how it's supposed to go with the confusion that has come up regarding the PO etc.
+[24:29] S3: There was also some confusion regarding PIO etc.
+[24:31] S3: That but
+[24:32] S0: That but yes sir, that confusion is because I manually found examples that were generally from STO, in which DI didn't happen, or MIGO didn't happen, which I found in QS4 and I am running them, so purchase orders etc. are coming in that and I have tested their MIGO also, but you run that Bapi once, test run is different but once you run it, then after that all these downstream documents are created, so you cannot MIGO it separately, so for this I
+[25:02] S0: No, these were some examples that were saved for this, for the postman, those were the STO ones. And in them, yes.
+[25:08] S1: STO and not STO, these are against STO only, which are in transit STO, so that is correct. We are saying that in your postman collection, so many requests should not be that much. It will be all optional fees, the only mandatory fee should be delivery number and delivery item number.
+[25:21] S3: It should be.
+[25:28] S1: The remaining storage location and its quantity, all of that should be there, but you go to your postman, take all that out, and try to submit a meego, let's see if it's happening or not.
+[25:39] S0: Yes sir, one minute sir.
+[25:44] S1: So, only mandatory.
+[25:51] S1: It should be correct, and the remaining two fields should be there. Against that, you should be able to submit a review.
+[26:00] S0: So sir, its delivery item will be this only.
+[26:04] S1: Yes, these two should be there. Material document, this material document and document, we get these, right? So, take these out.
+[26:10] S0: Yes, sir.
+[26:11] S1: This should be a part of the response, right? So this is not needed, right?
+[26:21] S1: Posting date, unit is fine, quantity is fine, yes, it's fine.
+[26:25] S0: Storage location.
+[26:26] S1: Reduce the quantity a little bit, make it one, not 45, just do one.
+[26:33] S1: So that we can do more in the future.
+[26:34] S0: I will also tell you the storage location.
+[26:35] S1: The storage location is free for you.
+[26:37] S2: So, Baras, Baras. I, uh, I'll tell you a pass, it's a very simple, very simple way. You will understand, I mean, as you are, of course, it's technical. We give it to people technically. Okay, so I have found it, I am sending you this, Bapi's name is sent. Yes, okay, Bapi, do it, man, move it forward. So, Siddharth, share your screen.
+[27:07] S2: The rest, put it in 30 seconds like that, its test directory is written with the name Prashant. Okay? Use that and see, you have given the exact example there. So there you have to pass 01, which I mentioned, good receive 01, that is also there. In header, what information we need to pass, that is also there. Along with that, line item level, material to be passed, agree, we have to pass that material. So simplified, once you
+[27:37] S2: Fill up this directory and post it in commit, after commit you will be able to get the details. That's it, simple. Absolutely no technical needs to be understood.
+[27:51] S2: You have to implement that.
+[27:52] S1: One minute, one minute, Siddharth, go there, go to SAP once. Leave this for now.
+[27:58] S1: Yes, display this, what they are saying here.
+[28:01] S2: I can see the screen, yes, I can see the screen.
+[28:06] S2: Go into the recipe, I'll tell you. Yes, in this display, press the third button.
+[28:13] S2: No, no, from above, from above, and that above, above.
+[28:17] S2: Click on the test derivative in this.
+[28:19] S4: Yes, okay.
+[28:20] S2: Guys, I don't know the last three or four digits, man. Guys, directory, data directory.
+[28:24] S1: It's a better directory, right? Do it on that.
+[28:26] S2: Yes, in this, the last question, brother.
+[28:27] S0: This one, right?
+[28:29] S0: Okay sir.
+[28:29] S2: Double click. Double click. Yes. Click on good header, good headers. There is a button ahead of it. Yes. Press, press.
+[28:39] S2: The date that is coming, it is written ahead, isn't it, like, a man's version is visible?
+[28:44] S2: Yes, press this. Press its second button from the top.
+[28:49] S2: Yes. Now look here. Wait here. You passed the posting date. Passed the document date. Passed the delivery in reference. Leave the bill of lading. Don't pass this. That is optional. These three information you have to pass in order. Close this.
+[29:06] S0: Okay sir.
+[29:08] S2: Close this.
+[29:09] S1: I mean, all three, all three, but these storage locations etc. will also come, right?
+[29:12] S2: I will come, I will come. I will come, I will come one by one, I will come. Okay, okay. Okay, this is the header. Go back, go back. Little bit go back. Click on zero one, click on good moment code. Code zero one. Second after this, yes. Here, what does zero one mean? I am taking good received, that's why zero one.
+[29:13] S1: I will
+[29:16] S1: Okay, okay. Oh, this is a header.
+[29:35] S0: Okay, sir.
+[29:36] S2: Zero two means whatever good change happens in it, okay? Sit down.
+[29:40] S4: Go back.
+[29:43] S2: Go back. Click on the line item, good movement, item number one, one and three are visible.
+[29:48] S0: Yes sir
+[29:49] S2: And in this
+[29:51] S4: And this is second button. One second, one second. This is also coming, I will go to the back video. I will go to the video.
+[29:51] S2: Second film.
+[29:57] S4: This is needed more, this is a performance reference item.
+[30:01] S2: It's going, right? It's going, it's going up.
+[30:03] S2: They put it on top, didn't they, sir? They put this reference in the header, didn't they?
+[30:07] S4: Yes, yes, there is one.
+[30:09] S2: Yes, yes, yes.
+[30:12] S4: First thing is, okay, this one.
+[30:14] S2: Yes, yes.
+[30:16] S4: So, you have to attend here.
+[30:17] S2: It will be done. Okay. So now click on the item.
+[30:23] S2: Press the second button.
+[30:27] S2: Material has to be passed, turn has to be passed, in what has to be done, movement has become one with one, nothing else has to be passed, turn has to be passed, that's it. That was our work. Material has to be passed. Yes, yes, it's okay, it's understood, material is fine.
+[30:42] S1: Meaning, material plant, minimum information related to this.
+[30:43] S2: And here, minimum information has to be passed.
+[30:45] S1: Yes, correct, correct. PO number and PO item are not needed.
+[30:48] S2: Number of
+[30:50] S2: Now, in this itself, if I had to do multiple lines, then I would pass multiple lines on this.
+[30:57] S2: So here it is a single line we go and taking here. Correct. Yogesh ji, Yogesh ji, there is a concern.
+[31:05] S4: If anyone here, if you put any value for additional data, custom data, then please tell me that as well.
+[31:12] S2: Custom data will not be in the standard Bapi. That is add-on for you. So that also will come. Not for CNF might be. It is
+[31:22] S4: Is it special or not?
+[31:24] S2: It is here, I mean.
+[31:24] S4: Yes, check this once, that I had told you about the trading, check it once in the extension, in the exit, or in this. Oh, ours
+[31:33] S2: Hey, we have called Bapi in so many of our programs. You can change that. That details is also similar for that. Means, in the backend, it's Bapi. Okay, right? Siddharth.
+[31:45] S4: Yes sir.
+[31:46] S2: Yes, it also has quantity, so you also pass the quantity. Siddharth is saying yes to everything, one minute, Siddharth is saying yes to everything. This means you have understood our understanding.
+[31:58] S0: Yes sir, yes sir.
+[31:59] S2: Then tomorrow, what to say?
+[32:01] S3: I didn't understand this thing.
+[32:03] S0: No, no sir, sir.
+[32:04] S3: Please raise it where you are concerned, man. No one is saying anything right.
+[32:08] S2: Kamal, there is no problem. We will all sit together individually.
+[32:11] S3: Yes, you are helping. But my only concern is that last time also you told us, gave feedback, that there are certain custom fields that are in the last tab, which you additionally create.
+[32:23] S2: I will go, I will go, I will tell you. I will go.
+[32:27] S3: Yes, that needs to be handled here.
+[32:30] S2: Yes, it has to be done, of course it has to be done. So tomorrow, yes, yes, yes.
+[32:34] S3: Yes, yes.
+[32:35] S2: It has additional print visible, Siddharth.
+[32:39] S0: Yes sir
+[32:41] S2: Click on this. All these things that you see, right? All these are your custom fields.
+[32:49] S4: So, they are going back.
+[32:52] S2: That that you need to take it.
+[32:55] S4: Yes, sir. No, no, it's okay, speak. Okay, sir. This is its extension. Siddharth, this is a little extension and what was told earlier.
+[32:58] S0: Okay sir.
+[33:02] S2: So if you complete one first, then I will take the second one in hand, meaning I don't want to take everything in one go. Take take whatever time you want but come with the proper simplified for me. Don't be complicated that you have used that get method in this, in this, on that. Simple brother, just like you will show by running it in the test service, I am okay with that also. In the backend, you are doing that data service, show me that data service that brother
+[33:32] S2: You are passing, validation whatever is there that you have to check properly and understand implement that also. One of that simple validation I can say that it is like a bag which should be in denoted one. Point 33 someone is giving in tons, it does not mean it is converted into the bag, right?
+[33:58] S0: Okay sir, yes sir.
+[33:58] S2: Interested.
+[33:59] S2: So, we have to see that validation and also put it on your screen. Plus, I also have to see where the failure will occur. That's why I told you everything, right?
+[34:03] S0: Yes sir, yes sir, plus.
+[34:10] S0: Yes sir, yes sir, thank you.
+[34:11] S3: Everyone should see it, the customer should also see it.
+[34:16] S2: Experience, experience, you have to see.
+[34:20] S2: You will have to give implicit and exclusive, okay? So, if you have any doubts anywhere, then you can connect with us online, okay?
+[34:27] S0: Yes sir
+[34:28] S2: Okay, thank you, thank you everyone.
+[34:32] S4: Come, come, come.
+[34:36] S2: Now Siddharth, what was the feedback for this call? I mean, what open items have come up for you? Send all of that now in moderation. Whatever you do.
+[34:45] S0: Yes sir, I will do it now.
+[34:46] S2: Whatever whatever they have said, they have guided. You will send it to them as an M.O.M. right now. Okay?
+[34:52] S0: Okay sir.
+[34:52] S2: So that in tomorrow's call, in tomorrow morning's morning call, we don't say that we don't have MOM. Okay?
+[34:59] S0: Yes sir, yes sir.
+[35:00] S2: So tomorrow morning, after sitting, in the first half, whatever inputs Yogesh ji has given and whatever Sudhanshu ji has given, you should incorporate that.
+[35:09] S0: Yes sir.
+[35:12] S3: Okay, thank you everyone.
+[35:15] S0: Thank you.
+[35:20] S0: It is said that
+[35:26] S0: Yes.
