@@ -30,3 +30,16 @@ sources/audio/
 # Credentials must never be committed. Placeholders only.
 *password*.txt
 *login*.txt
+
+# Local recovery and personal material
+*.bundle
+2026-09-04-what-today-was.md
+
+# Generated document renders and one-off work products
+output/
+outputs/abap-ownership-study/
+outputs/di-migo-study-guide-*/
+outputs/sap-gui-script/
+
+# Superseded unreviewed Postman working pack
+deliverables/postman/Postman collection - SubmitMIGO CreateDI/

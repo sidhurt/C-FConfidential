@@ -1,5 +1,7 @@
 # CNF standard SAP API solution and runtime-proof plan
 
+> **Historical design-time plan.** Use `CURRENT_STATE.md` for the current implementation classification. In particular, Submit MIGO is no longer treated as simple standard-direct, and PGI is not runtime-certified.
+
 **Date:** 2026-08-15  
 **System evidence:** QS4 / client 700  
 **Business baseline:** `sources/SRC-DOC-20260815-01_CNF_API_Request_Response_Specification_v1.7.xlsx`  

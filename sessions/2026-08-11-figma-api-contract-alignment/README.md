@@ -1,7 +1,7 @@
 # 11 August 2026 — Figma and API Contract Alignment Handover
 
 > **Status: additive session delta pending canonical reconciliation.**  
-> This pack preserves today's validated knowledge without deleting or silently rewriting older material. The canonical registers remain the files named in `CLAUDE.md`; tomorrow's cleanup should promote this delta into them and then mark superseded material explicitly.
+> This pack preserves today's validated knowledge without deleting or silently rewriting older material. The canonical registers remain the files named in `AGENTS.md`; later cleanup should promote this delta into them and then mark superseded material explicitly.
 
 ## Why this pack exists
 
@@ -19,7 +19,7 @@ No legacy file was deleted as part of this handover.
 
 ## Fast read path for the next AI
 
-1. Read repository rules and the canonical hierarchy in [`../../CLAUDE.md`](../../CLAUDE.md).
+1. Read repository rules and the canonical hierarchy in [`../../AGENTS.md`](../../AGENTS.md).
 2. Read [`01_PROCESS_AND_BUSINESS_HANDOVER.md`](01_PROCESS_AND_BUSINESS_HANDOVER.md).
 3. Read [`05_DI_FLOW_DEEP_CONTEXT.md`](05_DI_FLOW_DEEP_CONTEXT.md) for the DI/API relationship and the API-03 versus API-04 precision guard.
 4. Read [`02_API_CONTRACT_HANDOVER.md`](02_API_CONTRACT_HANDOVER.md) when working on a request/response contract.

@@ -1,8 +1,8 @@
 # Handover — Complete Contextual Briefing for a Successor AI Agent
 
 **Date:** 2026-07-30
-**Author:** Claude (Sonnet 5 / Opus 5), this Claude Code session
-**Audience:** Any AI agent (Claude, Codex, or other) entering this repository with no prior context
+**Author:** Prior AI-assisted session
+**Audience:** Any successor entering this repository with no prior context
 **Supersedes:** `_archive/HANDOVER_2026-07-28_AI.md` and `_archive/HANDOVER_2026-07-28_HUMAN.md` — those were day-2 snapshots whose substance is now folded into this document and the live registers. Do not read them as current; they are archived, not deleted, for provenance only.
 **Status of this document:** Reconciliation and orientation. It is not a plan, not a decision record, and not authorization to touch any system. It exists so a fresh agent can become useful in one read instead of by excavating 40+ files and a long conversation history.
 
@@ -212,7 +212,7 @@ V-01, V-02, V-06, V-15, V-16, V-21, V-23 are answerable within the first two day
 
 - `deliverables/` contains the current client-facing output set: `API_SPECIFICATION_PROPOSAL.pdf/.md` (full narrative spec, v1.2), `CNF_API_CLASSIFICATION.pdf` + `CNF_API_Classification.xlsx` (the classification object, standalone), `CNF_Delivery_Planning.xlsx` (business rules, effort, validation register, source-of-record, assumptions, timeline — the supporting-registers object, deliberately separated from the classification per Siddharth's instruction that these are different objects), `CNF_Timeline.xlsx` (bare date/days sheet for manager consumption, no nuance).
 - `_archive/` holds `BRAIN_MAP.md`, `HANDOVER_2026-07-28_AI.md`, `HANDOVER_2026-07-28_HUMAN.md`, `DATASPHERE_SOURCES.md` — moved (not deleted, no git in this folder) because they were superseded snapshots or unstarted scaffolding. `DATASPHERE_SOURCES.md` needs recreating from `templates/` once real Datasphere discovery starts (`DATASPHERE_DISCOVERY_PLAN.md` and `MASTER_PLAN.md` both note this).
-- `PROJECT_BRAIN.md` was deliberately **kept**, not archived — it is required reading per `CLAUDE.md`, `AGENTS.md`, and `README.md`'s own bootstrap sequence. Do not delete it without also updating those three files.
+- `PROJECT_BRAIN.md` was deliberately **kept**, not archived — it was required reading under the repository guide and `README.md` bootstrap sequence. Do not delete it without updating the current navigation.
 - `SAP_API_DOSSIER.md` is the detailed engineering assessment (the source material this handover's §5–7 condense from) — read it for full defect-by-defect and API-by-API detail beyond what fits here.
 
 ---

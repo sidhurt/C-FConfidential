@@ -97,7 +97,7 @@ Update:
 
 Explain what was verified, what remains uncertain, and who owns follow-up.
 
-## Interaction pattern with Codex/Claude
+## Interaction pattern with AI assistants
 
 Use requests such as:
 
@@ -114,4 +114,3 @@ Avoid:
 > Click around SAP until you understand it.
 
 > Use whatever data you can find.
-

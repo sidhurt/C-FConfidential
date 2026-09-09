@@ -14,13 +14,13 @@ Written 29–30 July, before any client document or system access arrived. The m
 
 ## Retired 2026-08-07 — AI governance
 
-Three documents, 273 lines, telling agents how to behave on an ABAP project. Consolidated into ~35 lines in `CLAUDE.md`.
+Three documents, 273 lines, telling agents how to behave on an ABAP project. Consolidated into a shorter repository guide.
 
-`AI_OPERATING_RULES.md` — evidence discipline and the SAP boundary survive in `CLAUDE.md`. The approval-chain prose, tool-design sketch, change-report template and stop-condition list described process that never ran.
+`AI_OPERATING_RULES.md` — evidence discipline and the SAP boundary survive in the repository guide. The approval-chain prose, tool-design sketch, change-report template and stop-condition list described process that never ran.
 
 `ROLE_BOUNDARIES.md` — the team ownership map is now a table in `PROJECT_BRAIN.md` §Who owns what.
 
-`CODEX_CLAUDE_COLLABORATION.md` — reduced to two lines in `CLAUDE.md` §Working with Codex. Both agents read and write the same registers; that was the only rule that mattered.
+The former multi-assistant collaboration guide was reduced to one durable rule: all assistants read and write the same registers.
 
 ## Retired earlier
 

@@ -1,4 +1,4 @@
-# Claude handover prompt — CNF API/BAPI runtime certification
+# Legacy handover prompt — CNF API/BAPI runtime certification
 
 You are continuing a live SAP investigation in a brand-new chat. Treat this document as the authoritative handover. Do not restart discovery from zero and do not merely re-prove that the services are activated.
 
@@ -12,9 +12,9 @@ The contract source is:
 
 Only use the current repository and evidence from approximately the last 3–4 days unless an older artifact is explicitly referenced by the current evidence. Read the full relevant folder before acting, but prioritize the paths listed below.
 
-## Why the earlier Claude run was insufficient
+## Why the earlier investigation was insufficient
 
-An earlier Claude session mostly repeated activation and `$metadata` checks that Codex had already completed. It generated a useful evidence folder but did not perform the BAPI interface research or test the business behavior requested in the workbook. It also treated empty HTTP 200 responses too generously: an empty result proves that the route and that particular request were accepted, but it does not prove row-level authorization, useful business data, or functional suitability.
+An earlier investigation mostly repeated activation and `$metadata` checks that had already been completed. It generated a useful evidence folder but did not perform the BAPI interface research or test the business behavior requested in the workbook. It also treated empty HTTP 200 responses too generously: an empty result proves that the route and that particular request were accepted, but it does not prove row-level authorization, useful business data, or functional suitability.
 
 Do not spend the next run reactivating services or repeatedly fetching the same metadata. Activation and metadata reachability are already proven. Continue from the captured interfaces, DDIC structures, payloads, and safe runtime tests.
 

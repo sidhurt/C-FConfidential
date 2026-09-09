@@ -6,22 +6,24 @@ Its purpose is to help turn meetings, specifications, system observations, and i
 
 ## Current posture
 
-- **Standard-first discovery is complete at design time.** The QS4 SEGW catalogue contains 2,626 projects; the full business-led scan retained 41 unique candidates, and the first 11 Tier-A competitors have complete tree/grid evidence.
-- Five released A2X services now lead the transactional core: material document, outbound delivery v2, billing document, purchase order processing, and material stock. They are design-time candidates until registration, local `$metadata`, authorisation and representative runtime tests prove them.
-- The old assumption that CNF required a new portfolio of `ZCNF_*` OData services is retired. Custom ABAP is now permitted only for a proven gap after the standard service, existing client implementation and orchestration options have been tested.
-- Siddharth's core ownership is the S/4HANA communication boundary: standard API validation, SAP-side source and document mapping, fallback ABAP for genuine gaps, SAP errors/logging, and CPI-facing technical evidence. Basis owns activation; CPI/T2 own cross-call orchestration and the agreed idempotency envelope unless architecture assigns otherwise.
-- Datasphere is a separate source for analytical or consolidated data. ABAP does not automatically own Datasphere exposure.
-- Frontend and UI implementation are out of scope.
+- **The project is in execution-path reconciliation, not service discovery.** Five SAP-delivered services are active in QS4, but availability is no longer treated as proof that the externally invoked path preserves client-specific business behavior.
+- Standard reads remain preferred. Material Stock and STO/PO reads have representative QS4 proof.
+- Create DI is path-proven for an STO predecessor through `API_OUTBOUND_DELIVERY_SRV;v=2`; Trade and Non-trade remain separate certification cases.
+- Submit MIGO is no longer classified as simple standard-direct. The standard service posted one PO+delivery receipt, but later BAPI/BAdI work proved a delivery-led mapping gap and a transaction-versus-API validation split. The supported enhancement implementation is not yet proven.
+- Pre-PGI, STO creation and billing creation require controlled external command boundaries around existing BAPI/FM logic. PGI remains an unexecuted standard-action candidate.
+- eDocument/DigiGST operations remain trace-first: reuse the installed route before proposing competing custom code.
+- `CURRENT_STATE.md` is the authority for implementation status.
 
 ## Start here
 
-1. **`PROJECT_BRAIN.md`** — current mental model and the standard-first correction.
-2. **`deliverables/CNF_STANDARD_API_SOLUTION_AND_TEST_PLAN.md`** — current Monday solution, build-gap and `/IWFND/GW_CLIENT` proof plan.
-3. **`sessions/2026-08-15-standard-api-discovery/TIER_A_DEEP_DIVE_FINDINGS.md`** and **`CNF_STANDARD_API_MATRIX.tsv`** — material SEGW evidence and requirement-level coverage.
-4. Live registers: `DECISION_LOG.md`, `OPEN_QUESTIONS.md`, `DOMAIN_GLOSSARY.md`, `SYSTEM_OF_RECORD_MATRIX.md`.
-5. `sources/` for primary evidence; `MEETING_INGEST.md` for source IDs and intake.
+1. **`CURRENT_STATE.md`** — authoritative API-by-API implementation disposition and next gates.
+2. **`deliverables/CNF_API_Request_Response_Specification_v1.9.xlsx`** — business contract baseline; do not treat its runtime notes as current.
+3. **`deliverables/CNF_MIGO_CUSTOMISATION_DISPOSITION_2026-09-04.md`** — current MIGO transaction/BAPI enhancement analysis.
+4. **`sessions/2026-09-01-bapi-field-derivation/FINDINGS.md`** and **`sessions/2026-09-02-migo-customisation-inventory/FINDINGS.md`** — primary September implementation findings.
+5. Live registers: `DECISION_LOG.md`, `OPEN_QUESTIONS.md`, `DOMAIN_GLOSSARY.md`, `SYSTEM_OF_RECORD_MATRIX.md`.
+6. `sources/` for supplied evidence; `MEETING_INGEST.md` for source IDs and intake.
 
-**Legacy warning:** `SAP_API_DOSSIER.md` Part C, `deliverables/SHREE_CNF_SAP_API_DOCUMENTATION_PRE_DEV_V2.md`, and earlier `ZCNF_*` build plans are historical evidence only. They are not the current implementation backlog. Earlier handovers remain useful for process and scripting protocol only where they do not conflict with the 2026-08-15 findings.
+**Legacy warning:** the 15–25 August standard-first plans, implementation matrices and handovers remain valuable evidence, but their certification language is partially superseded by `CURRENT_STATE.md`. `SAP_API_DOSSIER.md` Part C, `deliverables/SHREE_CNF_SAP_API_DOCUMENTATION_PRE_DEV_V2.md`, and earlier `ZCNF_*` portfolios are historical rather than the current backlog.
 
 ## Evidence standard
 
@@ -41,11 +43,12 @@ Conversation summaries are context, not primary evidence. Uploaded originals, si
 
 | File | Purpose |
 |---|---|
+| `CURRENT_STATE.md` | Current implementation authority and API disposition |
 | `PROJECT_BRAIN.md` | Reconciled mental model and knowledge graph |
 | `PROJECT_CONTEXT.md` | Program context, objectives, known facts, and assumptions |
 | `DOMAIN_GLOSSARY.md` | Client vocabulary, KDS codes, and validation status |
 | `SYSTEM_OF_RECORD_MATRIX.md` | Authority for cross-system business concepts |
-| `HANDOVER_AI.md` | Consolidated historical/current-state briefing; the 2026-08-15 standard-first section overrides its older service-surface sections |
+| `HANDOVER_AI.md` | Historical consolidated briefing; use only where it does not conflict with `CURRENT_STATE.md` |
 | `SAP_API_DOSSIER.md` | Historical received-spec assessment and process evidence; Part C custom portfolio is superseded |
 | `SAP_GUI_DISCOVERY_PLAN.md` | Approved read-only SAP discovery/automation method |
 | `OPEN_QUESTIONS.md` | Prioritized uncertainty register |
@@ -55,7 +58,8 @@ Conversation summaries are context, not primary evidence. Uploaded originals, si
 | `WORKFLOW.md` | End-to-end co-work procedure |
 | `templates/` | Reusable working templates |
 | `sources/` | **Primary evidence** — originals by source ID, plus plain-text extractions |
-| `sessions/2026-08-15-standard-api-discovery/` | Full catalogue scan, deep dives, sibling deltas, and requirement-level candidate matrix |
+| `sessions/2026-08-15-standard-api-discovery/` | Historical catalogue scan, deep dives and candidate matrix |
+| `sessions/2026-09-*` | BAPI derivation, enhancement inventory and MIGO implementation evidence |
 | `deliverables/` | Client-facing output; use the standard API solution/test plan as the current SAP implementation view |
 | `_archive/` | Superseded documents and retired numbering, with old-to-new mapping |
 

@@ -1,7 +1,7 @@
 # Where This Project Actually Stands — 28 July 2026
 
 **For:** Siddharth
-**From:** Claude, after reading the full co-work repository and both folder versions
+**From:** Prior AI-assisted review of the full co-work repository and both folder versions
 **Read time:** ~10 minutes
 
 This is the plain-language version. The machine-readable one is `HANDOVER_2026-07-28_AI.md`.
@@ -107,7 +107,7 @@ The repo already has this right in `NEXT_MOVE.md`. The part worth internalising:
 ## Two housekeeping items
 
 **1. You have two brains, and the rules say you shouldn't.**
-The repo explicitly states Codex and Claude must not maintain competing memories. But there are now two: this repository (Codex-built, evidence-rich, register-driven) and `Desktop\Shree_Cement_Project\MASTER_PLAN.md` (which I wrote earlier, before I'd seen any of this).
+The repo explicitly states that parallel assistants must not maintain competing memories. But there were two: this repository (evidence-rich and register-driven) and `Desktop\Shree_Cement_Project\MASTER_PLAN.md` (written earlier, before this repository was reviewed).
 
 **This repository should win.** It's better — it has the meeting evidence, the glossary, the system-of-record matrix, and registers with real IDs. My Desktop plan was built on the day-1 handover alone and is now partly redundant, and in one respect non-compliant: its capability model is more permissive than this repo's plan-and-draft-only default.
 

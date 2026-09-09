@@ -1,7 +1,7 @@
 # SRC-SID-20260812-04 — Foundational API Study Scope
 
 **Source:** direct instructions from Siddharth on 12 August 2026  
-**Evidence tier:** Tier 3 under `CLAUDE.md`  
+**Evidence tier:** Tier 3 under `AGENTS.md`
 **Purpose:** freeze the current learning boundary and prevent later architecture research from contaminating the foundational study material
 
 - Siddharth's immediate priority is to build a clinically reliable understanding of the existing business processes, SAP documents, endpoint responsibilities, request/response meaning and failure stakes.

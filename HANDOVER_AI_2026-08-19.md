@@ -193,7 +193,7 @@ Port 8000 is listed in `SMICM` but does not route from outside. TLS is an intern
 - `writes/SCDS_CREATE_01/` — standalone freight create
 
 **Artifact:** the service build plan is published at
-`https://claude.ai/code/artifact/9b7fd1de-d22c-4c25-8c56-02e5bd354ac0`
+The external chat-artifact link was removed; the committed local evidence is authoritative.
 (source `scratchpad/segw-plan.html` — republish the same path to update)
 
 **Google Drive:** folder `SAP API Configuration`

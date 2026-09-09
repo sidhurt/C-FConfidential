@@ -1,5 +1,7 @@
 # Handover — CNF C&F Agent: QS4 standard-service completion and ABAP build transition
 
+> **Historical status snapshot.** Runtime and implementation classifications in this 25 August handover are superseded by `CURRENT_STATE.md` where later BAPI, BAdI or enhancement evidence conflicts. Preserve this file for the evidence trail.
+
 **Written 2026-08-25. Audience: an AI agent that already knows the Shree Cement CNF project.**
 
 This is a delta handover, not a project introduction. It supersedes runtime and transport claims in `HANDOVER_AI_2026-08-19.md` where they conflict. Preserve the older handover for the deeper BAPI/freight investigation history.

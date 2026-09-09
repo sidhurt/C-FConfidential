@@ -2,7 +2,7 @@
 
 ## 1. Evidence policy
 
-Apply the hierarchy in `CLAUDE.md`:
+Apply the hierarchy in `AGENTS.md`:
 
 1. system observation;
 2. client document/design artifact;

@@ -1,7 +1,7 @@
 # Direct Clarifications — 11 August 2026
 
 **Source type:** direct statements from Siddharth in the Codex working session  
-**Evidence tier:** Tier 3 under `CLAUDE.md`  
+**Evidence tier:** Tier 3 under `AGENTS.md`
 **Purpose:** preserve the business clarifications that accompanied the Figma and workbook work until they are promoted into `MEETING_INGEST.md`, `DECISION_LOG.md`, `OPEN_QUESTIONS.md`, and `DOMAIN_GLOSSARY.md`  
 **Transcription note:** this is a structured paraphrase, not a verbatim chat transcript.
 

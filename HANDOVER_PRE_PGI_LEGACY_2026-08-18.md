@@ -1,4 +1,4 @@
-# Handover — pre-PGI / API-03, written by Claude, 2026-08-18 (evening)
+# Handover — pre-PGI / API-03, 2026-08-18 (evening)
 
 **For:** the next AI agent on the CNF pre-PGI problem.
 **Read `HANDOVER_V18_SESSION.md` and the pre-PGI mechanism handover first.** This file is one session's worth of *new* work on top of them, plus an honest account of what I got wrong.

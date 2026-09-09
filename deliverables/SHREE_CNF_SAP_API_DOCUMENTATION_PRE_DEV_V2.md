@@ -11,7 +11,7 @@
 **Owner:** SAP backend integration workstream  
 **Status:** PRE-DEV WORKING DOCUMENT - NOT AN APPROVED BUILD SPECIFICATION
 
-> This document consolidates the API material received to date, the meeting intelligence consumed by Codex and Claude, the five latest delivery artifacts, and the current repository registers. Development-system access remains pending. All SAP object names, BAPIs, released APIs, CDS views, DDIC fields, service names, payload fields and effort estimates are candidates until verified in the target landscape and approved by the responsible owners.
+> This document consolidates the API material received to date, meeting intelligence, the five latest delivery artifacts, and the repository registers available when it was written. Development-system access was pending at that time. All SAP object names, BAPIs, released APIs, CDS views, DDIC fields, service names, payload fields and effort estimates in this dated document remain subject to later system evidence and owner approval.
 
 # 1. Executive summary
 

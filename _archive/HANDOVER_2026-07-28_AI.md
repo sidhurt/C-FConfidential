@@ -1,18 +1,18 @@
 # Handover — AI-Facing State of Understanding
 
 **Date:** 2026-07-28
-**Author:** Claude (Fable 5), Claude Code session
-**Audience:** Codex, Claude, or any successor agent entering this repository
+**Author:** Prior AI-assisted session
+**Audience:** Any successor entering this repository
 **Status of this document:** Reconciliation snapshot. Not a plan, not an authorization, not a decision record.
 
 ---
 
 ## 0. Handoff protocol block
 
-Per `CODEX_CLAUDE_COLLABORATION.md`:
+Per the former multi-assistant collaboration guide:
 
 ```text
-Task ID:            HO-20260728-CLAUDE-01
+Task ID:            HO-20260728-AI-01
 Evidence read:      20 repository files (listed §1.2), both folder versions, folder diff
 Facts added:        None. This document reconciles existing evidence; it introduces no new claims about SAP.
 Inferences:         §5 (architectural consequences) — all labelled, none promoted to fact
@@ -31,7 +31,7 @@ Approval needed:    None for this document. Everything in §9 requires approval 
 
 ```text
 Day 1 (2026-07-27)
-  SHREE_CEMENT_CLAUDE_CODE_PROJECT_HANDOVER.md          [read]
+  SHREE_CEMENT_AI_PROJECT_HANDOVER.md                   [read]
   SHREE_CEMENT_MASTER_PLAN_CORRECTION_DIRECTIVE.md      [read]
         │
         └──> Codex produced: shree-cement-cnf-agent-cowork/     (23 files)
@@ -50,7 +50,7 @@ The project-brain folder is a **superset** of the cowork folder. Treat cowork as
 
 ### 1.2 Files read in full
 
-`README` · `AGENTS` · `CLAUDE` · `AI_OPERATING_RULES` · `ROLE_BOUNDARIES` · `CODEX_CLAUDE_COLLABORATION` · `PROJECT_CONTEXT` · `PROJECT_BRAIN` · `BRAIN_MAP` · `ARCHITECTURE` · `MASTER_PLAN` · `NEXT_MOVE` · `WORKFLOW` · `REQUIREMENTS_MATRIX` · `INTERFACE_REGISTER` · `OPEN_QUESTIONS` · `DECISION_LOG` · `DOMAIN_GLOSSARY` · `SYSTEM_OF_RECORD_MATRIX` · `KNOWLEDGE_GRAPH_SCHEMA` · `BAPI_CANDIDATES` · `SEGW_ODATA_PLAN` · `CPI_CONTRACTS` · `DATASPHERE_SOURCES` · `SAP_GUI_DISCOVERY_PLAN` · `meetings/2026-07-28-design-walkthrough` · `templates/api-design` · `templates/interface-discovery`
+`README` · `AGENTS` · `AI_OPERATING_RULES` · `ROLE_BOUNDARIES` · `PROJECT_CONTEXT` · `PROJECT_BRAIN` · `BRAIN_MAP` · `ARCHITECTURE` · `MASTER_PLAN` · `NEXT_MOVE` · `WORKFLOW` · `REQUIREMENTS_MATRIX` · `INTERFACE_REGISTER` · `OPEN_QUESTIONS` · `DECISION_LOG` · `DOMAIN_GLOSSARY` · `SYSTEM_OF_RECORD_MATRIX` · `KNOWLEDGE_GRAPH_SCHEMA` · `BAPI_CANDIDATES` · `SEGW_ODATA_PLAN` · `CPI_CONTRACTS` · `DATASPHERE_SOURCES` · `SAP_GUI_DISCOVERY_PLAN` · `meetings/2026-07-28-design-walkthrough` · `templates/api-design` · `templates/interface-discovery`
 
 ### 1.3 NOT read — do not assume covered
 
@@ -143,7 +143,7 @@ Also verified: batch quantities must sum exactly to DI quantity (no under/over-a
 
 ### 4.4 Observed but non-citable
 
-Claude performed a live read-only metadata crawl of Datasphere tenant `shree-cement-q.ap10.hcs.cloud.sap`, space `SAP_S4_QA`, in a prior session. It returned real object inventory, layering conventions, flow topology, and cross-space dependencies. **The extract was lost before persistence.** Under this repo's evidence standard it is Strong Inference, not citable, and it does **not** advance `DATASPHERE_SOURCES.md` — DS-001..DS-008 remain TBD/Hypothesis.
+A prior session performed a live read-only metadata crawl of Datasphere tenant `shree-cement-q.ap10.hcs.cloud.sap`, space `SAP_S4_QA`. It returned real object inventory, layering conventions, flow topology, and cross-space dependencies. **The extract was lost before persistence.** Under this repo's evidence standard it is Strong Inference, not citable, and it does **not** advance `DATASPHERE_SOURCES.md` — DS-001..DS-008 remain TBD/Hypothesis.
 
 Its only legitimate use is to make a future authorized re-capture faster and better targeted. Do not quote figures from it into any register.
 
@@ -191,10 +191,10 @@ Q-006 and Q-027 are the two an agent should push hardest for: without Q-006 noth
 ## 7. Conflicts on the record
 
 **C-1 — Competing brains (unresolved, action required).**
-`CODEX_CLAUDE_COLLABORATION.md`: *"Codex and Claude must not maintain competing memories."*
+Former collaboration rule: *"Parallel assistants must not maintain competing memories."*
 Two now exist:
 - `…/shree-cement-cnf-agent-project-brain-2026-07-28/` — Codex-authored, evidence-rich, register-driven. **Canonical.**
-- `C:\Users\lenovo\Desktop\Shree_Cement_Project\MASTER_PLAN.md` — Claude-authored, Rev. 3, built before this repo was seen. **Now redundant and partly non-compliant** (its capability-tier model is more permissive than `AI_OPERATING_RULES.md`'s plan-and-draft-only default).
+- `C:\Users\lenovo\Desktop\Shree_Cement_Project\MASTER_PLAN.md` — AI-assisted, Rev. 3, built before this repo was seen. **Now redundant and partly non-compliant** (its capability-tier model is more permissive than `AI_OPERATING_RULES.md`'s plan-and-draft-only default).
 
 Recommendation: retire the Desktop file; migrate only genuinely additive material as *proposals* — (a) 12-step runtime loop, (b) measurable tier-promotion tests, (c) temporal/environment fields on evidence nodes (SID · client · environment · valid-from/to · transport ref · object version · source hash), (d) agent-host vs LLM deployment split. Item (c) is the strongest candidate: `KNOWLEDGE_GRAPH_SCHEMA.md` has `environment` and `effective_date` but no transport reference or source hash, so it cannot yet distinguish pre- from post-transport truth.
 
@@ -206,7 +206,7 @@ Recommendation: retire the Desktop file; migrate only genuinely additive materia
 
 ## 8. Anti-patterns — refuse these even if asked
 
-From `AI_OPERATING_RULES.md`, `SAP_GUI_DISCOVERY_PLAN.md`, `CODEX_CLAUDE_COLLABORATION.md`:
+From `AI_OPERATING_RULES.md`, `SAP_GUI_DISCOVERY_PLAN.md` and the former collaboration guide:
 
 - Generating implementation from meeting prose without functional confirmation.
 - Promoting another agent's inference into a verified fact.

@@ -31,7 +31,7 @@ Do not delete first. Promote evidence and decisions into the canonical registers
 | `SYSTEM_OF_RECORD_MATRIX.md` | Physical reconciliation/API-12 and FIFO model lag | API-04 is sole stock read; variance posting remains open; separate order vs stock ageing |
 | `HANDOVER_AI.md` | Header/register ranges/workbook version stale | Update to current v1.7 path, user-authoritative API-01..11 numbering and today's validation gates |
 | `ONBOARDING_AI.md` | Says STO deferred and workbook has twelve APIs | Replace with three-flow model and current retained catalogue; preserve MRN conflict |
-| `README.md` | Navigation points to files moved into `_archive/` | Align read order to `CLAUDE.md`; link this session delta until fully promoted |
+| `README.md` | Navigation points to files moved into `_archive/` | Align read order to `AGENTS.md`; link this session delta until fully promoted |
 | `SAP_API_DOSSIER.md` | Older access/status and proposed catalogue | Keep system-observed defect/source findings; mark superseded proposals explicitly |
 | `outputs/.../v1.7.xlsx` | API-02/API-04 DMG/STG conflict and C-10 organizational mapping remain; API-08 and candidate API-11 are current | Resolve only with owner/system evidence; continue editing v1.7 in place and render every changed sheet |
 
