@@ -1,0 +1,90 @@
+﻿  METHOD if_material_document_api~create_material_document.
+    DATA ls_goodsmvt_header_input TYPE bapi2017_gm_head_01.
+    DATA lv_goodsmvt_code TYPE bapi2017_gm_code.
+    DATA ls_goodsmvt_print_ctrl TYPE bapi2017_gm_print.
+    DATA lt_goodsmvt_item TYPE lif_mdoc_maintain=>tt_goodsmvt_item.
+    DATA lt_goodsmvt_serialnumber TYPE lif_mdoc_maintain=>tt_goodsmvt_serialnumber.
+    DATA ls_goodsmvt_header TYPE mkpf.
+    DATA lt_extensionin TYPE bapiparextab.
+    DATA lt_return_bapi TYPE bapiret2_t.
+
+    CLEAR: et_message, es_header.
+
+    " Map header and perform checks
+    rv_failed = prepare_header(
+      EXPORTING
+        is_header              = is_header
+      IMPORTING
+        es_goodsmvt_header     = ls_goodsmvt_header_input
+        ev_goodsmvt_code       = lv_goodsmvt_code
+        es_goodsmvt_print_ctrl = ls_goodsmvt_print_ctrl
+      CHANGING
+        ct_message             = et_message ).
+    IF rv_failed = abap_true.
+      RETURN.
+    ENDIF.
+
+    " Map items and perform checks
+    rv_failed = prepare_items(
+      EXPORTING
+        it_item                = it_item
+      IMPORTING
+        et_goodsmvt_item_input = lt_goodsmvt_item
+        et_extensionin         = lt_extensionin
+      CHANGING
+        ct_message             = et_message ).
+    IF rv_failed = abap_true.
+      RETURN.
+    ENDIF.
+
+    "Map serial numbers and perform checks
+    rv_failed = prepare_serial_numbers(
+      EXPORTING
+        it_sernr       = it_sernr
+      IMPORTING
+        et_sernr_input = lt_goodsmvt_serialnumber
+      CHANGING
+        ct_message     = et_message ).
+    IF rv_failed = abap_true.
+      RETURN.
+    ENDIF.
+
+    mo_mdoc_maintain->create_goods_movement_bapi(
+      EXPORTING
+        is_goodsmvt_header       = ls_goodsmvt_header_input
+        iv_goodsmvt_code         = lv_goodsmvt_code
+        is_goodsmvt_print_ctrl   = ls_goodsmvt_print_ctrl
+        it_goodsmvt_item         = lt_goodsmvt_item
+        it_goodsmvt_serialnumber = lt_goodsmvt_serialnumber
+        it_extensionin           = lt_extensionin
+      IMPORTING
+        es_goodsmvt_header       = ls_goodsmvt_header
+        et_return                = lt_return_bapi ).
+
+    IF ls_goodsmvt_header IS INITIAL.
+      rv_failed = abap_true.
+    ELSE.
+      map_header_output(
+        EXPORTING
+          is_mkpf_output = ls_goodsmvt_header
+        IMPORTING
+          es_header      = es_header ).
+
+      IF ls_goodsmvt_print_ctrl-pr_print = gc_xprint_1.         "Corrective Measure 250931 (2020)
+        es_header-manualprintistriggered = abap_true.
+      ELSE.
+        es_header-manualprintistriggered = abap_false.
+      ENDIF.
+    ENDIF.
+
+    copy_and_map_bapi_messages(
+      EXPORTING
+        it_return  = lt_return_bapi
+      CHANGING
+        ct_message = et_message ).
+
+    IF rv_failed = abap_true.
+      RETURN.
+    ENDIF.
+
+  ENDMETHOD.

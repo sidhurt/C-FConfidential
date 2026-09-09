@@ -1,0 +1,17 @@
+﻿  METHOD map_header_output.
+
+    es_header-materialdocumentyear       = is_mkpf_output-mjahr.
+    es_header-materialdocument           = is_mkpf_output-mblnr.
+    es_header-inventorytransactiontype   = is_mkpf_output-vgart.
+    es_header-documentdate               = is_mkpf_output-bldat.
+    es_header-postingdate                = is_mkpf_output-budat.
+    es_header-creationdate               = is_mkpf_output-cpudt.
+    es_header-creationtime               = is_mkpf_output-cputm.
+    es_header-createdbyuser              = is_mkpf_output-usnam.
+    es_header-materialdocumentheadertext = is_mkpf_output-bktxt.
+    es_header-referencedocument          = is_mkpf_output-xblnr.
+    es_header-versionforprintingslip     = is_mkpf_output-wever.   "Corrective Measure 250931 (2020)
+    es_header-ctrlpostgforextwhsemgmtsyst = is_mkpf_output-bfwms.
+    es_header-goodsmovementcode          = mo_mdoc_maintain->get_goodsmovementcode_4_tcode( iv_tcode = is_mkpf_output-tcode2 ).
+
+  ENDMETHOD.

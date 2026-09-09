@@ -1,0 +1,831 @@
+﻿*----------------------------------------------------------------------*
+***INCLUDE ZMMR_AUTOMIGO_RMC_GRN_M_FILI01.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  M_FILL_GENTR_ON_F4  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE m_fill_gentr_on_f4 INPUT.
+  TYPES: BEGIN OF ty_gentr,
+           gentr    TYPE zde_gentr,
+           ebeln    TYPE ebeln,
+           ebelp    TYPE ebelp,
+           prueflos TYPE qplos,
+           werks    TYPE ewerk,
+         END OF ty_gentr.
+
+  DATA: lt_val TYPE TABLE OF ty_gentr,
+        lt_ret TYPE TABLE OF ddshretval,
+        ls_ret TYPE ddshretval.
+
+  SELECT gentr
+         ebeln
+         ebelp
+         prueflos
+         werks  FROM zta_rmc_auto_grn
+                INTO CORRESPONDING FIELDS OF TABLE lt_val
+                WHERE mblnr = ' '.
+
+  CALL FUNCTION 'F4IF_INT_TABLE_VALUE_REQUEST'
+    EXPORTING
+      retfield    = 'GENTR'
+      dynpprog    = sy-cprog
+      dynpnr      = sy-dynnr
+      dynprofield = 'ZTA_RMC_AUTO_GRN-GENTR'
+      value_org   = 'S'
+    TABLES
+      value_tab   = lt_val
+      return_tab  = lt_ret.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*& Form auto_grn_bapi
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM auto_grn_bapi .
+  BREAK ibmabap21.
+  DATA: lv_wb_gross TYPE menge_d,
+        lv_wb_tear  TYPE menge_d,
+        lv_net_wt   TYPE menge_d,
+        lv_net_wt1  TYPE menge_d,
+        lv_nnet_wt  TYPE menge_d,
+        lv_block_wt TYPE menge_d,
+        net_wet     TYPE menge_d,
+        mois_per    TYPE menge_d,
+        nmois_per   TYPE menge_d.
+  DATA: lv_count   TYPE i,
+        lv_meins   TYPE meins,
+        lv_meins_d TYPE meins.
+  DATA:inv_meins TYPE meins,
+       po_meins  TYPE meins.
+
+  IF gt_item IS NOT INITIAL.
+    CLEAR:lt_bapi_item,lt_return.
+    DELETE gt_item WHERE  b_zeile = '00020'.
+    LOOP AT gt_item ASSIGNING FIELD-SYMBOL(<fs_item>).
+
+      DATA(chk_mblnr) = <fs_item>-mblnr.
+
+      IF <fs_item>-process = '1'.
+        SELECT * FROM zletilmsweigh INTO TABLE @DATA(lt_weight) WHERE gentr = @<fs_item>-gentr.
+        IF sy-subrc = 0 AND  lt_weight IS   NOT INITIAL.
+          SORT lt_weight BY weighcounter.
+          lv_count = lines( lt_weight ).
+
+          CLEAR: lv_wb_gross,
+           lv_wb_tear ,
+           lv_net_wt.
+          READ TABLE lt_weight INTO DATA(ls_weight) INDEX 1.
+          IF sy-subrc = 0.
+            lv_wb_gross = ls_weight-weight.
+          ENDIF.
+
+          READ TABLE lt_weight INTO DATA(lw_weight) INDEX lv_count.
+          IF sy-subrc = 0.
+
+            lv_wb_tear = lw_weight-weight.
+            net_wet = lv_wb_gross - lv_wb_tear.
+            lv_nnet_wt = lv_wb_gross - lv_wb_tear.
+            DATA : lv_qty TYPE bstmg.
+            DATA : lv_qty_po TYPE bstmg.
+            CLEAR :lv_qty,lv_qty_po,lv_meins.
+            CLEAR :inv_meins ,po_meins.
+
+            inv_meins = <fs_item>-inv_meins.
+            po_meins = <fs_item>-meins.
+
+            IF <fs_item>-inv_meins = 'TON'.
+              <fs_item>-inv_meins = 'TO'.
+            ENDIF.
+            IF <fs_item>-meins = 'TON'.
+              <fs_item>-meins = 'TO'.
+            ENDIF.
+
+            lv_meins = <fs_item>-meins.
+            lv_qty = <fs_item>-invqty.
+
+            IF <fs_item>-inv_meins NE lv_meins.
+              CALL FUNCTION 'MD_CONVERT_MATERIAL_UNIT'
+                EXPORTING
+                  i_matnr              = <fs_item>-matnr
+                  i_in_me              = <fs_item>-inv_meins
+                  i_out_me             = <fs_item>-meins
+                  i_menge              = lv_qty
+                IMPORTING
+                  e_menge              = lv_qty
+                EXCEPTIONS
+                  error_in_application = 1
+                  error                = 2
+                  OTHERS               = 3.
+              IF sy-subrc <> 0.
+* Implement suitable error handling here
+              ENDIF.
+            ENDIF.
+
+            <fs_item>-inv_meins = inv_meins.
+            <fs_item>-meins = po_meins.
+
+            IF lv_qty IS NOT INITIAL.
+
+              mois_per =  net_wet * ( lv_mois / 100 ).
+              nmois_per =  lv_nnet_wt * ( lv_mois / 100 ).
+
+              lv_qty_po = net_wet - mois_per.
+
+              IF lv_meins NE 'KG'.
+                CALL FUNCTION 'MD_CONVERT_MATERIAL_UNIT'
+                  EXPORTING
+                    i_matnr              = <fs_item>-matnr
+                    i_in_me              = 'KG'
+                    i_out_me             = lv_meins
+                    i_menge              = lv_qty_po
+                  IMPORTING
+                    e_menge              = lv_qty_po
+                  EXCEPTIONS
+                    error_in_application = 1
+                    error                = 2
+                    OTHERS               = 3.
+                IF sy-subrc <> 0.
+* Implement suitable error handling here
+                ENDIF.
+              ENDIF.
+
+              net_wet = nmin( val1 = lv_qty val2 = lv_qty_po ).
+              lv_meins_d = <fs_item>-meins.
+            ELSE.
+              IF net_wet GE <fs_item>-invqty .
+                net_wet = <fs_item>-invqty .
+                lv_meins_d = <fs_item>-meins.
+              ENDIF.
+            ENDIF.
+
+*            mois_per =  net_wet * ( lv_mois / 100 ).
+*            nmois_per =  lv_nnet_wt * ( lv_mois / 100 ).
+            lv_net_wt = net_wet.
+            lv_net_wt1 = lv_nnet_wt - nmois_per.
+            lv_block_wt = <fs_item>-invqty - lv_net_wt. " + mois_per.
+
+          ENDIF.
+        ELSE.    "Manual entry for net tear gross weight for GRN
+
+          PERFORM p_manual_wt_enty.
+          IF gv_gross_wt IS NOT INITIAL AND
+             gv_tear_wt IS NOT INITIAL  AND  gv_net_wt IS INITIAL.
+            net_wet =  gv_gross_wt - gv_tear_wt.
+            CLEAR :lv_qty,lv_qty_po,lv_meins.
+            lv_nnet_wt = gv_gross_wt - gv_tear_wt.
+            CLEAR :inv_meins ,po_meins.
+            inv_meins = <fs_item>-inv_meins.
+            po_meins = <fs_item>-meins.
+
+            IF <fs_item>-inv_meins = 'TON'.
+              <fs_item>-inv_meins = 'TO'.
+            ENDIF.
+            IF <fs_item>-meins = 'TON'.
+              <fs_item>-meins = 'TO'.
+            ENDIF.
+
+            lv_meins = <fs_item>-meins.
+            lv_qty = <fs_item>-invqty.
+
+            IF <fs_item>-inv_meins NE lv_meins.
+              CALL FUNCTION 'MD_CONVERT_MATERIAL_UNIT'
+                EXPORTING
+                  i_matnr              = <fs_item>-matnr
+                  i_in_me              = <fs_item>-inv_meins
+                  i_out_me             = <fs_item>-meins
+                  i_menge              = lv_qty
+                IMPORTING
+                  e_menge              = lv_qty
+                EXCEPTIONS
+                  error_in_application = 1
+                  error                = 2
+                  OTHERS               = 3.
+              IF sy-subrc <> 0.
+* Implement suitable error handling here
+              ENDIF.
+            ENDIF.
+
+            <fs_item>-inv_meins = inv_meins.
+            <fs_item>-meins = po_meins.
+
+            IF lv_qty IS NOT INITIAL.
+              mois_per =  net_wet * ( lv_mois / 100 ).
+              nmois_per =  lv_nnet_wt * ( lv_mois / 100 ).
+
+              lv_qty_po = net_wet - mois_per.
+
+              IF lv_meins NE 'KG'.
+                CALL FUNCTION 'MD_CONVERT_MATERIAL_UNIT'
+                  EXPORTING
+                    i_matnr              = <fs_item>-matnr
+                    i_in_me              = 'KG'
+                    i_out_me             = lv_meins
+                    i_menge              = lv_qty_po
+                  IMPORTING
+                    e_menge              = lv_qty_po
+                  EXCEPTIONS
+                    error_in_application = 1
+                    error                = 2
+                    OTHERS               = 3.
+                IF sy-subrc <> 0.
+* Implement suitable error handling here
+                ENDIF.
+              ENDIF.
+
+              net_wet  = nmin( val1 = lv_qty val2 = lv_qty_po ).
+              lv_meins_d = <fs_item>-meins.
+
+            ELSE.
+              IF net_wet GE <fs_item>-invqty .
+                net_wet = <fs_item>-invqty .
+                lv_meins_d = <fs_item>-meins.
+              ENDIF.
+            ENDIF.
+**            mois_per = net_wet * ( lv_mois / 100 ).
+**            nmois_per = lv_nnet_wt * ( lv_mois / 100 ).
+            gv_net_wt   = net_wet.
+            gv_nnet_wt  = lv_nnet_wt - nmois_per.
+            lv_wb_tear  =  gv_tear_wt.
+            lv_wb_gross = gv_gross_wt.
+            lv_net_wt1  = gv_nnet_wt.
+            lv_net_wt   = gv_net_wt.
+            lv_block_wt = <fs_item>-invqty - lv_net_wt. " + mois_per.
+          ENDIF.
+
+*            IF gv_gross_wt IS NOT INITIAL AND
+*               gv_tear_wt IS NOT INITIAL  AND  gv_net_wt IS NOT INITIAL.
+*              lv_wb_tear  =  gv_tear_wt.
+*              lv_wb_gross = gv_gross_wt.
+*
+*              net_wet = gv_net_wt.
+*              mois_per = net_wet *  ( lv_mois / 100 ).
+*              lv_net_wt  = net_wet - mois_per.
+*              lv_block_wt = <fs_item>-invqty - lv_net_wt. " + mois_per.
+*            ENDIF.
+        ENDIF.
+      ENDIF.
+      IF lv_meins_d IS INITIAL.
+        lv_meins_d = <fs_item>-meins.
+      ENDIF.
+      ls_bapi_header-pstng_date     = sy-datum.
+      ls_bapi_header-doc_date       = <fs_item>-invdt.
+      ls_bapi_header-ref_doc_no     = <fs_item>-invno.
+      ls_bapi_header-bill_of_lading = <fs_item>-prueflos.
+      ls_bapi_header-gr_gi_slip_no  = <fs_item>-lrnum.
+
+      ls_bapi_gmcode-gm_code = '01'.
+
+****item
+
+      ls_bapi_item-material = <fs_item>-matnr.
+      ls_bapi_item-plant = <fs_item>-werks.
+      ls_bapi_item-move_type = '101'.
+      ls_bapi_item-vendor = <fs_item>-po_vendor.
+      """ WB qantity check from ZLE019  " inbound process
+*      IF <fs_item>-process = '1'      AND
+*         lv_net_wt LT <fs_item>-menge AND
+*         lv_net_wt IS NOT INITIAL.
+*      ls_bapi_item-entry_uom = <fs_item>-meins.
+      ls_bapi_item-entry_uom = lv_meins_d.
+      CLEAR lv_meins_d.
+      ls_bapi_item-entry_qnt = lv_net_wt.
+
+**      DATA : lv_qty TYPE bstmg.
+**      IF <fs_item>-meins NE lv_meins.
+**        lv_qty = lv_net_wt.
+**        CALL FUNCTION 'MD_CONVERT_MATERIAL_UNIT'
+**          EXPORTING
+**            i_matnr              = <fs_item>-matnr
+**            i_in_me              = <fs_item>-meins
+**            i_out_me             = <fs_item>-inv_meins
+**            i_menge              = lv_qty
+**          IMPORTING
+**            e_menge              = lv_qty
+**          EXCEPTIONS
+**            error_in_application = 1
+**            error                = 2
+**            OTHERS               = 3.
+**        IF sy-subrc <> 0.
+*** Implement suitable error handling here
+**        ENDIF.
+**      ENDIF.
+*      ls_bapi_item-entry_qnt = lv_net_wt.
+**      IF lv_qty IS NOT INITIAL.
+**        ls_bapi_item-entry_qnt = lv_qty .
+**        ls_bapi_item-entry_uom = <fs_item>-inv_meins.
+**      ELSE.
+**        ls_bapi_item-entry_qnt = lv_net_wt.
+**      ENDIF.
+**      CLEAR lv_qty.
+*      ELSE.
+*        ls_bapi_item-entry_qnt = <fs_item>-menge.
+*      ENDIF.
+      """ WB qantity check from ZLE019
+
+      ls_bapi_item-po_number = <fs_item>-ebeln.
+      ls_bapi_item-po_item = <fs_item>-ebelp.
+      ls_bapi_item-mvt_ind = 'B'.
+      IF gv_lgort IS NOT INITIAL.
+        ls_bapi_item-stge_loc = gv_lgort.
+      ENDIF.
+      APPEND ls_bapi_item TO lt_bapi_item.
+      CLEAR:ls_bapi_item.
+*** ************************* Block is not required
+****      IF lv_block_wt IS NOT INITIAL.         " block quantiy add
+****
+****        ls_bapi_item-material = <fs_item>-matnr.
+****        ls_bapi_item-plant = <fs_item>-werks.
+****        ls_bapi_item-move_type = '101'.
+****        ls_bapi_item-vendor = <fs_item>-po_vendor.
+****        """ WB qantity check from ZLE019  " inbound process
+*****      IF <fs_item>-process = '1'      AND
+*****         lv_net_wt LT <fs_item>-menge AND
+*****         lv_net_wt IS NOT INITIAL.
+****        ls_bapi_item-entry_qnt = lv_block_wt.
+*****      ELSE.
+*****        ls_bapi_item-entry_qnt = <fs_item>-menge.
+*****      ENDIF.
+****        """ WB qantity check from ZLE019
+****        ls_bapi_item-entry_uom = <fs_item>-meins.
+****        ls_bapi_item-po_number = <fs_item>-ebeln.
+****        ls_bapi_item-po_item = <fs_item>-ebelp.             "'00020'.
+****        ls_bapi_item-mvt_ind = 'B'.
+****        ls_bapi_item-stck_type = '3'.
+****        IF gv_lgort IS NOT INITIAL.
+****          ls_bapi_item-stge_loc = gv_lgort.
+****        ENDIF.
+****        APPEND ls_bapi_item TO lt_bapi_item.
+****        CLEAR:ls_bapi_item.
+****      ENDIF.
+*** ************************* Block is not required
+      SET UPDATE TASK LOCAL.
+      CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+        EXPORTING
+          goodsmvt_header  = ls_bapi_header
+          goodsmvt_code    = ls_bapi_gmcode
+        IMPORTING
+          materialdocument = lv_document
+          matdocumentyear  = lv_documentyear
+        TABLES
+          goodsmvt_item    = lt_bapi_item
+*         extensionin      = lt_bapi_extension_in
+          return           = lt_return.
+
+      IF lv_document IS NOT INITIAL.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = abap_true.
+
+        <fs_item>-mblnr       =  lv_document.
+        <fs_item>-mjahr       =  lv_documentyear.
+        <fs_item>-vcode       =  'X'.
+        <fs_item>-we_gross_wt =  lv_wb_gross.
+        <fs_item>-we_tear_wt  =  lv_wb_tear.
+*        <fs_item>-net_wt      =  lv_net_wt.
+        <fs_item>-net_wt      =  lv_net_wt1.
+        <fs_item>-grn_date    =  sy-datum.
+        <fs_item>-grn_qty     =  lv_net_wt.
+        <fs_item>-mois_per    =  mois_per.
+        <fs_item>-mois        =  lv_mois.
+        <fs_item>-grn_user    =  sy-uname.
+        IF gv_net_wt IS NOT INITIAL.
+          <fs_item>-manual_wt = 'X'.
+        ENDIF.
+*        IF lv_block_wt IS NOT INITIAL.
+        <fs_item>-b_zeile = '00010'.
+        <fs_item>-zeile = '0001'.
+*        ENDIF.
+        MODIFY:   zta_rmc_auto_grn FROM TABLE gt_item.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+**          IF lv_block_wt  IS NOT INITIAL.
+**            SELECT SINGLE * FROM zta_rmc_auto_grn INTO @DATA(lv_check_grn)
+**                                               WHERE gentr =  @<fs_item>-gentr
+**                                                 AND mblnr = @chk_mblnr
+**                                                 AND b_zeile = '00020'.
+**            IF sy-subrc NE 0 .
+**              <fs_item>-mblnr       =  lv_document.
+**              <fs_item>-mjahr       =  lv_documentyear.
+**              <fs_item>-vcode       =  'X'.
+**              <fs_item>-we_gross_wt =  lv_wb_gross.
+**              <fs_item>-we_tear_wt  =  lv_wb_tear.
+**              <fs_item>-net_wt      =  lv_net_wt.
+**              <fs_item>-grn_date    =  sy-datum.
+**              <fs_item>-grn_qty     =  lv_block_wt .
+**              <fs_item>-grn_user    =  sy-uname.
+***            <fs_item>-ebelp       =  '00020'.
+**              <fs_item>-b_zeile = '00020'.
+**              <fs_item>-zeile = '0002'.
+**              IF gv_net_wt IS NOT INITIAL.
+**                <fs_item>-manual_wt = 'X'.
+**              ENDIF.
+**
+**              MODIFY:   zta_rmc_auto_grn FROM TABLE gt_item .
+**              IF sy-subrc = 0.
+**                COMMIT WORK.
+**              ENDIF.
+**            ELSE.
+**
+**              DELETE FROM zta_rmc_auto_grn
+**                       WHERE gentr =  <fs_item>-gentr
+**                         AND mblnr = chk_mblnr
+**                         AND b_zeile =  '00020'  .
+**              IF sy-subrc = 0.
+**                COMMIT WORK.
+**
+**                <fs_item>-mblnr       =  lv_document.
+**                <fs_item>-mjahr       =  lv_documentyear.
+**                <fs_item>-vcode       =  'X'.
+**                <fs_item>-we_gross_wt =  lv_wb_gross.
+**                <fs_item>-we_tear_wt  =  lv_wb_tear.
+**                <fs_item>-net_wt      =  lv_net_wt.
+**                <fs_item>-grn_date    =  sy-datum.
+**                <fs_item>-grn_qty     =  lv_block_wt .
+**                <fs_item>-grn_user    =  sy-uname.
+***            <fs_item>-ebelp       =  '00020'.
+**                <fs_item>-b_zeile = '00020'.
+**                IF gv_net_wt IS NOT INITIAL.
+**                  <fs_item>-manual_wt = 'X'.
+**                ENDIF.
+**
+**                MODIFY:   zta_rmc_auto_grn FROM TABLE gt_item .
+**                IF sy-subrc = 0.
+**                  COMMIT WORK.
+**                ENDIF.
+**
+**              ENDIF.
+**            ENDIF.
+**          ENDIF.
+          DELETE FROM zta_rmc_auto_grn WHERE b_zeile IS INITIAL AND mblnr IS INITIAL AND gentr = @<fs_item>-gentr.
+          IF sy-subrc = 0.
+            COMMIT WORK.
+          ENDIF.
+          MESSAGE |{ TEXT-m02 } { lv_document }| TYPE 'I'.
+          SET SCREEN 0.
+        ENDIF.
+
+      ELSE.
+
+        CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+        READ TABLE lt_return INTO ls_return WITH KEY type = 'E'.
+        DATA: l_msg_str(100).
+        CALL FUNCTION 'FORMAT_MESSAGE'
+          EXPORTING
+            id        = ls_return-id
+            lang      = sy-langu
+            no        = ls_return-number
+            v1        = ls_return-message_v1
+            v2        = ls_return-message_v2
+            v3        = ls_return-message_v3
+            v4        = ls_return-message_v4
+          IMPORTING
+            msg       = l_msg_str   " Message text
+          EXCEPTIONS
+            not_found = 1
+            OTHERS    = 2.
+        MESSAGE |{ TEXT-m03 } {  l_msg_str }| TYPE 'I'.
+        SET SCREEN 0.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form auto_grn_bapi_sto
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM auto_grn_bapi_sto .
+  BREAK ibmabap21.
+  READ TABLE gt_item INTO DATA(ls_item) INDEX 1.
+  DATA lv_vbeln TYPE likp-vbeln.
+
+  DATA: lv_wb_gross   TYPE menge_d,
+        lv_wb_tear    TYPE menge_d,
+        lv_net_wt     TYPE menge_d,
+        lv_net_wt_new TYPE menge_d,
+        lv_net_wt1    TYPE menge_d,
+        lv_nnet_wt    TYPE menge_d,
+        lv_block_wt   TYPE menge_d,
+        net_wet       TYPE menge_d,
+        mois_per      TYPE menge_d,
+        nmois_per     TYPE menge_d.
+  DATA: lv_count   TYPE i,
+        lv_meins   TYPE meins,
+        lv_meins_d TYPE meins.
+
+*******************************************************************
+  CLEAR:lt_bapi_item,lt_return,lv_block_wt.
+
+  SELECT * FROM zletilmsweigh INTO TABLE @DATA(lt_weight) WHERE gentr = @ls_item-gentr.
+  IF sy-subrc = 0 AND  lt_weight IS   NOT INITIAL.
+
+    SORT lt_weight BY weighcounter.
+    lv_count = lines( lt_weight ).
+
+    CLEAR: lv_wb_gross,
+     lv_wb_tear ,
+     lv_net_wt.
+    READ TABLE lt_weight INTO DATA(ls_weight) INDEX 1.
+    IF sy-subrc = 0.
+      lv_wb_gross = ls_weight-weight.
+    ENDIF.
+
+    READ TABLE lt_weight INTO DATA(lw_weight) INDEX lv_count.
+    IF sy-subrc = 0.
+
+      lv_wb_tear = lw_weight-weight.
+      net_wet = lv_wb_gross - lv_wb_tear.
+      lv_nnet_wt = lv_wb_gross - lv_wb_tear.
+      CLEAR lv_net_wt_new .
+      lv_net_wt_new   = net_wet.
+
+    ENDIF.
+  ELSE.
+
+    PERFORM p_manual_wt_enty.
+    IF gv_gross_wt IS NOT INITIAL AND
+              gv_tear_wt IS NOT INITIAL  AND  gv_net_wt IS INITIAL.
+      net_wet =  gv_gross_wt - gv_tear_wt.
+      lv_nnet_wt = gv_gross_wt - gv_tear_wt.
+
+      gv_net_wt   = net_wet.
+      gv_nnet_wt  = lv_nnet_wt - nmois_per.
+      lv_wb_tear  =  gv_tear_wt.
+      lv_wb_gross = gv_gross_wt.
+      lv_net_wt1  = gv_nnet_wt.
+      lv_net_wt   = gv_net_wt.
+      CLEAR lv_net_wt_new .
+      lv_net_wt_new   = gv_nnet_wt.
+
+    ENDIF.
+  ENDIF.
+*******************************************************************
+
+*Begin of Change by Jeby Mathew for SR/ME/ENXXXX on 23-SEP-2025
+  IF lv_net_wt_new IS NOT INITIAL.
+    CALL FUNCTION 'MD_CONVERT_MATERIAL_UNIT'
+      EXPORTING
+        i_matnr              = ls_item-matnr
+        i_in_me              = 'KG'
+        i_out_me             = ls_item-inv_meins
+        i_menge              = lv_net_wt_new
+      IMPORTING
+        e_menge              = lv_net_wt_new
+      EXCEPTIONS
+        error_in_application = 1
+        error                = 2
+        OTHERS               = 3.
+    IF sy-subrc <> 0.
+* Implement suitable error handling here
+    ENDIF.
+    IF lv_net_wt_new IS NOT INITIAL.
+      IF lv_net_wt_new LT ls_item-invqty.
+        lv_block_wt = ls_item-invqty - lv_net_wt_new.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+*End of Change by Jeby Mathew for SR/ME/ENXXXX on 23-SEP-2025
+
+  lv_vbeln = ls_item-obd_sto+0(10).
+  SELECT SINGLE * FROM lips INTO @DATA(ls_lips)
+  WHERE vbeln = @lv_vbeln
+    AND lfimg GT 0.
+*    AND uecha EQ '000000'.
+  SELECT SINGLE * FROM likp INTO @DATA(ls_likp)
+WHERE vbeln = @lv_vbeln.
+  IF gt_item IS NOT INITIAL AND ls_lips IS NOT INITIAL.
+    LOOP AT gt_item ASSIGNING FIELD-SYMBOL(<fs_item>).
+
+      DATA(chk_mblnr) = <fs_item>-mblnr.
+
+      ls_bapi_header-pstng_date     = sy-datum.
+      ls_bapi_header-doc_date       = <fs_item>-invdt.
+      ls_bapi_header-ref_doc_no     = ls_lips-vbeln.   "<fs_item>-prueflos.
+      ls_bapi_header-bill_of_lading = <fs_item>-invno.
+      ls_bapi_header-gr_gi_slip_no  = <fs_item>-lrnum.
+*
+      ls_bapi_gmcode-gm_code      = '01'.
+*****item
+      ls_bapi_item-material         = ls_lips-matnr. "<fs_item>-matnr.
+      ls_bapi_item-plant            = ls_likp-werks.    "<fs_item>-werks.
+      ls_bapi_item-move_type        = '101'.
+*      ls_bapi_item-vendor           = <fs_item>-po_vendor.
+*      ls_bapi_item-entry_qnt        = ls_lips-lfimg.
+      IF lv_block_wt IS NOT INITIAL.
+        ls_bapi_item-entry_qnt        = <fs_item>-invqty - lv_block_wt.
+      ELSE.
+        ls_bapi_item-entry_qnt        = <fs_item>-invqty.
+      ENDIF.
+*      <fs_item>-grn_qty     =  <fs_item>-invqty.
+      ls_bapi_item-entry_uom        = ls_lips-vrkme.
+      ls_bapi_item-entry_uom_iso    = ls_lips-vrkme.  "<fs_item>-meins.
+      ls_bapi_item-deliv_numb       = ls_lips-vbeln.  "<fs_item>-meins.
+      ls_bapi_item-deliv_item       = ls_lips-posnr.  "<fs_item>-meins.
+      ls_bapi_item-batch            = ls_lips-charg.  "<fs_item>-meins.
+      ls_bapi_item-mvt_ind = 'B'.
+
+      ls_bapi_item-po_number       = ls_lips-vgbel.    "<fs_item>-ebeln.
+      ls_bapi_item-po_item         = ls_lips-vgpos.    "<fs_item>-ebelp.
+*      ls_bapi_item-mvt_ind         = ls_lips-kzbew.
+
+      IF gv_lgort IS NOT INITIAL.
+        ls_bapi_item-stge_loc = gv_lgort.
+      ENDIF.
+
+      APPEND ls_bapi_item TO lt_bapi_item.
+*      CLEAR:ls_bapi_item.
+      IF lv_block_wt IS NOT INITIAL.
+        ls_bapi_item-entry_qnt = lv_block_wt .
+        ls_bapi_item-stge_loc = 'STG'.
+        ls_bapi_item-stck_type = '3'.
+        APPEND ls_bapi_item TO lt_bapi_item.
+      ENDIF.
+      CLEAR:ls_bapi_item.
+      SET UPDATE TASK LOCAL.
+      CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+        EXPORTING
+          goodsmvt_header  = ls_bapi_header
+          goodsmvt_code    = ls_bapi_gmcode
+        IMPORTING
+          materialdocument = lv_document
+          matdocumentyear  = lv_documentyear
+        TABLES
+          goodsmvt_item    = lt_bapi_item
+*         extensionin      = lt_bapi_extension_in
+          return           = lt_return.
+
+      IF lv_document IS NOT INITIAL.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = abap_true.
+
+        <fs_item>-mblnr       =  lv_document.
+        <fs_item>-mjahr       =  lv_documentyear.
+        <fs_item>-vcode       =  'X'.
+        <fs_item>-we_gross_wt =  lv_wb_gross.
+        <fs_item>-we_tear_wt  =  lv_wb_tear.
+*        <fs_item>-net_wt      =  lv_net_wt.
+        <fs_item>-net_wt      =  NET_WET.
+        <fs_item>-grn_qty     =  <fs_item>-invqty.
+        <fs_item>-grn_date    =  sy-datum.
+*        <fs_item>-grn_qty     =  lv_net_wt.
+        <fs_item>-grn_user    =  sy-uname.
+        <fs_item>-grn_date     = sy-datum.
+        IF lv_block_wt IS NOT INITIAL.
+          <fs_item>-shrt_qty     = lv_block_wt.
+        ENDIF.
+        IF gv_net_wt IS NOT INITIAL.
+          <fs_item>-manual_wt = 'X'.
+        ENDIF.
+**        <fs_item>-grn_qty     =  ls_lips-lfimg.
+        MODIFY:   zta_rmc_auto_grn FROM TABLE gt_item .
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+*Begin of Change by Jeby Mathew for SR/ME/ENXXXX on 23-SEP-2025
+
+**          IF lv_block_wt  IS NOT INITIAL.
+***
+**            SELECT SINGLE gentr FROM zta_rmc_auto_grn INTO @DATA(lv_check_grn)
+**                                                        WHERE gentr =  @<fs_item>-gentr
+**                                                          AND mblnr = @chk_mblnr
+**                                                          AND b_zeile = '00020'.
+**            IF sy-subrc NE 0 .
+**              <fs_item>-mblnr       =  lv_document.
+**              <fs_item>-mjahr       =  lv_documentyear.
+**              <fs_item>-vcode       =  'X'.
+**              <fs_item>-we_gross_wt =  lv_wb_gross.
+**              <fs_item>-we_tear_wt  =  lv_wb_tear.
+**              <fs_item>-net_wt      =  lv_net_wt.
+**              <fs_item>-grn_date    =  sy-datum.
+**              <fs_item>-grn_qty     =  lv_block_wt .
+**              <fs_item>-grn_user    =  sy-uname.
+**              <fs_item>-b_zeile = '00020'.
+**              <fs_item>-zeile = '0002'.
+**              IF gv_net_wt IS NOT INITIAL.
+**                <fs_item>-manual_wt = 'X'.
+**              ENDIF.
+**
+**              MODIFY:   zta_rmc_auto_grn FROM TABLE gt_item .
+**              IF sy-subrc = 0.
+**                COMMIT WORK.
+**              ENDIF.
+**            ENDIF.
+**          ENDIF.
+*
+**End of Change by Jeby Mathew for SR/ME/ENXXXX on 23-SEP-2025
+*
+          MESSAGE |{ TEXT-m02 } { lv_document }| TYPE 'I'.
+          SET SCREEN 0.
+
+        ENDIF.
+
+      ELSE.
+
+        CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+        READ TABLE lt_return INTO ls_return WITH KEY type = 'E'.
+        DATA: l_msg_str(100).
+        CALL FUNCTION 'FORMAT_MESSAGE'
+          EXPORTING
+            id        = ls_return-id
+            lang      = sy-langu
+            no        = ls_return-number
+            v1        = ls_return-message_v1
+            v2        = ls_return-message_v2
+            v3        = ls_return-message_v3
+            v4        = ls_return-message_v4
+          IMPORTING
+            msg       = l_msg_str   " Message text
+          EXCEPTIONS
+            not_found = 1
+            OTHERS    = 2.
+        MESSAGE |{ TEXT-m03 } {  l_msg_str }| TYPE 'I'.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form P_manual_wt_enty
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM p_manual_wt_enty .
+  REFRESH xfields.
+  CLEAR sfields.
+
+  sfields-tabname   = 'ZTA_RMC_AUTO_GRN'.
+  sfields-fieldname = 'WE_GROSS_WT'.
+  sfields-fieldtext = 'Gross Weight'.
+  sfields-comp_tab  = 'MSEG'.
+  sfields-comp_field = 'MENGE_D'.
+  sfields-field_obl  = 'X'.
+  APPEND sfields TO xfields.
+  CLEAR sfields.
+
+  sfields-tabname   = 'ZTA_RMC_AUTO_GRN'.
+  sfields-fieldname = 'WE_TEAR_WT'.
+  sfields-fieldtext = 'Tare Weight'.
+  sfields-comp_tab  = 'MSEG'.
+  sfields-comp_field = 'MENGE_D'.
+  sfields-field_obl  = 'X'.
+  APPEND sfields TO xfields.
+  CLEAR sfields.
+
+*  sfields-tabname   = 'ZTA_RMC_AUTO_GRN'.
+*  sfields-fieldname = 'NET_WT'.
+*  sfields-fieldtext = 'Net Weight'.
+*  sfields-comp_tab  = 'MSEG'.
+*  sfields-comp_field = 'MENGE_D'.
+**  sfields-field_obl  = 'X'.
+*  APPEND sfields TO xfields.
+*  CLEAR sfields.
+
+  CALL FUNCTION 'POPUP_GET_VALUES'
+    EXPORTING
+      popup_title  = 'Vehicle External Weighment Slip Data'  "TEXT-001
+      start_column = '3'
+      start_row    = '5'
+    IMPORTING
+      returncode   = sreturn
+    TABLES
+      fields       = xfields.
+  BREAK ibmabap21.
+  IF sy-ucomm = 'CANC'.
+    LEAVE PROGRAM.
+  ENDIF.
+  CLEAR: gv_gross_wt, gv_tear_wt, gv_net_wt.
+  LOOP AT xfields INTO sfields.
+    IF sfields-fieldname = 'WE_GROSS_WT'.
+      value1 = sfields-value.
+      CONDENSE  value1.
+      gv_gross_wt =  value1.
+    ENDIF.
+    IF sfields-fieldname =  'WE_TEAR_WT'.
+      value2 = sfields-value.
+      CONDENSE  value2.
+      gv_tear_wt = value2.
+    ENDIF.
+*    IF sfields-fieldname =  'NET_WT'.
+**      value3 = sfields-value.
+*      IF value1 IS NOT INITIAL AND value2 IS NOT INITIAL.
+*        value3 =  value1 -  value2.
+*        CONDENSE  value3.
+*        gv_net_wt = value3.
+*      ELSE.
+*        value3 = sfields-value.
+*      ENDIF.
+*    ENDIF.
+    CLEAR: sfields.
+  ENDLOOP.
+ENDFORM.

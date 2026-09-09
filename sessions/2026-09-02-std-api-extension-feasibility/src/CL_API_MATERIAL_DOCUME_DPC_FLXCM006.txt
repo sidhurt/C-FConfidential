@@ -1,0 +1,9 @@
+﻿  method FLX_LOAD_RUNTIME_API.
+    " ----------------   !! GENERATED CODE !! --------------------
+    " !!  DO NOT CHANGE, WILL BE OVERWRITTEN AT NEXT GENERATION !!
+
+    IF mo_flx_runtime_api IS INITIAL.
+      mo_flx_runtime_api = cl_cfd_odata_factory=>get_runtime_instance_from_ctxt( mo_context ).
+    ENDIF.
+
+  endmethod.

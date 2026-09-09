@@ -1,0 +1,15 @@
+﻿private section.
+
+*"* private components of class CL_EXM_IM_MB_MIGO_BADI
+*"* do not include other source files here!!!
+  data GT_EXTDATA type ZMMTT_GOITEM_INT .
+  data GT_EXTDATA_MAA type TY_T_EXTDATA .
+  constants GV_CLASS_ID type MIGO_CLASS_ID value 'ZMMCUSTOMERDATA' ##NO_TEXT.
+  data GV_NO_INPUT type XFELD .
+  data GS_EXDATA_HEADER type MIGO_BADI_EXAMPLE_SCREEN_HEAD .
+  data GV_CANCEL type XFELD .
+  data GV_LINE_ID type GOITEM-GLOBAL_COUNTER .
+  data GT_ITEM type GOITEM_T .
+  data GV_ACTION type CHAR3 .
+  data GV_REFDOC type CHAR3 .
+  data GV_ERROR_HN type FLAG .

@@ -1,0 +1,69 @@
+﻿METHOD if_ex_mb_migo_badi~line_modify.
+  DATA: ls_extdata_old TYPE zmmsmigoitem_int,
+        ls_extdata_new TYPE zmmsmigoitem_int,
+        ls_extdata     TYPE zmmt_migoitem,
+        lv_subrc       TYPE sy-subrc.
+
+*Add All items in an internal table for checking before posting
+  IF gt_item IS NOT INITIAL.
+    READ TABLE gt_item ASSIGNING FIELD-SYMBOL(<ls_item>) WITH KEY global_counter = cs_goitem-global_counter.
+    IF sy-subrc IS INITIAL.
+      <ls_item> = cs_goitem.
+    ELSE.
+      APPEND cs_goitem TO gt_item.
+    ENDIF.
+  ELSE.
+    APPEND cs_goitem TO gt_item.
+  ENDIF.
+
+* Get external data from internal table:
+  READ TABLE gt_extdata INTO ls_extdata_old
+    WITH KEY line_id = i_line_id.
+  lv_subrc = sy-subrc.
+*
+** Update data in internal table:
+  IF lv_subrc <> 0.
+**   Line is new: If GOITEM has a reference to a material document,
+**                the already existing external data can be read.
+    IF NOT cs_goitem-mblnr IS INITIAL AND NOT cs_goitem-mjahr IS INITIAL
+       AND NOT cs_goitem-zeile IS INITIAL.
+      SELECT SINGLE * FROM zmmt_migoitem INTO ls_extdata
+             WHERE mblnr = cs_goitem-mblnr
+               AND mjahr = cs_goitem-mjahr
+               AND zeile = cs_goitem-zeile.
+      IF sy-subrc = 0.
+        MOVE-CORRESPONDING ls_extdata TO ls_extdata_new.
+      ENDIF.
+    ENDIF.
+*    ls_extdata_new-sgtxt  = cs_goitem-sgtxt.
+    ls_extdata_new-line_id = i_line_id.
+    APPEND ls_extdata_new TO gt_extdata.
+  ELSE.
+**   Line exists: Get external data entered on BAdI-subscreeen, but only
+**                if line_modify was called for the item displayed in the
+**                'detail tabstrip'.
+*    check g_line_id = i_line_id.
+    CALL FUNCTION 'ZMMF_MIGO_PAI_DETAIL'
+      IMPORTING
+        es_goitem = ls_extdata_new.
+    "added by IBMABAP11
+    IF ls_extdata_new-line_id IS INITIAL.
+*      CLEAR: ls_extdata_new.
+      CLEAR: cs_goitem-zzwarrant.
+    ENDIF.
+    "added by IBMABAP11
+    ls_extdata_new-line_id = i_line_id.
+*    if ls_extdata_new-sgtxt <> ls_extdata_old-sgtxt.
+**     Field was changed on external screen
+*      cs_goitem-sgtxt = ls_extdata_new-sgtxt.
+*    else.
+**     Take data from GOITEM
+*      ls_extdata_new-sgtxt = cs_goitem-sgtxt.
+*    endif.
+    "Change-Start by GS 14.08.23
+*    modify table gt_extdata from ls_extdata_new .
+    MODIFY gt_extdata FROM ls_extdata_new INDEX sy-tabix.
+    "Change-End by GS 14.08.23
+  ENDIF.
+
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~LINE_MODIFY

@@ -1,0 +1,19 @@
+﻿  method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~CHANGESET_PROCESS.
+    " ----------------   !! GENERATED CODE !! --------------------
+    " !!  DO NOT CHANGE, WILL BE OVERWRITTEN AT NEXT GENERATION !!
+
+    super->/iwbep/if_mgw_appl_srv_runtime~changeset_process(
+      EXPORTING
+        it_changeset_request  = it_changeset_request
+      CHANGING
+        ct_changeset_response = ct_changeset_response ).
+
+    flx_load_runtime_api( ).
+
+    mo_flx_runtime_api->enrich_changeset_process(
+      EXPORTING
+        it_changeset_request  = it_changeset_request
+      CHANGING
+        ct_changeset_response = ct_changeset_response ).
+
+  endmethod.

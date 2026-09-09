@@ -1,0 +1,7 @@
+GET /sap/opu/odata/sap/ZCRM_STAGEGATE_SRV/$metadata?sap-client=700&$format=xml HTTP/1.1
+X-System: QS4
+X-Client: 700
+X-User: QNOVATE8
+X-Executed-Via: /IWFND/GW_CLIENT via SAP GUI scripting
+X-Captured-Local: 27-08-2026 14:33:41
+X-Status: 400 Bad Request

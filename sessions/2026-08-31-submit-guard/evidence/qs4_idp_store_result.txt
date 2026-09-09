@@ -1,0 +1,40 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class /IWBEP/CL_IDP_UTIL
+STATUS|
+SOURCE_BEGIN|/IWBEP/CL_IDP_UTIL|STORE_RESULT
+METHOD store_result.
+
+  DATA: ls_result         TYPE ty_ls_result,
+        lr_result         TYPE REF TO data.
+  DATA: lx_ws_idp_failure TYPE REF TO cx_soap_idp_failure,
+        lx_ws_idp_fault   TYPE REF TO cx_soap_idp_fault.
+
+
+
+  ls_result-v_entity_data      = iv_entity_data.
+  ls_result-t_header           = it_header.
+  ls_result-t_msg_container    = it_msg_container.
+  ls_result-s_msg_container_h  = is_msg_container_h.
+  ls_result-v_content_format   = iv_content_format.
+
+  GET REFERENCE OF ls_result INTO lr_result.
+
+  TRY.
+      mo_idp_helper->save( lr_result ).
+
+    CATCH cx_soap_idp_failure INTO lx_ws_idp_failure.
+*     Unexpected condition, or repeated request from different users
+      raise_log_exception(
+            iv_text_id  = /iwbep/cx_idp_util=>idp_framework_error
+            ix_previous = lx_ws_idp_failure
+            ).
+    CATCH cx_soap_idp_fault   INTO lx_ws_idp_fault.
+*     NetWeaver "Idempotent Service Framework" error - most likely missing configuration
+      raise_log_exception(
+          iv_text_id   = /iwbep/cx_idp_util=>idp_framework_fault
+          ix_previous = lx_ws_idp_fault
+          ).
+  ENDTRY.
+
+ENDMETHOD.
+SOURCE_END

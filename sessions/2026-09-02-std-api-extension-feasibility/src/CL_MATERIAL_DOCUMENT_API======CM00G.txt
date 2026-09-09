@@ -1,0 +1,33 @@
+﻿  METHOD check_and_map_cancel_items.
+
+    IF it_material_document_item IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    SELECT zeile, urzei FROM matdoc INTO TABLE @DATA(lt_matdoc)
+                        FOR ALL ENTRIES IN @it_material_document_item
+                        WHERE zeile = @it_material_document_item-table_line AND
+                              mblnr = @iv_material_document AND
+                              mjahr = @iv_material_document_year.
+    SORT lt_matdoc BY zeile.
+    LOOP AT it_material_document_item INTO DATA(lv_cancel_item).
+      READ TABLE lt_matdoc REFERENCE INTO DATA(lr_matdoc) WITH KEY zeile = lv_cancel_item BINARY SEARCH.
+      IF sy-subrc <> 0.
+        INSERT VALUE #( msgid = gc_message_class
+          msgno = '016'
+          msgty = if_nsdm_odata_text_message=>sc_severity-error
+          msgv1 = lv_cancel_item
+          msgv2 = iv_material_document
+          msgv3 = iv_material_document_year ) INTO TABLE ct_message.
+      ELSEIF lr_matdoc->zeile <> lr_matdoc->urzei.
+        INSERT VALUE #( msgid = gc_message_class
+          msgno = '017'
+          msgty = if_nsdm_odata_text_message=>sc_severity-error
+          msgv1 = lv_cancel_item
+          msgv2 = lr_matdoc->urzei ) INTO TABLE ct_message.
+      ELSE.
+        INSERT lv_cancel_item INTO TABLE rt_item_tab.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.

@@ -1,0 +1,21 @@
+SESSION|System=QS4|Client=700|Table=LIPS
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I1_%_APP_%-TEXT|Text=VBELN|Name=%_I1_%_APP_%-TEXT|Tip=|X=48|Y=254
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI1-LOW|Text=|Name=I1-LOW|Tip=|X=432|Y=254
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I1_%_APP_%-TO_TEXT|Text=to|Name=%_I1_%_APP_%-TO_TEXT|Tip=|X=660|Y=254
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI1-HIGH|Text=|Name=I1-HIGH|Tip=|X=732|Y=254
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I2_%_APP_%-TEXT|Text=POSNR|Name=%_I2_%_APP_%-TEXT|Tip=|X=48|Y=287
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI2-LOW|Text=|Name=I2-LOW|Tip=|X=432|Y=287
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I2_%_APP_%-TO_TEXT|Text=to|Name=%_I2_%_APP_%-TO_TEXT|Tip=|X=660|Y=287
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI2-HIGH|Text=|Name=I2-HIGH|Tip=|X=732|Y=287
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I3_%_APP_%-TEXT|Text=WERKS|Name=%_I3_%_APP_%-TEXT|Tip=|X=48|Y=353
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI3-LOW|Text=|Name=I3-LOW|Tip=|X=432|Y=353
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I3_%_APP_%-TO_TEXT|Text=to|Name=%_I3_%_APP_%-TO_TEXT|Tip=|X=660|Y=353
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI3-HIGH|Text=|Name=I3-HIGH|Tip=|X=732|Y=353
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I4_%_APP_%-TEXT|Text=LICHN|Name=%_I4_%_APP_%-TEXT|Tip=|X=48|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI4-LOW|Text=|Name=I4-LOW|Tip=|X=432|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I4_%_APP_%-TO_TEXT|Text=to|Name=%_I4_%_APP_%-TO_TEXT|Tip=|X=660|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI4-HIGH|Text=|Name=I4-HIGH|Tip=|X=732|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_LIST_BRE_%_APP_%-TEXT|Text=Width of Output List|Name=%_LIST_BRE_%_APP_%-TEXT|Tip=|X=48|Y=452
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtLIST_BRE|Text=250|Name=LIST_BRE|Tip=|X=432|Y=452
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_MAX_SEL_%_APP_%-TEXT|Text=Maximum No. of Hits|Name=%_MAX_SEL_%_APP_%-TEXT|Tip=|X=48|Y=485
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtMAX_SEL|Text=200 |Name=MAX_SEL|Tip=|X=432|Y=485

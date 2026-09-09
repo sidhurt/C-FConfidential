@@ -1,0 +1,4 @@
+﻿  METHOD constructor.
+    mo_mdoc_maintain = NEW lcl_mdoc_maintain( ).
+    mo_migo_settings = NEW lcl_migo_settings( ).
+  ENDMETHOD.

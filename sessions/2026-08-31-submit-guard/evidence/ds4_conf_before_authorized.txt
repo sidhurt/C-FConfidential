@@ -1,0 +1,5 @@
+SESSION|DS4/200 located at connection[1] session[0]|user=QNOVATE8
+TABLE|SRT_IDP_CONF
+TITLE|Data Browser: Table SRT_IDP_CONF: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

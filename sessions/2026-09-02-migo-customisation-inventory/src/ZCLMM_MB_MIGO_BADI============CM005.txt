@@ -1,0 +1,18 @@
+﻿METHOD if_ex_mb_migo_badi~hold_data_save .
+
+  DATA: ls_migo_badi_hold TYPE migo_badi_hold.
+
+* Store data cluster (detail data) to data buffer
+  EXPORT gt_extdata FROM gt_extdata TO DATA BUFFER
+     ls_migo_badi_hold-hold_string.
+* Store data cluster (header data) to data buffer
+*  EXPORT gs_exdata_header FROM gs_exdata_header TO DATA BUFFER
+*     ls_migo_badi_hold-hold_string_head.
+  ls_migo_badi_hold-guid = i_guid.
+* Database update:
+  INSERT INTO migo_badi_hold VALUES ls_migo_badi_hold.
+  IF sy-subrc <> 0.
+    MESSAGE a398(00) WITH 'Error update MIGO_BADI_HOLD'(005).
+  ENDIF.
+
+ENDMETHOD.                    "if_ex_mb_migo_badi~hold_data_save

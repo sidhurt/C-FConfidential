@@ -1,0 +1,77 @@
+﻿  METHOD if_material_document_api~cancel_material_document_item.
+
+    DATA:
+      ls_emkpf             TYPE emkpf,
+      ls_emkpf_post_output TYPE emkpf,
+      lt_emseg             TYPE STANDARD TABLE OF emseg,
+      lt_item_output       TYPE if_material_document_api=>tt_item_output,
+      lt_item_tab          TYPE lif_mdoc_maintain=>tt_item_cancel.
+
+    CLEAR: et_item, et_message.
+
+    DATA(lv_posting_date) = iv_posting_date.
+    IF lv_posting_date IS INITIAL.
+      lv_posting_date = sy-datum.
+    ENDIF.
+
+    lt_item_tab = check_and_map_cancel_items(
+      EXPORTING
+        it_material_document_item = it_material_document_item
+        iv_material_document_year = iv_material_document_year
+        iv_material_document      = iv_material_document
+      CHANGING
+        ct_message                = et_message ).
+
+    IF lt_item_tab IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    mo_mdoc_maintain->cancel_goods_movement(
+      EXPORTING
+        iv_budat    = lv_posting_date
+        iv_mjahr    = iv_material_document_year
+        iv_mblnr    = iv_material_document
+        it_item_tab = lt_item_tab
+      IMPORTING
+        es_emkpf    = ls_emkpf
+        et_emseg    = lt_emseg ).
+
+    copy_and_map_messages(
+      EXPORTING
+        is_emkpf   = ls_emkpf
+        it_emseg   = lt_emseg
+      CHANGING
+        ct_message = et_message ).
+
+    IF ls_emkpf-mblnr IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    CLEAR: mt_matdoc.
+    SET HANDLER matdoc_created_handler FOR cl_nsdm_stock=>get_default_agent( ) ACTIVATION abap_true.
+    ASSERT sy-subrc = 0.
+    mo_mdoc_maintain->post_goods_movement(
+      IMPORTING
+        es_emkpf = ls_emkpf_post_output ).
+    SET HANDLER matdoc_created_handler FOR cl_nsdm_stock=>get_default_agent( ) ACTIVATION abap_false.
+
+    copy_and_map_messages(
+      EXPORTING
+        is_emkpf   = ls_emkpf_post_output
+      CHANGING
+        ct_message = et_message ).
+
+    " we must not have two result items if only one was requested - but ignore sub items or xauto or mdoc_cp
+    LOOP AT mt_matdoc REFERENCE INTO DATA(lr_matdoc).
+      CHECK lr_matdoc->zeile <> lr_matdoc->urzei OR
+            lr_matdoc->record_type = if_nsdm_mm_common=>gc_mtdcsa_rectype_mdoc_cp.
+      DELETE mt_matdoc.
+    ENDLOOP.
+    ASSERT lines( mt_matdoc ) <= lines( lt_item_tab ).
+    map_item_output(
+      EXPORTING
+        it_matdoc = mt_matdoc
+      IMPORTING
+        et_item   = et_item ).
+
+  ENDMETHOD.

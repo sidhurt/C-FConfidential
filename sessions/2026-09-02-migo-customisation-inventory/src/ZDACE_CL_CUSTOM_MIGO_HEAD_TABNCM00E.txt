@@ -1,0 +1,18 @@
+﻿METHOD if_ex_mb_migo_badi~pbo_header .
+
+* This check is obligatory, otherwise the program flow is incorrect
+* (If there would be more than one implementation of BAdI MB_MIGO_BADI,
+* only one subscreen would be displayed).
+    SELECT SINGLE * FROM zgpt_mm_param
+                      INTO @DATA(ls_active)
+                     WHERE program_name = 'ZDACE_CUSTOM_MIGO_HEADER_TAB'
+                       AND object_id = 'GATE'
+                       AND field = 'ACTIVE'
+                       AND active_flag = @abap_true.
+    IF ls_active IS NOT INITIAL.
+      e_cprog = 'SAPMZACE_MIGO_HEADER_TAB'.
+      e_dynnr = '0001'.
+      e_heading = 'UCC Gate Entry Det.'.
+    ENDIF.
+
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~PBO_HEADER

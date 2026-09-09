@@ -1,0 +1,36 @@
+﻿  METHOD item_check_allowed_fields.
+
+    " check allowed fields
+    DATA(lt_relevant_field) = get_relevant_fields(
+      iv_goodsmovementtype         = ir_item->goodsmovementtype
+      iv_inventoryspecialstocktype = ir_item->inventoryspecialstocktype
+      iv_goodsmovementrefdoctype   = ir_item->goodsmovementrefdoctype ).
+
+    rv_failed = abap_false.
+    LOOP AT it_component INTO DATA(ls_component).
+      ASSIGN COMPONENT ls_component-name OF STRUCTURE ir_item->* TO FIELD-SYMBOL(<lv_field_content>).
+      READ TABLE lt_relevant_field REFERENCE INTO DATA(lr_relevant_field) WITH TABLE KEY uppercase COMPONENTS field_name_uppercase = ls_component-name.
+      IF sy-subrc = 0 AND
+         <lv_field_content> IS INITIAL AND
+         lr_relevant_field->property = lif_migo_settings=>sc_requirement_type-mandatory.
+        " Property &1 is mandatory for GoodsMovementType &2
+        INSERT VALUE #( msgid = gc_message_class
+                        msgno = '010'
+                        msgty = if_nsdm_odata_text_message=>sc_severity-error
+                        msgv1 = lr_relevant_field->field_name
+                        msgv2 = ir_item->goodsmovementtype ) INTO TABLE ct_message.
+
+        rv_failed = abap_true.
+      ELSEIF sy-subrc <> 0 AND
+             <lv_field_content> IS NOT INITIAL.
+        " Property &1 is not supported for GoodsMovementType &2
+        INSERT VALUE #( msgid = gc_message_class
+                        msgno = '011'
+                        msgty = if_nsdm_odata_text_message=>sc_severity-error
+                        msgv1 = ls_component-name
+                        msgv2 = ir_item->goodsmovementtype ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.

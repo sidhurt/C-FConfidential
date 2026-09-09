@@ -1,0 +1,95 @@
+﻿  method IF_EX_MB_BAPI_GOODSMVT_CREATE~EXTENSIONIN_TO_MATDOC.
+  CONSTANTS: lc_sto_spike  TYPE ebeln     VALUE '5600074803',
+             lc_item_spike TYPE ebelp     VALUE '00010',
+             lc_lgort      TYPE lgort_d   VALUE 'RMYD',
+             lc_delfrom    TYPE vbeln_vl  VALUE '9004952595',
+             lc_delto      TYPE vbeln_vl  VALUE '9004952614'.
+
+  " Spike scope: development and quality only.
+  IF sy-sysid <> 'DS4' AND sy-sysid <> 'QS4'.
+    RETURN.
+  ENDIF.
+
+  LOOP AT ct_imseg ASSIGNING FIELD-SYMBOL(<ls_imseg>).
+
+    IF <ls_imseg>-bwart        <> '101'
+       OR <ls_imseg>-kzbew     <> 'B'
+       OR <ls_imseg>-vbeln      IS INITIAL
+       OR <ls_imseg>-vlief_avis IS NOT INITIAL
+       OR <ls_imseg>-ebeln      IS NOT INITIAL
+       OR <ls_imseg>-vbeln      < lc_delfrom
+       OR <ls_imseg>-vbeln      > lc_delto.
+      CONTINUE.
+    ENDIF.
+
+    SELECT SINGLE vbeln, posnr, matnr, charg, lfimg, vrkme, lgmng, meins,
+                  vgbel, vgpos, uecha
+      FROM lips
+      INTO @DATA(ls_lips)
+      WHERE vbeln = @<ls_imseg>-vbeln
+        AND posnr = @<ls_imseg>-posnr.
+    IF sy-subrc <> 0.
+      ct_return = VALUE #( type       = 'E'
+                           id         = '00'
+                           number     = '398'
+                           message_v1 = 'CNF: delivery item not found'
+                           message_v2 = <ls_imseg>-vbeln
+                           message_v3 = <ls_imseg>-posnr ).
+      RETURN.
+    ENDIF.
+
+    SELECT SINGLE vbtyp FROM likp INTO @DATA(lv_vbtyp)
+      WHERE vbeln = @ls_lips-vbeln.
+    IF sy-subrc <> 0 OR lv_vbtyp <> 'J'.
+      ct_return = VALUE #( type       = 'E'
+                           id         = '00'
+                           number     = '398'
+                           message_v1 = 'CNF: delivery is not outbound'
+                           message_v2 = ls_lips-vbeln ).
+      RETURN.
+    ENDIF.
+
+    IF ls_lips-vgbel <> lc_sto_spike OR ls_lips-vgpos <> lc_item_spike.
+      CONTINUE.
+    ENDIF.
+
+    SELECT SINGLE ebeln FROM ekpo INTO @DATA(lv_sto)
+      WHERE ebeln = @ls_lips-vgbel
+        AND ebelp = @ls_lips-vgpos
+        AND werks = @<ls_imseg>-werks
+        AND loekz = @space.
+    IF sy-subrc <> 0.
+      ct_return = VALUE #( type       = 'E'
+                           id         = '00'
+                           number     = '398'
+                           message_v1 = 'CNF: STO item does not receive into plant'
+                           message_v2 = ls_lips-vgbel
+                           message_v3 = ls_lips-vgpos
+                           message_v4 = <ls_imseg>-werks ).
+      RETURN.
+    ENDIF.
+
+    " ebeln deliberately left initial so ME_CONFIRMATION_SEARCH_GR
+    " resolves the PO from the delivery (LMBWLU14 line 1729).
+    <ls_imseg>-vlief_avis = ls_lips-vbeln.
+    <ls_imseg>-vbelp_avis = ls_lips-posnr.   "POSNR, not UECHA - LMBWLU14:2057
+    <ls_imseg>-matnr      = ls_lips-matnr.
+
+    IF ls_lips-lgmng IS NOT INITIAL AND ls_lips-meins IS NOT INITIAL.
+      <ls_imseg>-erfmg = ls_lips-lgmng.
+      <ls_imseg>-erfme = ls_lips-meins.
+    ELSE.
+      <ls_imseg>-erfmg = ls_lips-lfimg.
+      <ls_imseg>-erfme = ls_lips-vrkme.
+    ENDIF.
+
+    IF ls_lips-charg IS NOT INITIAL.
+      <ls_imseg>-charg = ls_lips-charg.
+    ENDIF.
+
+    IF <ls_imseg>-lgort IS INITIAL.
+      <ls_imseg>-lgort = lc_lgort.
+    ENDIF.
+
+  ENDLOOP.
+  endmethod.

@@ -1,0 +1,79 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class CL_API_MATERIAL_DOCUME_DPC_EXT
+STATUS|
+SOURCE_BEGIN|CL_API_MATERIAL_DOCUME_DPC_EXT|CREATE_DOCUMENT
+  METHOD create_document.
+
+    DATA:
+      lv_item_id       TYPE sy-tabix,
+      ls_deep_entity   TYPE ty_deep_entity,
+      ls_item_create   TYPE if_material_document_api=>ty_item_input,
+      lt_item_create   TYPE if_material_document_api=>tt_item_input,
+      lt_sernr_create  TYPE STANDARD TABLE OF if_material_document_api=>ty_sernr_input WITH DEFAULT KEY,
+      ls_output_header TYPE if_material_document_api=>ty_header_output,
+      lt_message       TYPE if_nsdm_odata_text_message=>tt_message,
+      lv_toggle        TYPE xfeld.
+
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = ls_deep_entity ).
+
+    DATA(ls_header_create) = CORRESPONDING if_material_document_api=>ty_header_input( ls_deep_entity ).
+    DATA(ls_header_target_empty) = VALUE if_material_document_api=>ty_header_input( ).
+    DATA(ls_header_forbidden) = ls_deep_entity-header.
+    MOVE-CORRESPONDING ls_header_target_empty TO ls_header_forbidden."this clears all allowed fields, so only forbidden fields remain
+    check_forbidden_header_fields(
+      is_header        = ls_header_forbidden
+      io_msg_container = io_msg_container ).
+
+
+    LOOP AT ls_deep_entity-to_materialdocumentitem INTO DATA(ls_item).
+      CLEAR ls_item_create.
+      MOVE-CORRESPONDING ls_item TO ls_item_create.
+      lv_item_id = sy-tabix.
+
+      LOOP AT ls_item-to_serialnumbers INTO DATA(ls_sernr).
+        APPEND INITIAL LINE TO lt_sernr_create ASSIGNING FIELD-SYMBOL(<ls_sernr_create>).
+        <ls_sernr_create>-lineitem = lv_item_id.
+        <ls_sernr_create>-serialnumber = ls_sernr-serialnumber.
+        DATA(ls_sernr_target_empty) = VALUE if_material_document_api=>ty_sernr_input( ).
+        DATA(ls_sernr_forbidden) = ls_sernr.
+        MOVE-CORRESPONDING ls_sernr_target_empty TO ls_sernr_forbidden."this clears all allowed fields, so only forbidden fields remain
+        check_forbidden_sernr_fields(
+          EXPORTING
+            is_sernr         = CORRESPONDING #( ls_sernr_forbidden )
+            io_msg_container = io_msg_container ).
+      ENDLOOP.
+
+      INSERT ls_item_create INTO TABLE lt_item_create.
+      DATA(ls_item_target_empty) = VALUE if_material_document_api=>ty_item_input( ).
+      DATA(ls_item_forbidden) = ls_item.
+      MOVE-CORRESPONDING ls_item_target_empty TO ls_item_forbidden."this clears all allowed fields, so only forbidden fields remain
+      check_forbidden_item_fields(
+        is_item          = CORRESPONDING #( ls_item_forbidden )
+        io_msg_container = io_msg_container ).
+    ENDLOOP.
+
+    DATA(lv_failed) = io_api->create_material_document(
+      EXPORTING
+        is_header       = ls_header_create
+        it_item         = lt_item_create
+        it_sernr        = lt_sernr_create
+      IMPORTING
+        es_header       = ls_output_header
+        et_message      = lt_message ) ##NEEDED.
+
+    handle_errors(
+      iv_is_changeset  = iv_is_changeset
+      it_error         = lt_message
+      io_msg_container = io_msg_container ).
+
+    copy_data_to_ref(
+     EXPORTING
+       is_data = ls_output_header
+     CHANGING
+       cr_data =  er_deep_entity ).
+
+  ENDMETHOD.
+SOURCE_END

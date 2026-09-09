@@ -1,0 +1,149 @@
+﻿  METHOD map_item_input.
+
+    CONSTANTS lc_INCL_EEW_COBL TYPE te_struc VALUE 'INCL_EEW_COBL'.
+
+    DATA ls_INCL_EEW_COBL TYPE incl_eew_cobl.
+
+    CLEAR: es_goodsmvt_item_input.
+
+* material document year and document are determined during create and not mapped, even though part of IMSEG
+*  ls_mseg_input-mjahr = lr_item->MaterialDocumentYear.
+*  ls_mseg_input-mblnr = lr_item->MaterialDocument.
+
+    es_goodsmvt_item_input-material_long = ir_item->material.
+    es_goodsmvt_item_input-plant         = ir_item->plant.
+    es_goodsmvt_item_input-stge_loc      = ir_item->storagelocation.
+    es_goodsmvt_item_input-batch         = ir_item->batch.
+    es_goodsmvt_item_input-move_type     = ir_item->goodsmovementtype.
+    es_goodsmvt_item_input-spec_stock    = ir_item->inventoryspecialstocktype.
+
+
+    es_goodsmvt_item_input-vendor     = ir_item->supplier.
+    es_goodsmvt_item_input-customer   = ir_item->customer.
+    es_goodsmvt_item_input-sales_ord  = ir_item->salesorder.
+    es_goodsmvt_item_input-s_ord_item = ir_item->salesorderitem.
+    es_goodsmvt_item_input-sched_line = ir_item->salesorderscheduleline.
+    es_goodsmvt_item_input-po_number  = ir_item->purchaseorder.
+    es_goodsmvt_item_input-po_item    = ir_item->purchaseorderitem.
+
+    es_goodsmvt_item_input-orderid    = ir_item->manufacturingorder.
+    es_goodsmvt_item_input-order_itno = ir_item->manufacturingorderitem.
+    es_goodsmvt_item_input-move_reas  = ir_item->goodsmovementreasoncode.
+    es_goodsmvt_item_input-mvt_ind    = ir_item->goodsmovementrefdoctype.
+
+    "get the correct mapping based on if delivery is inbound or outbound
+    IF ir_item->delivery IS NOT INITIAL. "check for delivery only, not for item. if only item is initial, IMSEG receives the initial item value
+
+      DATA(lo_delivery_handler) = cl_mdoc_api_factory=>create( )->get_delivery_handler( ir_item->delivery ).
+      TRY.
+          IF lo_delivery_handler->is_inbound_delivery( ).
+            es_goodsmvt_item_input-deliv_numb_to_search = ir_item->delivery.
+            es_goodsmvt_item_input-deliv_item_to_search = ir_item->deliveryitem.
+          ELSEIF lo_delivery_handler->is_outbound_delivery( ).
+            es_goodsmvt_item_input-deliv_numb = ir_item->delivery.
+            es_goodsmvt_item_input-deliv_item = ir_item->deliveryitem.
+          ELSE.
+            INSERT VALUE #( msgid = 'MM_IM_ODATA_API_MDOC'
+                            msgno = '023'
+                           msgty = if_nsdm_odata_text_message=>sc_severity-error ) INTO TABLE ct_message.
+            rv_failed = abap_true.
+          ENDIF.
+        CATCH cx_mmim_api INTO DATA(del_handling_exc).
+          INSERT VALUE #( msgid = del_handling_exc->if_t100_message~t100key-msgid
+                              msgno = del_handling_exc->if_t100_message~t100key-msgno
+                             msgty = del_handling_exc->if_t100_dyn_msg~msgty
+                             msgv1 = del_handling_exc->if_t100_dyn_msg~msgv1 ) INTO TABLE ct_message.
+          rv_failed = abap_true.
+      ENDTRY.
+    ENDIF.
+
+    es_goodsmvt_item_input-xstor = ir_item->materialdocumentpostingtype.
+
+    es_goodsmvt_item_input-costcenter     = ir_item->costcenter.
+    es_goodsmvt_item_input-cost_obj       = ir_item->costobject.
+    es_goodsmvt_item_input-profit_segm_no = ir_item->profitabilitysegment.
+    es_goodsmvt_item_input-profit_ctr     = ir_item->profitcenter.
+    es_goodsmvt_item_input-asset_no       = ir_item->MasterFixedAsset.
+    es_goodsmvt_item_input-sub_number     = ir_item->FixedAsset.
+
+    es_goodsmvt_item_input-entry_uom = ir_item->entryunit.
+    es_goodsmvt_item_input-entry_qnt = ir_item->quantityinentryunit.
+    es_goodsmvt_item_input-amount_lc = ir_item->gdsmvtextamtincocodecrcy.
+
+    es_goodsmvt_item_input-move_mat_long = ir_item->issgorrcvgmaterial.
+    es_goodsmvt_item_input-move_batch    = ir_item->issgorrcvgbatch.
+    es_goodsmvt_item_input-move_plant    = ir_item->issuingorreceivingplant.
+    es_goodsmvt_item_input-move_stloc    = ir_item->issuingorreceivingstorageloc.
+    es_goodsmvt_item_input-move_val_type = ir_item->issuingorreceivingvaltype.
+
+    es_goodsmvt_item_input-no_more_gr = ir_item->iscompletelydelivered.
+    es_goodsmvt_item_input-item_text  = ir_item->materialdocumentitemtext.
+    es_goodsmvt_item_input-unload_pt  = ir_item->unloadingpointname.
+    es_goodsmvt_item_input-expirydate = ir_item->shelflifeexpirationdate.
+    es_goodsmvt_item_input-prod_date  = ir_item->manufacturedate.
+
+    es_goodsmvt_item_input-reserv_no = ir_item->reservation.
+    es_goodsmvt_item_input-res_item  = ir_item->reservationitem.
+    es_goodsmvt_item_input-withdrawn = ir_item->reservationisfinallyissued.
+
+    es_goodsmvt_item_input-val_sales_ord  = ir_item->specialstockidfgsalesorder. "ER9K8ABZPN
+    es_goodsmvt_item_input-val_s_ord_item = ir_item->specialstockidfgsalesorderitem. "ER9K8ABZPN
+
+*    es_goodsmvt_item_input-stge_bin  = ir_item->storagebin.
+
+    es_goodsmvt_item_input-line_id        = ir_item->materialdocumentline. "ER9K8AARZ6
+*    es_goodsmvt_item_input-line_id = ir_item->materialdocumentline.       "ER9K8AARZ6 "1278707
+    es_goodsmvt_item_input-parent_id      = ir_item->materialdocumentparentline. "ER9K8AARZ6
+
+    es_goodsmvt_item_input-serialno_auto_numberassignment          = ir_item->serialnumbersarecreatedautomly.
+
+    es_goodsmvt_item_input-ref_doc    = ir_item->invtrymgmtreferencedocument.
+    es_goodsmvt_item_input-ref_doc_yr = ir_item->referencedocumentfiscalyear.
+    es_goodsmvt_item_input-ref_doc_it = ir_item->invtrymgmtrefdocumentitem.
+
+    es_goodsmvt_item_input-warehouse_ewm = ir_item->EWMWarehouse.
+    es_goodsmvt_item_input-stge_bin_ewm  = ir_item->EWMStorageBin.
+
+    es_goodsmvt_item_input-gl_account = ir_item->glaccount.
+
+    IF ir_item->inventoryusabilitycode IS NOT INITIAL.
+
+      DATA(lo_stock_type_handler) = cl_mdoc_api_factory=>create( )->create_stock_type_handler( is_item = ir_item->* ).
+
+      TRY.
+          lo_stock_type_handler->compare_if_implied( ).
+          es_goodsmvt_item_input-stck_type = ir_item->inventoryusabilitycode.
+        CATCH cx_mmim_api INTO DATA(lo_stock_type_exception).
+          INSERT VALUE #( msgid = lo_stock_type_exception->if_t100_message~t100key-msgid
+                                    msgno = lo_stock_type_exception->if_t100_message~t100key-msgno
+                                    msgty = lo_stock_type_exception->if_t100_dyn_msg~msgty
+                                    msgv1 = lo_stock_type_exception->if_t100_dyn_msg~msgv1 ) INTO TABLE ct_message.
+          rv_failed = abap_true.
+      ENDTRY.
+
+    ENDIF.
+
+    IF cl_sgt_switch_check=>segmentation_switch_check( ) EQ abap_on.
+      es_goodsmvt_item_input-stk_seg_long   = ir_item->stocksegment.
+      es_goodsmvt_item_input-mov_seg_long = ir_item->issgorrcvgstocksegment.
+    ENDIF.
+
+*    IF ir_item->wbselement IS NOT INITIAL.
+*      SELECT SINGLE wbselementinternalid FROM i_wbselement WITH PRIVILEGED ACCESS WHERE wbselement = @ir_item->wbselement INTO @es_goodsmvt_item_input-wbs_elem.
+*    ENDIF.
+    es_goodsmvt_item_input-wbs_elem = ir_item->wbselement.
+    es_goodsmvt_item_input-val_wbs_elem = ir_item->specialstockidfgwbselement.
+
+    " move customer extension fields to material document line items for posting
+    " total length of customer fields is restricted to 200 characters
+*    es_extensionin-structure = lc_incl_eew_cobl.
+*    CALL METHOD cl_abap_container_utilities=>fill_container_c
+*      EXPORTING
+*        im_value               = ir_item->cobl_ext
+*      IMPORTING
+*        ex_container           = es_extensionin+30
+*      EXCEPTIONS
+*        illegal_parameter_type = 1
+*        OTHERS                 = 2.
+
+  ENDMETHOD.

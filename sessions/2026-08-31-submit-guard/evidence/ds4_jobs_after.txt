@@ -1,0 +1,117 @@
+SESSION|DS4|200
+QUERY|SAP_BC_IDP_WS_SWITCH_*|ALL_USERS|ALL_STATUSES|20000101-99991231
+TITLE|Job Overview
+STATUS|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr|GuiUserArea|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[0,0]|GuiLabel|Job overview from:
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[19,0]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[20,0]|GuiLabel|01.01.2000
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[30,0]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[31,0]|GuiLabel|at:
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[36,0]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[37,0]|GuiLabel|  :  :
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[0,1]|GuiLabel|             to:
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[19,1]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[20,1]|GuiLabel|31.12.9999
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[30,1]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[31,1]|GuiLabel|at:
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[36,1]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[37,1]|GuiLabel|  :  :
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[0,2]|GuiLabel|Selected         job names:
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[28,2]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[29,2]|GuiLabel|SAP_BC_IDP_WS_SWITCH_*
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[0,3]|GuiLabel|Selected user names:
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[28,3]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[29,3]|GuiLabel|*
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[0,4]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[0,5]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[1,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[2,5]|GuiLabel|Scheduled
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[11,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[12,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[13,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[14,5]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[15,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[16,5]|GuiLabel|Released
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[27,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[28,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[29,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[30,5]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[31,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[32,5]|GuiLabel|Ready
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[38,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[39,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[40,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[41,5]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[42,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[43,5]|GuiLabel|Active
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[49,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[50,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[51,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[52,5]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[53,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[54,5]|GuiLabel|Finished
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[62,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[63,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[64,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[65,5]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[66,5]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[67,5]|GuiLabel|Canceled
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[0,6]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[1,6]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[2,6]|GuiLabel|Event-Driven
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[18,6]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[19,6]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[21,6]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[22,6]|GuiLabel|Event ID:
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[32,6]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[33,6]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[0,7]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[1,7]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[2,7]|GuiLabel|ABAP program
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[15,7]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[16,7]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[18,7]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[19,7]|GuiLabel|Program name :
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[33,7]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[34,7]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[0,8]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[0,9]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[1,11]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[3,11]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[4,11]|GuiLabel|JobName
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[37,11]|GuiLabel|Spool
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[43,11]|GuiLabel|Job doc
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[51,11]|GuiLabel|Job CreatedB
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[64,11]|GuiLabel|Status
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[80,11]|GuiLabel|Start date
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[91,11]|GuiLabel|Start T
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[1,13]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[2,13]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[3,13]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[4,13]|GuiLabel|SAP_BC_IDP_WS_SWITCH_BD
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[37,13]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[43,13]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[51,13]|GuiLabel|QNOVATE8
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[64,13]|GuiLabel|Released
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[80,13]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[91,13]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chk[1,14]|GuiCheckBox|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[2,14]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[3,14]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[4,14]|GuiLabel|SAP_BC_IDP_WS_SWITCH_BDID
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[37,14]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[43,14]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[51,14]|GuiLabel|QNOVATE8
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[64,14]|GuiLabel|Released
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[80,14]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[91,14]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[1,16]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[3,16]|GuiLabel|*
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[4,16]|GuiLabel|Summary
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[37,16]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[43,16]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[51,16]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[64,16]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[80,16]|GuiLabel|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lbl[91,16]|GuiLabel|

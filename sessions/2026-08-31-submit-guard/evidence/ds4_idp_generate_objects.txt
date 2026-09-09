@@ -1,0 +1,139 @@
+SESSION|DS4|200|QNOVATE8
+TITLE|Class Builder: Display Class CL_WS_IDP_UTIL
+STATUS|
+SOURCE_BEGIN|CL_WS_IDP_UTIL|GENERATE_OBJECTS
+  method generate_objects.
+
+    data:
+      ld_rc     like sy-subrc,
+      l_version type srt_idp_conf-version.
+    data:
+      ls_t100key      type scx_t100key,
+      l_msg_string    type string,
+      lcx_fault       type ref to cx_soap_idp_fault,
+      lcx_enq_failure type ref to cx_soap_idp_enqueue_failure.
+    data:
+      l_tabname_id_1 type tabname,
+      l_tabname_id_2 type tabname,
+      l_tabname_bd_1 type tabname,
+      l_tabname_bd_2 type tabname,
+      l_access_class type seoclsname.
+
+    authority_check( actvt = '70' ).
+
+    "-0- check the existence of the generated objects
+    case genobject_existence_check( ).
+      when 1.   "Exist
+        if i_force_class_regenerate eq abap_true.
+          try.
+              cl_ws_idp_conf=>get_instance( )->conf_lock( ).
+              cl_ws_idp_conf=>get_instance( )->conf_read(
+                importing
+                  e_access_class = l_access_class
+                  e_tabname_bd_1 = l_tabname_bd_1
+                  e_tabname_bd_2 = l_tabname_bd_2
+              ).
+              "-1- regenerate class
+              " 20180316: generated class is not needed anymore
+
+              "-2- update config
+              cl_ws_idp_conf=>get_instance( )->conf_write( l_access_class ).
+              cl_ws_idp_conf=>get_instance( )->conf_unlock( ).
+            catch cx_soap_idp_enqueue_failure into lcx_enq_failure.
+              raise exception type cx_soap_idp_failure
+                exporting
+                  previous = lcx_enq_failure.
+            catch cx_soap_idp_fault into lcx_fault.
+              rollback work.
+              raise exception lcx_fault.
+          endtry.
+        endif.
+
+      when 0.   "Old version
+        try.
+            "-1- set lock
+            cl_ws_idp_conf=>get_instance( )->conf_lock( ).
+
+            cl_ws_idp_conf=>get_instance( )->conf_read(
+              importing
+                e_access_class = l_access_class
+                e_tabname_bd_1 = l_tabname_bd_1
+                e_tabname_bd_2 = l_tabname_bd_2
+            ).
+            "-1- regenerate class
+            l_access_class = create_access_class( i_tabname_bd_1 = l_tabname_bd_1
+                                                  i_tabname_bd_2 = l_tabname_bd_2
+                                                  i_access_class = l_access_class ).
+
+            "-2- set config
+            cl_ws_idp_conf=>get_instance( )->conf_write( l_access_class ).
+            cl_ws_idp_conf=>get_instance( )->conf_unlock( ).
+
+          catch cx_soap_idp_enqueue_failure into lcx_enq_failure.
+            raise exception type cx_soap_idp_failure
+              exporting
+                previous = lcx_enq_failure.
+          catch cx_soap_idp_fault into lcx_fault.
+            rollback work.
+            raise exception lcx_fault.
+        endtry.
+
+      when -1.  "Not Exist
+        try.
+            "-1- set lock
+            try.
+                cl_ws_idp_conf=>get_instance( )->conf_lock( ).
+              catch cx_soap_idp_enqueue_failure into lcx_enq_failure.
+                raise exception type cx_soap_idp_failure
+                  exporting
+                    previous = lcx_enq_failure.
+            endtry.
+
+            "-2- generate objects
+            generate_objects_int(
+                  importing
+                    e_tabname_id_1 = l_tabname_id_1
+                    e_tabname_id_2 = l_tabname_id_2
+                    e_tabname_bd_1 = l_tabname_bd_1
+                    e_tabname_bd_2 = l_tabname_bd_2
+                    e_access_class = l_access_class ).
+
+            "-3- write config
+            cl_ws_idp_conf=>get_instance( )->conf_write(
+              exporting
+                i_tabname_bdid_1 = l_tabname_id_1
+                i_tabname_bdid_2 = l_tabname_id_2
+                i_tabname_bd_1   = l_tabname_bd_1
+                i_tabname_bd_2   = l_tabname_bd_2
+                i_access_class   = l_access_class ).
+            "-4- write admin
+            cl_ws_idp_admin=>get_instance( )->adm_write(
+              exporting
+                i_area            = co_area_bd_switch
+                i_container_write = l_tabname_bd_1 ).
+            cl_ws_idp_admin=>get_instance( )->adm_write(
+              exporting
+                i_area            = co_area_bdid_switch
+                i_container_write = l_tabname_id_1 ).
+            "-5- unlock
+            cl_ws_idp_conf=>get_instance( )->conf_unlock( ).
+
+          catch cx_soap_idp_fault into lcx_fault.
+            rollback work.
+            call method genobject_delete:
+                   exporting  i_obj_type = 'TABL' i_tabname    = l_tabname_bd_1,
+                   exporting  i_obj_type = 'TABL' i_tabname    = l_tabname_bd_2,
+                   exporting  i_obj_type = 'TABL' i_tabname    = l_tabname_id_1,
+                   exporting  i_obj_type = 'TABL' i_tabname    = l_tabname_id_2,
+                   exporting  i_obj_type = 'CLAS' i_class_name = l_access_class.
+
+            raise exception type cx_soap_idp_failure
+              exporting
+                previous = lcx_fault.
+        endtry.
+    endcase.
+
+    commit work.
+
+  endmethod.
+SOURCE_END

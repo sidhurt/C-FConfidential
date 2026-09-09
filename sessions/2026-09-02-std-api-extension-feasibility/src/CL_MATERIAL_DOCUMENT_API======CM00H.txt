@@ -1,0 +1,45 @@
+﻿  METHOD item_wbs_checks.
+
+    IF ir_item->wbselement IS INITIAL AND
+       ir_item->specialstockidfgwbselement IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    IF ir_item->wbselement IS NOT INITIAL.
+      SELECT SINGLE wbselementinternalid FROM i_wbselement WITH PRIVILEGED ACCESS
+        WHERE wbselement = @ir_item->wbselement INTO @DATA(lv_wbselementinternalid).
+
+      IF sy-subrc NE 0.
+        INSERT VALUE #( msgid = gc_message_class
+                        msgno = '022'
+                        msgty = if_nsdm_odata_text_message=>sc_severity-error
+                        msgv1 = ir_item->wbselement ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+      ENDIF.
+    ENDIF.
+
+    IF ir_item->specialstockidfgwbselement IS NOT INITIAL.
+      SELECT SINGLE wbselementinternalid FROM i_wbselement WITH PRIVILEGED ACCESS
+        WHERE wbselement = @ir_item->specialstockidfgwbselement INTO @lv_wbselementinternalid.
+
+      IF sy-subrc NE 0.
+        INSERT VALUE #( msgid = gc_message_class
+                        msgno = '022'
+                        msgty = if_nsdm_odata_text_message=>sc_severity-error
+                        msgv1 = ir_item->specialstockidfgwbselement ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+      ENDIF.
+    ENDIF.
+
+*    IF ir_item->wbselement IS NOT INITIAL AND
+*       ( ir_item->inventoryspecialstocktype EQ 'Q' OR
+*         ir_item->inventoryspecialstocktype EQ 'R' ).
+*      INSERT VALUE #( msgid = gc_message_class
+*                      msgno = '026'
+*                      msgty = if_nsdm_odata_text_message=>sc_severity-error
+*                      msgv1 = 'WBSElement'
+*                      msgv2 = ir_item->inventoryspecialstocktype ) INTO TABLE ct_message.
+*      rv_failed = abap_true.
+*    ENDIF.
+
+  ENDMETHOD.

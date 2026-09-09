@@ -1,0 +1,52 @@
+﻿FUNCTION zsd_intrco_migo.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(GOODSMVT_HEADER) TYPE  BAPI2017_GM_HEAD_01
+*"  EXPORTING
+*"     VALUE(GOODSMVT_HEADRET) LIKE  BAPI2017_GM_HEAD_RET STRUCTURE
+*"        BAPI2017_GM_HEAD_RET
+*"     VALUE(MATERIALDOCUMENT) TYPE  BAPI2017_GM_HEAD_RET-MAT_DOC
+*"     VALUE(MATDOCUMENTYEAR) TYPE  BAPI2017_GM_HEAD_RET-DOC_YEAR
+*"  TABLES
+*"      GOODSMVT_ITEM STRUCTURE  BAPI2017_GM_ITEM_CREATE OPTIONAL
+*"      RETURN1 STRUCTURE  BAPIRET2 OPTIONAL
+*"----------------------------------------------------------------------
+  DATA: it_Ret2 TYPE TABLE OF bapiret2.
+  DATA: matdoc    TYPE bapi2017_gm_head_ret-mat_doc,
+        matyear   TYPE bapi2017_gm_head_ret-doc_year,
+        goods_hdr TYPE bapi2017_gm_head_ret.
+
+  REFRESH it_ret2.
+  CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+    EXPORTING
+      goodsmvt_header  = goodsmvt_header
+      goodsmvt_code    = '01'
+*     TESTRUN          = ' '
+*     GOODSMVT_REF_EWM =
+*     GOODSMVT_PRINT_CTRL           =
+    IMPORTING
+      goodsmvt_headret = goods_hdr
+      materialdocument = matdoc
+      matdocumentyear  = matyear
+    TABLES
+      goodsmvt_item    = goodsmvt_item[]
+*     GOODSMVT_SERIALNUMBER         =
+      return           = it_ret2
+*     GOODSMVT_SERV_PART_DATA       =
+*     EXTENSIONIN      =
+*     GOODSMVT_ITEM_CWM             =
+    .
+  IF matdoc IS NOT INITIAL.
+    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+      EXPORTING
+        wait = 'X'.
+    matdocumentyear = matyear.
+    materialdocument = matdoc.
+    goodsmvt_headret = goods_hdr.
+  ELSE.
+    CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+  ENDIF.
+
+  return1[] = it_ret2[].
+ENDFUNCTION.

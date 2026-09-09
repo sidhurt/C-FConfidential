@@ -1,0 +1,5 @@
+SESSION|System=QS4|Client=700|User=QNOVATE8|Before=SE16
+FILTER|txtI1-LOW=
+FILTER|txtI2-LOW=5600084222
+FILTER|txtI2-HIGH=5600084223
+NO_GRID|Title=Data Browser: Table VBFA: Selection Screen|Status=No table entries found for specified key

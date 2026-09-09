@@ -1,0 +1,76 @@
+TABLE|rows(total)=74|visibleRows=19
+M|/IWBEP/IF_MGW_SOST_SRV_RUNTIME~OPERATION_START	Instance Method	Public		Called before an APPS operation if soft-state mode is active			
+M|/IWBEP/IF_MGW_SOST_SRV_RUNTIME~OPERATION_END	Instance Method	Public		Called after an APPS operation if soft-state mode is active			
+M|/IWBEP/IF_MGW_SOST_SRV_RUNTIME~RESET_DP	Instance Method	Public		Reset of the data provider - Clean up the appl session!			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~CHECK_IF_IS_NOT_MODIFIED	Instance Method	Public		Check if is not modified (return TRUE or FALSE)			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~COPY_DATA_TO_REF	Instance Method	Public		Get Reference of data			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~GET_DP_FACADE	Instance Method	Public		Gets the Data Provider Facade			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~GET_LOGGER	Instance Method	Public		Gets logger			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~GET_MESSAGE_CONTAINER	Instance Method	Public		Gets message container			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~GET_RESPONSE_UTIL	Instance Method	Public		Get Response Utility			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~GET_SOFT_STATE_INFO	Instance Method	Public		Get Soft State Info			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~GET_SUPPORTED_RUNTIME_FEATURES	Instance Method	Public		Get the supported runtime features			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~INIT_DP_FOR_UNIT_TEST	Instance Method	Public		Initializes a Data Provider Instance for Unit tests			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~MOVE_CORRESPONDING	Instance Method	Public		Move Corresponding for simple or nested structure/table			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~SET_ETAG	Instance Method	Public		Sets the etag to the HTTP response			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~SET_HEADER	Instance Method	Public		Sets an header with key and value			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~SOFT_STATE_SESSION_END	Instance Method	Public		End Soft-State Session			
+M|/IWBEP/IF_MGW_CONV_SRV_RUNTIME~SOFT_STATE_SESSION_START	Instance Method	Public		Start Soft-State Session			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~BATCH_BEGIN	Instance Method	Public		Core - Begin of batch processing			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~BATCH_END	Instance Method	Public		Core - End of batch processing			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_BEGIN	Instance Method	Public		Core - Begin of a changeset			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_END	Instance Method	Public		Core - End of a changeset			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~CHANGESET_PROCESS	Instance Method	Public		Core - Process a changeset (all operations at once)			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~CLEANUP	Instance Method	Public		Core - Clean up - Needed as a single instance BADI is used			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~CREATE_ENTITY	Instance Method	Public		Core - Execute CREATE request (CreateRUD)			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~DELETE_ENTITY	Instance Method	Public		Core - Execute DELETE request (CRUDelete)			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~EXEC_SERVICE_OPERATION	Instance Method	Public		Core - Execute function import			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~GET_EXPAND_ROOT	Instance Method	Public		Core - Get the expand root and fill it into request details			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~INIT	Instance Method	Public		Core - Initializes the Runtime Implementation			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~INIT_REQUEST_CONTEXT	Instance Method	Public		Core - Initializes the Request Context			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~READ_ENTITY	Instance Method	Public		Core - Execute READ request (CReadUD) - ENTRY -			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~READ_ENTITYSET	Instance Method	Public		Core - Execute a READ request (CReadUD) - FEED			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~READ_STREAM	Instance Method	Public		Core - Execute READ request (CReadUD) - STREAM -			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~SESSION_IS_TERMINATED	Instance Method	Public		Core - Soft State Session is terminated			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~SET_CONTEXT	Instance Method	Public		Core - Set current context			
+M|/IWBEP/IF_MGW_CORE_SRV_RUNTIME~UPDATE_ENTITY	Instance Method	Public		Core - Execute UPDATE request (CRUpdateD)			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~BATCH_BEGIN	Instance Method	Public		Begin of batch processing			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~BATCH_END	Instance Method	Public		End of batch processing			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~CHANGESET_BEGIN	Instance Method	Public		Begin of a changeset			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~CHANGESET_END	Instance Method	Public		End of a changeset			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~CHANGESET_PROCESS	Instance Method	Public		Process all changeset operations at once			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~CREATE_DEEP_ENTITY	Instance Method	Public		Execute a deep insert CREATE request (CreateRUD)			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~CREATE_ENTITY	Instance Method	Public		Execute a CREATE request (CreateRUD)			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~CREATE_STREAM	Instance Method	Public		Execute a CREATE			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~DELETE_ENTITY	Instance Method	Public		Execute a DELETE request (CRUDelete)			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~DELETE_STREAM	Instance Method	Public		Execute a DELETE			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~EXECUTE_ACTION	Instance Method	Public		executes a function import			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITY	Instance Method	Public		Execute a READ request (CReadUD) - ENTRY -			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITYSET	Instance Method	Public		Execute a READ request (CReadUD) - FEED -			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITYSET_DELTA	Instance Method	Public		Execute a READ request (CReadUD) - FEED -			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_EXPANDED_ENTITY	Instance Method	Public		Execute a READ request (CReadUD) - ENTRY with inlines -			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_EXPANDED_ENTITYSET	Instance Method	Public		Execute a READ request (CReadUD) - FEED with inlines -			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_IS_CONDITIONAL_IMPLEMENTED	Instance Method	Public		Get flag if conditional handling is done by provider App			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_IS_CONDI_IMPLE_FOR_ACTION	Instance Method	Public		Get flag if conditional handling is done for function import			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_STREAM	Instance Method	Public		Execute a READ request (CReadUD) - ENTRY -			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~PATCH_ENTITY	Instance Method	Public		Execute a PATCH request (CRUpdateD)			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~UPDATE_ENTITY	Instance Method	Public		Execute an UPDATE request (CRUpdateD)			
+M|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~UPDATE_STREAM	Instance Method	Public		Executes an UPDATE			
+M|/IWBEP/IF_SB_DPC_COMM_SERVICES~GET_GENERATION_STRATEGY	Instance Method	Public		Get generation strategy			
+M|/IWBEP/IF_SB_DPC_COMM_SERVICES~RFC_EXCEPTION_HANDLING	Instance Method	Public		RFC call exception handling			
+M|/IWBEP/IF_SB_DPC_COMM_SERVICES~RFC_SAVE_LOG	Instance Method	Public		Save the RFC call log in the application log			
+M|/IWBEP/IF_SB_DPC_COMM_SERVICES~SET_INJECTION	Instance Method	Public		SET DPC injection			
+M|/IWBEP/IF_SB_DPC_COMM_SERVICES~LOG_MESSAGE	Instance Method	Public		Log message in the logger			
+M|/IWBEP/IF_SB_DPC_COMM_SERVICES~COMMIT_WORK	Instance Method	Public		Call RFC commit work			
+M|CHECK_SUBSCRIPTION_AUTHORITY	Instance Method	Protected					
+M|DELIVERIESITEMSS_CREATE_ENTITY	Instance Method	Protected		Related EntitySet Name: deliveriesItemsSet			
+M|DELIVERIESITEMSS_DELETE_ENTITY	Instance Method	Protected		Related EntitySet Name: deliveriesItemsSet			
+M|DELIVERIESITEMSS_GET_ENTITY	Instance Method	Protected		Related EntitySet Name: deliveriesItemsSet			
+M|DELIVERIESITEMSS_GET_ENTITYSET	Instance Method	Protected		Related EntitySet Name: deliveriesItemsSet			
+M|DELIVERIESITEMSS_UPDATE_ENTITY	Instance Method	Protected		Related EntitySet Name: deliveriesItemsSet			
+M|STAGEGATESET_CREATE_ENTITY	Instance Method	Protected		Related EntitySet Name: STAGEGATESet			
+M|STAGEGATESET_DELETE_ENTITY	Instance Method	Protected		Related EntitySet Name: STAGEGATESet			
+M|STAGEGATESET_GET_ENTITY	Instance Method	Protected		Related EntitySet Name: STAGEGATESet			
+M|STAGEGATESET_GET_ENTITYSET	Instance Method	Protected		Related EntitySet Name: STAGEGATESet			
+M|STAGEGATESET_UPDATE_ENTITY	Instance Method	Protected		Related EntitySet Name: STAGEGATESet			
+TOTAL_DISTINCT|74

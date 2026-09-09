@@ -1,0 +1,21 @@
+﻿  METHOD if_ex_mb_document_badi~mb_document_before_update.
+    BREAK ibmabap21.
+    DATA: lv1_kostl TYPE kostl.
+    DATA: t_xmseg  TYPE STANDARD TABLE OF mseg, " Document Segment: Material
+          wa_xmseg TYPE mseg.                   " Document Segment: Material
+    IF sy-tcode = 'IFCU'.
+      GET PARAMETER ID 'ZCOST' FIELD lv1_kostl.
+      IF lv1_kostl IS NOT INITIAL.
+        FIELD-SYMBOLS: <xmseg> TYPE ANY TABLE.
+        ASSIGN ('(SAPMM07M)XMSEG[]')  TO <xmseg>.
+        t_xmseg[] = <xmseg>[].
+        LOOP AT t_xmseg INTO wa_xmseg.
+          wa_xmseg-kostl = lv1_kostl.
+          MODIFY t_xmseg FROM wa_xmseg.
+        ENDLOOP. " LOOP AT t_xmseg INTO wa_xmseg
+        CLEAR : <xmseg>[].
+        <xmseg>[] = t_xmseg[].
+        UNASSIGN <xmseg>.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

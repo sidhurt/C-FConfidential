@@ -1,0 +1,36 @@
+﻿method if_ex_mb_migo_badi~pbo_header .
+* This check is obligatory, otherwise the program flow is incorrect
+* (If there would be more than one implementation of BAdI MB_MIGO_BADI,
+* only one subscreen would be displayed).
+  check i_class_id = gv_class_id.
+
+* External subscreen:
+* The content of global field G_NO_INPUT (set in method MODE_SET) will
+* influence the number of external subsreen:
+*  IF gv_no_input IS INITIAL.
+*    e_cprog   = 'SAPLMIGO_BADI_EXAMPLE'.
+*    e_dynnr   = '0003'.                     "External fields: Input
+*    e_heading = 'MIGO BAdI EXAMPLE'(004).
+*  ELSE.
+*    e_cprog   = 'SAPLMIGO_BADI_EXAMPLE'.
+*    e_dynnr   = '0004'.                     "External fields: Display
+*    e_heading = 'MIGO BAdI EXAMPLE'(004).
+*  ENDIF.
+*
+** Export data to function group (for display on subscreen)
+*  CALL FUNCTION 'MIGO_BADI_EXAMPLE_PUT_HEADER'
+*    EXPORTING
+*      is_migo_badi_header_fields = gs_exdata_header.
+
+*    BREAK ibmabap07.
+  if gv_no_input is initial.
+    e_cprog   = 'ZMMR_MIGO_SCREEN_ADD'.
+    e_dynnr   = '0100'.                     "External fields: Input
+    e_heading = 'Additional Field'.
+  else.
+    e_cprog   = 'ZMMR_MIGO_SCREEN_ADD'.
+    e_dynnr   = '0101'.                     "External fields: Display
+    e_heading = 'Additional Field'.
+  endif.
+
+endmethod.                    "IF_EX_MB_MIGO_BADI~PBO_HEADER

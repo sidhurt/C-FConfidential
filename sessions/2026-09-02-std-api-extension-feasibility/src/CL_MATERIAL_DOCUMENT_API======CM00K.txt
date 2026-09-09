@@ -1,0 +1,18 @@
+﻿  METHOD copy_and_map_bapi_messages.
+    LOOP AT it_return REFERENCE INTO DATA(lr_return).
+      CHECK lr_return->id IS NOT INITIAL.
+      INSERT VALUE #(
+        msgid = lr_return->id
+        msgno = lr_return->number
+        msgty = lr_return->type
+        msgv1 = lr_return->message_v1
+        msgv2 = lr_return->message_v2
+        msgv3 = lr_return->message_v3
+        msgv4 = lr_return->message_v4
+      ) INTO TABLE ct_message.
+    ENDLOOP.
+
+    cl_mdoc_api_factory=>get_message_mapper( )->adjust_messages(
+      CHANGING
+        ct_message = ct_message ).
+  ENDMETHOD.

@@ -1,0 +1,3 @@
+﻿METHOD if_ex_mb_migo_badi~line_delete.
+  DELETE  gt_extdata WHERE line_id = i_line_id.
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~LINE_DELETE

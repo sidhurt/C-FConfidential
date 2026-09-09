@@ -1,0 +1,533 @@
+﻿*&---------------------------------------------------------------------*
+*& Report ZMM_GI_LOAN
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zmm_gi_loan.
+TYPES: BEGIN OF ty_final,
+         werks       TYPE werks_d,
+         lgort       TYPE lgort_d,
+         matnr       TYPE matnr18,
+         charg       TYPE charg_d,
+         val_type    TYPE bwtar_d,
+         qty         TYPE erfmg,
+         Uom         TYPE erfme,
+         bwart       TYPE bwart,
+         kostl       TYPE kostl,
+         reason_code TYPE mb_grbew,
+         emp         TYPE elifn,
+         amt         TYPE bapi_exbwr,
+         budat       TYPE budat,
+         bldat       TYPE bldat,
+         header_text TYPE bktxt,
+         dept        TYPE string,
+         contractor  TYPE zcontr,
+         reserv_no   TYPE rsnum,
+         res_item    TYPE rspos,
+         sernr       TYPE gernr,
+       END OF ty_final.
+
+TYPES: BEGIN OF ty_fields,
+         field1(50)  TYPE c,
+         field2(50)  TYPE c,
+         field3(50)  TYPE c,
+         field4(50)  TYPE c,
+         field5(50)  TYPE c,
+         field6(50)  TYPE c,
+         field7(50)  TYPE c,
+         field8(50)  TYPE c,
+         field9(50)  TYPE c,
+         field10(50) TYPE c,
+         field11(50) TYPE c,
+         field12(50) TYPE c,
+         field13(50) TYPE c,
+         field14(50) TYPE c,
+         field15(50) TYPE c,
+         field16(50) TYPE c,
+         field17(50) TYPE c,
+         field18(50) TYPE c,
+       END OF ty_fields.
+
+TYPES: BEGIN OF ty_logs,
+         header_text TYPE bktxt,
+         rsnum       TYPE rsnum,
+         werks       TYPE werks_d,
+         lgort       TYPE lgort_d,
+         matnr       TYPE matnr18,
+         charg       TYPE charg_d,
+         mblnr       TYPE bapi2017_gm_head_ret-mat_doc,
+         docyear     TYPE bapi2017_gm_head_ret-doc_year,
+         msg         TYPE char50,
+         status      TYPE char10,
+         sernr       TYPE gernr,
+       END OF ty_logs.
+
+DATA: lr_alv TYPE REF TO cl_salv_table.
+DATA functions TYPE REF TO cl_salv_functions_list.
+DATA columns TYPE REF TO cl_salv_columns_table.
+DATA column  TYPE REF TO cl_salv_column.
+
+DATA : lt_res_item             TYPE TABLE OF  bapi2093_res_item,
+       ls_return               TYPE bapiret2,
+       lt_return               TYPE TABLE OF bapiret2,
+       lt_profitabilitysegment TYPE TABLE OF bapi_profitability_segment,
+       lt_hdr                  TYPE TABLE OF zmmt_reserv_hdr,
+       lt_itm                  TYPE TABLE OF zmmt_reserv_itm,
+       lt_extension            TYPE TABLE OF bapiparex,
+       ls_extension            TYPE bapiparex,
+       ls_res_item             TYPE bapi2093_res_item,
+       lv_sno                  TYPE i.
+CLEAR: lv_sno.
+
+DATA: lv_filename TYPE string VALUE '\GI_LOAN_Template.xls',
+      lv_str      TYPE string.
+***      lv_flag     TYPE boolean.
+
+DATA: ls_header   TYPE bapi2017_gm_head_01,
+      ls_mvt_code TYPE bapi2017_gm_code,
+      it_item     TYPE TABLE OF bapi2017_gm_item_create,
+      it_serial   TYPE TABLE OF bapi2017_gm_serialnumber,
+      ls_serial   TYPE bapi2017_gm_serialnumber,
+      ls_item     TYPE bapi2017_gm_item_create,
+      it_return   TYPE TABLE OF bapiret2.
+***      ls_return   TYPE bapiret2.
+DATA: lv_matdoc     TYPE bapi2017_gm_head_ret-mat_doc,
+      lv_docyear    TYPE bapi2017_gm_head_ret-doc_year,
+      ls_header_ret TYPE bapi2017_gm_head_ret.
+
+DATA: it_final  TYPE TABLE OF ty_final,
+      ls_final  TYPE ty_final,
+      it_logs   TYPE TABLE OF ty_logs,
+      ls_logs   TYPE ty_logs,
+      fcode     TYPE sy-ucomm,
+      ls_update TYPE zmmt_migoitem.
+DATA: it_excel_data        TYPE TABLE OF alsmex_tabline.
+*****Selection Screen
+SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-020.
+  PARAMETERS: p_file TYPE rlgrap-filename.
+  SELECTION-SCREEN PUSHBUTTON /2(20) xyz USER-COMMAND dmc.
+SELECTION-SCREEN END OF BLOCK b1.
+
+INITIALIZATION.
+  MOVE 'Download Template' TO xyz.
+
+AT SELECTION-SCREEN.
+  DATA: it_fields TYPE TABLE OF ty_fields,
+        ls_fields TYPE ty_fields,
+        it_temp   TYPE TABLE OF ty_fields.
+  fcode = sy-ucomm.
+  IF fcode = 'DMC'.
+    CLEAR: ls_fields.
+    ls_fields-field1 = TEXT-001.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-002.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-003.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-004.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-005.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-006.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-007.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-008.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-009.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-010.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-011.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-012.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-013.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-014.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-015.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-016.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-017.
+    APPEND ls_fields TO it_fields.
+    ls_fields-field1 = TEXT-018.
+    APPEND ls_fields TO it_fields.
+    CLEAR: ls_fields, it_temp.
+
+    CALL METHOD cl_gui_frontend_services=>get_desktop_directory
+      CHANGING
+        desktop_directory = lv_str
+      EXCEPTIONS
+        cntl_error        = 1.
+    IF sy-subrc <> 0.
+      MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+                 WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+    ENDIF.
+    CALL METHOD cl_gui_cfw=>update_view.
+    IF sy-subrc = 0.
+      REPLACE 'Desktop' IN lv_str WITH 'Downloads'.
+      CONCATENATE lv_str lv_filename INTO lv_filename.
+    ENDIF.
+    CALL FUNCTION 'GUI_DOWNLOAD'
+      EXPORTING
+        filename   = lv_filename
+        filetype   = 'DAT'
+      TABLES
+        data_tab   = it_temp
+        fieldnames = it_fields.
+    IF sy-subrc = 0.
+      MESSAGE 'Template Downloaded Successfully' TYPE 'S'.
+    ENDIF.
+  ENDIF.
+
+
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_file.
+  CALL FUNCTION 'F4_FILENAME'
+    EXPORTING
+      program_name  = syst-cprog
+      dynpro_number = syst-dynnr
+      field_name    = 'P_FILE'
+    IMPORTING
+      file_name     = p_file.
+
+START-OF-SELECTION.
+  IF p_file IS NOT INITIAL.
+    CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+      EXPORTING
+        filename                = p_file
+        i_begin_col             = 1
+        i_begin_row             = 2
+        i_end_col               = 122
+        i_end_row               = 999999
+      TABLES
+        intern                  = it_excel_data
+      EXCEPTIONS
+        inconsistent_parameters = 1
+        upload_ole              = 2
+        OTHERS                  = 3.
+
+    LOOP AT it_excel_data ASSIGNING FIELD-SYMBOL(<fs_excel_data>).
+      CASE <fs_excel_data>-col.
+        WHEN '0001'.
+          ls_final-werks = <fs_excel_data>-value.
+        WHEN '0002'.
+          ls_final-lgort = <fs_excel_data>-value.
+        WHEN '0003'.
+          ls_final-matnr = <fs_excel_data>-value.
+          ls_final-matnr = |{ ls_final-matnr ALPHA = IN }|.
+        WHEN '0004'.
+          ls_final-charg = <fs_excel_data>-value.
+        WHEN '0005'.
+          ls_final-val_type = <fs_excel_data>-value.
+        WHEN '0006'.
+          ls_final-qty = <fs_excel_data>-value.
+        WHEN '0007'.
+          ls_final-uom = <fs_excel_data>-value.
+        WHEN '0008'.
+          ls_final-bwart = <fs_excel_data>-value.
+        WHEN '0009'.
+          ls_final-kostl = <fs_excel_data>-value.
+        WHEN '0010'.
+          ls_final-reason_code = <fs_excel_data>-value.
+          ls_final-reason_code = |{ ls_final-reason_code ALPHA = IN }|.
+        WHEN '0011'.
+          ls_final-emp = <fs_excel_data>-value.
+        WHEN '0012'.
+          ls_final-amt = <fs_excel_data>-value.
+        WHEN '0013'.
+          CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+            EXPORTING
+              date_external            = <fs_excel_data>-value
+            IMPORTING
+              date_internal            = ls_final-budat
+            EXCEPTIONS
+              date_external_is_invalid = 1
+              OTHERS                   = 2.
+***          ls_final-budat = <fs_excel_data>-value.
+        WHEN '0014'.
+          CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+            EXPORTING
+              date_external            = <fs_excel_data>-value
+            IMPORTING
+              date_internal            = ls_final-bldat
+            EXCEPTIONS
+              date_external_is_invalid = 1
+              OTHERS                   = 2.
+        WHEN '0015'.
+          ls_final-header_text = <fs_excel_data>-value.
+        WHEN '0016'.
+          ls_final-dept = <fs_excel_data>-value.
+        WHEN '0017'.
+          ls_final-contractor = <fs_excel_data>-value.
+        WHEN '0018'.
+          ls_final-sernr = <fs_excel_data>-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND ls_final TO it_final.
+        CLEAR ls_final.
+      ENDAT.
+    ENDLOOP.
+    SORT it_final BY werks charg.
+  ENDIF.
+  IF it_final IS NOT INITIAL.
+    CLEAR: ls_header,ls_mvt_code,it_item,ls_item,it_return,ls_return,ls_header_ret,
+           lv_matdoc, lv_docyear.
+    LOOP AT it_final INTO ls_final.
+      "create reservation
+***************************************************************************************************
+      DATA(ls_bapi_header)   = VALUE bapi2093_res_head( ).
+      DATA(lv_res_no) = VALUE bapi2093_res_key-reserv_no( ).
+      IF sy-subrc IS INITIAL.
+        ls_bapi_header-res_date   = ls_final-budat.
+***        ls_bapi_header-res_date   = ls_final-bldat.
+        ls_bapi_header-move_plant = ls_final-werks.
+        ls_bapi_header-move_stloc = ls_final-lgort.
+        ls_bapi_header-move_type  = ls_final-bwart.
+        ls_bapi_header-costcenter = ls_final-kostl.
+***        ls_bapi_header-orderid = is_hdr-aufnr.
+***        ls_bapi_header-wbs_elem = is_hdr-wbs.
+***        ls_bapi_header-asset_no = is_hdr-anln1.
+      ENDIF.
+
+      DATA(lv_flag) = abap_true.
+      SELECT SINGLE @abap_true
+      FROM   tvarvc
+      INTO @DATA(lv_switch)
+      WHERE name = 'BAPI_RESERVATION_CREATE1'.
+      IF sy-subrc <> 0.
+        CLEAR lv_flag.
+      ENDIF.
+
+      SELECT SINGLE * FROM zmmt_plantlimits INTO @DATA(ls_limit)
+        WHERE werks = @ls_final-werks AND bwart = @ls_final-bwart.
+      IF sy-subrc = 0.
+        lv_flag = abap_false.
+      ELSE.
+        lv_flag = abap_true.
+      ENDIF.
+
+      ls_res_item-material = ls_final-matnr.
+      ls_res_item-plant = ls_final-werks.
+      ls_res_item-stge_loc = ls_final-lgort.
+      ls_res_item-entry_qnt = ls_final-qty.
+***      ls_res_item-batch = ls_final-charg.
+      ls_res_item-movement = lv_flag.
+      ls_res_item-acct_man = 'X'.
+      ls_res_item-movement = 'X'.
+      APPEND ls_res_item TO lt_res_item.
+      CLEAR: ls_res_item.
+      CALL FUNCTION 'BAPI_RESERVATION_CREATE1'
+        EXPORTING
+          reservationheader    = ls_bapi_header
+        IMPORTING
+          reservation          = lv_res_no
+        TABLES
+          reservationitems     = lt_res_item
+          profitabilitysegment = lt_profitabilitysegment
+          return               = lt_return
+          extensionin          = lt_extension.
+      READ TABLE lt_return INTO ls_return WITH KEY type = 'E'.
+      IF sy-subrc NE 0.
+        DATA: is_hdr TYPE zmms_reserv_hdr,
+***              lt_itm  TYPE TABLE OF zmmtt_reserv_itm,
+              ls_itm TYPE zmmt_reserv_itm.
+        is_hdr-rsnum = lv_res_no.
+        is_hdr-rsdat = ls_final-bldat.
+        is_hdr-bwart = ls_final-bwart.
+        is_hdr-werks = ls_final-werks.
+        is_hdr-grund = ls_final-reason_code.
+        is_hdr-kostl = ls_final-kostl.
+        LOOP AT lt_res_item  INTO ls_res_item.
+          ls_itm-rsnum = lv_res_no.
+          ls_itm-rspos = '0001'.
+          ls_itm-werks = ls_res_item-plant.
+          ls_itm-lgort = ls_res_item-stge_loc.
+          ls_itm-erfmg = ls_res_item-entry_qnt.
+          ls_itm-charg = ls_res_item-batch.
+          ls_itm-matnr = ls_res_item-material.
+          ls_itm-meins = ls_final-uom.
+          ls_itm-contr = ls_final-contractor.
+          ls_itm-deprt = ls_final-dept.
+          ls_itm-emply = ls_final-emp.
+          APPEND ls_itm TO lt_itm.
+          CLEAR: ls_itm.
+        ENDLOOP.
+        MODIFY zmmt_reserv_hdr FROM  is_hdr.
+        MODIFY zmmt_reserv_itm FROM TABLE lt_itm.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = 'X'.
+      ENDIF.
+***************************************************************************************************
+      ls_header-pstng_date = ls_final-budat.
+      ls_header-doc_date = ls_final-bldat.
+      ls_header-header_txt = ls_final-header_text.
+
+      ls_mvt_code-gm_code = '03'.
+
+      ls_item-material = ls_final-matnr.
+      ls_item-plant = ls_final-werks.
+      ls_item-stge_loc = ls_final-lgort.
+      ls_item-batch = ls_final-charg.
+      ls_item-move_type = ls_final-bwart.
+***      ls_item-vendor = ls_final-emp.
+      ls_item-val_type = ls_final-val_type.
+      ls_item-entry_qnt = ls_final-qty.
+      ls_item-entry_uom = ls_final-uom.
+      ls_item-costcenter = ls_final-kostl.
+      ls_item-move_reas = ls_final-reason_code.
+      ls_item-amount_lc = ls_final-amt.
+      ls_item-reserv_no = lv_res_no. "ls_final-reserv_no.
+      ls_item-res_item = '0001'."ls_final-res_item.
+      APPEND ls_item TO it_item.
+      CLEAR: ls_item.
+      "serial number data
+      ls_serial-matdoc_itm = '0001'.
+      ls_serial-serialno = ls_final-sernr.
+      APPEND ls_serial TO it_serial.
+      CLEAR: ls_serial.
+      CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+        EXPORTING
+          goodsmvt_header       = ls_header
+          goodsmvt_code         = ls_mvt_code
+        IMPORTING
+          goodsmvt_headret      = ls_header_ret
+          materialdocument      = lv_matdoc
+          matdocumentyear       = lv_docyear
+        TABLES
+          goodsmvt_item         = it_item
+          goodsmvt_serialnumber = it_serial
+          return                = it_return.
+      IF it_return IS NOT INITIAL.
+        READ TABLE it_return INTO ls_return WITH KEY type = 'E'.
+        IF sy-subrc = 0.
+***          CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+          ls_logs-header_text = ls_final-header_text.
+          ls_logs-rsnum = lv_res_no.
+          ls_logs-charg = ls_final-charg.
+          ls_logs-lgort = ls_final-lgort.
+          ls_logs-matnr = ls_final-matnr.
+          ls_logs-msg = ls_return-message.
+          ls_logs-status = 'Error'.
+          ls_logs-werks = ls_final-werks.
+          ls_logs-sernr = ls_final-sernr.
+          APPEND ls_logs TO it_logs.
+          CLEAR: ls_logs.
+        ENDIF.
+
+      ELSE.
+        ls_update-mandt = sy-mandt.
+        ls_update-mblnr = lv_matdoc.
+        ls_update-mjahr = lv_docyear.
+        ls_update-zeile = '0001'.
+        ls_update-zzgrund = ls_final-reason_code.
+        ls_update-zzarbpl = ls_final-dept.
+        ls_update-zzlifnr = ls_final-emp.
+        ls_update-zzenteredby = sy-uname.
+        ls_update-zzenteredon = sy-datum.
+        MODIFY zmmt_migoitem FROM ls_update.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = 'X'.
+        ls_logs-header_text = ls_final-header_text.
+        ls_logs-rsnum = lv_res_no.
+        ls_logs-charg = ls_final-charg.
+        ls_logs-lgort = ls_final-lgort.
+        ls_logs-matnr = ls_final-matnr.
+        ls_logs-msg = ls_return-message.
+        ls_logs-status = 'Success'.
+        ls_logs-werks = ls_final-werks.
+        ls_logs-mblnr = lv_matdoc.
+        ls_logs-docyear = lv_docyear.
+        ls_logs-sernr = ls_final-sernr.
+        APPEND ls_logs TO it_logs.
+        CLEAR: ls_logs.
+      ENDIF.
+      CLEAR: ls_header,ls_mvt_code,it_item,ls_item,it_return,ls_return, ls_logs,ls_header_ret,
+           lv_matdoc, lv_docyear,lt_res_item,ls_final,ls_res_item,it_serial, ls_serial.
+    ENDLOOP.
+  ELSE.
+    MESSAGE 'No Data Found' TYPE 'S' DISPLAY LIKE 'E'.
+  ENDIF.
+
+  IF it_logs IS NOT INITIAL.
+    TRY.
+        CALL METHOD cl_salv_table=>factory
+          EXPORTING
+            list_display = if_salv_c_bool_sap=>false
+          IMPORTING
+            r_salv_table = lr_alv
+          CHANGING
+            t_table      = it_logs.
+      CATCH cx_salv_msg .
+    ENDTRY.
+    columns = lr_alv->get_columns( ).
+    functions = lr_alv->get_functions( ).
+
+    column = columns->get_column( 'HEADER_TEXT' ).
+    column->set_short_text( 'Hdr_Txt' ).
+    column->set_medium_text( 'Header Txt' ).
+    column->set_long_text( 'Header Text' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'WERKS' ).
+    column->set_short_text( 'Plant' ).
+    column->set_medium_text( 'Plant' ).
+    column->set_long_text( 'Plant' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'LGORT' ).
+    column->set_short_text( 'SLoc' ).
+    column->set_medium_text( 'Stg Loc' ).
+    column->set_long_text( 'Storage Location' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'MATNR' ).
+    column->set_short_text( 'Mat' ).
+    column->set_medium_text( 'Material' ).
+    column->set_long_text( 'Material' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'CHARG' ).
+    column->set_short_text( 'Batch' ).
+    column->set_medium_text( 'Batch' ).
+    column->set_long_text( 'Batch' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'SERNR' ).
+    column->set_short_text( 'Serial No.' ).
+    column->set_medium_text( 'Serial No.' ).
+    column->set_long_text( 'Serial Number' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'MBLNR' ).
+    column->set_short_text( 'Mat Doc' ).
+    column->set_medium_text( 'Material Doc' ).
+    column->set_long_text( 'Material Document' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'DOCYEAR' ).
+    column->set_short_text( 'Year' ).
+    column->set_medium_text( 'Year' ).
+    column->set_long_text( 'Year' ).
+    column->set_output_length('10').
+
+    column = columns->get_column( 'MSG' ).
+    column->set_short_text( 'Message' ).
+    column->set_medium_text( 'Message' ).
+    column->set_long_text( 'Message' ).
+    column->set_output_length('20').
+
+    column = columns->get_column( 'STATUS' ).
+    column->set_short_text( 'Status' ).
+    column->set_medium_text( 'Status' ).
+    column->set_long_text( 'Status' ).
+    column->set_output_length('10').
+
+    functions->set_all( ).
+    CALL METHOD lr_alv->display.
+***    cl_demo_output=>display( it_logs ).
+  ENDIF.

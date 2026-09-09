@@ -1,0 +1,5 @@
+SESSION|QS4/700|User=QNOVATE8
+FILTER|WERKS(I6)=1022
+FILTER|BWART(I4)=101
+FILTER|MATNR(I5)=000000000017098816
+NO_GRID|Title=Data Browser: Table MSEG: Selection Screen|SBAR=No table entries found for specified key

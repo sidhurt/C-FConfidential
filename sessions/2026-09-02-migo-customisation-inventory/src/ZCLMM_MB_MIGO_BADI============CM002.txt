@@ -1,0 +1,442 @@
+﻿METHOD if_ex_mb_migo_badi~check_item .
+*check goods movement reason with contract conditions
+  FIELD-SYMBOLS: <ls_goheader> TYPE gohead.
+  DATA: ls_goitem TYPE goitem.
+  ASSIGN ('(SAPLMIGO)GOHEAD') TO <ls_goheader>.
+  IF <ls_goheader> IS ASSIGNED.
+    LOOP AT gt_item INTO ls_goitem.
+      CHECK ls_goitem-bwart = '201'."only for materials issued to vendor
+      SELECT SINGLE matkl FROM mara INTO @DATA(lv_matkl)
+        WHERE matnr = @ls_goitem-matnr.
+      IF sy-subrc = 0.
+        SELECT SINGLE * FROM a901 INTO @DATA(ls_a901)
+          WHERE kappl = 'M'
+            AND kschl = 'ZCO1'
+            AND evrtn = @ls_goitem-ebeln
+            AND matkl = @lv_matkl
+            AND zzgmtrtyp = @ls_goitem-grund
+            AND kfrst = ''
+            AND datbi <= @<ls_goheader>-budat
+            AND datab >= @<ls_goheader>-budat.
+        IF sy-subrc <> 0.
+*          MESSAGE e012(zmm)."activate later
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+****Start by GS on 22.12.2023
+*  break ibmabap07.
+*  loop at gt_item into ls_goitem.
+*    select single lfart from likp
+*     where vbeln eq @ls_goitem-vlief_avis
+*      into @data(lv_lfart).
+*    if lv_lfart eq 'EL'."Inbound Deliver Type
+*      select single tknum from vttp
+*        where vbeln eq @ls_goitem-vlief_avis
+*         into @data(lv_tknum).
+*      if sy-subrc is initial.
+*        select single stber from vfkp "Status for calc.
+*          where exti1 eq @lv_tknum
+*            and fksto ne @abap_true
+*           into @data(lv_stber).
+*        if sy-subrc is initial.
+*          if lv_stber ne 'C'.
+*            message |Complete shipment cost document for delivery no. | && |{ ls_goitem-vlief_avis }| type 'E'.
+*          endif.
+*        else. " Shipment cost not found
+*          message |Complete shipment cost document for delivery no. | && |{ ls_goitem-vlief_avis }| type 'E'.
+*        endif.
+*      else. "shipment doc not found
+*        message |Create Shipment document for delivery no. | && |{ ls_goitem-vlief_avis }| type 'E'.
+*      endif.
+*    endif.
+*  endloop.
+***End by GS on 22.12.2023
+
+  SELECT SINGLE param1
+           FROM zgpt_mm_param
+           INTO @DATA(lv_param)
+          WHERE program_name = 'MB_MIGO_BADI'
+            AND object_id    = 'STO'
+            AND field        = 'REFDOC'
+            AND active_flag  = @abap_true.
+  IF lv_param = abap_true.
+
+  ELSE.
+    " Start of change by Rahul Abrol on 15.04.2024
+    " Change Requested by Navneet
+    ASSIGN ('(SAPLMIGO)GODYNPRO') TO FIELD-SYMBOL(<ls_godyn>).
+    IF sy-subrc = 0.
+      DATA(ls_godyn) = CONV godynpro( <ls_godyn> ).
+      IF ls_godyn-action = 'A01' AND ls_godyn-refdoc = 'R05'.
+        LOOP AT gt_item INTO ls_goitem WHERE take_it = 'X'.
+          IF ls_goitem-vbeln IS NOT INITIAL.
+            SELECT SINGLE vbrp~*
+            FROM vbrp
+            INNER JOIN vbrk
+            ON  vbrp~vbeln = vbrk~vbeln
+            AND vbrk~rfbsk <> 'E'
+            WHERE vbrp~vgbel = @ls_goitem-vbeln
+            INTO @DATA(ls_vbrp).
+            IF sy-subrc <> 0.
+              MESSAGE e068(zmm) WITH ls_goitem-vbeln.
+            ENDIF.
+          ENDIF.
+        ENDLOOP.
+
+        " Storage location validation in case of Rail STO
+        SELECT s~vbeln, s~posnr, s~lgort, s~mfrgr, p~vsart
+         INTO TABLE @DATA(lt_st_loc)
+         FROM lips AS s
+         INNER JOIN likp AS p ON p~vbeln EQ s~vbeln
+         FOR ALL ENTRIES IN @gt_item
+         WHERE s~vbeln  EQ @gt_item-vbeln
+         AND   s~posnr  EQ @gt_item-posnr
+         AND   s~erdat  GE '20240723'.
+        IF sy-subrc EQ 0.
+          LOOP AT gt_item INTO ls_goitem WHERE take_it EQ abap_true.
+            " Validation check for RSD Receiving storage location
+            READ TABLE lt_st_loc INTO DATA(wa_st_loc)
+            WITH KEY vbeln = ls_goitem-vbeln
+                     posnr = ls_goitem-posnr
+                     vsart = '03'
+                     mfrgr = 'A0000001'.
+            IF sy-subrc EQ 0 AND ls_goitem-lgort NE 'RSD'.
+              MESSAGE e075(zmm).
+            ENDIF.
+            " Validation check for GDRK Receiving storage location
+            READ TABLE lt_st_loc INTO wa_st_loc
+            WITH KEY vbeln = ls_goitem-vbeln
+                     posnr = ls_goitem-posnr
+                     lgort = 'GDRK'.
+            IF sy-subrc EQ 0 AND ls_goitem-lgort NE wa_st_loc-lgort.
+              MESSAGE e074(zmm).
+            ENDIF.
+          ENDLOOP.
+          "date: 27.07.2024 begin of code for error message no 67 and 70 logic written below is added under above date logic
+          TYPES: BEGIN OF ty_delivery_qty,
+                   vbeln TYPE vbeln,
+                   posnr TYPE posnr,
+                   menge TYPE menge_d,
+                 END OF ty_delivery_qty.
+          DATA: ls_extdata     TYPE zmmt_migoitem,
+                lt_extdata     TYPE TABLE OF zmmt_migoitem,
+                ls_extdata_int TYPE zmmsmigoitem_int,
+                ls_xmseg       TYPE mseg.
+
+          DATA: lt_delivery_qty          TYPE STANDARD TABLE OF ty_delivery_qty,
+                lt_delivery_qty_previous TYPE STANDARD TABLE OF ty_delivery_qty.
+          DATA: ls_delivery_qty TYPE ty_delivery_qty.
+          DATA: lv_delivery_qty TYPE menge_d.
+
+          " Check total GRN quantity against outbound delivery for current transaction
+          IF gv_action = 'A01' AND gv_refdoc = 'R05'.
+            "*Current transaction data
+
+            DATA(lt_item) = gt_item[].
+
+            DELETE lt_item WHERE take_it IS INITIAL.
+
+            SELECT vbeln,
+                   posnr AS vbelp,
+              SUM( erfmg ) AS menge FROM @lt_item AS _mseg      "Replace MENGE by ERFMG ON 17.03.2025
+                                    GROUP BY vbeln,posnr
+                                    HAVING vbeln IS NOT INITIAL
+                                    INTO TABLE @DATA(ltt_delivery_qty).
+
+            "*Already saved quantity for same delivery and item
+            IF ltt_delivery_qty IS NOT INITIAL.
+              SELECT vbeln_im,
+                     vbelp_im,
+                     menge FROM matdoc
+                           INTO TABLE @DATA(lt_matdoc)
+                           FOR ALL ENTRIES IN @ltt_delivery_qty
+                          WHERE vbeln_im = @ltt_delivery_qty-vbeln AND
+                                vbelp_im = @ltt_delivery_qty-vbelp AND
+                                bwart IN ( '101', '102' )             AND
+                                cancelled = @abap_false               AND
+                                reversal_movement = @abap_false       AND
+                                bstaus_sg <> 'H'.
+              IF sy-subrc = 0.
+                APPEND LINES OF lt_matdoc TO ltt_delivery_qty.
+                CLEAR:lt_matdoc.
+              ENDIF.
+            ENDIF.
+
+            IF ltt_delivery_qty IS NOT INITIAL.
+              SELECT vbeln,
+                     vbelp,
+                SUM( menge ) AS menge FROM @ltt_delivery_qty AS clubbed_data
+                                      GROUP BY vbeln,vbelp
+                                      HAVING vbeln IS NOT INITIAL
+                                      INTO TABLE @lt_delivery_qty.
+            ENDIF.
+
+            IF lt_delivery_qty IS NOT INITIAL.
+              LOOP AT lt_delivery_qty INTO ls_delivery_qty.
+                SELECT SINGLE * INTO @DATA(ls_lips)
+                FROM lips WHERE vbeln = @ls_delivery_qty-vbeln AND posnr = @ls_delivery_qty-posnr.
+                lv_delivery_qty = ls_lips-lfimg.
+
+*             SELECT SINGLE MATNR FROM LIPS INTO @DATA(VAR_MATNR)
+*               WHERE vbeln = @ls_delivery_qty-vbeln
+*               AND   posnr = @ls_delivery_qty-posnr .
+*             IF VAR_MATNR IS NOT INITIAL .
+*               SELECT SINGLE MTART FROM MARA INTO @DATA(VAR_MTART)
+*                 WHERE MATNR = @VAR_MATNR .
+*             ENDIF.
+*             IF VAR_MTART IS NOT INITIAL AND VAR_MTART = 'ZSPR' .
+                IF ls_delivery_qty-menge > lv_delivery_qty.
+                  MESSAGE e067(zmm) WITH ls_delivery_qty-vbeln.
+                ENDIF.
+
+                SELECT SINGLE *
+                FROM likp
+                WHERE vbeln = @ls_delivery_qty-vbeln
+                INTO @DATA(ls_likp).
+
+                IF ls_likp-vsart = '03' AND ls_lips-mfrgr = 'A0000001'.
+                  IF ls_delivery_qty-menge <> lv_delivery_qty.
+                    MESSAGE e070(zmm) WITH ls_delivery_qty-vbeln.
+                  ENDIF.
+                ENDIF.
+
+              ENDLOOP.
+            ENDIF.
+          ENDIF.
+          "date: 27.07.2024 end of code for error message no 67 and 70 logic written below is added under above date logic
+        ENDIF.
+*-------------------------------------------------------------------------*BOC by vk on 05.08.2024
+
+*-------------------------------------------------------------------------*EOC by vk on 05.08.2024
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+***************************************************************************************************
+****************************** BOC by vk on 09.09.2024 ********************************************
+***************************************************************************************************
+
+  ASSIGN ('(SAPLMIGO)GODYNPRO') TO FIELD-SYMBOL(<ls_godyn1>).
+  IF sy-subrc = 0.
+    DATA(ls_godyn1) = CONV godynpro( <ls_godyn1> ).
+    IF ls_godyn1-action = 'A01' AND ls_godyn1-refdoc = 'R01'.
+      LOOP AT gt_item INTO DATA(ls_item_temp) WHERE take_it = abap_true AND ebeln IS NOT INITIAL.
+        SELECT SINGLE COUNT(*) FROM ekpo AS a INNER JOIN ekko AS b ON ( a~ebeln = b~ebeln )
+                                              WHERE a~ebeln = @ls_item_temp-ebeln
+                                              AND   ebelp   = @ls_item_temp-ebelp
+                                              AND   mfrgr   = 'A0000001'
+                                              AND   bsart   = 'ZP06'.
+        IF sy-subrc EQ 0.
+          MESSAGE e077(zmm).
+          APPEND VALUE #( type = 'E'
+                          id   = 'ZMM'
+                          number = '077'
+                          message = TEXT-006
+                         ) TO et_bapiret2.
+        ENDIF .
+      ENDLOOP.
+    ELSEIF ls_godyn1-action = 'A01' AND ls_godyn1-refdoc = 'R05'.
+      SELECT SINGLE param1
+            FROM zgpt_mm_param
+            INTO lv_param
+           WHERE program_name = 'MB_MIGO_BADI'
+             AND object_id    = 'STO'
+             AND field        = 'REFDOC'
+             AND active_flag  = abap_true.
+      IF lv_param = abap_true.
+
+      ELSE.
+        DATA(lt_item_temp) =  gt_item.
+        DELETE lt_item_temp WHERE vbeln = ''.
+        SORT lt_item_temp BY vbeln.
+        DELETE ADJACENT DUPLICATES FROM lt_item_temp COMPARING vbeln.
+        IF lt_item_temp IS NOT INITIAL.
+          DATA(lv_vbeln_count) = lines( lt_item_temp ).
+          IF lv_vbeln_count NE 1.
+            APPEND VALUE #( type    = 'E'
+                            id      = 'ZMM'
+                            number  = '078'
+                            message = TEXT-007
+                         ) TO et_bapiret2.
+          ENDIF.
+        ENDIF.
+        IF gv_error_hn IS NOT INITIAL.
+          APPEND VALUE #( type    = 'E'
+                           id      = 'ZMM'
+                           number  = '079'
+                           message = TEXT-008
+*                         message_v1 = ''
+*                         message_v2 = ''
+
+                        ) TO et_bapiret2.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+***************************************************************************************************
+****************************** BOC by vk on 09.09.2024 ********************************************
+***************************************************************************************************
+
+
+  " End of change by Rahul Abrol on 15.04.2024
+***date: 27.07.2024 begin of code commented for moving below logic to above ubder date condition.
+***  TYPES: BEGIN OF ty_delivery_qty,
+***           vbeln TYPE vbeln,
+***           posnr TYPE posnr,
+***           menge TYPE menge_d,
+***         END OF ty_delivery_qty.
+***  DATA: ls_extdata     TYPE zmmt_migoitem,
+***        lt_extdata     TYPE TABLE OF zmmt_migoitem,
+***        ls_extdata_int TYPE zmmsmigoitem_int,
+***        ls_xmseg       TYPE mseg.
+***
+***  DATA: lt_delivery_qty          TYPE STANDARD TABLE OF ty_delivery_qty,
+***        lt_delivery_qty_previous TYPE STANDARD TABLE OF ty_delivery_qty.
+***  DATA: ls_delivery_qty TYPE ty_delivery_qty.
+***  DATA: lv_delivery_qty TYPE menge_d.
+***
+***  " Check total GRN quantity against outbound delivery for current transaction
+***  IF gv_action = 'A01' AND gv_refdoc = 'R05'.
+***    "*Current transaction data
+***
+***    DATA(lt_item) = gt_item[].
+***
+***    DELETE lt_item WHERE take_it IS INITIAL.
+***
+***    SELECT vbeln,
+***           posnr AS vbelp,
+***      SUM( menge ) AS menge FROM @lt_item AS _mseg
+***                            GROUP BY vbeln,posnr
+***                            HAVING vbeln IS NOT INITIAL
+***                            INTO TABLE @DATA(ltt_delivery_qty).
+***
+***    "*Already saved quantity for same delivery and item
+***    IF ltt_delivery_qty IS NOT INITIAL.
+***      SELECT vbeln_im,
+***             vbelp_im,
+***             menge FROM matdoc
+***                   INTO TABLE @DATA(lt_matdoc)
+***                   FOR ALL ENTRIES IN @ltt_delivery_qty
+***                  WHERE vbeln_im = @ltt_delivery_qty-vbeln AND
+***                        vbelp_im = @ltt_delivery_qty-vbelp AND
+***                        bwart IN ( '101', '102' )             AND
+***                        cancelled = @abap_false               AND
+***                        reversal_movement = @abap_false       AND
+***                        bstaus_sg <> 'H'.
+***      IF sy-subrc = 0.
+***        APPEND LINES OF lt_matdoc TO ltt_delivery_qty.
+***        CLEAR:lt_matdoc.
+***      ENDIF.
+***    ENDIF.
+***
+***    IF ltt_delivery_qty IS NOT INITIAL.
+***      SELECT vbeln,
+***             vbelp,
+***        SUM( menge ) AS menge FROM @ltt_delivery_qty AS clubbed_data
+***                              GROUP BY vbeln,vbelp
+***                              HAVING vbeln IS NOT INITIAL
+***                              INTO TABLE @lt_delivery_qty.
+***    ENDIF.
+***
+***    IF lt_delivery_qty IS NOT INITIAL.
+***      LOOP AT lt_delivery_qty INTO ls_delivery_qty.
+***        SELECT SINGLE * INTO @DATA(ls_lips)
+***        FROM lips WHERE vbeln = @ls_delivery_qty-vbeln AND posnr = @ls_delivery_qty-posnr.
+***        lv_delivery_qty = ls_lips-lfimg.
+***        IF ls_delivery_qty-menge > lv_delivery_qty.
+***          MESSAGE e067(zmm) WITH ls_delivery_qty-vbeln.
+***        ENDIF.
+***
+***        SELECT SINGLE *
+***        FROM likp
+***        WHERE vbeln = @ls_delivery_qty-vbeln
+***        INTO @DATA(ls_likp).
+***
+***        IF ls_likp-vsart = '03' AND ls_lips-mfrgr = 'A0000001'.
+***          IF ls_delivery_qty-menge <> lv_delivery_qty.
+***            MESSAGE e070(zmm) WITH ls_delivery_qty-vbeln.
+***          ENDIF.
+***        ENDIF.
+***
+***      ENDLOOP.
+***    ENDIF.
+***  ENDIF.
+***date: 27.07.2024 end of code commented for moving below logic to above ubder date condition.
+
+  ""Added by Prashant For Migo Reservation Validation
+  IF ls_godyn1-action EQ 'A07' AND ls_godyn1-refdoc EQ 'R09'.
+    DATA flg1 TYPE char1.
+    DATA(gt_itm_tmp) = gt_item.
+    CLEAR flg1.
+    SORT gt_itm_tmp BY aufnr.
+    DELETE ADJACENT DUPLICATES FROM gt_itm_tmp COMPARING aufnr.
+    IF gt_itm_tmp IS NOT INITIAL.
+
+      SELECT aufnr, auart
+         INTO TABLE @DATA(lt_aufk)
+        FROM aufk
+        FOR ALL ENTRIES IN @gt_itm_tmp
+        WHERE aufnr EQ @gt_itm_tmp-aufnr.
+      IF sy-subrc IS INITIAL.
+        DATA(lt_auart) =  zmm_helper_class=>read_set_values( iv_set_name = 'ZPM_AUART_RESERVATION' ).
+        IF lt_auart[] IS NOT INITIAL.
+*          BREAK-POINT.
+*          MESSAGE 'Please maintain ZPM_AUART_RESERVATION set' TYPE 'E'.
+*          EXIT.
+          SORT lt_auart BY from.
+          LOOP AT lt_aufk INTO DATA(ls_aufk).
+            READ TABLE lt_auart INTO DATA(ls_auart) WITH KEY from = ls_aufk-auart BINARY SEARCH.
+            IF sy-subrc IS INITIAL.
+              flg1 = 'X'.
+            ELSE.
+              CLEAR flg1.
+            ENDIF.
+            CLEAR ls_aufk.
+          ENDLOOP.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    IF flg1 EQ 'X'.
+      REFRESH gt_itm_tmp.
+      gt_itm_tmp[] = gt_item[].
+
+      DELETE gt_itm_tmp WHERE take_it EQ ' '.
+      SORT gt_itm_tmp BY rsnum.
+      DELETE ADJACENT DUPLICATES FROM gt_itm_tmp COMPARING rsnum.
+      LOOP AT gt_itm_tmp INTO DATA(gs_itm_tmp).
+        SELECT SINGLE @abap_true
+        FROM   resb
+        WHERE rsnum = @gs_itm_tmp-rsnum
+        AND   bdart = 'AR'
+        INTO @DATA(lv_auto).
+        IF sy-subrc IS INITIAL.
+*          LOOP AT gt_item INTO DATA(gs_item) WHERE rsnum EQ gs_itm_tmp-rsnum AND take_it EQ 'X' AND zeile EQ i_line_id.
+          LOOP AT gt_item INTO DATA(gs_item) WHERE rsnum EQ gs_itm_tmp-rsnum AND take_it EQ 'X' AND zeile EQ i_line_id AND bwart EQ '261'.
+            SELECT SINGLE @abap_true
+               FROM   zmmt_reservation
+              WHERE  rsnum = @gs_item-rsnum
+              AND    rspos = @gs_item-rspos
+                AND    final = 'X'
+                INTO @DATA(lv_approved).
+            IF sy-subrc <> 0.
+*            MESSAGE 'Reservation pending for approval' TYPE 'E'.
+              APPEND VALUE #( type    = 'E'
+                              id      = 'ZPM1'
+                              number  = '001'
+*                            message = 'Reservation pending for approval'
+                              message_v1 = gs_item-rsnum
+                              message_v2 = gs_item-rspos
+
+                ) TO et_bapiret2.
+            ENDIF.
+            CLEAR gs_itm_tmp.
+          ENDLOOP.
+        ENDIF.
+        CLEAR gs_itm_tmp.
+      ENDLOOP.
+    ENDIF.
+  ENDIF.
+
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~CHECK_ITEM

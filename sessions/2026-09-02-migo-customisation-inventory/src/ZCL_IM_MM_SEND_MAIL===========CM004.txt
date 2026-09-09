@@ -1,0 +1,31 @@
+﻿  METHOD if_ex_mb_migo_badi~line_modify.
+    IF sy-tcode = 'MIGO'.
+      IF cs_goitem IS NOT INITIAL.
+        SELECT * FROM tvarvc INTO TABLE @DATA(lt_tvarvc) WHERE name = 'ZPP_FG_TO_LOSE_MVTYP' AND type = 'S'.
+        IF line_exists( lt_tvarvc[ low = cs_goitem-bwart ] ) .
+              SELECT * FROM tvarvc INTO TABLE lt_tvarvc WHERE name = 'ZPP_FG_TO_LOSE_MVTYP' AND type = 'S' AND sign = 'E'.
+              IF line_exists( lt_tvarvc[ low = cs_goitem-matkl high = cs_goitem-ummatkl ] ).
+                SELECT matnr,
+                       charg,
+                       licha FROM mch1 INTO TABLE @DATA(lt_mch1)
+                       WHERE charg = @cs_goitem-charg
+                       AND matnr = @cs_goitem-matnr.
+                IF lt_mch1 IS NOT INITIAL.
+                  DATA(lv_range) = VALUE rsdsselopt_t( FOR ls_mch1 IN lt_mch1
+                                           ( sign = 'I'
+                                            option = 'EQ'
+                                            low = ls_mch1-licha ) ).
+                  SELECT charg FROM zfitpcbatch INTO TABLE @DATA(lt_zfitpcbatch)
+                         WHERE charg IN @lv_range.
+                  IF sy-subrc <> 0.
+                    MESSAGE |Batch { cs_goitem-charg } is not maintained in custom table| TYPE 'E'.
+                  ENDIF.
+                ENDIF.
+                LOOP AT lt_zfitpcbatch ASSIGNING FIELD-SYMBOL(<FS_zfitpcbatch>).
+                  cs_goitem-umcha = <FS_zfitpcbatch>-charg.
+                ENDLOOP.
+              ENDIF.
+          ENDIF.
+          ENDIF.
+        ENDIF.
+  ENDMETHOD.

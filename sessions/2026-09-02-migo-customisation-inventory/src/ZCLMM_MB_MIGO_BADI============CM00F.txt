@@ -1,0 +1,541 @@
+﻿METHOD if_ex_mb_migo_badi~post_document.
+  TYPES: BEGIN OF ty_delivery_qty,
+           vbeln TYPE vbeln,
+           posnr TYPE posnr,
+           menge TYPE menge_d,
+         END OF ty_delivery_qty.
+  DATA: ls_extdata     TYPE zmmt_migoitem,
+        lt_extdata     TYPE TABLE OF zmmt_migoitem,
+        ls_extdata_int TYPE zmmsmigoitem_int,
+        ls_xmseg       TYPE mseg.
+  DATA: lt_delivery_qty          TYPE STANDARD TABLE OF ty_delivery_qty,
+        lt_delivery_qty_previous TYPE STANDARD TABLE OF ty_delivery_qty.
+  DATA: ls_delivery_qty TYPE ty_delivery_qty.
+  DATA: lv_delivery_qty TYPE menge_d.
+*  FIELD-SYMBOLS: <gt_extdata> TYPE migo_badi_example_screen_field.
+** Transaction MIGO will now post a material document.
+** Any errors here MUST be issued as A-message (better: X-message)
+*
+*  IF gt_extdata_maa IS NOT INITIAL.                    "Begin of 1987428
+**   Table gt_extdata_maa is setup in method MAA_LINE_ID_ADJUST.
+**   Copy data from material document into internal table
+*    LOOP AT gt_extdata_maa INTO ls_extdata.
+*      IF g_cancel IS INITIAL.
+*        READ TABLE it_mseg INTO ls_xmseg
+*           WITH KEY line_id = ls_extdata-line_id.
+*      ELSE.
+*        READ TABLE it_mseg INTO ls_xmseg
+*           WITH KEY smbln = ls_extdata-mblnr
+*                    smblp = ls_extdata-zeile
+*                    sjahr = ls_extdata-mjahr.
+*      ENDIF.
+*      IF sy-subrc IS INITIAL.
+*        MOVE-CORRESPONDING ls_extdata TO ls_migo_badi_example.
+*        MOVE-CORRESPONDING ls_xmseg   TO ls_migo_badi_example.
+*        IF ls_xmseg-maa_urzei IS NOT INITIAL.
+*          ls_migo_badi_example-zeile = ls_xmseg-maa_urzei.
+*        ENDIF.
+*        APPEND ls_migo_badi_example TO lt_migo_badi_example.
+*      ENDIF.
+*    ENDLOOP.                                             "End of 1987428
+*  ELSE.                                                         "1987428
+**   Copy data from material document into internal table
+*  LOOP AT gt_extdata INTO ls_extdata_int.  "Commented by vk on 05.08.2024
+*    IF gv_cancel IS INITIAL.
+**      READ TABLE it_mseg INTO ls_xmseg
+**         WITH KEY line_id = ls_extdata_int-line_id.
+*      READ TABLE it_mseg INTO ls_xmseg
+*        WITH KEY zeile = ls_extdata_int-line_id+1(5).
+*    ELSE.
+*      READ TABLE it_mseg INTO ls_xmseg
+*         WITH KEY smbln = ls_extdata-mblnr
+*                  smblp = ls_extdata-zeile
+*                  sjahr = ls_extdata-mjahr.
+*    ENDIF.
+*    IF sy-subrc IS INITIAL.
+*      MOVE-CORRESPONDING ls_extdata_int TO ls_extdata.
+*      MOVE-CORRESPONDING ls_xmseg   TO ls_extdata.
+*      APPEND ls_extdata TO lt_extdata.
+*    ENDIF.
+*  ENDLOOP.
+  IF gv_cancel IS INITIAL. "Added by vk on 05.08.2024
+    LOOP AT it_mseg INTO ls_xmseg.
+      MOVE-CORRESPONDING ls_xmseg   TO ls_extdata.
+      DATA(ls_extdata_tmp) = VALUE #( gt_extdata[ zeile = ls_xmseg-zeile  ] OPTIONAL ).
+      IF ls_extdata_tmp IS NOT INITIAL.
+        MOVE : ls_extdata_tmp-zzviaccqty  TO ls_extdata-zzviaccqty ,
+               ls_extdata_tmp-zzvirejqty  TO ls_extdata-zzvirejqty,
+               ls_extdata_tmp-zzenteredby TO ls_extdata-zzenteredby,
+               ls_extdata_tmp-zzenteredon TO ls_extdata-zzenteredon,
+               ls_extdata_tmp-zzenteredat TO ls_extdata-zzenteredat,
+               ls_extdata_tmp-zzremarks   TO ls_extdata-zzremarks  ,
+               ls_extdata_tmp-zzwarrant   TO ls_extdata-zzwarrant,
+               ls_extdata_tmp-zzwarrend   TO ls_extdata-zzwarrend,
+               ls_extdata_tmp-zzgrund     TO ls_extdata-zzgrund,
+               ls_extdata_tmp-zzarbpl     TO ls_extdata-zzarbpl,
+               ls_extdata_tmp-zzrsnum     TO ls_extdata-zzrsnum,
+               ls_extdata_tmp-zzlifnr     TO ls_extdata-zzlifnr,
+               ls_extdata_tmp-zzebeln     TO ls_extdata-zzebeln,
+               ls_extdata_tmp-zzbanfn     TO ls_extdata-zzbanfn,
+               ls_extdata_tmp-zzbnfpo     TO ls_extdata-zzbnfpo,
+               ls_extdata_tmp-zzoldrt     TO ls_extdata-zzoldrt,
+               ls_extdata_tmp-zzreasn     TO ls_extdata-zzreasn.
+      ENDIF.
+      APPEND ls_extdata TO lt_extdata.
+      CLEAR ls_extdata.
+    ENDLOOP.
+  ENDIF.                                                    "1987428
+*  ENDIF.                                                        "1987428
+*
+  IF ( sy-ucomm EQ 'OK_POST1' OR sy-ucomm EQ 'OK_POST' ).
+    BREAK ibmabap07.
+    FIELD-SYMBOLS <fs_mkpf>  TYPE zmmt_migo_hdr.
+    DATA ls_migo_hdr TYPE zmmt_migo_hdr.
+    ASSIGN ('(ZMMR_MIGO_SCREEN_ADD)GS_MIGO_HDR') TO <fs_mkpf>.
+    IF sy-subrc = 0.
+      CLEAR ls_migo_hdr.
+      READ TABLE it_mseg INTO DATA(lv_plnt) INDEX 1.
+*      select single docplant from zletilmstoken where token eq @<fs_mkpf>-token
+*         and docplant eq @lv_plnt-werks into @data(lv_docp).
+*      if sy-subrc <> 0.
+*        message 'Token Plant & PO Plant is difference.' type 'E'.
+*      endif.
+      ls_migo_hdr-mblnr = is_mkpf-mblnr.
+      ls_migo_hdr-mjahr = is_mkpf-mjahr.
+*      ls_migo_hdr-invno = <fs_mkpf>-invno.
+*      ls_migo_hdr-invdt = <fs_mkpf>-invdt.
+      ls_migo_hdr-lifnr = |{ <fs_mkpf>-lifnr ALPHA = IN }|.
+      ls_migo_hdr-tname = <fs_mkpf>-tname.
+      ls_migo_hdr-model = <fs_mkpf>-model.
+      ls_migo_hdr-vhcle = <fs_mkpf>-vhcle.
+      ls_migo_hdr-odcdl = <fs_mkpf>-odcdl.
+      ls_migo_hdr-refno = <fs_mkpf>-refno.
+      ls_migo_hdr-ebill = <fs_mkpf>-ebill.
+      ls_migo_hdr-edate = <fs_mkpf>-edate.
+      ls_migo_hdr-chlno = <fs_mkpf>-chlno.
+      ls_migo_hdr-chldt = <fs_mkpf>-chldt.
+      LOOP AT it_mseg INTO DATA(ls_mseg1).
+        CASE ls_mseg1-bwart.
+          WHEN '101' OR '103'.
+            SELECT SINGLE mtart FROM mara WHERE matnr EQ @ls_mseg1-matnr
+                      INTO @DATA(lv_mtart).
+            IF lv_mtart EQ 'ZAFR'.
+              SELECT SINGLE param1
+                       FROM zgpt_mm_param
+                       INTO @DATA(lv_param1)
+                      WHERE program_name = 'MB_MIGO_BADI'
+                        AND object_id    = 'AFR'
+                        AND field        = 'BUKRS'
+                        AND param1       = @ls_mseg1-bukrs
+                        AND active_flag  = @abap_true.
+              IF lv_param1 IS INITIAL.
+                IF <fs_mkpf>-afrno IS INITIAL.
+                  MESSAGE : 'Kindly enter AFR Manifest no. ' TYPE 'E'.
+                ENDIF.
+                IF <fs_mkpf>-afrdt IS INITIAL.
+                  MESSAGE : 'Kindly enter AFR Manifest date. ' TYPE 'E'.
+                ENDIF.
+                IF <fs_mkpf>-lovct IS INITIAL.
+                  MESSAGE : 'Kindly enter waste category ' TYPE 'E'.
+                ENDIF.
+              ELSE.
+              ENDIF.
+            ENDIF.
+          WHEN OTHERS.
+        ENDCASE.
+      ENDLOOP.
+      ls_migo_hdr-afrno = <fs_mkpf>-afrno.
+      ls_migo_hdr-afrdt = <fs_mkpf>-afrdt.
+      ls_migo_hdr-lovct = <fs_mkpf>-lovct.
+      ls_migo_hdr-gtpas = <fs_mkpf>-gtpas.
+      ls_migo_hdr-lrdat = <fs_mkpf>-lrdat.
+      ls_migo_hdr-token = <fs_mkpf>-token.
+      ls_migo_hdr-lfsnr = is_mkpf-xblnr.
+      ls_migo_hdr-post1 = <fs_mkpf>-post1.
+      ASSIGN ('(SAPLMIGO)GODYNPRO-ACTION') TO FIELD-SYMBOL(<fs_action>).
+      IF sy-subrc IS INITIAL.
+        IF <fs_action> EQ 'A03'.
+          UPDATE zmmt_migo_hdr SET zflag = abap_true WHERE mblnr = lv_plnt-smbln.
+*          ls_migo_hdr-zflag = abap_true.
+        ENDIF.
+      ENDIF.
+      IF <fs_mkpf> IS NOT INITIAL.
+        MODIFY zmmt_migo_hdr FROM ls_migo_hdr.
+        <fs_mkpf>-afrdt = ''.
+        <fs_mkpf>-afrno = ''.
+        <fs_mkpf>-lovct = ''.
+        CLEAR : ls_migo_hdr,lv_plnt.",lv_docp.
+*  Begin of Change by Ashutosh for 39225
+        TYPES:BEGIN OF ty_sum,
+                vbeln_im TYPE vbeln,
+                vbelp_im TYPE vbelp,
+                menge    TYPE menge_d,
+              END OF ty_sum.
+
+        TYPES: BEGIN OF ty_export,
+                 tokennumber TYPE string,
+                 dinumber    TYPE string,
+                 diqty       TYPE string,
+                 trucknumber TYPE string,
+                 grnnumber   TYPE string,
+                 grndate     TYPE string,
+                 grntime     TYPE string,
+                 grnqty      TYPE string,
+               END OF ty_export.
+        DATA: lv_dateout     TYPE char10,
+              lv_timeout     TYPE char8,
+              lv_menge       TYPE char20,
+              lv_json_out    TYPE string,
+              lv_service_uri TYPE string,
+              lv_response    TYPE string.
+        DATA: ls_out TYPE ty_export.
+        DATA: lt_namemap      TYPE zleil_lt_namemap.
+        DATA : lo_http_client  TYPE REF TO if_http_client,
+               lo_http_request TYPE REF TO if_http_entity.
+
+        DATA:ls_sum TYPE ty_sum,
+             lt_sum TYPE STANDARD TABLE OF ty_sum.
+
+        DATA(lt_mseg_t) = it_mseg.
+        IF <fs_action> IS ASSIGNED AND <fs_action> = 'A03'.
+          DELETE lt_mseg_t WHERE bwart NE '102'.
+        ELSE.
+          DELETE lt_mseg_t WHERE bwart NE '101'.
+        ENDIF.
+        IF lt_mseg_t IS NOT INITIAL.
+          SELECT matnr,
+                 werks
+            FROM marc
+            INTO TABLE @DATA(lt_marc)
+            FOR ALL ENTRIES IN @it_mseg
+            WHERE matnr = @it_mseg-matnr
+              AND werks = @it_mseg-werks
+              AND mfrgr = 'A0000003'.
+          IF sy-subrc EQ 0.
+            SORT lt_marc BY matnr werks.
+
+            LOOP AT lt_mseg_t INTO DATA(ls_mseg_t).
+              READ TABLE lt_marc TRANSPORTING NO FIELDS WITH KEY matnr = ls_mseg_t-matnr
+                                                                 werks = ls_mseg_t-werks
+                                                                 BINARY SEARCH.
+              IF sy-subrc EQ 0.
+                ls_sum-vbeln_im = ls_mseg_t-vbeln_im.
+                ls_sum-vbelp_im = ls_mseg_t-vbelp_im.
+                ls_sum-menge = ls_mseg_t-menge.
+                COLLECT ls_sum INTO lt_sum.
+              ENDIF.
+            ENDLOOP.
+
+            IF lt_sum IS NOT INITIAL.
+              SELECT vbeln,
+                     posnr,
+                     lfimg
+                FROM lips
+                INTO TABLE @DATA(lt_lips)
+                FOR ALL ENTRIES IN @lt_sum
+                WHERE vbeln = @lt_sum-vbeln_im
+                   AND posnr = @lt_sum-vbelp_im.
+              IF sy-subrc EQ 0.
+                SORT lt_lips BY vbeln posnr.
+              ENDIF.
+
+              SELECT abapfieldname
+                    apifieldname
+                FROM zletilmsapiflds
+                INTO TABLE lt_namemap
+                WHERE api = 'GRNAPI'.
+
+              SELECT SINGLE lower( url )
+                FROM zsgt_url
+                WHERE source_system = 'ILMS'
+                AND process = 'GRN'
+                INTO @lv_service_uri.
+
+              LOOP AT lt_sum INTO ls_sum.
+                lv_dateout = is_mkpf-cpudt+6(2) && '-' && is_mkpf-cpudt+4(2) && '-' && is_mkpf-cpudt(4).
+                lv_timeout = is_mkpf-cputm(2) && ':' && is_mkpf-cputm+2(2) && ':' && is_mkpf-cputm+4(2).
+                READ TABLE lt_lips INTO DATA(ls_lips1) WITH KEY vbeln = ls_sum-vbeln_im
+                                                                posnr = ls_sum-vbelp_im
+                                                                BINARY SEARCH.
+                IF sy-subrc NE 0.
+                  CLEAR ls_lips1.
+                ENDIF.
+
+                lv_menge = ls_sum-menge.
+
+                IF <fs_action> IS ASSIGNED AND <fs_action> = 'A03'.
+                  CONCATENATE '-'  lv_menge INTO lv_menge.
+                ENDIF.
+                CONDENSE lv_menge.
+
+                ls_out = VALUE #( tokennumber = <fs_mkpf>-token
+                                  dinumber    = ls_sum-vbeln_im
+                                  diqty       = ls_lips1-lfimg
+                                  trucknumber = <fs_mkpf>-vhcle
+                                  grnnumber   = is_mkpf-mblnr
+                                  grndate     = lv_dateout
+                                  grntime     = lv_timeout
+                                  grnqty      = lv_menge
+                                ).
+                TRY.
+*convert to json
+                    /ui2/cl_json=>serialize(
+                      EXPORTING
+                        data          = ls_out
+                        compress      = abap_false
+                        name_mappings = lt_namemap
+                      RECEIVING
+                        r_json        = lv_json_out ).
+
+
+
+                    CALL METHOD cl_http_client=>create_by_destination
+                      EXPORTING
+                        destination = zleil_destination_name
+                      IMPORTING
+                        client      = lo_http_client.
+
+                    cl_http_utility=>set_request_uri( request = lo_http_client->request
+                                                      uri     = lv_service_uri ).
+
+*set http METHOD
+                    CALL METHOD lo_http_client->request->set_method(
+                      if_http_request=>co_request_method_post ).
+*content type
+                    CALL METHOD lo_http_client->request->if_http_entity~set_content_type
+                      EXPORTING
+                        content_type = if_rest_media_type=>gc_appl_json.
+*create http request object
+                    lo_http_request = lo_http_client->request.
+*set and send request data
+                    lo_http_request->append_cdata( data = lv_json_out ).
+                    CALL METHOD lo_http_client->send(
+                      EXPORTING
+                        timeout                    = 15
+                      EXCEPTIONS
+                        http_communication_failure = 1
+                        http_invalid_state         = 2
+                        http_processing_failed     = 3
+                        OTHERS                     = 4 ).
+*receive the response from legacy
+                    CALL METHOD lo_http_client->receive(
+                      EXCEPTIONS
+                        http_communication_failure = 1
+                        http_invalid_state         = 2
+                        http_processing_failed     = 3
+                        OTHERS                     = 4 ).
+*convert response in string format
+                    DATA(lo_res) = lo_http_client->response.
+                    lv_response = lo_http_client->response->get_cdata( ).
+                    IF lv_response <> lv_json_out.
+                    ELSE.
+                    ENDIF.
+                  CATCH cx_root.
+                ENDTRY.
+              ENDLOOP.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+*  End of Change by Ashutosh for 39225
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+  IF gv_cancel IS NOT INITIAL.
+
+    LOOP AT it_mseg INTO DATA(ls_mseg).
+      SELECT SINGLE lblni
+      FROM zmmt_migo_serv
+      INTO @DATA(lv_lblni)
+      WHERE mblnr = @ls_mseg-smbln.
+      IF sy-subrc = 0.
+        MESSAGE |Service entry sheet | && lv_lblni && | exists for this Material Document.| TYPE 'E'.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+
+*check total GRN quantity against outbound delivery for current transaction
+  IF gv_action = 'A01' AND gv_refdoc = 'R05'.
+    "*added by PG~ on 13-03-2024
+    "*Current transaction data
+    SELECT vbeln_im,
+           vbelp_im,
+      SUM( erfmg ) AS menge FROM @it_mseg AS _mseg             "Replace MENGE by ERFMG ON 21.03.2025
+                            GROUP BY vbeln_im,vbelp_im
+                            HAVING vbeln_im IS NOT INITIAL
+                            INTO TABLE @DATA(ltt_delivery_qty).
+
+    "*Already saved quantity for same delivery and item
+    IF ltt_delivery_qty IS NOT INITIAL.
+      SELECT vbeln_im,
+             vbelp_im,
+             menge FROM matdoc
+                   INTO TABLE @DATA(lt_matdoc)
+                   FOR ALL ENTRIES IN @ltt_delivery_qty
+                  WHERE vbeln_im = @ltt_delivery_qty-vbeln_im AND
+                        vbelp_im = @ltt_delivery_qty-vbelp_im AND
+                        bwart IN ( '101', '102' )             AND
+                        cancelled = @abap_false               AND
+                        reversal_movement = @abap_false       AND
+                        bstaus_sg <> 'H'.
+      IF sy-subrc = 0.
+        APPEND LINES OF lt_matdoc TO ltt_delivery_qty.
+        CLEAR:lt_matdoc.
+      ENDIF.
+    ENDIF.
+
+    IF ltt_delivery_qty IS NOT INITIAL.
+      SELECT vbeln_im,
+             vbelp_im,
+        SUM( menge ) AS menge FROM @ltt_delivery_qty AS clubbed_data
+                              GROUP BY vbeln_im,vbelp_im
+                              HAVING vbeln_im IS NOT INITIAL
+                              INTO TABLE @lt_delivery_qty.
+    ENDIF.
+    "*end of addition by PG~
+
+*" Comment by PG on 13-03-2024
+*      LOOP AT it_mseg INTO ls_xmseg WHERE vbeln_im IS NOT INITIAL.
+*        ls_delivery_qty-vbeln = ls_xmseg-vbeln_im.
+*        ls_delivery_qty-posnr = ls_xmseg-vbelp_im.
+*        ls_delivery_qty-menge = ls_xmseg-menge.
+*        COLLECT ls_delivery_qty INTO lt_delivery_qty.
+*        CLEAR: ls_delivery_qty.
+**already saved quantity for same delivery and item
+*        SELECT SINGLE vbeln_im vbelp_im  SUM( menge ) FROM matdoc
+*          INTO ls_delivery_qty
+*           WHERE vbeln_im = ls_xmseg-vbeln_im AND vbelp_im = ls_xmseg-vbelp_im
+*            AND bwart IN ( '101', '102' )
+*                AND cancelled = abap_false
+*                AND reversal_movement = abap_false
+*                AND bstaus_sg <> 'H'
+*          GROUP BY vbeln_im vbelp_im.
+*        IF ls_delivery_qty-menge IS NOT INITIAL.
+*          COLLECT ls_delivery_qty INTO lt_delivery_qty.
+*        ENDIF.
+*      ENDLOOP.
+*    ENDIF.
+    "* end of comment...
+
+    DATA(lv_total_quan) = VALUE menge_d( ).
+
+    IF lt_delivery_qty IS NOT INITIAL.
+      LOOP AT lt_delivery_qty INTO ls_delivery_qty.
+        SELECT SINGLE * INTO @DATA(ls_lips)
+        FROM lips WHERE vbeln = @ls_delivery_qty-vbeln AND posnr = @ls_delivery_qty-posnr.
+        lv_delivery_qty = ls_lips-lfimg.
+
+        lv_total_quan += ls_delivery_qty-menge.
+
+        IF ls_delivery_qty-menge > lv_delivery_qty.
+          MESSAGE e067(zmm) WITH ls_delivery_qty-vbeln.
+        ENDIF.
+
+        SELECT SINGLE *
+        FROM likp
+        WHERE vbeln = @ls_delivery_qty-vbeln
+        INTO @DATA(ls_likp).
+
+***        IF ls_likp-vsart = '03' AND ls_lips-mfrgr = 'A0000001'.  "error message commented on 27.07.2024
+***          IF ls_delivery_qty-menge <> lv_delivery_qty.
+***            MESSAGE e070(zmm) WITH ls_delivery_qty-vbeln.
+***          ENDIF.
+***        ENDIF.
+      ENDLOOP.
+***added by IBMABAP11 for P1 issue
+
+***      SELECT SUM( lfimg )
+***      FROM lips
+***      WHERE vbeln = @ls_delivery_qty-vbeln
+***      AND   erdat GE '20240723'
+***      INTO @DATA(lv_lips_menge).
+***      IF sy-subrc = 0.
+***        IF lv_total_quan <> lv_lips_menge.
+***          MESSAGE e070(zmm) WITH ls_delivery_qty-vbeln.
+***        ENDIF.
+***      ENDIF.
+      DATA: lv_qty TYPE menge_d.
+      SELECT vbeln,
+             posnr,
+             lfimg
+             FROM lips
+             INTO TABLE @DATA(it_lips_menge)
+             WHERE vbeln = @ls_delivery_qty-vbeln
+             AND erdat GE '20240723'.
+      IF sy-subrc = 0.
+        DATA(it_lips_menge_temp) = it_lips_menge.
+        DATA: ls_lips_menge_temp LIKE LINE OF it_lips_menge_temp.
+        DATA: ls_lips_menge_temp1 LIKE LINE OF it_lips_menge_temp,
+              lv_lips_menge       TYPE menge_d.
+        CLEAR: it_lips_menge_temp,lv_lips_menge.
+        LOOP AT it_lips_menge INTO DATA(ls_lips_menge).
+          ls_lips_menge_temp = ls_lips_menge.
+          AT NEW vbeln.
+            CLEAR: lv_qty.
+          ENDAT.
+          lv_qty = lv_qty + ls_lips_menge_temp-lfimg.
+          AT END OF vbeln.
+            ls_lips_menge_temp1 = ls_lips_menge_temp.
+            ls_lips_menge_temp1-lfimg = lv_qty.
+            APPEND ls_lips_menge_temp1 TO it_lips_menge_temp.
+            CLEAR: ls_lips_menge_temp1.
+          ENDAT.
+        ENDLOOP.
+        IF it_lips_menge_temp IS NOT INITIAL.
+          READ TABLE it_lips_menge_temp INTO ls_lips_menge_temp1 INDEX 1.
+          IF sy-subrc = 0.
+            lv_lips_menge = ls_lips_menge_temp1-lfimg.
+          ENDIF.
+        ENDIF.
+        IF ls_likp-vsart = '03' AND ls_lips-mfrgr = 'A0000001'.
+          IF lv_total_quan <> lv_lips_menge.
+            MESSAGE e070(zmm) WITH ls_delivery_qty-vbeln.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+***ended by IBMABAP11 for P1 issue
+    ENDIF.
+
+    " Storage location validation in case of Rail STO
+    SELECT s~vbeln, s~posnr, s~lgort, s~mfrgr, p~vsart
+     INTO TABLE @DATA(lt_st_loc)
+     FROM lips AS s
+     INNER JOIN likp AS p ON p~vbeln EQ s~vbeln
+     FOR ALL ENTRIES IN @gt_item
+     WHERE s~vbeln  EQ @gt_item-vbeln
+     AND   s~posnr  EQ @gt_item-posnr
+     AND   s~erdat  GE '20240723'.
+    IF sy-subrc EQ 0.
+      LOOP AT gt_item INTO DATA(ls_goitem) WHERE take_it EQ abap_true.
+        " Validation check for RSD Receiving storage location
+        READ TABLE lt_st_loc INTO DATA(wa_st_loc)
+        WITH KEY vbeln = ls_goitem-vbeln
+                 posnr = ls_goitem-posnr
+                 vsart = '03'
+                 mfrgr = 'A0000001'.
+        IF sy-subrc EQ 0 AND ls_goitem-lgort NE 'RSD'.
+          MESSAGE e075(zmm).
+        ENDIF.
+        " Validation check for GDRK Receiving storage location
+        READ TABLE lt_st_loc INTO wa_st_loc
+        WITH KEY vbeln = ls_goitem-vbeln
+                 posnr = ls_goitem-posnr
+                 lgort = 'GDRK'.
+        IF sy-subrc EQ 0 AND ls_goitem-lgort NE wa_st_loc-lgort.
+          MESSAGE e074(zmm).
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+  ENDIF.
+** The data from external detail screen can be saved now:
+  CHECK gt_extdata IS NOT INITIAL.
+  CALL FUNCTION 'ZMMF_MIGO_UPDATE_DETAIL' IN UPDATE TASK
+    TABLES
+      it_item = lt_extdata.
+** The data from external header screen can be saved now:
+*  MOVE-CORRESPONDING is_mkpf TO gs_exdata_header.
+*  CALL FUNCTION 'MIGO_BADI_EXAMPLE_UPDATE_HEAD' IN UPDATE TASK
+*    EXPORTING
+*      is_migo_badi_header_fields = gs_exdata_header.
+
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~POST_DOCUMENT

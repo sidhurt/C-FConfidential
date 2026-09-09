@@ -1,0 +1,30 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class CL_WS_IDP_CONF
+STATUS|
+SOURCE_BEGIN|CL_WS_IDP_CONF|CONF_READ
+  method conf_read.
+
+    data:
+      l_msg_error     type string,
+      ls_srt_idp_conf type srt_idp_conf,
+      lv_subrc        type sy-subrc.
+
+    select_single(
+      exporting
+        iv_client       = i_client
+      importing
+        es_srt_idp_conf = ls_srt_idp_conf
+        ev_subrc        = lv_subrc ).
+    if lv_subrc <> 0.
+      message e006(srt_ws_idp) with sy-mandt into l_msg_error.
+      cx_soap_idp_fault=>raise_from_sy_message( write_to_syslog = i_syslog ).
+    endif.
+    e_tabname_bd_1   = ls_srt_idp_conf-tabname_bd_1.
+    e_tabname_bd_2   = ls_srt_idp_conf-tabname_bd_2.
+    e_tabname_bdid_1 = ls_srt_idp_conf-tabname_bdid_1.
+    e_tabname_bdid_2 = ls_srt_idp_conf-tabname_bdid_2.
+    e_access_class   = ls_srt_idp_conf-access_class.
+    e_version        = ls_srt_idp_conf-version.
+
+  endmethod.
+SOURCE_END

@@ -1,0 +1,36 @@
+﻿  METHOD check_bapi_header_dates.
+
+* Check format of the posting date and document date         v_n1550163
+    CALL FUNCTION 'DATE_CHECK_PLAUSIBILITY'
+      EXPORTING
+        date                      = is_goodsmvt_header-pstng_date
+      EXCEPTIONS
+        plausibility_check_failed = 1.
+    IF sy-subrc <> 0.
+      rv_failed = abap_true.
+      INSERT VALUE #(
+        msgid = gc_message_class
+        msgno = 0
+        msgty = if_nsdm_odata_text_message=>sc_severity-error
+        msgv1 = 'PostingDate'
+        msgv2 = is_goodsmvt_header-pstng_date ) INTO TABLE ct_message.
+    ENDIF.
+
+    IF is_goodsmvt_header-doc_date IS NOT INITIAL.
+      CALL FUNCTION 'DATE_CHECK_PLAUSIBILITY'
+        EXPORTING
+          date                      = is_goodsmvt_header-doc_date
+        EXCEPTIONS
+          plausibility_check_failed = 1.
+      IF sy-subrc <> 0.
+        rv_failed = abap_true.
+        INSERT VALUE #(
+          msgid = gc_message_class
+          msgno = 0
+          msgty = if_nsdm_odata_text_message=>sc_severity-error
+          msgv1 = 'DocumentDate'
+          msgv2 = is_goodsmvt_header-doc_date ) INTO TABLE ct_message.
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.

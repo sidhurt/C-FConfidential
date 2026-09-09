@@ -1,0 +1,7 @@
+﻿  method IF_CFD_ODATA_DPC_FLX~GET_FLX_GENERATION_VERSION.
+    " ----------------   !! GENERATED CODE !! --------------------
+    " !!  DO NOT CHANGE, WILL BE OVERWRITTEN AT NEXT GENERATION !!
+
+    rv_flx_generation_version = gc_flx_generation_version.
+
+  endmethod.

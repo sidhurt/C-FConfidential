@@ -1,0 +1,3118 @@
+﻿*&---------------------------------------------------------------------*
+*& Include          ZPP_MP_DIVERSION_AUTOPGI_PAI
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_9000  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_9000 INPUT.
+  CASE sy-ucomm.
+    WHEN 'FIG'.
+      IF r_open_task IS NOT INITIAL.
+        CLEAR gs_change.
+*        IF sy-uname = 'IBMABAP30'.
+        TYPES : BEGIN OF ty_t1,
+                  checkbox           TYPE char1,
+                  zdiversion_no      TYPE zdiversion_no,
+                  zcreatedate        TYPE zcreatedate,
+                  zcreatedon         TYPE zcreatedon,
+                  parent_process_ord TYPE aufnr,
+                  return_quantity    TYPE kwmeng,
+                  zztm_reg           TYPE zde_tm_reg,
+                  vbeln              TYPE vbeln_vl,
+                  bill               TYPE vbeln_vf,
+                END OF ty_t1.
+        DATA: lt_zppt_div TYPE TABLE OF ty_t1,
+              ls_zppt_div TYPE ty_t1.
+
+        CLEAR lt_zppt_div.
+
+        DATA lv_date1 TYPE sy-datum.
+        lv_date1 = sy-datum.
+        SUBTRACT 1 FROM lv_date1.
+
+        SELECT a~zrmc_pltcd
+                   FROM zta_rmc_plant AS a
+                   WHERE zvalfrom LE @sy-datum
+                   AND zvalto GE @sy-datum
+                   INTO TABLE @lt_rmc_plant.
+        IF sy-subrc = 0.
+          SORT lt_rmc_plant BY zrmc_pltcd.
+          DELETE ADJACENT DUPLICATES FROM lt_rmc_plant COMPARING zrmc_pltcd.
+          CLEAR  r_dtm.
+          LOOP AT lt_rmc_plant INTO ls_rmc_plant1.
+            AUTHORITY-CHECK OBJECT 'ZRMC_COR1' ID 'WERKS' FIELD ls_rmc_plant1-zrmc_pltcd.
+            IF sy-subrc = 0.
+              APPEND VALUE #( sign = 'I' option = 'EQ' low = ls_rmc_plant1-zrmc_pltcd  ) TO r_dtm.
+            ENDIF.
+          ENDLOOP.
+        ENDIF.
+        IF r_dtm IS NOT INITIAL.
+          SELECT a~zdiversion_no,
+                 a~zcreatedate,
+                 a~zcreatedon,
+                 a~parent_process_ord,
+                 a~return_quantity,
+                 a~order_number
+              FROM zppt_diversion AS a
+              INNER JOIN caufv AS caufv ON caufv~aufnr =  a~parent_process_ord
+              INTO TABLE @DATA(lt_zppt_diversion1)
+              WHERE order_number = ' '
+              AND caufv~werks IN @r_dtm
+              AND  zdiversion_no NE ' '
+              AND zcreatedate NE '00000000'
+               AND zcreatedate GE @lv_date1 AND  zcreatedate LE @sy-datum.
+          IF sy-subrc = 0.
+            SELECT a~zdiversion_no,
+                 a~zcreatedate,
+                 a~zcreatedon,
+                 a~parent_process_ord,
+                 a~return_quantity,
+                a~order_number
+            FROM zppt_diversion AS a
+             INNER JOIN caufv AS caufv ON caufv~aufnr =  a~parent_process_ord
+             WHERE full_div_ind = 'X'
+               AND caufv~werks IN @r_dtm
+               AND  zdiversion_no NE ' '
+                AND zcreatedate NE '00000000'
+               AND zcreatedate GE @lv_date1 AND  zcreatedate LE @sy-datum
+              AND zdiversion_no NOT IN ( SELECT zdiversion_no FROM @lt_zppt_diversion1 AS b WHERE b~zdiversion_no = a~zdiversion_no  )
+              APPENDING TABLE @lt_zppt_diversion1.
+          ENDIF.
+          IF lt_zppt_diversion1 IS NOT INITIAL.
+            LOOP AT lt_zppt_diversion1 INTO DATA(ls_zppt_diversion1).
+              SELECT SINGLE *
+                      FROM zrmc_so_details
+                      INTO @DATA(ls_zrmc_so_details)
+                      WHERE aufnr = @ls_zppt_diversion1-order_number
+                       AND delivery_no NE @space AND pgi_status  = 'YES'
+                       AND bill_no NE @space.
+              IF sy-subrc = 0.
+                DELETE lt_zppt_diversion1 WHERE zdiversion_no = ls_zppt_diversion1-zdiversion_no.
+              ENDIF.
+            ENDLOOP.
+          ENDIF.
+          IF lt_zppt_diversion1 IS NOT INITIAL.
+            SORT lt_zppt_diversion1 BY zdiversion_no.
+            DELETE ADJACENT DUPLICATES FROM lt_zppt_diversion1 COMPARING zdiversion_no.
+            SELECT e~parent_process_ord, f~zztm_reg,b~vbeln,d~vbeln AS bill
+                          FROM aufk AS a
+                          INNER JOIN zpp_rmc_ci_aufk AS f ON f~aufnr = a~aufnr
+                          INNER JOIN likp AS b ON b~zzaufnr = a~aufnr
+                          INNER JOIN vbfa AS c ON c~vbelv = b~vbeln AND ( c~vbtyp_n = 'M' OR vbtyp_n = 'U' )
+                          INNER JOIN vbrp AS d ON d~vbeln EQ c~vbeln
+                          INNER JOIN @lt_zppt_diversion1 AS e ON e~parent_process_ord = a~aufnr
+                          INTO TABLE @DATA(lt_likp).
+            LOOP AT lt_zppt_diversion1 INTO ls_zppt_diversion1.
+              MOVE-CORRESPONDING ls_zppt_diversion1 TO ls_zppt_div.
+              READ TABLE lt_likp INTO DATA(ls_likp2) WITH KEY parent_process_ord = ls_zppt_diversion1-parent_process_ord.
+              IF sy-subrc = 0.
+                MOVE-CORRESPONDING ls_likp2 TO ls_zppt_div.
+              ENDIF.
+              APPEND ls_zppt_div TO lt_zppt_div.
+              CLEAR ls_zppt_div.
+            ENDLOOP.
+
+          ENDIF.
+
+          DATA:lt_field TYPE STANDARD TABLE OF slis_fieldcat_alv,
+               ls_field TYPE slis_fieldcat_alv.
+          REFRESH lt_field.
+
+          ls_field-col_pos = 2.
+          ls_field-fieldname = 'ZDIVERSION_NO'.
+          ls_field-seltext_m = 'TASK ID'.
+          ls_field-outputlen = 12.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+
+          ls_field-col_pos = 3.
+          ls_field-fieldname = 'ZCREATEDATE'.
+          ls_field-seltext_m = 'Task Creation Date'.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+
+          ls_field-col_pos = 4.
+          ls_field-fieldname = 'ZCREATEDON'.
+          ls_field-seltext_m = 'Task Creation Time'.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+
+          ls_field-col_pos = 5.
+          ls_field-fieldname = 'PARENT_PROCESS_ORD'.
+          ls_field-seltext_m = 'Parent Process Order No'.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+
+          ls_field-col_pos = 6.
+          ls_field-fieldname = 'RETURN_QUANTITY'.
+          ls_field-seltext_m = 'Return Qty'.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+
+          ls_field-col_pos = 7.
+          ls_field-fieldname = 'ZZTM_REG'.
+          ls_field-seltext_m = 'TM No'.
+          ls_field-outputlen = '12'.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+
+          ls_field-col_pos = 8.
+          ls_field-fieldname = 'VBELN'.
+          ls_field-seltext_m = 'Delivery No'.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+
+          ls_field-col_pos = 9.
+          ls_field-fieldname = 'BILL'.
+          ls_field-seltext_m = 'Invoice No'.
+          APPEND ls_field TO lt_field.
+          CLEAR ls_field.
+          IF lt_zppt_div IS NOT INITIAL.
+            CALL FUNCTION 'REUSE_ALV_POPUP_TO_SELECT'
+              EXPORTING
+                i_title               = 'Pending Tasks for Diversion'
+                i_allow_no_selection  = 'X'
+                i_screen_start_column = 10
+                i_screen_start_line   = 5
+                i_screen_end_column   = 100
+                i_screen_end_line     = 20
+                i_checkbox_fieldname  = 'CHECKBOX'
+                i_tabname             = 'LT_ZPPT_DIV'
+                it_fieldcat           = lt_field
+                i_callback_program    = sy-cprog
+              TABLES
+                t_outtab              = lt_zppt_div
+              EXCEPTIONS
+                program_error         = 1
+                OTHERS                = 2.
+            IF sy-subrc <> 0.
+* Implement suitable error handling here
+            ENDIF.
+
+            DATA(lt_zppt_sel) = lt_zppt_div.
+            DELETE lt_zppt_sel WHERE checkbox = ''.
+            DATA(lv_count) = lines( lt_zppt_sel ).
+            IF lv_count IS NOT INITIAL.
+              IF lv_count EQ 1.
+                READ TABLE lt_zppt_sel INTO DATA(ls_appt_sel) INDEX 1.
+                SELECT SINGLE *
+                      FROM zppt_diversion
+                      INTO @DATA(gs_create_sel)
+                      WHERE zdiversion_no EQ @ls_appt_sel-zdiversion_no.
+
+                IF gs_create_sel-full_div_ind = 'X'.
+                  IF gs_create_sel-order_number EQ ' '.
+                    MOVE-CORRESPONDING gs_create_sel TO gs_change.
+
+
+                    IF gs_change-new_sale_order IS NOT INITIAL.
+                      lv_new_sale_order = |{ gs_change-new_sale_order ALPHA = IN }|.
+                      SELECT SINGLE vbeln,
+                                    kna1_sh~kunnr,
+                                    kna1_sh~name1 AS sh_name
+                                    FROM vbpa AS vbpa
+                                    INNER JOIN kna1 AS kna1_sh ON vbpa~kunnr = kna1_sh~kunnr
+                                    INTO @ls_vbpa
+                                    WHERE vbeln = @lv_new_sale_order
+                                      AND vbpa~parvw = 'WE'.
+                      IF sy-subrc = 0.
+                        lv_shp_code = ls_vbpa-kunnr.
+                        lv_shp_name = ls_vbpa-sh_name.
+
+                        SELECT SINGLE FROM kna1 AS a
+                INNER JOIN adrc AS b ON b~addrnumber = a~adrnr
+                FIELDS b~name_co,
+                    b~street,
+                    b~str_suppl1,
+                    b~str_suppl2,
+                    b~post_code1,
+                    b~city1
+                WHERE a~kunnr = @ls_vbpa-kunnr
+                INTO @lv_addr.
+
+                        addr1 = COND #( WHEN lv_addr-name_co IS NOT INITIAL THEN addr1 && lv_addr-name_co ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-street IS NOT INITIAL THEN addr1 && space && lv_addr-street ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-str_suppl1 IS NOT INITIAL THEN addr1 && space && lv_addr-str_suppl1 ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-str_suppl2 IS NOT INITIAL THEN addr1 && space && lv_addr-str_suppl2 ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-city1 IS NOT INITIAL THEN addr1 && space && lv_addr-city1 ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-post_code1 IS NOT INITIAL THEN addr1 && space && '-' && space && lv_addr-post_code1 ELSE addr1 ).
+                        lv_shp_address = addr1.
+                      ENDIF.
+                      SELECT SINGLE vbak~abrvw AS abrvw,
+                        tvlvt~bezei AS abrvw_bezei,
+                             matnr
+                             FROM vbak AS vbak
+                             INNER JOIN vbap AS vbap ON vbak~vbeln = vbap~vbeln
+                             INNER JOIN tvlvt AS tvlvt ON tvlvt~abrvw = vbak~abrvw AND tvlvt~spras = @sy-langu
+                             INTO @lv_vbak
+                             WHERE  vbak~vbeln = @lv_new_sale_order.
+                      IF sy-subrc = 0.
+                        lv_usage = lv_vbak-abrvw_bezei.
+                      ENDIF.
+                      SELECT SINGLE vbak~abrvw AS abrvw,
+                 tvlvt~bezei AS abrvw_bezei,
+                  matnr
+                 FROM vbak AS vbak
+                 INNER JOIN vbap AS vbap ON vbak~vbeln = vbap~vbeln
+                 INNER JOIN tvlvt AS tvlvt ON tvlvt~abrvw = vbak~abrvw AND tvlvt~spras = @sy-langu
+                 INTO @lv_vbak
+                 WHERE  vbak~vbeln = @lv_new_sale_order.
+                      IF sy-subrc = 0.
+                        lv_usage = lv_vbak-abrvw_bezei.
+                        SELECT SINGLE maktx FROM makt INTO @lv_maktx WHERE matnr = @lv_vbak-matnr AND spras = @sy-langu.
+                      ENDIF.
+                    ENDIF.
+
+******************************************************************************************
+
+                    IF gs_change-parent_process_ord IS NOT INITIAL
+  AND gs_change-order_number IS INITIAL.
+                      lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+                      SELECT SINGLE *
+                             FROM afpo
+                             INTO @ls_afpo
+                             WHERE aufnr EQ @lv_aufnr.
+                      IF sy-subrc = 0.
+                        IF gs_change-return_quantity GT ls_afpo-pgmng.
+                          SELECT SINGLE vbeln, zzaufnr,zzvehicle_no
+                              FROM likp INTO @ls_likp
+                              WHERE zzaufnr = @lv_aufnr.
+                          IF sy-subrc = 0.
+                            gv_zde_tm_code = ls_likp-zzvehicle_no.
+
+                            SELECT SINGLE  aubel
+                                 FROM vbrp
+                                 INTO @gs_change-sales_order_prq
+                                 WHERE vgbel = @ls_likp-vbeln.
+*              gv_old_sale = gs_change-sales_order_prq.
+
+                            SELECT SINGLE a~vbelv ,a~vbeln,
+                     b~matnr , b~fkimg ,b~werks
+                     FROM vbfa AS a
+                     INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                     INTO @ls_vbfa
+                     WHERE a~vbelv = @ls_likp-vbeln
+                       AND a~vbtyp_n = 'U' .
+                            IF sy-subrc NE 0.
+                              SELECT SINGLE a~vbelv ,a~vbeln,
+                                  b~matnr , b~fkimg ,b~werks
+                                  FROM vbfa AS a
+                                  INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                  INTO @ls_vbfa
+                                  WHERE a~vbelv = @ls_likp-vbeln
+                                    AND a~vbtyp_n = 'M'.
+                            ENDIF.
+                            IF sy-subrc = 0.
+                              SELECT SINGLE a~*
+                                     FROM vbrp AS a
+                               INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                              INTO @ls_vbrp_m
+                              WHERE a~vbeln = @ls_vbfa-vbeln
+                               AND vbtyp_ana = 'U'
+                               AND rfbsk NE 'E'.
+                              IF sy-subrc NE 0.
+                                SELECT SINGLE a~*
+                                                    FROM vbrp AS a
+                                              INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                             INTO @ls_vbrp_m
+                                             WHERE a~vbeln = @ls_vbfa-vbeln
+                                              AND vbtyp_ana = 'M'
+                                              AND fksto NE 'X'.
+                              ENDIF.
+                              IF sy-subrc = 0.
+                                gv_vbeln = ls_vbfa-vbeln.
+                                gv_matnr = ls_vbfa-matnr.
+                                gv_werks = ls_vbfa-werks.
+*                gs_change-material = ls_vbfa-matnr.
+*                gs_change-plant = ls_vbfa-werks.
+                                IF gs_change-new_sale_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-new_sale_order ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+                                IF gs_change-sales_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-sales_order  ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+                                IF gs_change-return_quantity GT ls_vbfa-fkimg.
+                                  MESSAGE 'Invoiced QTY and Return Quantity not matching'  TYPE 'E' DISPLAY LIKE 'E'.
+                                  EXIT.
+                                ELSE.
+                                  gv_dis = 'X'.
+                                ENDIF.
+                              ELSE.
+                                MESSAGE 'Invoice is not valid as Document Category not M'  TYPE 'E' DISPLAY LIKE 'E'.
+                                EXIT.
+                              ENDIF.
+                            ELSE.
+                              MESSAGE 'Invoice/Delivery Challan is not created yet'  TYPE 'E' DISPLAY LIKE 'E'.
+                              EXIT.
+                            ENDIF.
+                          ELSE.
+                            MESSAGE 'This Order is not linked with Delivery'  TYPE 'E' DISPLAY LIKE 'E'.
+                            EXIT.
+                          ENDIF.
+                        ELSE.
+*          MESSAGE 'Quantity is more than procees order QTY'  TYPE 'E' DISPLAY LIKE 'E'.
+                          MESSAGE 'Return Quantity should be more than ZERO'  TYPE 'E' DISPLAY LIKE 'E'.
+                          EXIT.
+                        ENDIF.
+                      ELSE.
+*        MESSAGE 'This Order is not Valid' TYPE 'E'.
+                        MESSAGE 'This Order is not Valid' TYPE 'E' DISPLAY LIKE 'E'.
+                        EXIT.
+                      ENDIF.
+                    ENDIF.
+                    IF gv_dis = 'X' AND gs_change-new_sale_order IS NOT INITIAL
+                    AND gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                      gv_pop = 'X'.
+                    ENDIF.
+
+                    IF gs_change-full_div_ind = 'X'.
+                      IF gs_change-full_div_qty IS INITIAL.
+                        MESSAGE 'If Full diversion indicator is ticked then Full Diversion QTY is mandatory to fill' TYPE 'E' DISPLAY LIKE 'E'.
+                        EXIT.
+                      ELSE.
+                        IF gs_change-full_div_qty GT gs_change-to_be_pro_ord_qty.
+                          MESSAGE 'Full Diversion QTY can not be greater than to be process QTY' TYPE 'E' DISPLAY LIKE 'E'.
+                          EXIT.
+                        ELSE.
+                          lv_flag_fdi = 'X'.
+                        ENDIF.
+                      ENDIF.
+                    ELSE.
+                      lv_flag_fdi = 'X'.
+                    ENDIF.
+
+                    CLEAR gv_process.
+                    IF gs_change-order_number IS NOT INITIAL.
+                      DATA(lv_aufnr_new) = |{ gs_change-order_number ALPHA = IN }|.
+                      SELECT SINGLE a~aufnr AS order_number,
+                             b~matnr AS material,
+                             b~dwerk AS plant,
+                             b~psmng AS quantity,
+                             b~meins AS quantity_uom,
+                             b~kdauf AS sales_order,
+                             b~kdpos AS sales_order_item,
+                             c~gstrp AS basic_start_date,
+                             c~gltrp AS basic_end_date,
+                             d~zztm_code,
+                             d~zztm_reg,
+                             d~zztm_driver,
+                             d~zztm_mob,
+                             d~zztm_cap,
+                             d~zztm_uom,
+                             d~zztm_type,
+                             d~zzbatch_size,
+                             d~zzbatch_uom,
+                             d~zzmix_time,
+                             d~zzmix_time_uom,
+                             d~zzreturn_qty,
+                             d~zzreturn_uom,
+                             d~zzaufnr,
+                             d~zzmax_tm_size,
+                             d~zzapproved,
+                             d~zzremark
+                             FROM aufk AS a
+                             INNER JOIN afpo AS b ON a~aufnr EQ b~aufnr
+                             INNER JOIN afko AS c ON c~aufnr EQ b~aufnr
+                             INNER JOIN zpp_rmc_ci_aufk AS d ON d~aufnr EQ b~aufnr
+                             INTO CORRESPONDING FIELDS OF @gs_change
+                             WHERE a~aufnr = @lv_aufnr_new.
+                      IF sy-subrc = 0.
+                        gs_change-order_type = 'ZPRC'.
+                        gv_process = lv_aufnr_new.
+                      ENDIF.
+                    ELSE.
+                      IF   gs_change-order_number IS INITIAL AND gs_change-plant IS INITIAL
+                        AND gs_change-parent_process_ord IS INITIAL.
+                        IF gs_change-material IS NOT INITIAL.
+
+                        ELSE.
+                          CLEAR gs_change.
+                        ENDIF.
+                      ENDIF.
+                    ENDIF.
+                    IF gs_change-parent_process_ord IS NOT INITIAL
+                      AND gs_change-order_number IS INITIAL.
+                      lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+                      SELECT SINGLE zztm_reg
+                                  FROM zpp_rmc_ci_aufk
+                                  INTO @gv_zde_tm_code
+                       WHERE aufnr = @lv_aufnr .
+
+                      SELECT SINGLE *
+                             FROM afpo
+                             INTO @ls_afpo
+                             WHERE aufnr EQ @lv_aufnr.
+                      IF sy-subrc = 0.
+                        IF gs_change-return_quantity GT ls_afpo-pgmng.
+                          SELECT SINGLE vbeln, zzaufnr,zzvehicle_no
+                              FROM likp INTO @ls_likp
+                              WHERE zzaufnr = @lv_aufnr.
+                          IF sy-subrc = 0.
+                            gv_zde_tm_code = ls_likp-zzvehicle_no.
+                            SELECT SINGLE  aubel
+                                 FROM vbrp
+                                 INTO @gs_change-sales_order_prq
+                                 WHERE vgbel = @ls_likp-vbeln.
+*              gv_old_sale = gs_change-sales_order_prq.
+
+                            gv_new_vbeln = ls_likp-vbeln.
+*                 SELECT
+                            SELECT SINGLE a~vbelv ,a~vbeln,
+                                b~matnr , b~fkimg ,b~werks
+                                FROM vbfa AS a
+                                INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                INTO @ls_vbfa
+                                WHERE a~vbelv = @ls_likp-vbeln
+                                  AND a~vbtyp_n = 'U' .
+                            IF sy-subrc NE 0.
+                              SELECT SINGLE a~vbelv ,a~vbeln,
+                                              b~matnr , b~fkimg ,b~werks
+                                              FROM vbfa AS a
+                                              INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                              INTO @ls_vbfa
+                                              WHERE a~vbelv = @ls_likp-vbeln
+                                                AND a~vbtyp_n = 'M'.
+                            ENDIF.
+                            IF sy-subrc = 0.
+
+                              SELECT SINGLE a~*
+                                     FROM vbrp AS a
+                                INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                              INTO @ls_vbrp_m
+                              WHERE a~vbeln = @ls_vbfa-vbeln
+                               AND vbtyp_ana = 'U'
+                                AND rfbsk NE 'E'.
+                              IF sy-subrc NE 0.
+                                SELECT SINGLE a~*
+                                       FROM vbrp AS a
+                                  INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                INTO @ls_vbrp_m
+                                WHERE a~vbeln = @ls_vbfa-vbeln
+                                 AND vbtyp_ana = 'M'
+                                 AND fksto NE 'X'.
+                              ENDIF.
+                              IF sy-subrc = 0.
+                                gv_vbeln = ls_vbfa-vbeln.
+                                gv_vbtyp = ls_vbrp_m-vbtyp_ana.
+                                gv_new_bill  = ls_vbfa-vbeln.
+                                gv_matnr = ls_vbfa-matnr.
+                                gv_werks = ls_vbfa-werks.
+                                IF gs_change-new_sale_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-new_sale_order ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+*                  SALES_ORDER
+                                IF gs_change-sales_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-sales_order ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+
+                                IF gs_change-return_quantity GT ls_vbfa-fkimg.
+                                  MESSAGE 'Invoiced QTY and Return Quantity not matching' TYPE 'W' DISPLAY LIKE 'E'.
+                                  EXIT.
+                                ELSE.
+                                  gv_dis = 'X'.
+                                ENDIF.
+                              ELSE.
+                                MESSAGE 'Invoice is not valid as Document Category not M Or U' TYPE 'W' DISPLAY LIKE 'E'.
+                                EXIT.
+                              ENDIF.
+                            ELSE.
+                              MESSAGE 'Invoice/Delivery Challan is not created yet' TYPE 'W' DISPLAY LIKE 'E'.
+                              EXIT.
+                            ENDIF.
+                          ELSE.
+                            MESSAGE 'This Order is not linked with Delivery' TYPE 'W' DISPLAY LIKE 'E'.
+                            EXIT.
+                          ENDIF.
+                        ELSE.
+                          MESSAGE 'Quantity is more than procees order QTY' TYPE 'W' DISPLAY LIKE 'E'.
+                          EXIT.
+                        ENDIF.
+                      ELSE.
+                        MESSAGE 'This Order is not Valid' TYPE 'W' DISPLAY LIKE 'E'.
+                        EXIT.
+                      ENDIF.
+                    ENDIF.
+                    IF gs_change-zdiversion_no IS NOT INITIAL.
+                      gv_no = 'X'.
+                    ENDIF.
+*      IF gs_change-mat_doc is INITIAL.
+*      CLEAR gv_dis.
+*      ENDIF.
+                    IF gv_dis = 'X' AND gs_change-new_sale_order IS NOT INITIAL
+                    AND gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                      gv_pop = 'X'.
+                      CLEAR gv_res.
+                    ENDIF.
+
+******************************************************************************************
+                  ELSE.
+                    IF gs_create_sel-order_number IS NOT INITIAL.
+                      SELECT SINGLE *
+                        FROM zrmc_so_details
+                        INTO @DATA(ls_so_det_sel)
+                        WHERE aufnr = @gs_create_sel-order_number.
+                      IF ls_so_det_sel-delivery_no IS NOT INITIAL AND ls_so_det_sel-pgi_status  = 'YES'
+                        AND ls_so_det_sel-bill_no IS NOT INITIAL.
+                      ELSE.
+                        MOVE-CORRESPONDING gs_create_sel TO gs_change.
+
+                        IF gs_change-new_sale_order IS NOT INITIAL.
+                          lv_new_sale_order = |{ gs_change-new_sale_order ALPHA = IN }|.
+                          SELECT SINGLE vbeln,
+                                        kna1_sh~kunnr,
+                                        kna1_sh~name1 AS sh_name
+                                        FROM vbpa AS vbpa
+                                        INNER JOIN kna1 AS kna1_sh ON vbpa~kunnr = kna1_sh~kunnr
+                                        INTO @ls_vbpa
+                                        WHERE vbeln = @lv_new_sale_order
+                                          AND vbpa~parvw = 'WE'.
+                          IF sy-subrc = 0.
+                            lv_shp_code = ls_vbpa-kunnr.
+                            lv_shp_name = ls_vbpa-sh_name.
+
+                            SELECT SINGLE FROM kna1 AS a
+                    INNER JOIN adrc AS b ON b~addrnumber = a~adrnr
+                    FIELDS b~name_co,
+                        b~street,
+                        b~str_suppl1,
+                        b~str_suppl2,
+                        b~post_code1,
+                        b~city1
+                    WHERE a~kunnr = @ls_vbpa-kunnr
+                    INTO @lv_addr.
+
+                            addr1 = COND #( WHEN lv_addr-name_co IS NOT INITIAL THEN addr1 && lv_addr-name_co ELSE addr1 ).
+                            addr1 = COND #( WHEN lv_addr-street IS NOT INITIAL THEN addr1 && space && lv_addr-street ELSE addr1 ).
+                            addr1 = COND #( WHEN lv_addr-str_suppl1 IS NOT INITIAL THEN addr1 && space && lv_addr-str_suppl1 ELSE addr1 ).
+                            addr1 = COND #( WHEN lv_addr-str_suppl2 IS NOT INITIAL THEN addr1 && space && lv_addr-str_suppl2 ELSE addr1 ).
+                            addr1 = COND #( WHEN lv_addr-city1 IS NOT INITIAL THEN addr1 && space && lv_addr-city1 ELSE addr1 ).
+                            addr1 = COND #( WHEN lv_addr-post_code1 IS NOT INITIAL THEN addr1 && space && '-' && space && lv_addr-post_code1 ELSE addr1 ).
+                            lv_shp_address = addr1.
+                          ENDIF.
+                          SELECT SINGLE vbak~abrvw AS abrvw,
+                            tvlvt~bezei AS abrvw_bezei,
+                                 matnr
+                                 FROM vbak AS vbak
+                                 INNER JOIN vbap AS vbap ON vbak~vbeln = vbap~vbeln
+                                 INNER JOIN tvlvt AS tvlvt ON tvlvt~abrvw = vbak~abrvw AND tvlvt~spras = @sy-langu
+                                 INTO @lv_vbak
+                                 WHERE  vbak~vbeln = @lv_new_sale_order.
+                          IF sy-subrc = 0.
+                            lv_usage = lv_vbak-abrvw_bezei.
+                          ENDIF.
+                          SELECT SINGLE vbak~abrvw AS abrvw,
+                     tvlvt~bezei AS abrvw_bezei,
+                      matnr
+                     FROM vbak AS vbak
+                     INNER JOIN vbap AS vbap ON vbak~vbeln = vbap~vbeln
+                     INNER JOIN tvlvt AS tvlvt ON tvlvt~abrvw = vbak~abrvw AND tvlvt~spras = @sy-langu
+                     INTO @lv_vbak
+                     WHERE  vbak~vbeln = @lv_new_sale_order.
+                          IF sy-subrc = 0.
+                            lv_usage = lv_vbak-abrvw_bezei.
+                            SELECT SINGLE maktx FROM makt INTO @lv_maktx WHERE matnr = @lv_vbak-matnr AND spras = @sy-langu.
+                          ENDIF.
+                        ENDIF.
+
+                        gv_kwmeng = gs_change-return_quantity.
+                        gv_no  = 'X'.
+                        IF gs_change-new_sale_order IS NOT INITIAL AND
+                          gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                          gv_pop = 'X'.
+                        ENDIF.
+                        gv_dis = 'X'.
+*****************************************************************************
+
+                        IF gs_change-parent_process_ord IS NOT INITIAL
+      AND gs_change-order_number IS INITIAL.
+                          lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+                          SELECT SINGLE *
+                                 FROM afpo
+                                 INTO @ls_afpo
+                                 WHERE aufnr EQ @lv_aufnr.
+                          IF sy-subrc = 0.
+                            IF gs_change-return_quantity GT ls_afpo-pgmng.
+                              SELECT SINGLE vbeln, zzaufnr,zzvehicle_no
+                                  FROM likp INTO @ls_likp
+                                  WHERE zzaufnr = @lv_aufnr.
+                              IF sy-subrc = 0.
+                                gv_zde_tm_code = ls_likp-zzvehicle_no.
+                                SELECT SINGLE  aubel
+                                     FROM vbrp
+                                     INTO @gs_change-sales_order_prq
+                                     WHERE vgbel = @ls_likp-vbeln.
+*              gv_old_sale = gs_change-sales_order_prq.
+
+                                SELECT SINGLE a~vbelv ,a~vbeln,
+                         b~matnr , b~fkimg ,b~werks
+                         FROM vbfa AS a
+                         INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                         INTO @ls_vbfa
+                         WHERE a~vbelv = @ls_likp-vbeln
+                           AND a~vbtyp_n = 'U' .
+                                IF sy-subrc NE 0.
+                                  SELECT SINGLE a~vbelv ,a~vbeln,
+                                      b~matnr , b~fkimg ,b~werks
+                                      FROM vbfa AS a
+                                      INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                      INTO @ls_vbfa
+                                      WHERE a~vbelv = @ls_likp-vbeln
+                                        AND a~vbtyp_n = 'M'.
+                                ENDIF.
+                                IF sy-subrc = 0.
+                                  SELECT SINGLE a~*
+                                         FROM vbrp AS a
+                                   INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                  INTO @ls_vbrp_m
+                                  WHERE a~vbeln = @ls_vbfa-vbeln
+                                   AND vbtyp_ana = 'U'
+                                   AND rfbsk NE 'E'.
+                                  IF sy-subrc NE 0.
+                                    SELECT SINGLE a~*
+                                                        FROM vbrp AS a
+                                                  INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                                 INTO @ls_vbrp_m
+                                                 WHERE a~vbeln = @ls_vbfa-vbeln
+                                                  AND vbtyp_ana = 'M'
+                                                  AND fksto NE 'X'.
+                                  ENDIF.
+                                  IF sy-subrc = 0.
+                                    gv_vbeln = ls_vbfa-vbeln.
+                                    gv_matnr = ls_vbfa-matnr.
+                                    gv_werks = ls_vbfa-werks.
+*                gs_change-material = ls_vbfa-matnr.
+*                gs_change-plant = ls_vbfa-werks.
+                                    IF gs_change-new_sale_order IS NOT INITIAL.
+                                      lv_sale_new = |{ gs_change-new_sale_order ALPHA = IN }|.
+                                      SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                        WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                      IF sy-subrc = 0.
+                                        gs_change-material = ls_new_sale_order-matnr.
+                                        gs_change-plant = ls_new_sale_order-werks.
+                                      ENDIF.
+                                    ENDIF.
+                                    IF gs_change-sales_order IS NOT INITIAL.
+                                      lv_sale_new = |{ gs_change-sales_order  ALPHA = IN }|.
+                                      SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                        WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                      IF sy-subrc = 0.
+                                        gs_change-material = ls_new_sale_order-matnr.
+                                        gs_change-plant = ls_new_sale_order-werks.
+                                      ENDIF.
+                                    ENDIF.
+                                    IF gs_change-return_quantity GT ls_vbfa-fkimg.
+                                      MESSAGE 'Invoiced QTY and Return Quantity not matching'  TYPE 'E' DISPLAY LIKE 'E'.
+                                      EXIT.
+                                    ELSE.
+                                      gv_dis = 'X'.
+                                    ENDIF.
+                                  ELSE.
+                                    MESSAGE 'Invoice is not valid as Document Category not M'  TYPE 'E' DISPLAY LIKE 'E'.
+                                    EXIT.
+                                  ENDIF.
+                                ELSE.
+                                  MESSAGE 'Invoice/Delivery Challan is not created yet'  TYPE 'E' DISPLAY LIKE 'E'.
+                                  EXIT.
+                                ENDIF.
+                              ELSE.
+                                MESSAGE 'This Order is not linked with Delivery'  TYPE 'E' DISPLAY LIKE 'E'.
+                                EXIT.
+                              ENDIF.
+                            ELSE.
+*          MESSAGE 'Quantity is more than procees order QTY'  TYPE 'E' DISPLAY LIKE 'E'.
+                              MESSAGE 'Return Quantity should be more than ZERO'  TYPE 'E' DISPLAY LIKE 'E'.
+                              EXIT.
+                            ENDIF.
+                          ELSE.
+*        MESSAGE 'This Order is not Valid' TYPE 'E'.
+                            MESSAGE 'This Order is not Valid' TYPE 'E' DISPLAY LIKE 'E'.
+                            EXIT.
+                          ENDIF.
+                        ENDIF.
+                        IF gv_dis = 'X' AND gs_change-new_sale_order IS NOT INITIAL
+                        AND gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                          gv_pop = 'X'.
+                        ENDIF.
+
+                        IF gs_change-full_div_ind = 'X'.
+                          IF gs_change-full_div_qty IS INITIAL.
+                            MESSAGE 'If Full diversion indicator is ticked then Full Diversion QTY is mandatory to fill' TYPE 'E' DISPLAY LIKE 'E'.
+                            EXIT.
+                          ELSE.
+                            IF gs_change-full_div_qty GT gs_change-to_be_pro_ord_qty.
+                              MESSAGE 'Full Diversion QTY can not be greater than to be process QTY' TYPE 'E' DISPLAY LIKE 'E'.
+                              EXIT.
+                            ELSE.
+                              lv_flag_fdi = 'X'.
+                            ENDIF.
+                          ENDIF.
+                        ELSE.
+                          lv_flag_fdi = 'X'.
+                        ENDIF.
+
+                        CLEAR gv_process.
+                        IF gs_change-order_number IS NOT INITIAL.
+                          lv_aufnr_new = |{ gs_change-order_number ALPHA = IN }|.
+                          SELECT SINGLE a~aufnr AS order_number,
+                                 b~matnr AS material,
+                                 b~dwerk AS plant,
+                                 b~psmng AS quantity,
+                                 b~meins AS quantity_uom,
+                                 b~kdauf AS sales_order,
+                                 b~kdpos AS sales_order_item,
+                                 c~gstrp AS basic_start_date,
+                                 c~gltrp AS basic_end_date,
+                                 d~zztm_code,
+                                 d~zztm_reg,
+                                 d~zztm_driver,
+                                 d~zztm_mob,
+                                 d~zztm_cap,
+                                 d~zztm_uom,
+                                 d~zztm_type,
+                                 d~zzbatch_size,
+                                 d~zzbatch_uom,
+                                 d~zzmix_time,
+                                 d~zzmix_time_uom,
+                                 d~zzreturn_qty,
+                                 d~zzreturn_uom,
+                                 d~zzaufnr,
+                                 d~zzmax_tm_size,
+                                 d~zzapproved,
+                                 d~zzremark
+                                 FROM aufk AS a
+                                 INNER JOIN afpo AS b ON a~aufnr EQ b~aufnr
+                                 INNER JOIN afko AS c ON c~aufnr EQ b~aufnr
+                                 INNER JOIN zpp_rmc_ci_aufk AS d ON d~aufnr EQ b~aufnr
+                                 INTO CORRESPONDING FIELDS OF @gs_change
+                                 WHERE a~aufnr = @lv_aufnr_new.
+                          IF sy-subrc = 0.
+                            gs_change-order_type = 'ZPRC'.
+                            gv_process = lv_aufnr_new.
+                          ENDIF.
+                        ELSE.
+                          IF   gs_change-order_number IS INITIAL AND gs_change-plant IS INITIAL
+                            AND gs_change-parent_process_ord IS INITIAL.
+                            IF gs_change-material IS NOT INITIAL.
+
+                            ELSE.
+                              CLEAR gs_change.
+                            ENDIF.
+                          ENDIF.
+                        ENDIF.
+                        IF gs_change-parent_process_ord IS NOT INITIAL
+                          AND gs_change-order_number IS INITIAL.
+                          lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+                          SELECT SINGLE zztm_reg
+                                      FROM zpp_rmc_ci_aufk
+                                      INTO @gv_zde_tm_code
+                           WHERE aufnr = @lv_aufnr .
+
+                          SELECT SINGLE *
+                                 FROM afpo
+                                 INTO @ls_afpo
+                                 WHERE aufnr EQ @lv_aufnr.
+                          IF sy-subrc = 0.
+                            IF gs_change-return_quantity GT ls_afpo-pgmng.
+                              SELECT SINGLE vbeln, zzaufnr,zzvehicle_no
+                                  FROM likp INTO @ls_likp
+                                  WHERE zzaufnr = @lv_aufnr.
+                              IF sy-subrc = 0.
+                                gv_zde_tm_code = ls_likp-zzvehicle_no.
+                                SELECT SINGLE  aubel
+                                     FROM vbrp
+                                     INTO @gs_change-sales_order_prq
+                                     WHERE vgbel = @ls_likp-vbeln.
+*              gv_old_sale = gs_change-sales_order_prq.
+
+                                gv_new_vbeln = ls_likp-vbeln.
+*                 SELECT
+                                SELECT SINGLE a~vbelv ,a~vbeln,
+                                    b~matnr , b~fkimg ,b~werks
+                                    FROM vbfa AS a
+                                    INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                    INTO @ls_vbfa
+                                    WHERE a~vbelv = @ls_likp-vbeln
+                                      AND a~vbtyp_n = 'U' .
+                                IF sy-subrc NE 0.
+                                  SELECT SINGLE a~vbelv ,a~vbeln,
+                                                  b~matnr , b~fkimg ,b~werks
+                                                  FROM vbfa AS a
+                                                  INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                                  INTO @ls_vbfa
+                                                  WHERE a~vbelv = @ls_likp-vbeln
+                                                    AND a~vbtyp_n = 'M'.
+                                ENDIF.
+                                IF sy-subrc = 0.
+
+                                  SELECT SINGLE a~*
+                                         FROM vbrp AS a
+                                    INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                  INTO @ls_vbrp_m
+                                  WHERE a~vbeln = @ls_vbfa-vbeln
+                                   AND vbtyp_ana = 'U'
+                                    AND rfbsk NE 'E'.
+                                  IF sy-subrc NE 0.
+                                    SELECT SINGLE a~*
+                                           FROM vbrp AS a
+                                      INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                    INTO @ls_vbrp_m
+                                    WHERE a~vbeln = @ls_vbfa-vbeln
+                                     AND vbtyp_ana = 'M'
+                                     AND fksto NE 'X'.
+                                  ENDIF.
+                                  IF sy-subrc = 0.
+                                    gv_vbeln = ls_vbfa-vbeln.
+                                    gv_vbtyp = ls_vbrp_m-vbtyp_ana.
+                                    gv_new_bill  = ls_vbfa-vbeln.
+                                    gv_matnr = ls_vbfa-matnr.
+                                    gv_werks = ls_vbfa-werks.
+                                    IF gs_change-new_sale_order IS NOT INITIAL.
+                                      lv_sale_new = |{ gs_change-new_sale_order ALPHA = IN }|.
+                                      SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                        WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                      IF sy-subrc = 0.
+                                        gs_change-material = ls_new_sale_order-matnr.
+                                        gs_change-plant = ls_new_sale_order-werks.
+                                      ENDIF.
+                                    ENDIF.
+*                  SALES_ORDER
+                                    IF gs_change-sales_order IS NOT INITIAL.
+                                      lv_sale_new = |{ gs_change-sales_order ALPHA = IN }|.
+                                      SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                        WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                      IF sy-subrc = 0.
+                                        gs_change-material = ls_new_sale_order-matnr.
+                                        gs_change-plant = ls_new_sale_order-werks.
+                                      ENDIF.
+                                    ENDIF.
+
+                                    IF gs_change-return_quantity GT ls_vbfa-fkimg.
+                                      MESSAGE 'Invoiced QTY and Return Quantity not matching' TYPE 'W' DISPLAY LIKE 'E'.
+                                      EXIT.
+                                    ELSE.
+                                      gv_dis = 'X'.
+                                    ENDIF.
+                                  ELSE.
+                                    MESSAGE 'Invoice is not valid as Document Category not M Or U' TYPE 'W' DISPLAY LIKE 'E'.
+                                    EXIT.
+                                  ENDIF.
+                                ELSE.
+                                  MESSAGE 'Invoice/Delivery Challan is not created yet' TYPE 'W' DISPLAY LIKE 'E'.
+                                  EXIT.
+                                ENDIF.
+                              ELSE.
+                                MESSAGE 'This Order is not linked with Delivery' TYPE 'W' DISPLAY LIKE 'E'.
+                                EXIT.
+                              ENDIF.
+                            ELSE.
+                              MESSAGE 'Quantity is more than procees order QTY' TYPE 'W' DISPLAY LIKE 'E'.
+                              EXIT.
+                            ENDIF.
+                          ELSE.
+                            MESSAGE 'This Order is not Valid' TYPE 'W' DISPLAY LIKE 'E'.
+                            EXIT.
+                          ENDIF.
+                        ENDIF.
+                        IF gs_change-zdiversion_no IS NOT INITIAL.
+                          gv_no = 'X'.
+                        ENDIF.
+*      IF gs_change-mat_doc is INITIAL.
+*      CLEAR gv_dis.
+*      ENDIF.
+                        IF gv_dis = 'X' AND gs_change-new_sale_order IS NOT INITIAL
+                        AND gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                          gv_pop = 'X'.
+                          CLEAR gv_res.
+                        ENDIF.
+*****************************************************************************
+                      ENDIF.
+                    ENDIF.
+                  ENDIF.
+                ELSE.
+                  IF gs_create_sel-order_number IS INITIAL.
+                    MOVE-CORRESPONDING gs_create_sel TO gs_change.
+                    IF gs_change-new_sale_order IS NOT INITIAL.
+                      lv_new_sale_order = |{ gs_change-new_sale_order ALPHA = IN }|.
+                      SELECT SINGLE vbeln,
+                                    kna1_sh~kunnr,
+                                    kna1_sh~name1 AS sh_name
+                                    FROM vbpa AS vbpa
+                                    INNER JOIN kna1 AS kna1_sh ON vbpa~kunnr = kna1_sh~kunnr
+                                    INTO @ls_vbpa
+                                    WHERE vbeln = @lv_new_sale_order
+                                      AND vbpa~parvw = 'WE'.
+                      IF sy-subrc = 0.
+                        lv_shp_code = ls_vbpa-kunnr.
+                        lv_shp_name = ls_vbpa-sh_name.
+
+                        SELECT SINGLE FROM kna1 AS a
+                INNER JOIN adrc AS b ON b~addrnumber = a~adrnr
+                FIELDS b~name_co,
+                    b~street,
+                    b~str_suppl1,
+                    b~str_suppl2,
+                    b~post_code1,
+                    b~city1
+                WHERE a~kunnr = @ls_vbpa-kunnr
+                INTO @lv_addr.
+
+                        addr1 = COND #( WHEN lv_addr-name_co IS NOT INITIAL THEN addr1 && lv_addr-name_co ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-street IS NOT INITIAL THEN addr1 && space && lv_addr-street ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-str_suppl1 IS NOT INITIAL THEN addr1 && space && lv_addr-str_suppl1 ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-str_suppl2 IS NOT INITIAL THEN addr1 && space && lv_addr-str_suppl2 ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-city1 IS NOT INITIAL THEN addr1 && space && lv_addr-city1 ELSE addr1 ).
+                        addr1 = COND #( WHEN lv_addr-post_code1 IS NOT INITIAL THEN addr1 && space && '-' && space && lv_addr-post_code1 ELSE addr1 ).
+                        lv_shp_address = addr1.
+                      ENDIF.
+                      SELECT SINGLE vbak~abrvw AS abrvw,
+                        tvlvt~bezei AS abrvw_bezei,
+                             matnr
+                             FROM vbak AS vbak
+                             INNER JOIN vbap AS vbap ON vbak~vbeln = vbap~vbeln
+                             INNER JOIN tvlvt AS tvlvt ON tvlvt~abrvw = vbak~abrvw AND tvlvt~spras = @sy-langu
+                             INTO @lv_vbak
+                             WHERE  vbak~vbeln = @lv_new_sale_order.
+                      IF sy-subrc = 0.
+                        lv_usage = lv_vbak-abrvw_bezei.
+                      ENDIF.
+                      SELECT SINGLE vbak~abrvw AS abrvw,
+                 tvlvt~bezei AS abrvw_bezei,
+                  matnr
+                 FROM vbak AS vbak
+                 INNER JOIN vbap AS vbap ON vbak~vbeln = vbap~vbeln
+                 INNER JOIN tvlvt AS tvlvt ON tvlvt~abrvw = vbak~abrvw AND tvlvt~spras = @sy-langu
+                 INTO @lv_vbak
+                 WHERE  vbak~vbeln = @lv_new_sale_order.
+                      IF sy-subrc = 0.
+                        lv_usage = lv_vbak-abrvw_bezei.
+                        SELECT SINGLE maktx FROM makt INTO @lv_maktx WHERE matnr = @lv_vbak-matnr AND spras = @sy-langu.
+                      ENDIF.
+                    ENDIF.
+
+                    gv_no  = 'X'.
+                    IF gs_change-new_sale_order IS NOT INITIAL AND
+                      gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                      gv_pop = 'X'.
+                    ENDIF.
+                    gv_dis = 'X'.
+*******************************************************************************
+
+                    IF gs_change-parent_process_ord IS NOT INITIAL
+  AND gs_change-order_number IS INITIAL.
+                      lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+                      SELECT SINGLE *
+                             FROM afpo
+                             INTO @ls_afpo
+                             WHERE aufnr EQ @lv_aufnr.
+                      IF sy-subrc = 0.
+                        IF gs_change-return_quantity GT ls_afpo-pgmng.
+                          SELECT SINGLE vbeln, zzaufnr,zzvehicle_no
+                              FROM likp INTO @ls_likp
+                              WHERE zzaufnr = @lv_aufnr.
+                          IF sy-subrc = 0.
+                            gv_zde_tm_code = ls_likp-zzvehicle_no.
+                            SELECT SINGLE  aubel
+                                 FROM vbrp
+                                 INTO @gs_change-sales_order_prq
+                                 WHERE vgbel = @ls_likp-vbeln.
+*              gv_old_sale = gs_change-sales_order_prq.
+
+                            SELECT SINGLE a~vbelv ,a~vbeln,
+                     b~matnr , b~fkimg ,b~werks
+                     FROM vbfa AS a
+                     INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                     INTO @ls_vbfa
+                     WHERE a~vbelv = @ls_likp-vbeln
+                       AND a~vbtyp_n = 'U' .
+                            IF sy-subrc NE 0.
+                              SELECT SINGLE a~vbelv ,a~vbeln,
+                                  b~matnr , b~fkimg ,b~werks
+                                  FROM vbfa AS a
+                                  INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                  INTO @ls_vbfa
+                                  WHERE a~vbelv = @ls_likp-vbeln
+                                    AND a~vbtyp_n = 'M'.
+                            ENDIF.
+                            IF sy-subrc = 0.
+                              SELECT SINGLE a~*
+                                     FROM vbrp AS a
+                               INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                              INTO @ls_vbrp_m
+                              WHERE a~vbeln = @ls_vbfa-vbeln
+                               AND vbtyp_ana = 'U'
+                               AND rfbsk NE 'E'.
+                              IF sy-subrc NE 0.
+                                SELECT SINGLE a~*
+                                                    FROM vbrp AS a
+                                              INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                             INTO @ls_vbrp_m
+                                             WHERE a~vbeln = @ls_vbfa-vbeln
+                                              AND vbtyp_ana = 'M'
+                                              AND fksto NE 'X'.
+                              ENDIF.
+                              IF sy-subrc = 0.
+                                gv_vbeln = ls_vbfa-vbeln.
+                                gv_matnr = ls_vbfa-matnr.
+                                gv_werks = ls_vbfa-werks.
+*                gs_change-material = ls_vbfa-matnr.
+*                gs_change-plant = ls_vbfa-werks.
+                                IF gs_change-new_sale_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-new_sale_order ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+                                IF gs_change-sales_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-sales_order  ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+                                IF gs_change-return_quantity GT ls_vbfa-fkimg.
+                                  MESSAGE 'Invoiced QTY and Return Quantity not matching'  TYPE 'E' DISPLAY LIKE 'E'.
+                                  EXIT.
+                                ELSE.
+                                  gv_dis = 'X'.
+                                ENDIF.
+                              ELSE.
+                                MESSAGE 'Invoice is not valid as Document Category not M'  TYPE 'E' DISPLAY LIKE 'E'.
+                                EXIT.
+                              ENDIF.
+                            ELSE.
+                              MESSAGE 'Invoice/Delivery Challan is not created yet'  TYPE 'E' DISPLAY LIKE 'E'.
+                              EXIT.
+                            ENDIF.
+                          ELSE.
+                            MESSAGE 'This Order is not linked with Delivery'  TYPE 'E' DISPLAY LIKE 'E'.
+                            EXIT.
+                          ENDIF.
+                        ELSE.
+*          MESSAGE 'Quantity is more than procees order QTY'  TYPE 'E' DISPLAY LIKE 'E'.
+                          MESSAGE 'Return Quantity should be more than ZERO'  TYPE 'E' DISPLAY LIKE 'E'.
+                          EXIT.
+                        ENDIF.
+                      ELSE.
+*        MESSAGE 'This Order is not Valid' TYPE 'E'.
+                        MESSAGE 'This Order is not Valid' TYPE 'E' DISPLAY LIKE 'E'.
+                        EXIT.
+                      ENDIF.
+                    ENDIF.
+                    IF gv_dis = 'X' AND gs_change-new_sale_order IS NOT INITIAL
+                    AND gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                      gv_pop = 'X'.
+                    ENDIF.
+
+                    IF gs_change-full_div_ind = 'X'.
+                      IF gs_change-full_div_qty IS INITIAL.
+                        MESSAGE 'If Full diversion indicator is ticked then Full Diversion QTY is mandatory to fill' TYPE 'E' DISPLAY LIKE 'E'.
+                        EXIT.
+                      ELSE.
+                        IF gs_change-full_div_qty GT gs_change-to_be_pro_ord_qty.
+                          MESSAGE 'Full Diversion QTY can not be greater than to be process QTY' TYPE 'E' DISPLAY LIKE 'E'.
+                          EXIT.
+                        ELSE.
+                          lv_flag_fdi = 'X'.
+                        ENDIF.
+                      ENDIF.
+                    ELSE.
+                      lv_flag_fdi = 'X'.
+                    ENDIF.
+
+                    CLEAR gv_process.
+                    IF gs_change-order_number IS NOT INITIAL.
+                      lv_aufnr_new = |{ gs_change-order_number ALPHA = IN }|.
+                      SELECT SINGLE a~aufnr AS order_number,
+                             b~matnr AS material,
+                             b~dwerk AS plant,
+                             b~psmng AS quantity,
+                             b~meins AS quantity_uom,
+                             b~kdauf AS sales_order,
+                             b~kdpos AS sales_order_item,
+                             c~gstrp AS basic_start_date,
+                             c~gltrp AS basic_end_date,
+                             d~zztm_code,
+                             d~zztm_reg,
+                             d~zztm_driver,
+                             d~zztm_mob,
+                             d~zztm_cap,
+                             d~zztm_uom,
+                             d~zztm_type,
+                             d~zzbatch_size,
+                             d~zzbatch_uom,
+                             d~zzmix_time,
+                             d~zzmix_time_uom,
+                             d~zzreturn_qty,
+                             d~zzreturn_uom,
+                             d~zzaufnr,
+                             d~zzmax_tm_size,
+                             d~zzapproved,
+                             d~zzremark
+                             FROM aufk AS a
+                             INNER JOIN afpo AS b ON a~aufnr EQ b~aufnr
+                             INNER JOIN afko AS c ON c~aufnr EQ b~aufnr
+                             INNER JOIN zpp_rmc_ci_aufk AS d ON d~aufnr EQ b~aufnr
+                             INTO CORRESPONDING FIELDS OF @gs_change
+                             WHERE a~aufnr = @lv_aufnr_new.
+                      IF sy-subrc = 0.
+                        gs_change-order_type = 'ZPRC'.
+                        gv_process = lv_aufnr_new.
+                      ENDIF.
+                    ELSE.
+                      IF   gs_change-order_number IS INITIAL AND gs_change-plant IS INITIAL
+                        AND gs_change-parent_process_ord IS INITIAL.
+                        IF gs_change-material IS NOT INITIAL.
+
+                        ELSE.
+                          CLEAR gs_change.
+                        ENDIF.
+                      ENDIF.
+                    ENDIF.
+                    IF gs_change-parent_process_ord IS NOT INITIAL
+                      AND gs_change-order_number IS INITIAL.
+                      lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+                      SELECT SINGLE zztm_reg
+                                  FROM zpp_rmc_ci_aufk
+                                  INTO @gv_zde_tm_code
+                       WHERE aufnr = @lv_aufnr .
+
+                      SELECT SINGLE *
+                             FROM afpo
+                             INTO @ls_afpo
+                             WHERE aufnr EQ @lv_aufnr.
+                      IF sy-subrc = 0.
+                        IF gs_change-return_quantity GT ls_afpo-pgmng.
+                          SELECT SINGLE vbeln, zzaufnr,zzvehicle_no
+                              FROM likp INTO @ls_likp
+                              WHERE zzaufnr = @lv_aufnr.
+                          IF sy-subrc = 0.
+                            gv_zde_tm_code = ls_likp-zzvehicle_no.
+                            SELECT SINGLE  aubel
+                                 FROM vbrp
+                                 INTO @gs_change-sales_order_prq
+                                 WHERE vgbel = @ls_likp-vbeln.
+*              gv_old_sale = gs_change-sales_order_prq.
+
+                            gv_new_vbeln = ls_likp-vbeln.
+*                 SELECT
+                            SELECT SINGLE a~vbelv ,a~vbeln,
+                                b~matnr , b~fkimg ,b~werks
+                                FROM vbfa AS a
+                                INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                INTO @ls_vbfa
+                                WHERE a~vbelv = @ls_likp-vbeln
+                                  AND a~vbtyp_n = 'U' .
+                            IF sy-subrc NE 0.
+                              SELECT SINGLE a~vbelv ,a~vbeln,
+                                              b~matnr , b~fkimg ,b~werks
+                                              FROM vbfa AS a
+                                              INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                              INTO @ls_vbfa
+                                              WHERE a~vbelv = @ls_likp-vbeln
+                                                AND a~vbtyp_n = 'M'.
+                            ENDIF.
+                            IF sy-subrc = 0.
+
+                              SELECT SINGLE a~*
+                                     FROM vbrp AS a
+                                INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                              INTO @ls_vbrp_m
+                              WHERE a~vbeln = @ls_vbfa-vbeln
+                               AND vbtyp_ana = 'U'
+                                AND rfbsk NE 'E'.
+                              IF sy-subrc NE 0.
+                                SELECT SINGLE a~*
+                                       FROM vbrp AS a
+                                  INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                                INTO @ls_vbrp_m
+                                WHERE a~vbeln = @ls_vbfa-vbeln
+                                 AND vbtyp_ana = 'M'
+                                 AND fksto NE 'X'.
+                              ENDIF.
+                              IF sy-subrc = 0.
+                                gv_vbeln = ls_vbfa-vbeln.
+                                gv_vbtyp = ls_vbrp_m-vbtyp_ana.
+                                gv_new_bill  = ls_vbfa-vbeln.
+                                gv_matnr = ls_vbfa-matnr.
+                                gv_werks = ls_vbfa-werks.
+                                IF gs_change-new_sale_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-new_sale_order ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+*                  SALES_ORDER
+                                IF gs_change-sales_order IS NOT INITIAL.
+                                  lv_sale_new = |{ gs_change-sales_order ALPHA = IN }|.
+                                  SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                                    WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                                  IF sy-subrc = 0.
+                                    gs_change-material = ls_new_sale_order-matnr.
+                                    gs_change-plant = ls_new_sale_order-werks.
+                                  ENDIF.
+                                ENDIF.
+
+                                IF gs_change-return_quantity GT ls_vbfa-fkimg.
+                                  MESSAGE 'Invoiced QTY and Return Quantity not matching' TYPE 'W' DISPLAY LIKE 'E'.
+                                  EXIT.
+                                ELSE.
+                                  gv_dis = 'X'.
+                                ENDIF.
+                              ELSE.
+                                MESSAGE 'Invoice is not valid as Document Category not M Or U' TYPE 'W' DISPLAY LIKE 'E'.
+                                EXIT.
+                              ENDIF.
+                            ELSE.
+                              MESSAGE 'Invoice/Delivery Challan is not created yet' TYPE 'W' DISPLAY LIKE 'E'.
+                              EXIT.
+                            ENDIF.
+                          ELSE.
+                            MESSAGE 'This Order is not linked with Delivery' TYPE 'W' DISPLAY LIKE 'E'.
+                            EXIT.
+                          ENDIF.
+                        ELSE.
+                          MESSAGE 'Quantity is more than procees order QTY' TYPE 'W' DISPLAY LIKE 'E'.
+                          EXIT.
+                        ENDIF.
+                      ELSE.
+                        MESSAGE 'This Order is not Valid' TYPE 'W' DISPLAY LIKE 'E'.
+                        EXIT.
+                      ENDIF.
+                    ENDIF.
+                    IF gs_change-zdiversion_no IS NOT INITIAL.
+                      gv_no = 'X'.
+                    ENDIF.
+*      IF gs_change-mat_doc is INITIAL.
+*      CLEAR gv_dis.
+*      ENDIF.
+                    IF gv_dis = 'X' AND gs_change-new_sale_order IS NOT INITIAL
+                    AND gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+                      gv_pop = 'X'.
+                      CLEAR gv_res.
+                    ENDIF.
+*******************************************************************************
+
+                  ENDIF.
+                ENDIF.
+              ELSE.
+                MESSAGE 'You can not select more than one Task ID' TYPE 'W' DISPLAY LIKE 'E'.
+                CLEAR r_open_task.
+                r_create_task = 'X'.
+              ENDIF.
+            ENDIF.
+          ELSE.
+            MESSAGE 'No Task ID Found' TYPE 'W' DISPLAY LIKE 'E'.
+            CLEAR r_open_task.
+            r_create_task = 'X'.
+          ENDIF.
+        ELSE.
+          MESSAGE 'You are not Authorized any plant for open task today' TYPE 'W' DISPLAY LIKE 'E'.
+          CLEAR r_open_task.
+          r_create_task = 'X'.
+        ENDIF.
+*        ENDIF.
+      ENDIF.
+    WHEN 'RETRIGGER'.
+      IF  r_snpo EQ 'GWOP'.
+        MESSAGE 'Use Process Order Change for Full Diversion case' TYPE 'W' DISPLAY LIKE 'E'.
+      ELSE.
+        IF gs_change-order_number IS NOT INITIAL.
+          IF gs_change-full_div_ind = ' '.
+            MESSAGE 'Use Process Order Created with Full Diversion case will process here' TYPE 'W' DISPLAY LIKE 'E'.
+          ELSE.
+            DATA zcl_rmc_batcher TYPE REF TO zcl_rmc_batcher.
+            CREATE OBJECT zcl_rmc_batcher.
+            DATA rt_bdcmsg TYPE trty_bdcmsgcoll.
+
+            CALL METHOD zcl_rmc_batcher->process_order_confirmation
+              EXPORTING
+                im_aufnr  = gs_change-order_number
+                im_qty    = gs_change-quantity
+                im_mode   = 'D'
+                im_conf   = 'DIV'
+              IMPORTING
+*               ex_bdcdata =
+                rt_bdcmsg = rt_bdcmsg.
+
+            CLEAR it_logs.
+
+            SELECT SINGLE *
+               FROM zrmc_so_details
+               INTO @ls_so_details
+               WHERE aufnr = @gs_change-order_number.
+
+            IF sy-subrc NE 0 .
+              ls_logs-field = |Order No: | && gs_change-order_number.
+              ls_logs-mesg = |Delivery Is not Created | && gs_change-order_number.
+              ls_logs-status = 'Error'.
+              ls_logs-icon =  '@0A@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+
+            ELSE.
+              IF ls_so_details-delivery_no IS NOT INITIAL.
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = |Delivery is created: | && ls_so_details-delivery_no.
+                ls_logs-status = 'Success'.
+                ls_logs-icon = '@08@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+
+              ELSE.
+
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = ls_so_details-delivery_error.
+                ls_logs-status = 'Error'.
+                ls_logs-icon =  '@0A@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+
+              ENDIF.
+              IF ls_so_details-del_change_status = 'YES'.
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = |Delivery Is Changed  | && ls_so_details-delivery_no.
+                ls_logs-status = 'Success'.
+                ls_logs-icon = '@08@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+              ELSE.
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = ls_so_details-delivery_c_error.
+                ls_logs-status = 'Error'.
+                ls_logs-icon =  '@0A@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+              ENDIF.
+              IF ls_so_details-pgi_status = 'YES'.
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = |PGI Status is Changed  | && ls_so_details-delivery_no.
+                ls_logs-status = 'Success'.
+                ls_logs-icon = '@08@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+              ELSE.
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = ls_so_details-pgi_error.
+                ls_logs-status = 'Error'.
+                ls_logs-icon =  '@0A@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+              ENDIF.
+              IF ls_so_details-bill_no IS NOT INITIAL.
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = |Bill Created  | && ls_so_details-bill_no .
+                ls_logs-status = 'Success'.
+                ls_logs-icon = '@08@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+              ELSE.
+                ls_logs-field = |Order No: | && gs_change-order_number.
+                ls_logs-mesg = ls_so_details-bill_error.
+                ls_logs-status = 'Error'.
+                ls_logs-icon =  '@0A@'.
+                APPEND ls_logs TO it_logs.
+                CLEAR: ls_logs.
+              ENDIF.
+            ENDIF.
+
+            IF it_logs IS NOT INITIAL.
+              CALL SCREEN '9001'.
+            ENDIF.
+            CLEAR it_logs.
+
+          ENDIF.
+        ELSE.
+          MESSAGE 'Please Create Process Order and try again(Only for Full Diversion case)' TYPE 'W' DISPLAY LIKE 'E'.
+        ENDIF.
+      ENDIF.
+    WHEN 'FDC'.
+      r_fdc = 'FDC'.
+      IF gs_change-full_div_ind IS NOT INITIAL.
+        LOOP AT SCREEN.
+          IF screen-group4 = 'FDC'.
+            screen-input  = '1'.
+            screen-active = '1'.
+            screen-output = '0'.
+            screen-invisible = '0'.
+          ENDIF.
+          MODIFY SCREEN.
+        ENDLOOP.
+      ELSE.
+        r_fdc = ' '.
+        CLEAR gs_change-full_div_qty.
+        LOOP AT SCREEN.
+          IF screen-group4 = 'FDC'.
+            screen-input  = '0'.
+            screen-active = '0'.
+            screen-output = '0'.
+            screen-invisible = '1'.
+          ENDIF.
+          MODIFY SCREEN.
+        ENDLOOP.
+      ENDIF.
+      CLEAR sy-ucomm.
+
+    WHEN 'PNO'.
+      CLEAR it_logs.
+      DATA(ls_order) = VALUE bapi_pi_order_create( ).
+      DATA(ls_seasn) = VALUE bapi_rfm_s_season( ).
+      DATA ls_ret          TYPE bapiret2.
+      DATA(lv_order) = VALUE bapi_order_key-order_number( ).
+      DATA(lv_otype) = VALUE bapi_order_copy-order_type( ).
+*      DATA ls_ci_aufk TYPE ci_aufk.
+
+      ls_order-order_type            = 'ZPRC'.
+      ls_order-basic_start_date      = gs_change-basic_start_date .
+      lv_matnr = |{ gs_change-material ALPHA = IN }|.
+      lv_sale = |{ gs_change-sales_order ALPHA = IN }|.
+      DATA(lv_sitem) = |{ gs_change-sales_order_item ALPHA = IN }|.
+      SELECT SINGLE verid FROM mkal INTO @ls_order-prod_version
+             WHERE matnr = @lv_matnr
+               AND werks = @gs_change-plant
+               AND bdatu GE @sy-datum
+               AND adatu LE @sy-datum.
+      ls_order-material = lv_matnr.
+      ls_order-plant = gs_change-plant.
+      ls_order-basic_end_date        = gs_change-basic_end_date.
+      ls_order-quantity              = gs_change-quantity.
+      ls_order-basic_scheduling_type = '3'.
+      ls_order-sales_order = lv_sale.
+      IF  lv_sale IS NOT INITIAL.
+        ls_order-sales_order_item = lv_sitem.
+      ENDIF.
+      ls_order-basic_start_time      = sy-uzeit.
+      ls_order-basic_end_time        = sy-uzeit.
+**    CI_AUFK
+*      FREE MEMORY ID :'ZCI_AUFK','ZCI_AUFK_S'.
+*      MOVE-CORRESPONDING gs_change TO ls_ci_aufk.
+*      EXPORT ls_ci_aufk  TO MEMORY ID 'ZCI_AUFK'.
+*      EXPORT ls_ci_aufk  TO MEMORY ID 'ZCI_AUFK_S'.
+      CLEAR :it_logs,ls_ret,lt_bapi_orderrelease, lt_bapi_relreasereturn.
+      DATA zpp_rmc_ci_aufk TYPE zpp_rmc_ci_aufk.
+      CLEAR zpp_rmc_ci_aufk.
+      MOVE-CORRESPONDING gs_change TO zpp_rmc_ci_aufk.
+      FREE MEMORY ID :'ZPP_RMC_CI_AUFK'.
+      EXPORT zpp_rmc_ci_aufk FROM zpp_rmc_ci_aufk TO MEMORY ID 'ZPP_RMC_CI_AUFK'.
+*        CLEAR ls_zpp_rmc_ci_aufk.
+*        MOVE-CORRESPONDING gs_change TO ls_zpp_rmc_ci_aufk.
+*        ls_zpp_rmc_ci_aufk = lv_order.
+*        MODIFY zpp_rmc_ci_aufk FROM ls_zpp_rmc_ci_aufk.
+*        CLEAR ls_zpp_rmc_ci_aufk.
+
+      SET UPDATE TASK LOCAL.
+      CALL FUNCTION 'BAPI_PROCORD_CREATE'
+        EXPORTING
+          orderdata       = ls_order
+          orderseasondata = ls_seasn
+        IMPORTING
+          return          = ls_ret
+          order_number    = lv_order
+          order_type      = lv_otype.
+
+      IF lv_order IS NOT INITIAL.
+        gv_aufnr = lv_order.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = abap_true.
+        IF gs_change-zdiversion_no IS NOT INITIAL AND r_ucomm IS NOT INITIAL.
+          gs_change-order_number = lv_order.
+          MODIFY zppt_diversion FROM gs_change.
+        ENDIF.
+*        DATA ls_zpp_rmc_ci_aufk TYPE zpp_rmc_ci_aufk.
+*        CLEAR ls_zpp_rmc_ci_aufk.
+*        MOVE-CORRESPONDING gs_change TO ls_zpp_rmc_ci_aufk.
+*        ls_zpp_rmc_ci_aufk = lv_order.
+*        MODIFY zpp_rmc_ci_aufk FROM ls_zpp_rmc_ci_aufk.
+*        CLEAR ls_zpp_rmc_ci_aufk.
+        CALL FUNCTION 'C14Z_WAIT_N_SECONDS'
+          EXPORTING
+            i_no_of_seconds = 1.
+
+        ls_logs-field = |Order No: | && lv_order.
+        ls_logs-mesg = |Process Order has been created: | && lv_order.
+        ls_logs-status = 'Success'.
+        ls_logs-icon = '@08@'.
+        APPEND ls_logs TO it_logs.
+        CLEAR: ls_logs.
+
+        IF gs_change-full_div_ind = 'X'.
+
+          CREATE OBJECT zcl_rmc_batcher.
+
+          CALL METHOD zcl_rmc_batcher->process_order_confirmation
+            EXPORTING
+              im_aufnr  = lv_order
+              im_qty    = gs_change-quantity
+              im_mode   = 'D'
+              im_conf   = 'DIV'
+            IMPORTING
+*             ex_bdcdata =
+              rt_bdcmsg = rt_bdcmsg.
+
+
+          SELECT SINGLE *
+            FROM zrmc_so_details
+            INTO @ls_so_details
+            WHERE aufnr = @lv_order.
+
+          IF sy-subrc NE 0 .
+            ls_logs-field = |Order No: | && lv_order.
+            ls_logs-mesg = |Delivery Is not Created | && lv_order.
+            ls_logs-status = 'Error'.
+            ls_logs-icon =  '@0A@'.
+            APPEND ls_logs TO it_logs.
+            CLEAR: ls_logs.
+
+          ELSE.
+            IF ls_so_details-delivery_no IS NOT INITIAL.
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = |Delivery is created: | && ls_so_details-delivery_no.
+              ls_logs-status = 'Success'.
+              ls_logs-icon = '@08@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+
+            ELSE.
+
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = ls_so_details-delivery_error.
+              ls_logs-status = 'Error'.
+              ls_logs-icon =  '@0A@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+
+            ENDIF.
+            IF ls_so_details-del_change_status = 'YES'.
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = |Delivery Is Changed  | && ls_so_details-delivery_no.
+              ls_logs-status = 'Success'.
+              ls_logs-icon = '@08@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+            ELSE.
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = ls_so_details-delivery_c_error.
+              ls_logs-status = 'Error'.
+              ls_logs-icon =  '@0A@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+            ENDIF.
+            IF ls_so_details-pgi_status = 'YES'.
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = |PGI Status is Changed  | && ls_so_details-delivery_no.
+              ls_logs-status = 'Success'.
+              ls_logs-icon = '@08@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+            ELSE.
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = ls_so_details-pgi_error.
+              ls_logs-status = 'Error'.
+              ls_logs-icon =  '@0A@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+            ENDIF.
+            IF ls_so_details-bill_no IS NOT INITIAL.
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = |Bill Created  | && ls_so_details-bill_no .
+              ls_logs-status = 'Success'.
+              ls_logs-icon = '@08@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+            ELSE.
+              ls_logs-field = |Order No: | && lv_order.
+              ls_logs-mesg = ls_so_details-bill_error.
+              ls_logs-status = 'Error'.
+              ls_logs-icon =  '@0A@'.
+              APPEND ls_logs TO it_logs.
+              CLEAR: ls_logs.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+
+*****************************************************
+        lt_ord = VALUE #( ( order_number = lv_order ) ).
+        REFRESH : lt_det[],lt_app[].
+
+        CALL FUNCTION 'C14Z_WAIT_N_SECONDS'
+          EXPORTING
+            i_no_of_seconds = 1.
+*            i_no_of_seconds = 5.
+**        WAIT UP TO 5 SECONDS.
+
+        ls_bapi_orderrelease-order_number = lv_order.
+        APPEND ls_bapi_orderrelease TO lt_bapi_orderrelease.
+        CALL FUNCTION 'BAPI_PROCORD_RELEASE'
+          TABLES
+            orders        = lt_bapi_orderrelease
+            detail_return = lt_bapi_relreasereturn.
+
+
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = abap_true.
+
+        LOOP AT lt_bapi_relreasereturn INTO DATA(ls_rel).
+          ls_logs-field = |Order No: | && lv_order.
+          ls_logs-mesg = ls_rel-message.
+          IF ls_rel-type = 'I'.
+            ls_logs-status = 'Information'.
+            ls_logs-icon = '@09@'.
+          ELSEIF ls_rel-type = 'W'.
+            ls_logs-status = 'Warning'.
+            ls_logs-icon = '@09@'.
+          ELSEIF ls_rel-type = 'E'.
+            ls_logs-status = 'Error'.
+            ls_logs-icon = '@0A@'.
+          ELSE.
+            ls_logs-icon = '@08@'.
+            ls_logs-status = 'Success'.
+          ENDIF.
+          APPEND ls_logs TO it_logs.
+          CLEAR: ls_logs.
+        ENDLOOP.
+*          ls_logs-field = |Order No: | && lv_order.
+*          ls_logs-value = ''.
+*          ls_logs-mesg = |Successfully & released: | && lv_order.
+*          ls_logs-status = 'Success'.
+*          APPEND ls_logs TO it_logs.
+*          CLEAR: ls_logs.
+
+
+***********************************************
+**  WAIT FOR 5
+
+***********************************************
+
+        FREE MEMORY ID'ZCI_AUFK_S'.
+        FREE MEMORY ID 'ZCI_AUFK'.
+
+        CALL FUNCTION 'C14Z_WAIT_N_SECONDS'
+          EXPORTING
+            i_no_of_seconds = 2.
+
+        CLEAR gs_change.
+
+      ELSE.
+        CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+        ls_logs-field = 'Order'.
+        ls_logs-mesg =  ls_ret-message.
+        ls_logs-status = 'Error'.
+        ls_logs-icon = '@0A@'. "Error
+        APPEND ls_logs TO it_logs.
+        CLEAR: ls_logs.
+      ENDIF.
+
+      IF it_logs IS NOT INITIAL.
+        CALL SCREEN '9001'.
+      ENDIF.
+      CLEAR it_logs.
+
+    WHEN ''.
+      CLEAR gv_process.
+      IF gs_change-order_number IS NOT INITIAL.
+        lv_aufnr_new = |{ gs_change-order_number ALPHA = IN }|.
+        SELECT SINGLE a~aufnr AS order_number,
+               b~matnr AS material,
+               b~dwerk AS plant,
+               b~psmng AS quantity,
+               b~meins AS quantity_uom,
+               b~kdauf AS sales_order,
+               b~kdpos AS sales_order_item,
+               c~gstrp AS basic_start_date,
+               c~gltrp AS basic_end_date,
+               d~zztm_code,
+               d~zztm_reg,
+               d~zztm_driver,
+               d~zztm_mob,
+               d~zztm_cap,
+               d~zztm_uom,
+               d~zztm_type,
+               d~zzbatch_size,
+               d~zzbatch_uom,
+               d~zzmix_time,
+               d~zzmix_time_uom,
+               d~zzreturn_qty,
+               d~zzreturn_uom,
+               d~zzaufnr,
+               d~zzmax_tm_size,
+               d~zzapproved,
+               d~zzremark
+               FROM aufk AS a
+               INNER JOIN afpo AS b ON a~aufnr EQ b~aufnr
+               INNER JOIN afko AS c ON c~aufnr EQ b~aufnr
+               INNER JOIN zpp_rmc_ci_aufk AS d ON d~aufnr EQ b~aufnr
+               INTO CORRESPONDING FIELDS OF @gs_change
+               WHERE a~aufnr = @lv_aufnr_new.
+        IF sy-subrc = 0.
+          gs_change-order_type = 'ZPRC'.
+          gv_process = lv_aufnr_new.
+        ENDIF.
+      ELSE.
+        IF   gs_change-order_number IS INITIAL AND gs_change-plant IS INITIAL
+          AND gs_change-parent_process_ord IS INITIAL.
+          IF gs_change-material IS NOT INITIAL.
+
+          ELSE.
+            CLEAR gs_change.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+      IF gs_change-parent_process_ord IS NOT INITIAL
+        AND gs_change-order_number IS INITIAL.
+        lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+        SELECT SINGLE zztm_reg
+                    FROM zpp_rmc_ci_aufk
+                    INTO @gv_zde_tm_code
+         WHERE aufnr = @lv_aufnr .
+
+        SELECT SINGLE *
+               FROM afpo
+               INTO @ls_afpo
+               WHERE aufnr EQ @lv_aufnr.
+        IF sy-subrc = 0.
+          IF gs_change-return_quantity GT ls_afpo-pgmng.
+            SELECT SINGLE vbeln, zzaufnr ,zzvehicle_no
+                FROM likp INTO @ls_likp
+                WHERE zzaufnr = @lv_aufnr.
+            IF sy-subrc = 0.
+              gv_zde_tm_code = ls_likp-zzvehicle_no.
+              SELECT SINGLE  aubel
+                   FROM vbrp
+                   INTO @gs_change-sales_order_prq
+                   WHERE vgbel = @ls_likp-vbeln.
+*              gv_old_sale = gs_change-sales_order_prq.
+
+              gv_new_vbeln = ls_likp-vbeln.
+*                 SELECT
+              SELECT SINGLE a~vbelv ,a~vbeln,
+                  b~matnr , b~fkimg ,b~werks
+                  FROM vbfa AS a
+                  INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                  INTO @ls_vbfa
+                  WHERE a~vbelv = @ls_likp-vbeln
+                    AND a~vbtyp_n = 'U' .
+              IF sy-subrc NE 0.
+                SELECT SINGLE a~vbelv ,a~vbeln,
+                                b~matnr , b~fkimg ,b~werks
+                                FROM vbfa AS a
+                                INNER JOIN vbrp AS b ON b~vbeln EQ a~vbeln
+                                INTO @ls_vbfa
+                                WHERE a~vbelv = @ls_likp-vbeln
+                                  AND a~vbtyp_n = 'M'.
+              ENDIF.
+              IF sy-subrc = 0.
+
+                SELECT SINGLE a~*
+                       FROM vbrp AS a
+                  INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                INTO @ls_vbrp_m
+                WHERE a~vbeln = @ls_vbfa-vbeln
+                 AND vbtyp_ana = 'U'
+                  AND rfbsk NE 'E'.
+                IF sy-subrc NE 0.
+                  SELECT SINGLE a~*
+                         FROM vbrp AS a
+                    INNER JOIN vbrk AS b ON a~vbeln = b~vbeln
+                  INTO @ls_vbrp_m
+                  WHERE a~vbeln = @ls_vbfa-vbeln
+                   AND vbtyp_ana = 'M'
+                   AND fksto NE 'X'.
+                ENDIF.
+                IF sy-subrc = 0.
+                  gv_vbeln = ls_vbfa-vbeln.
+                  gv_vbtyp = ls_vbrp_m-vbtyp_ana.
+                  gv_new_bill  = ls_vbfa-vbeln.
+                  gv_matnr = ls_vbfa-matnr.
+                  gv_werks = ls_vbfa-werks.
+                  IF gs_change-new_sale_order IS NOT INITIAL.
+                    lv_sale_new = |{ gs_change-new_sale_order ALPHA = IN }|.
+                    SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                      WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                    IF sy-subrc = 0.
+                      gs_change-material = ls_new_sale_order-matnr.
+                      gs_change-plant = ls_new_sale_order-werks.
+                    ENDIF.
+                  ENDIF.
+*                  SALES_ORDER
+                  IF gs_change-sales_order IS NOT INITIAL.
+                    lv_sale_new = |{ gs_change-sales_order ALPHA = IN }|.
+                    SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                      WHERE vbeln = @lv_sale_new AND posnr = '000010'.
+                    IF sy-subrc = 0.
+                      gs_change-material = ls_new_sale_order-matnr.
+                      gs_change-plant = ls_new_sale_order-werks.
+                    ENDIF.
+                  ENDIF.
+
+                  IF gs_change-return_quantity GT ls_vbfa-fkimg.
+                    MESSAGE 'Invoiced QTY and Return Quantity not matching' TYPE 'W' DISPLAY LIKE 'E'.
+                    EXIT.
+                  ELSE.
+                    gv_dis = 'X'.
+                  ENDIF.
+                ELSE.
+                  MESSAGE 'Invoice is not valid as Document Category not M Or U' TYPE 'W' DISPLAY LIKE 'E'.
+                  EXIT.
+                ENDIF.
+              ELSE.
+                MESSAGE 'Invoice/Delivery Challan is not created yet' TYPE 'W' DISPLAY LIKE 'E'.
+                EXIT.
+              ENDIF.
+            ELSE.
+              MESSAGE 'This Order is not linked with Delivery' TYPE 'W' DISPLAY LIKE 'E'.
+              EXIT.
+            ENDIF.
+          ELSE.
+            MESSAGE 'Quantity is more than procees order QTY' TYPE 'W' DISPLAY LIKE 'E'.
+            EXIT.
+          ENDIF.
+        ELSE.
+          MESSAGE 'This Order is not Valid' TYPE 'W' DISPLAY LIKE 'E'.
+          EXIT.
+        ENDIF.
+      ENDIF.
+      IF gs_change-zdiversion_no IS NOT INITIAL.
+        gv_no = 'X'.
+      ENDIF.
+*      IF gs_change-mat_doc is INITIAL.
+*      CLEAR gv_dis.
+*      ENDIF.
+      IF gv_dis = 'X' AND gs_change-new_sale_order IS NOT INITIAL
+      AND gs_change-to_be_pro_ord_qty IS NOT INITIAL.
+        gv_pop = 'X'.
+        CLEAR gv_res.
+      ENDIF.
+    WHEN 'PTSR'.
+      IF zdiversion_no IS INITIAL.
+        CALL FUNCTION 'NUMBER_GET_NEXT'
+          EXPORTING
+            nr_range_nr             = '1'
+            object                  = 'ZPP_DIV'
+            quantity                = '1'
+          IMPORTING
+            number                  = zdiversion_no
+          EXCEPTIONS
+            interval_not_found      = 1
+            number_range_not_intern = 2
+            object_not_found        = 3
+            quantity_is_0           = 4
+            quantity_is_not_1       = 5
+            interval_overflow       = 6
+            buffer_overflow         = 7
+            OTHERS                  = 8.
+        IF sy-subrc <> 0 OR zdiversion_no IS INITIAL.
+          MESSAGE e140(zle).
+        ELSE.
+          gs_change-zdiversion_no = zdiversion_no.
+          gs_change-zcreatedby = sy-uname.
+          gs_change-zcreatedate = sy-datum.
+          gs_change-zcreatedon = sy-uzeit.
+          gv_no  = 'X'.
+          MODIFY zppt_diversion FROM gs_change.
+        ENDIF.
+      ELSE.
+        gs_change-zdiversion_no = zdiversion_no.
+        gs_change-zmodifiedby = sy-uname.
+        gs_change-zmodifieddate = sy-datum.
+        gs_change-zmodifiedtime = sy-uzeit.
+        gv_no  = 'X'.
+        MODIFY zppt_diversion FROM gs_change.
+      ENDIF.
+    WHEN 'RCCO'.
+*      IF gs_change-full_div_ind = 'X'.
+*        IF gs_change-full_div_qty IS INITIAL.
+*          MESSAGE 'If Full diversion indicator is ticked then Full Diversion QTY is mandatory to fill' TYPE 'E' DISPLAY LIKE 'E'.
+*          EXIT.
+*        ELSE.
+*          IF gs_change-full_div_qty GT gs_change-to_be_pro_ord_qty.
+*            MESSAGE 'Full Diversion QTY can not be greater than to be process QTY' TYPE 'E' DISPLAY LIKE 'E'.
+*            EXIT.
+*          ELSE.
+*            DATA(lv_flag_fdi) = 'X'.
+*          ENDIF.
+*        ENDIF.
+*      ELSE.
+*        lv_flag_fdi = 'X'.
+*      ENDIF.
+
+      IF lv_flag_fdi = 'X'.
+        DATA    lv_button_1  TYPE string. "
+        CLEAR gv_res.
+        IF gs_change-pgi_status NE 'YES'.
+          CALL FUNCTION 'POPUP_FOR_INTERACTION'
+            EXPORTING
+              headline       = 'Confirmation'
+              text1          = 'This will trigger Sales Return Process.'
+              text2          = 'Are you sure you want to continue ?'
+*             TEXT3          = ' '
+*             TEXT4          = ' '
+*             TEXT5          = ' '
+*             TEXT6          = ' '
+*             TICON          = 'I'
+              button_1       = 'Yes'
+              button_2       = 'No'
+              button_3       = 'Cancel'
+            IMPORTING
+              button_pressed = lv_button_1.
+        ELSE.
+          CALL FUNCTION 'POPUP_FOR_INTERACTION'
+            EXPORTING
+              headline       = 'Confirmation'
+              text1          = 'Return Process is already done.'
+              text2          = ' Please click on proceed to continue'
+*             TEXT4          = ' '
+*             TEXT5          = ' '
+*             TEXT6          = ' '
+*             TICON          = 'I'
+              button_1       = 'Proceed'
+              button_3       = 'Cancel'
+            IMPORTING
+              button_pressed = lv_button_1.
+          DATA(lv_cancel) = 'X'.
+        ENDIF.
+        IF lv_button_1 = 1.
+          gv_response = '1'.
+          lv_aufnr = |{ gs_change-parent_process_ord ALPHA = IN }|.
+          SELECT SINGLE *
+        FROM caufv
+        INTO @DATA(ls_caufv)
+        WHERE aufnr = @lv_aufnr.
+          SELECT SINGLE *
+                  FROM matdoc
+                  INTO @DATA(ls_matdoc)
+                  WHERE aufnr = @lv_aufnr
+                    AND bwart = '101'.
+          IF gs_change-full_div_ind EQ ''.
+            IF ls_caufv-gamng NE gs_change-return_quantity.
+              gs_change-move_batch = ls_matdoc-charg.
+              gv_batch_inv = 'X'.
+            ENDIF.
+          ELSE.
+            gv_batch_inv = 'F'.
+            IF gs_change-pgi_status = 'YES' AND r_snpo IS INITIAL.
+              gv_batch_inv = 'A'.
+            ELSEIF r_snpo IS NOT INITIAL.
+              gv_batch_inv = 'A'.
+            ENDIF.
+          ENDIF.
+        ELSEIF lv_button_1 = 2.
+          gv_response = '2'.
+          gv_res = 'X'.
+        ELSEIF lv_button_1 = 3.
+          IF lv_cancel = 'X'.
+            CLEAR gs_change.
+*            CALL TRANSACTION 'ZRMC_COR1'.
+            LEAVE TO TRANSACTION 'ZRMC_COR1'.
+          ELSE.
+            gv_response = 'A'.
+            gv_res = 'X'.
+          ENDIF.
+          CLEAR lv_cancel .
+        ELSE.
+          gv_response = '2'.
+        ENDIF.
+        IF gv_response EQ '1'.
+************************************************************************
+          DATA : lv_return(1).
+          CLEAR lv_return.
+*        IF gs_change-vbeln IS INITIAL.
+          PERFORM f_create_sales_order_i.
+*        ENDIF.
+************************************************************************
+        ELSE.
+          IF sy-ucomm NE 'CANC'.
+            CLEAR : gv_dis.
+            CLEAR: sy-ucomm.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+    WHEN 'SNPO'.
+      CLEAR gv_batch_inv.
+      IF gs_change-move_batch IS NOT INITIAL.
+        CLEAR gv_err_batch.
+        PERFORM f_batch.
+        IF gv_err_batch IS INITIAL.
+          SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                      WHERE vbeln = @gs_change-new_sale_order AND posnr = '000010'.
+          IF sy-subrc = 0.
+            gs_change-material = ls_new_sale_order-matnr.
+            gs_change-plant = ls_new_sale_order-werks.
+          ENDIF.
+          IF gs_change-quantity IS INITIAL.
+            gs_change-quantity = gs_change-to_be_pro_ord_qty.
+          ENDIF.
+          gs_change-zzaufnr = gs_change-parent_process_ord.
+          gs_change-zzreturn_qty = gs_change-to_be_pro_ord_qty.
+          gs_change-sales_order = gs_change-new_sale_order .
+          gs_change-sales_order_item = '000010' .
+          CLEAR r_snpo.
+          r_snpo = 'SNPO'.
+          gv_batch_inv = 'A'.
+        ELSE.
+          CLEAR: sy-ucomm.
+          MESSAGE 'Batch movement error still occurs' TYPE 'W' DISPLAY LIKE 'E'.
+          EXIT.
+        ENDIF.
+      ELSE.
+        IF gs_change-full_div_ind = 'X'.
+          CLEAR: sy-ucomm.
+          gv_batch_inv = 'F'.
+          MESSAGE 'Full Diversion case Batch is mandatory to fill' TYPE 'W' DISPLAY LIKE 'E'.
+          EXIT.
+        ELSE.
+          CLEAR: sy-ucomm.
+          CLEAR gv_res_batch.
+*        MESSAGE 'Batch is mandatory' TYPE 'E'.
+          CALL FUNCTION 'POPUP_TO_CONFIRM'
+            EXPORTING
+              titlebar       = 'Confirmation'
+              text_question  = 'Do You Want to Continue without Batch'
+              text_button_1  = 'YES'
+              text_button_2  = 'NO'
+            IMPORTING
+              answer         = gv_res_batch
+            EXCEPTIONS
+              text_not_found = 1
+              OTHERS         = 2.
+          IF gv_res_batch EQ '1'.
+
+            gs_change-move_batch = gs_change-charg.
+
+            IF gs_change-move_batch IS NOT INITIAL.
+              CLEAR gv_batch_inv.
+              PERFORM f_batch.
+*              IF gv_batch_inv IS INITIAL.
+              SELECT SINGLE matnr , werks FROM vbap INTO @ls_new_sale_order
+                      WHERE vbeln = @gs_change-new_sale_order AND posnr = '000010'.
+              IF sy-subrc = 0.
+                gs_change-material = ls_new_sale_order-matnr.
+                gs_change-plant = ls_new_sale_order-werks.
+              ENDIF.
+              IF gs_change-quantity IS INITIAL.
+                gs_change-quantity = gs_change-to_be_pro_ord_qty.
+              ENDIF.
+              gs_change-zzaufnr = gs_change-parent_process_ord.
+              gs_change-zzreturn_qty = gs_change-to_be_pro_ord_qty.
+              gs_change-sales_order = gs_change-new_sale_order .
+              gs_change-sales_order_item = '000010' .
+
+              CLEAR r_snpo.
+              r_snpo = 'SNPO'.
+              gs_change-move_batch = gs_change-charg.
+              gv_batch_inv = 'A'.
+              LOOP AT SCREEN.
+                IF screen-group3 = 'NBA'.
+                  screen-input  = '0'.
+                  screen-active = '0'.
+                  screen-output = '1'.
+*        screen-invisible = ''.
+                ENDIF.
+                MODIFY SCREEN.
+              ENDLOOP.
+            ENDIF.
+*            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+    WHEN 'GWOP'.
+      CLEAR gv_batch_inv.
+      IF gs_change-move_batch IS NOT INITIAL.
+        CLEAR :gv_err_batch.
+        PERFORM f_batch.
+        IF gv_err_batch IS INITIAL.
+          FREE MEMORY ID :'ZCI_AUFK_GWO'.
+          DATA ls_ci_aufk_gwop TYPE zpp_rmc_ci_aufk.
+          ls_ci_aufk_gwop-zzreturn_qty = gs_change-to_be_pro_ord_qty.
+          ls_ci_aufk_gwop-zzaufnr = gs_change-parent_process_ord.
+          EXPORT ls_ci_aufk_gwop  TO MEMORY ID 'ZCI_AUFK_GWO'.
+          CLEAR r_snpo.
+          r_snpo = 'GWOP'.
+          gv_batch_inv = 'A'.
+        ELSE.
+          CLEAR: sy-ucomm.
+          MESSAGE 'Batch movement error still occurs' TYPE 'W' DISPLAY LIKE 'E'.
+          EXIT.
+        ENDIF.
+      ELSE.
+        IF gs_change-full_div_ind = 'X'.
+          CLEAR: sy-ucomm.
+          gv_batch_inv = 'F'.
+          MESSAGE 'Full Diversion case Batch is mandatory to fill' TYPE 'W' DISPLAY LIKE 'E'.
+          EXIT.
+        ELSE.
+          CLEAR: sy-ucomm.
+*        MESSAGE 'Batch is mandatory' TYPE 'E'.
+          CLEAR gv_res_batch.
+          CALL FUNCTION 'POPUP_TO_CONFIRM'
+            EXPORTING
+              titlebar       = 'Confirmation'
+              text_question  = 'Do You Want to Continue without Batch'
+              text_button_1  = 'YES'
+              text_button_2  = 'NO'
+            IMPORTING
+              answer         = gv_res_batch
+            EXCEPTIONS
+              text_not_found = 1
+              OTHERS         = 2.
+          IF gv_res_batch EQ '1'.
+            CLEAR gv_batch_inv.
+*            IF gs_change-move_batch IS NOT INITIAL.
+            CLEAR :gv_err_batch.
+            PERFORM f_batch.
+            IF gv_err_batch IS INITIAL.
+              FREE MEMORY ID :'ZCI_AUFK_GWO'.
+              ls_ci_aufk_gwop-zzreturn_qty = gs_change-to_be_pro_ord_qty.
+              ls_ci_aufk_gwop-zzaufnr = gs_change-parent_process_ord.
+              EXPORT ls_ci_aufk_gwop  TO MEMORY ID 'ZCI_AUFK_GWO'.
+              CLEAR r_snpo.
+              r_snpo = 'GWOP'.
+              gv_batch_inv = 'A'.
+              gs_change-move_batch = gs_change-charg.
+**         NBA
+
+              LOOP AT SCREEN.
+                IF screen-group3 = 'NBA'.
+                  screen-input  = '0'.
+                  screen-active = '0'.
+                  screen-output = '1'.
+*        screen-invisible = ''.
+                ENDIF.
+                MODIFY SCREEN.
+              ENDLOOP.
+
+            ENDIF.
+*            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    WHEN  'MSTB'.
+      IF r_mstb IS INITIAL.
+        IF gs_change-move_batch IS NOT INITIAL.
+          CLEAR :gv_err_batch.
+          PERFORM f_batch_mstb.
+          IF gv_err_batch IS INITIAL.
+            CLEAR r_mstb .
+            r_mstb = sy-ucomm.
+            CLEAR:sy-ucomm.
+          ELSE.
+            CLEAR: sy-ucomm.
+            MESSAGE 'Batch movement error still occurs' TYPE 'W' DISPLAY LIKE 'E'.
+            EXIT.
+          ENDIF.
+        ELSE.
+          CLEAR: sy-ucomm.
+          MESSAGE 'Batch is mandatory' TYPE 'W' DISPLAY LIKE 'E'.
+          EXIT.
+        ENDIF.
+      ENDIF.
+    WHEN 'PRQ'.
+      CLEAR:r_ucomm.
+      r_ucomm = sy-ucomm.
+      IF r_ucomm1 IS INITIAL.
+        IF r_ucomm1 NE 'PRQ1'.
+          r_ucomm1 = sy-ucomm.
+        ENDIF.
+      ENDIF.
+      CLEAR:sy-ucomm.
+      CLEAR: gs_change-basic_end_date,gs_change-basic_start_date,
+      gs_change-material,gs_change-plant,gs_change-quantity,
+      gs_change-sales_order,gs_change-sales_order_item,gs_change-zztm_code,
+gs_change-zztm_reg,
+gs_change-zztm_driver,
+gs_change-zztm_mob,
+gs_change-zztm_cap    ,
+gs_change-zztm_uom,
+gs_change-zztm_type,
+gs_change-zzbatch_size,
+gs_change-zzbatch_uom,
+  gs_change-zztm_type,
+gs_change-zzbatch_size,
+gs_change-zzbatch_uom,
+gs_change-zzmix_time,
+gs_change-zzmix_time_uom,
+gs_change-zzreturn_qty,
+gs_change-zzreturn_uom,
+gs_change-zzaufnr,
+gs_change-zzmax_tm_size,
+gs_change-zzapproved,
+gs_change-zzremark.
+
+
+    WHEN '&COR3'.
+
+      DATA: opt         TYPE ctu_params,
+            bdcdata_wa  TYPE bdcdata,
+            bdcdata_tab TYPE TABLE OF bdcdata.
+      CLEAR: bdcdata_wa, bdcdata_tab.
+
+      GET PARAMETER ID 'BR1' FIELD DATA(lv_ff).
+      CLEAR lv_ff.
+      SET PARAMETER ID 'BR1' FIELD lv_ff.
+      bdcdata_wa-program = 'SAPLCOKO'.
+      bdcdata_wa-dynpro = '5110'.
+      bdcdata_wa-dynbegin = 'X'.
+      APPEND bdcdata_wa TO bdcdata_tab.
+
+*perform bdc_field       using 'BDC_OKCODE'
+*                              '/EBAK'.
+      PERFORM bdc_field1       USING 'BDC_CURSOR'
+                                    'CAUFVD-AUFNR'.
+      PERFORM bdc_field1      USING 'CAUFVD-AUFNR'
+                                     ' '.
+
+      opt-dismode = 'A'.
+      opt-defsize = ' '.
+      opt-updmode = 'S'.
+      CLEAR bdcdata_wa.
+      CALL TRANSACTION 'COR3' USING bdcdata_tab OPTIONS FROM opt.
+
+
+    WHEN 'CPO'.
+      DATA lv_order_no TYPE char12.
+      CLEAR lv_order_no.
+      lv_order_no = |{ gs_change-order_number ALPHA = IN }|.
+      SELECT SINGLE *
+      FROM caufv
+      INTO @DATA(ls_afko)
+      WHERE aufnr EQ @lv_order_no.
+      IF sy-subrc = 0.
+        SELECT SINGLE * FROM likp INTO @DATA(ls_likp1) WHERE zzaufnr = @lv_order_no.
+        IF ls_likp1 IS INITIAL.
+          SELECT mblnr,
+              aufnr
+              FROM matdoc
+              WHERE bwart = '101' AND cancelled NE 'X'
+                AND aufnr = @lv_order_no
+              INTO TABLE @DATA(lt_cor6n).
+          IF lt_cor6n IS INITIAL.
+**        SELECT SINGLE a~vbeln,
+**               a~zzaufnr
+**               FROM likp AS a
+**               INTO @DATA(lips)
+**               WHERE zzaufnr EQ @lv_order_no
+**               AND  a~vbeln NOT IN ( SELECT vbeln FROM vbrp AS b WHERE b~vgbel = a~vbeln ).
+**        IF sy-subrc NE 0.
+*          IF ls_afko-erdat GE lv_date .
+*        SET PARAMETER ID 'ANR' FIELD lv_order_no.
+             DATA(lv_new_sale_orde1) = |{ gs_change-new_sale_order ALPHA = IN }|.
+            IF ls_afko-kdauf NE lv_new_sale_orde1 AND r_snpo = 'GWOP'.
+              MESSAGE |Process Order No and sales Order is not linked| TYPE 'W' DISPLAY LIKE 'E'.
+              EXIT.
+            ENDIF.
+            CLEAR lv_new_sale_orde1.
+            IF r_snpo = 'GWOP'.
+              DATA lv_zdiversion_no TYPE zdiversion_no.
+              FREE MEMORY ID :'ZLV_ZDIVERSION_NO'.
+              lv_zdiversion_no = gs_change-zdiversion_no.
+              EXPORT lv_zdiversion_no TO MEMORY ID 'ZLV_ZDIVERSION_NO'.
+
+            ENDIF.
+            SET PARAMETER ID 'BR1' FIELD lv_order_no.
+            CALL TRANSACTION 'COR2' AND SKIP FIRST SCREEN.
+
+            FREE MEMORY ID :'ZLV_ZDIVERSION_NO','ZCI_AUFK_GWO'.
+            IF gs_change-zdiversion_no IS NOT INITIAL AND r_snpo IS INITIAL.
+              gs_change-order_number = lv_order_no.
+              MODIFY zppt_diversion FROM gs_change.
+              CLEAR lv_order_no.
+            ENDIF.
+          ELSE.
+            MESSAGE |Process Order No. :| && lv_order_no && | cannot be changed as Confirmation already done | TYPE 'W' DISPLAY LIKE 'E'.
+            EXIT.
+          ENDIF.
+        ELSE.
+          MESSAGE |Process Order No. :| && lv_order_no && | cannot be changed as delivery is done against the same | TYPE 'W' DISPLAY LIKE 'E'.
+          EXIT.
+        ENDIF.
+*          ELSE.
+*            MESSAGE 'Process Order should created within 3 last days' TYPE 'E'.
+*          ENDIF.
+*        ELSE.
+*          MESSAGE 'Process Order already billed' TYPE 'E'.
+*        ENDIF.
+      ELSE.
+        MESSAGE 'Process Order is not valid' TYPE 'W' DISPLAY LIKE 'E'.
+        EXIT.
+      ENDIF.
+    WHEN  'CANCEL'.
+      SET SCREEN 0.
+      LEAVE PROGRAM.
+*      LEAVE TO TRANSACTION 'SESSION_MANAGER'.
+    WHEN 'BACK'.
+      SET SCREEN 0.
+      LEAVE PROGRAM.
+*      LEAVE TO TRANSACTION 'SESSION_MANAGER'.
+    WHEN 'EXIT'.
+      SET SCREEN 0.
+      LEAVE PROGRAM.
+*      LEAVE TO TRANSACTION 'SESSION_MANAGER'.
+    WHEN '&REFRESH'.
+      CLEAR gs_change.
+*      CALL TRANSACTION 'ZRMC_COR1'.
+      LEAVE TO TRANSACTION 'ZRMC_COR1'.
+    WHEN OTHERS.
+  ENDCASE.
+ENDMODULE.
+FORM f_create_sales_order_i.
+  DATA: lv_busobj TYPE bapiusw01-objtype.
+  DATA: gs_sheader         TYPE bapisdhd1,
+        gs_sheaderx        TYPE bapisdhd1x,
+        gs_sd_ex           TYPE bapivbeln-vbeln,
+        gs_sitem           TYPE bapisditm,
+        gs_schedule        TYPE bapischdl,
+        gs_schedulex       TYPE bapischdlx,
+        gs_sitemx          TYPE bapisditmx,
+        gs_partner         TYPE bapiparnr,
+        gs_sbapiret2       TYPE bapiret2,
+        gs_bapivbrk        TYPE bapivbrk,
+        gs_bapicreatordata TYPE bapicreatordata,
+        gs_bapiret1        TYPE bapiret1,
+        gs_bapicomit       TYPE bapiret2.
+  DATA: t_bkdf     TYPE TABLE OF bkdf,
+        t_bkpf     TYPE TABLE OF bkpf,
+        t_bsec     TYPE TABLE OF bsec,
+        t_bsed     TYPE TABLE OF bsed,
+        t_bseg     TYPE TABLE OF bseg,
+        t_bset     TYPE TABLE OF bset,
+        t_bseg_add TYPE TABLE OF bseg_add.
+  DATA: it_text TYPE TABLE OF bapisdtext,
+        wa_text TYPE bapisdtext.
+  DATA: logic_switch          TYPE bapisdls,
+        logic_switch1         TYPE bapisdls,
+        int_number_assignment TYPE bapiflag-bapiflag.
+  DATA: gt_condi  TYPE TABLE OF bapicond,
+        gt_condix TYPE TABLE OF bapicondx.
+  DATA: gs_condi  TYPE bapicond,
+        gs_condix TYPE bapicondx.
+  DATA: gt_sbapiret2    TYPE STANDARD TABLE OF bapiret2,
+        gt_sitem        TYPE STANDARD TABLE OF bapisditm,
+        gt_partner      TYPE STANDARD TABLE OF bapiparnr,
+        gt_schedule     TYPE STANDARD TABLE OF bapischdl,
+        gt_schedulex    TYPE STANDARD TABLE OF bapischdlx,
+        gt_sitemx       TYPE STANDARD TABLE OF bapisditmx,
+        gs_salehdrchng  TYPE bapisdh1,
+        gs_salehdrchngx TYPE bapisdh1x,
+        it_saleret2     TYPE TABLE OF bapiret2,
+        wa_seleret2     TYPE bapiret2.
+  DATA: it_billingdatain TYPE TABLE OF bapivbrk,
+        wa_billingdatain TYPE bapivbrk,
+        it_bill_ret      TYPE TABLE OF bapiret1,
+        wa_bill_ret      TYPE bapiret1,
+        it_bill_suc      TYPE TABLE OF bapivbrksuccess,
+        wa_bill_suc      TYPE bapivbrksuccess,
+        it_creator       TYPE TABLE OF bapicreatordata,
+        wa_creator       TYPE bapicreatordata.
+  DATA:lv_vbeln TYPE vbeln.
+
+  gs_sheaderx-doc_type = abap_true.
+  gs_sheader-refobjkey = gv_vbeln.
+  gs_sheader-doc_type = 'ZRCR'.
+  gs_sheaderx-doc_type = abap_true.
+  gs_sheader-purch_date = sy-datum.
+  gs_sheaderx-purch_date = abap_true.
+  gs_sheader-ord_reason = '001'.
+  gs_sheaderx-ord_reason = abap_true.
+  gs_sheader-purch_no_c = gv_vbeln.
+  gs_sheaderx-purch_no_c = abap_true.
+  gs_sheader-sd_doc_cat = 'K'.
+  gs_sheaderx-sd_doc_cat = abap_true.
+  gs_sheader-ref_doc = gv_vbeln.
+  gs_sheaderx-ref_doc = abap_true.
+*  gs_sheader-refdoc_cat = 'M'.
+  gs_sheader-refdoc_cat = gv_vbtyp.
+  gs_sheaderx-refdoc_cat = abap_true.
+  gs_sheader-add_val_dy = '00'.
+  gs_sheaderx-add_val_dy = abap_true.
+  gs_sheader-s_proc_ind = 'VT01'.
+  gs_sheaderx-s_proc_ind = abap_true.
+
+  logic_switch-pricing = 'G'.
+
+  SELECT SINGLE a~vbeln,
+         a~knumv,
+         b~posnr,
+         b~meins,
+         c~kbetr,
+         a~vbtyp,
+         a~fkart,
+         a~vkorg,
+         a~vtweg,
+         a~spart
+         FROM vbrk AS a
+         INNER JOIN vbrp AS b ON a~vbeln = b~vbeln AND b~matnr = @gv_matnr
+         INNER JOIN prcd_elements AS c ON c~knumv = a~knumv AND kschl = 'ZRMC'
+         INTO @DATA(ls_vbrp)
+         WHERE a~vbeln = @gv_vbeln.
+  IF gv_vbtyp IS INITIAL.
+    gs_sheader-refdoc_cat = ls_vbrp-vbtyp.
+  ENDIF.
+*  gs_sheader-refdoctype = ls_vbrp-fkart.
+  gs_sheader-refdoctype = 'VBRK'.
+  gs_sheader-sales_org = ls_vbrp-vkorg.
+  gs_sheaderx-sales_org  = abap_true.
+  gs_sheader-distr_chan = ls_vbrp-vtweg.
+  gs_sheaderx-distr_chan  = abap_true.
+  gs_sheader-division = ls_vbrp-spart.
+  gs_sheaderx-division = abap_true.
+
+
+  DATA(lv_aufnr) = |{ gs_change-parent_process_ord ALPHA = IN }|.
+  SELECT SINGLE a~vbeln,
+                b~posnr,
+                b~charg,
+                b~matnr,
+                b~werks,
+                b~lgort
+                FROM likp AS a
+                INNER JOIN lips AS b ON a~vbeln EQ b~vbeln
+                INTO @DATA(ls_likp)
+                WHERE a~zzaufnr = @lv_aufnr
+                  AND b~matnr = @gv_matnr.
+
+  gv_lgort = ls_likp-lgort.
+  gs_change-lgort =  gv_lgort.
+  gs_change-meins = ls_vbrp-meins.
+  gs_change-charg = ls_likp-charg.
+  gv_meins = ls_vbrp-meins.
+
+  gs_sitem-itm_number  = '000010'.
+  gs_sitem-material    = gv_matnr.
+  gs_sitem-plant       = gv_werks.
+  gs_sitem-target_qty       = gs_change-return_quantity.
+  gs_sitem-sales_unit      = ls_vbrp-meins.
+  gs_sitem-add_val_dy       = '00'.
+  gs_sitem-pr_ref_mat       = gv_matnr.
+  gs_sitem-refobjtype       = 'VBRK'.
+  gs_sitem-refobjkey      = gv_vbeln.
+  gs_sitem-ref_doc     = gv_vbeln.
+  gs_sitem-order_prob = '000'.
+  gs_sitem-store_loc = ls_likp-lgort.
+  gs_sitem-target_val = ls_vbrp-kbetr * gs_change-return_quantity.
+  gs_sitem-ref_doc_ca = ls_vbrp-vbtyp.
+  gs_sitem-ref_doc_it = '000010'.
+
+
+  gs_sitemx-itm_number = abap_true.
+  gs_sitemx-material   = abap_true.
+  gs_sitemx-plant      = abap_true.
+  gs_sitemx-target_qty = abap_true.
+  gs_sitemx-sales_unit = abap_true.
+  gs_sitemx-add_val_dy = abap_true.
+  gs_sitemx-pr_ref_mat   = abap_true.
+  gs_sitemx-refobjtype      = abap_true.
+  gs_sitemx-refobjkey  = abap_true.
+  gs_sitemx-order_prob  = abap_true.
+  gs_sitemx-store_loc  = abap_true.
+  gs_sitemx-target_val  = abap_true.
+  gs_sitemx-refobjtype = abap_true.
+  gs_sitemx-ref_doc_ca = abap_true.
+  gs_sitemx-ref_doc = abap_true.
+  gs_sitemx-ref_doc_it = abap_true.
+
+  APPEND gs_sitem TO gt_sitem.
+  CLEAR gs_sitem.
+  APPEND gs_sitemx TO gt_sitemx.
+  CLEAR gs_sitemx.
+
+  SELECT a~vbelv,
+         b~parvw,
+         b~kunnr
+         FROM vbfa AS a
+          INNER JOIN vbpa AS b ON b~vbeln = a~vbelv
+         INTO TABLE @DATA(lt_vbfa)
+         WHERE a~vbeln = @gv_vbeln
+           AND a~vbtyp_v = 'C'.
+
+  LOOP AT lt_vbfa INTO DATA(ls_vbfa).
+    IF ls_vbfa-parvw = 'AG'.
+      gs_partner-partn_role = 'AG'.
+      gs_partner-partn_numb = ls_vbfa-kunnr.
+      APPEND gs_partner TO gt_partner.
+      CLEAR gs_partner.
+    ENDIF.
+    IF ls_vbfa-parvw = 'WE'.
+      gs_partner-partn_role = 'WE'.
+      gs_partner-partn_numb = ls_vbfa-kunnr.
+      APPEND gs_partner TO gt_partner.
+      CLEAR gs_partner.
+    ENDIF.
+  ENDLOOP.
+
+  DATA(lv_itm) =  '000010'.
+  gs_schedule-itm_number = lv_itm.
+  gs_schedulex-itm_number = lv_itm.
+  gs_schedule-req_qty = gs_change-return_quantity.
+  gs_schedulex-req_qty = 'X'.
+  APPEND gs_schedule TO gt_schedule.
+  CLEAR gs_schedule.
+  APPEND gs_schedulex TO gt_schedulex.
+  CLEAR gs_schedulex.
+
+  gs_condi-itm_number   = lv_itm.
+  gs_condix-itm_number  = lv_itm.
+  gs_condi-cond_type    = 'ZRMC'.
+  gs_condix-cond_type   = 'ZRMC'.
+  gs_condi-cond_value   = ( ls_vbrp-kbetr / 10 ).
+  gs_condix-cond_value  = abap_true.
+  gs_condi-cond_updat   = abap_true.
+  gs_condix-updateflag  = abap_true.
+  gs_condi-cond_count = 1.
+  gs_condix-cond_count = 'X'.
+  APPEND gs_condi TO gt_condi.
+  APPEND gs_condix TO gt_condix.
+  CLEAR gs_condi.
+  CLEAR gs_condix.
+  IF gs_change-vbeln IS INITIAL.
+    CALL FUNCTION 'SD_SALESDOCUMENT_CREATE'
+      EXPORTING
+        sales_header_in       = gs_sheader
+        sales_header_inx      = gs_sheaderx
+        int_number_assignment = 'X'
+        logic_switch          = logic_switch
+        business_object       = 'BUS2102'
+        status_buffer_refresh = 'X'
+        i_refresh_v45i        = 'X'
+        i_check_ag            = 'X'
+      IMPORTING
+        salesdocument_ex      = lv_vbeln
+      TABLES
+        return                = gt_sbapiret2
+        sales_items_in        = gt_sitem
+        sales_items_inx       = gt_sitemx
+        sales_partners        = gt_partner
+        sales_schedules_in    = gt_schedule
+        sales_schedules_inx   = gt_schedulex
+        sales_conditions_in   = gt_condi
+        sales_conditions_inx  = gt_condix
+        sales_text            = it_text.
+  ELSE.
+    CLEAR lv_vbeln.
+    lv_vbeln = gs_change-vbeln .
+  ENDIF.
+  CLEAR gv_vbeln_scr.
+  gv_vbeln_scr = lv_vbeln.
+  READ TABLE gt_sbapiret2 INTO DATA(gs_sbapitet2) WITH KEY type = 'E'.
+  IF sy-subrc = 0.
+    gs_change-sale_ord_error = gs_sbapitet2-message.
+    MODIFY zppt_diversion FROM gs_change.
+    CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+    ls_logs-field = ''.
+    ls_logs-mesg = gs_sbapitet2-message.
+    ls_logs-status = 'Error'.
+    ls_logs-icon = '@0A@'. "Error
+    APPEND ls_logs TO it_logs.
+    CLEAR: ls_logs.
+    CALL SCREEN '9001'.
+  ELSE.
+    gs_change-vbeln = lv_vbeln.
+    MODIFY zppt_diversion FROM gs_change.
+    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+      EXPORTING
+        wait = 'X'
+*     IMPORTING
+*       RETURN        =
+      .
+
+    IF gs_change-vbeln IS NOT INITIAL.
+      SELECT  matnr,
+             werks,
+             SUM( kalab ) AS kalab
+             FROM mska
+             INTO @DATA(lv_kalab)
+             WHERE matnr = @gv_matnr
+              AND vbeln = @gs_change-vbeln
+              GROUP BY matnr, werks .
+      ENDSELECT.
+      gv_old_sale = lv_kalab-kalab.
+      CONDENSE  gv_old_sale.
+    ENDIF.
+
+    DATA: ship_point TYPE bapidlvcreateheader-ship_point.
+    DATA : lt_so_items   TYPE STANDARD TABLE OF bapidlvreftosalesorder,
+           ls_so_item    TYPE bapidlvreftosalesorder,
+           lv_delivery   TYPE bapishpdelivnumb-deliv_numb,
+           lv_nm_del     TYPE bapidlvcreateheader-num_deliveries,
+           lt_bapiret    TYPE STANDARD TABLE OF bapiret2,
+           ls_bapiret    TYPE bapireturn1,
+           lt_serial_num TYPE TABLE OF bapidlvserialnumber,
+           ls_serial_num TYPE bapidlvserialnumber.
+
+    ship_point = gv_werks.
+    CLEAR:lv_nm_del,lv_delivery.
+
+    ls_so_item-ref_doc = lv_vbeln.
+    ls_so_item-ref_item = lv_itm.
+    ls_so_item-dlv_qty  = gs_change-return_quantity.
+    ls_so_item-sales_unit  = ls_vbrp-meins.
+    APPEND ls_so_item TO lt_so_items.
+    CLEAR ls_so_item.
+
+    ls_serial_num-ref_doc = lv_vbeln.
+    ls_serial_num-ref_item = lv_itm.
+    ls_serial_num-serialno = '1'.
+    APPEND ls_serial_num TO lt_serial_num.
+    CLEAR ls_serial_num.
+    IF gs_change-delivery_no IS INITIAL.
+      CALL FUNCTION 'BAPI_OUTB_DELIVERY_CREATE_SLS'
+        EXPORTING
+          ship_point        = ship_point
+        IMPORTING
+          delivery          = lv_delivery
+          num_deliveries    = lv_nm_del
+        TABLES
+          sales_order_items = lt_so_items
+          serial_numbers    = lt_serial_num
+          return            = lt_bapiret.
+    ELSE.
+      lv_delivery = gs_change-delivery_no.
+    ENDIF.
+    READ TABLE lt_bapiret INTO ls_bapiret WITH KEY type = 'E'.
+    IF sy-subrc = 0.
+      gs_change-delivery_error = ls_bapiret-message.
+      MODIFY zppt_diversion FROM gs_change.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+      ls_logs-field = ''.
+      ls_logs-mesg = ls_bapiret-message.
+      ls_logs-icon = '@0A@'. "Error
+      ls_logs-status = 'Error'.
+      APPEND ls_logs TO it_logs.
+      CLEAR: ls_logs.
+      CALL SCREEN '9001'.
+    ELSE.
+      gs_change-delivery_no = lv_delivery.
+      MODIFY zppt_diversion FROM gs_change.
+*      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'.
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = 'X'
+*     IMPORTING
+*         RETURN        =
+        .
+      WAIT UP TO 1 SECONDS.
+      gv_del_scr = lv_delivery.
+***************************************************
+
+      DATA : ls_bapi_hdrchg TYPE bapiobdlvhdrchg,
+             ls_bapi_cntrlh TYPE bapiobdlvhdrctrlchg,
+             ls_bapi_dlvcnt TYPE bapidlvcontrol,
+             lt_retn        TYPE TABLE OF bapiret2.
+
+      ls_bapi_hdrchg-deliv_numb = lv_delivery.
+      ls_bapi_cntrlh-deliv_numb = lv_delivery.
+      ls_bapi_dlvcnt-upd_ind = 'U'.
+
+      DATA(lt_itemchg) = VALUE bapiobdlvitemchg_t( (
+                     deliv_numb = lv_delivery
+                     deliv_item = ls_likp-posnr
+                       material = ls_likp-matnr
+                        dlv_qty = gs_change-return_quantity
+                          batch = ls_likp-charg
+                  fact_unit_nom = '1'
+                fact_unit_denom = '1' ) ).
+
+      DATA(lt_ctrlchg) = VALUE bapiobdlvitemctrlchg_t( (
+                      deliv_numb = lv_delivery
+                      deliv_item = ls_likp-posnr
+                      chg_delqty = 'X' ) ).
+      IF gs_change-del_change_status = 'NO' OR gs_change-del_change_status = ''.
+        SET UPDATE TASK LOCAL.
+        CALL FUNCTION 'BAPI_OUTB_DELIVERY_CHANGE'
+          EXPORTING
+            header_data    = ls_bapi_hdrchg
+            header_control = ls_bapi_cntrlh
+            delivery       = lv_delivery
+            techn_control  = ls_bapi_dlvcnt
+          TABLES
+            item_data      = lt_itemchg
+            item_control   = lt_ctrlchg
+            return         = lt_retn.
+      ENDIF.
+      READ TABLE lt_retn INTO DATA(ls_retn) WITH KEY type = 'E'.
+      IF sy-subrc = 0.
+        gs_change-del_change_status = 'NO'.
+        gs_change-delivery_c_error = ls_retn-message.
+        MODIFY zppt_diversion FROM gs_change.
+*        CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = 'X'
+*     IMPORTING
+*           RETURN        =
+          .
+        WAIT UP TO 1 SECONDS.
+        ls_logs-field = gv_del_scr.
+        ls_logs-mesg = ls_retn-message.
+        ls_logs-status = 'Error'.
+        ls_logs-icon = '@0A@'. "Error
+        APPEND ls_logs TO it_logs.
+        CLEAR: ls_logs.
+        CALL SCREEN '9001'.
+      ELSE.
+        gs_change-del_change_status = 'YES'.
+        MODIFY zppt_diversion FROM gs_change.
+*        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = 'X'
+*     IMPORTING
+*           RETURN        =
+          .
+        WAIT UP TO 1 SECONDS.
+***************************************************
+
+        DATA: ls_vbkok                 TYPE vbkok,
+              lv_synchron              TYPE rvsel-xfeld,
+              lv_update_picking        TYPE rvsel-xfeld,
+              lv_nicht_sperren         TYPE rvsel-no_sp,
+              lv_database_update       TYPE leshp_database_update,
+              lv_error_messages_send_0 TYPE xfeld,
+              lt_vbpok                 TYPE TABLE OF vbpok,
+              ls_vbpok                 TYPE  vbpok,
+              lt_prott                 TYPE TABLE OF prott.
+
+***** PGI
+        ls_vbkok-vbeln_vl = lv_delivery.
+        ls_vbkok-wabuc    = abap_true."create goods movement
+        IF gs_change-pgi_status = 'NO' OR gs_change-pgi_status = ''.
+          SET UPDATE TASK LOCAL.
+          CALL FUNCTION 'WS_DELIVERY_UPDATE'
+            EXPORTING
+              vbkok_wa                 = ls_vbkok
+              delivery                 = lv_delivery
+              commit                   = abap_true
+              if_error_messages_send_0 = ''
+            TABLES
+              prot                     = lt_prott.
+        ENDIF.
+
+        READ TABLE lt_prott INTO DATA(ls_prott) WITH KEY msgty = 'E'.
+        IF sy-subrc = 0.
+          gs_change-pgi_status = 'NO'.
+          gs_change-pgi_error = ls_prott-msgv1.
+          MODIFY zppt_diversion FROM gs_change.
+          gv_pgi_scr = 'NO'.
+          CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+          ls_logs-field = gv_del_scr.
+          ls_logs-mesg = 'PGI Not Done for Delivery'.
+          ls_logs-icon = '@0A@'. "Error
+          ls_logs-status = 'Error'.
+          APPEND ls_logs TO it_logs.
+          CLEAR: ls_logs.
+          CALL SCREEN '9001'.
+        ELSE.
+          WAIT UP TO 2 SECONDS.
+          gv_pgi_scr = 'YES'.
+          gs_change-pgi_status = 'YES'.
+          MODIFY zppt_diversion FROM gs_change.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+ENDFORM.
+FORM f_batch.
+  DATA ls_hdr   TYPE bapi2017_gm_head_01.
+  DATA ls_cod   TYPE bapi2017_gm_code.
+  DATA lc_ghd   TYPE bapi2017_gm_head_ret.
+  DATA lv_doc   TYPE bapi2017_gm_head_ret-mat_doc.
+  DATA lv_yer   TYPE bapi2017_gm_head_ret-doc_year.
+  DATA lt_itm   TYPE TABLE OF bapi2017_gm_item_create.
+  DATA ls_itm   TYPE bapi2017_gm_item_create.
+  DATA lt_ser   TYPE TABLE OF bapi2017_gm_serialnumber.
+  DATA ls_ser   TYPE bapi2017_gm_serialnumber.
+  DATA lt_ret   TYPE TABLE OF bapiret2.
+  DATA lv_stonr TYPE tj30-stonr.
+
+  ls_hdr-doc_date   = sy-datum.
+  ls_hdr-pstng_date = sy-datum.
+  ls_cod-gm_code    = '04'.
+
+  ls_itm-material      = |{ gv_matnr ALPHA = IN }|.
+  ls_itm-plant         = gv_werks.
+  ls_itm-stge_loc      = gs_change-lgort.
+  ls_itm-move_type     = '413'.
+  ls_itm-spec_stock    = 'E'.
+  ls_itm-entry_qnt     = gs_change-to_be_pro_ord_qty.
+  ls_itm-entry_uom     = gs_change-meins.
+  ls_itm-entry_uom_iso = gs_change-meins.
+  ls_itm-batch = gs_change-charg.
+  DATA(lv_nso) = |{ gs_change-new_sale_order ALPHA = IN }|.
+  ls_itm-sales_ord =   lv_nso.
+  ls_itm-s_ord_item = '000010'.
+  ls_itm-move_mat     = |{ gs_change-material ALPHA = IN }|.
+  ls_itm-move_plant = gs_change-plant.
+  ls_itm-move_stloc  = gs_change-lgort.
+  ls_itm-move_batch = gs_change-move_batch.
+  ls_itm-val_sales_ord = gs_change-vbeln.
+  ls_itm-val_s_ord_item =  '000010'.
+  APPEND ls_itm TO lt_itm.
+  CLEAR ls_itm.
+
+  IF gs_change-mat_doc IS INITIAL.
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header  = ls_hdr
+        goodsmvt_code    = ls_cod
+      IMPORTING
+        goodsmvt_headret = lc_ghd
+        materialdocument = lv_doc
+        matdocumentyear  = lv_yer
+      TABLES
+        goodsmvt_item    = lt_itm
+        return           = lt_ret.
+
+    READ TABLE lt_ret INTO DATA(ls_ret) WITH KEY type = 'E'.
+    IF sy-subrc = 0.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+      gs_change-z309_error = ls_ret-message.
+      MODIFY zppt_diversion FROM gs_change.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+      ls_logs-field = ''.
+      ls_logs-mesg = ls_ret-message.
+      ls_logs-status = 'Error'.
+      ls_logs-icon = '@0A@'. "Error
+      APPEND ls_logs TO it_logs.
+      CLEAR: ls_logs.
+      CALL SCREEN '9001'.
+
+    ELSE.
+      gs_change-mat_doc = lv_doc.
+      gs_change-doc_year = lv_yer.
+      MODIFY zppt_diversion FROM gs_change.
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true.
+      WAIT UP TO 1 SECONDS.
+    ENDIF.
+  ELSE.
+    lv_doc = gs_change-mat_doc .
+    lv_yer = gs_change-doc_year .
+    gs_change-mat_doc = lv_doc.
+    gs_change-doc_year = lv_yer.
+    MODIFY zppt_diversion FROM gs_change.
+  ENDIF.
+ENDFORM.
+FORM  f_batch_mstb.
+  DATA ls_hdr   TYPE bapi2017_gm_head_01.
+  DATA ls_cod   TYPE bapi2017_gm_code.
+  DATA lc_ghd   TYPE bapi2017_gm_head_ret.
+  DATA lv_doc   TYPE bapi2017_gm_head_ret-mat_doc.
+  DATA lv_yer   TYPE bapi2017_gm_head_ret-doc_year.
+  DATA lt_itm   TYPE TABLE OF bapi2017_gm_item_create.
+  DATA ls_itm   TYPE bapi2017_gm_item_create.
+  DATA lt_ser   TYPE TABLE OF bapi2017_gm_serialnumber.
+  DATA ls_ser   TYPE bapi2017_gm_serialnumber.
+  DATA lt_ret   TYPE TABLE OF bapiret2.
+  DATA lv_stonr TYPE tj30-stonr.
+
+  ls_hdr-doc_date   = sy-datum.
+  ls_hdr-pstng_date = sy-datum.
+  ls_cod-gm_code    = '04'.
+
+  ls_itm-material      = |{ gs_change-material ALPHA = IN }|.
+  ls_itm-plant         = gs_change-plant.
+  ls_itm-stge_loc      = gs_change-lgort.
+  ls_itm-move_type     = '344'.
+  ls_itm-spec_stock    = 'E'.
+  ls_itm-entry_qnt     = gs_change-to_be_pro_ord_qty.
+  ls_itm-entry_uom     = gs_change-meins.
+  ls_itm-entry_uom_iso = gs_change-meins.
+  ls_itm-batch = gs_change-charg.
+  ls_itm-move_mat     = |{ gs_change-material ALPHA = IN }|.
+  ls_itm-move_plant = gs_change-plant.
+  ls_itm-move_stloc  = gs_change-lgort.
+  ls_itm-move_batch = gs_change-move_batch.
+  ls_itm-val_sales_ord = gs_change-sales_order_prq.
+  ls_itm-val_s_ord_item =  '000010'.
+  APPEND ls_itm TO lt_itm.
+  CLEAR ls_itm.
+  CLEAR:lv_yer,lv_doc.
+
+  CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+    EXPORTING
+      goodsmvt_header  = ls_hdr
+      goodsmvt_code    = ls_cod
+    IMPORTING
+      goodsmvt_headret = lc_ghd
+      materialdocument = lv_doc
+      matdocumentyear  = lv_yer
+    TABLES
+      goodsmvt_item    = lt_itm
+      return           = lt_ret.
+
+  READ TABLE lt_ret INTO DATA(ls_ret) WITH KEY type = 'E'.
+  IF sy-subrc = 0.
+    CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+    gs_change-mstb_error = ls_ret-message.
+    MODIFY zppt_diversion FROM gs_change.
+    CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+    ls_logs-field = ''.
+    ls_logs-mesg = ls_ret-message.
+    ls_logs-status = 'Error'.
+    ls_logs-icon = '@0A@'. "Error
+    APPEND ls_logs TO it_logs.
+    CLEAR: ls_logs.
+    CALL SCREEN '9001'.
+
+  ELSE.
+    gs_change-mat_doc_mstb = lv_doc.
+    gs_change-doc_year_mstb = lv_yer.
+    MODIFY zppt_diversion FROM gs_change.
+    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+      EXPORTING
+        wait = abap_true.
+    WAIT UP TO 1 SECONDS.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Module  ZMATERIAL  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE zmaterial INPUT.
+  IF gs_change-material IS NOT INITIAL.
+
+  ENDIF.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  ZTO_BE_PRO_ORD_QTY  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE zto_be_pro_ord_qty INPUT.
+  IF sy-ucomm = 'BACK'
+   OR sy-ucomm = 'CANCEL'
+   OR sy-ucomm = 'EXIT'
+   OR sy-ucomm = '&REFRESH'.
+  ELSE.
+
+    IF gs_change-to_be_pro_ord_qty IS NOT INITIAL AND gs_change-return_quantity IS NOT INITIAL.
+      IF  gs_change-to_be_pro_ord_qty GT gs_change-return_quantity.
+*      MESSAGE 'Qty To Be Trf in new SO/ProcOrd can not be more than Return Quantity' TYPE 'W' DISPLAY LIKE 'E'.
+        MESSAGE 'Qty To Be Trf in new SO/ProcOrd can not be more than Return Quantity' TYPE 'E' DISPLAY LIKE 'E'.
+*      EXIT.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  ZFULL_DIV_QTY  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE zfull_div_qty INPUT.
+  IF sy-ucomm = 'BACK'
+   OR sy-ucomm = 'CANCEL'
+   OR sy-ucomm = 'EXIT'
+   OR sy-ucomm = '&REFRESH'.
+  ELSE.
+    IF sy-ucomm = ' '.
+      IF gs_change-full_div_ind IS NOT INITIAL.
+        IF gs_change-full_div_qty IS INITIAL.
+          MESSAGE 'Full Diversion is mandatory' TYPE 'E'  DISPLAY LIKE 'E'.
+          EXIT.
+        ENDIF.
+      ENDIF.
+      IF gs_change-full_div_qty IS NOT INITIAL.
+        IF gs_change-full_div_ind IS INITIAL.
+          MESSAGE 'Full Diversion Tick is mandatory' TYPE 'E'  DISPLAY LIKE 'E'.
+          EXIT.
+        ENDIF.
+      ENDIF.
+*    ELSEIF sy-ucomm = 'RCCO'.
+      IF gs_change-full_div_ind = 'X'.
+        IF gs_change-full_div_qty IS INITIAL.
+          MESSAGE 'If Full diversion indicator is ticked then Full Diversion QTY is mandatory to fill' TYPE 'E' DISPLAY LIKE 'E'.
+          EXIT.
+        ELSE.
+          IF gs_change-full_div_qty GT gs_change-to_be_pro_ord_qty.
+            MESSAGE 'Full Diversion QTY can not be greater than to be process QTY' TYPE 'E' DISPLAY LIKE 'E'.
+            EXIT.
+          ELSE.
+            lv_flag_fdi = 'X'.
+          ENDIF.
+        ENDIF.
+      ELSE.
+        lv_flag_fdi = 'X'.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  ZQUANTITY  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE zquantity INPUT.
+  IF sy-ucomm = '' OR sy-ucomm = 'PNO'.
+    IF gs_change-quantity GT 0 AND gs_change-zzreturn_qty GT 0.
+      IF gs_change-quantity LE gs_change-zzreturn_qty.
+        gs_change-full_div_ind = 'X'.
+        gs_change-full_div_qty = gs_change-zzreturn_qty.
+      ELSE.
+        CLEAR:gs_change-full_div_ind,
+              gs_change-full_div_qty .
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+  IF sy-ucomm = 'BACK'
+   OR sy-ucomm = 'CANCEL'
+   OR sy-ucomm = 'EXIT'
+   OR sy-ucomm = '&REFRESH'.
+  ELSE.
+
+    IF gs_change-quantity IS NOT INITIAL AND gs_change-zzreturn_qty IS NOT INITIAL.
+      IF gs_change-quantity LT gs_change-zzreturn_qty.
+        MESSAGE 'Process Order Quantity can not be less than Return QTY'  TYPE 'E' DISPLAY LIKE 'E'.
+        EXIT.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+ENDMODULE.
+
+FORM bdc_field1 USING fnam fval.
+  CLEAR bdcdata_wa.
+  bdcdata_wa-fnam = fnam.
+  bdcdata_wa-fval = fval.
+  APPEND bdcdata_wa TO bdcdata_tab.
+ENDFORM.

@@ -1,0 +1,15 @@
+﻿METHOD if_ex_mb_migo_badi~publish_material_item.
+  SELECT SINGLE * FROM zgpt_mm_param
+                    INTO @DATA(ls_active)
+                   WHERE program_name = 'ZDACE_CUSTOM_MIGO_HEADER_TAB'
+                     AND object_id = 'GATE'
+                     AND field = 'ACTIVE'
+                     AND active_flag = @abap_true.
+  IF ls_active IS NOT INITIAL.
+    CALL FUNCTION 'ZDACE_MIGO_GET_SET_VALUE'
+      EXPORTING
+        im_go_item   = ls_goitem
+        im_go_item_t = gt_goitem.
+
+  ENDIF.
+ENDMETHOD.

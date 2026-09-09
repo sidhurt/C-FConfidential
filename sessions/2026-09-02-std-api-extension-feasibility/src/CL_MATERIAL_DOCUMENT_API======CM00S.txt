@@ -1,0 +1,141 @@
+﻿  METHOD prepare_header.
+    DATA lt_dd07v  TYPE TABLE OF dd07v.
+    DATA lv_dvalue TYPE dd07v-domvalue_l.
+
+    IF is_header-goodsmovementcode IS INITIAL.
+      INSERT VALUE #(
+        msgid = gc_message_class
+        msgno = 19
+        msgty = if_nsdm_odata_text_message=>sc_severity-error ) INTO TABLE ct_message.
+      rv_failed = abap_true.
+      IF 1 = 2. MESSAGE e019(mm_im_odata_api_mdoc). ENDIF. "to find where used
+      RETURN.
+    ELSE.
+      ev_goodsmvt_code = is_header-goodsmovementcode.
+    ENDIF.
+
+* check for valid goodsmovementcode
+    DATA(lv_tcode) = mo_mdoc_maintain->get_tcode_4_goodsmovementcode( is_header-goodsmovementcode ).
+    IF lv_tcode IS INITIAL.
+      INSERT VALUE #(
+        msgid = gc_message_class
+        msgno = 15
+        msgty = if_nsdm_odata_text_message=>sc_severity-error
+        msgv1 = is_header-goodsmovementcode
+        msgv2 = 'GoodsMovementCode' ) INTO TABLE ct_message.
+      rv_failed = abap_true.
+      IF 1 = 2. MESSAGE e015(mm_im_odata_api_mdoc). ENDIF. "to find where used
+      RETURN.
+    ENDIF.
+* check the indicator whether a print is triggered manually, Corrective Measure 250931 (2020)
+    IF is_header-manualprintistriggered IS NOT INITIAL AND is_header-manualprintistriggered NE abap_true.
+      INSERT VALUE #(
+        msgid = gc_message_class
+        msgno = 15
+        msgty = if_nsdm_odata_text_message=>sc_severity-error
+        msgv1 = is_header-manualprintistriggered
+        msgv2 = 'ManualPrintIsTriggered' ) INTO TABLE ct_message.
+      rv_failed = abap_true.
+      IF 1 = 2. MESSAGE e015(mm_im_odata_api_mdoc). ENDIF. "to find where used
+      RETURN.
+    ENDIF.
+
+* Corrective Measure 250931 (2020)
+* check the Version for Printing Goods Receipt/Goods Issue Slip.
+* it is allowed to have the Version for Printing Goods Receipt/Goods Issue Slip blank, if the
+* indicator whether a print is triggered manually is NOT set to activ
+    IF is_header-versionforprintingslip IS INITIAL.
+      IF is_header-manualprintistriggered = abap_true.
+        INSERT VALUE #(
+          msgid = gc_message_class
+          msgno = 15
+          msgty = if_nsdm_odata_text_message=>sc_severity-error
+          msgv1 = is_header-versionforprintingslip
+          msgv2 = 'VersionForPrintingSlip' ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+        IF 1 = 2. MESSAGE e015(mm_im_odata_api_mdoc). ENDIF. "to find where used
+        RETURN.
+      ENDIF.
+    ELSE.
+      lv_dvalue = is_header-versionforprintingslip.
+      CALL FUNCTION 'GET_DOMAENENVALUE'
+        EXPORTING
+          dname           = 'WEVER'
+          dvalue          = lv_dvalue
+        TABLES
+          i_dd07v_tab     = lt_dd07v
+        EXCEPTIONS
+          illegal_value   = 1
+          no_domain_found = 2
+          no_values_found = 3
+          OTHERS          = 4.
+      IF sy-subrc <> 0.
+        INSERT VALUE #(
+          msgid = gc_message_class
+          msgno = 15
+          msgty = if_nsdm_odata_text_message=>sc_severity-error
+          msgv1 = is_header-versionforprintingslip
+          msgv2 = 'VersionForPrintingSlip' ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+        IF 1 = 2. MESSAGE e015(mm_im_odata_api_mdoc). ENDIF. "to find where used
+        RETURN.
+      ENDIF.
+    ENDIF.
+
+    es_goodsmvt_header = VALUE #(
+      pstng_date = is_header-postingdate
+      doc_date = is_header-documentdate
+      ref_doc_no = is_header-referencedocument
+      header_txt = is_header-materialdocumentheadertext
+      pr_uname = sy-uname ).
+    IF es_goodsmvt_header-pstng_date IS INITIAL.
+      es_goodsmvt_header-pstng_date = sy-datum.
+    ENDIF.
+
+    IF is_header-versionforprintingslip IS NOT INITIAL.        "Corrective Measure 250931 (2020)
+      es_goodsmvt_header-ver_gr_gi_slip  = is_header-versionforprintingslip.
+      es_goodsmvt_header-ver_gr_gi_slipx = abap_true.
+    ENDIF.
+
+    IF is_header-manualprintistriggered = abap_true.           "Corrective Measure 250931 (2020)
+      es_goodsmvt_print_ctrl-pr_print = gc_xprint_1.
+    ELSE.
+      es_goodsmvt_print_ctrl-pr_print = gc_xprint_2.
+    ENDIF.
+
+    IF is_header-CtrlPostgForExtWhseMgmtSyst IS NOT INITIAL.
+      lv_dvalue = is_header-CtrlPostgForExtWhseMgmtSyst.
+      CALL FUNCTION 'GET_DOMAENENVALUE'
+        EXPORTING
+          dname           = 'BFWMS'
+          dvalue          = lv_dvalue
+        TABLES
+          i_dd07v_tab     = lt_dd07v
+        EXCEPTIONS
+          illegal_value   = 1
+          no_domain_found = 2
+          no_values_found = 3
+          OTHERS          = 4.
+      IF sy-subrc <> 0.
+        INSERT VALUE #(
+          msgid = gc_message_class
+          msgno = 15
+          msgty = if_nsdm_odata_text_message=>sc_severity-error
+          msgv1 = is_header-CtrlPostgForExtWhseMgmtSyst
+          msgv2 = 'CtrlPostgForExtWhseMgmtSyst' ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+        IF 1 = 2. MESSAGE e015(mm_im_odata_api_mdoc). ENDIF. "to find where used
+        RETURN.
+      ENDIF.
+
+      IF is_header-CtrlPostgForExtWhseMgmtSyst IS NOT INITIAL.
+        es_goodsmvt_header-ext_wms = is_header-CtrlPostgForExtWhseMgmtSyst.
+      ENDIF.
+    ENDIF.
+
+    rv_failed = check_bapi_header_dates(
+      EXPORTING
+        is_goodsmvt_header = es_goodsmvt_header
+      CHANGING
+        ct_message         = ct_message ).
+  ENDMETHOD.

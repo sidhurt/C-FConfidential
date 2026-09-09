@@ -1,0 +1,10 @@
+﻿METHOD if_ex_mb_migo_badi~pai_detail.
+*-----------------------------------------------------------------------
+* Changing parameter E_FORCE_CHANGE can be set to 'X'. In this case
+* method LINE_MODIFY is called.
+* ATTENTION:
+* DO NOT SET parameter E_FORCE_CHANGE = ' '. In this case you might
+* overwrite parameter E_FORCE_CHANGE of another BAdI implementation.
+*-----------------------------------------------------------------------
+e_force_change = abap_true.
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~PAI_DETAIL

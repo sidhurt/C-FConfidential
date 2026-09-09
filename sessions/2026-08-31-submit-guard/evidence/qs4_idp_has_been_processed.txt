@@ -1,0 +1,23 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class /IWBEP/CL_IDP_UTIL
+STATUS|
+SOURCE_BEGIN|/IWBEP/CL_IDP_UTIL|HAS_BEEN_PROCESSED
+METHOD has_been_processed.
+
+  DATA: lx_ws_idp_enqueue_failure TYPE REF TO cx_soap_idp_enqueue_failure.
+
+
+
+  TRY.
+      rv_has_been_processed = mo_idp_helper->is_message_processed( ).
+
+    CATCH cx_soap_idp_enqueue_failure INTO lx_ws_idp_enqueue_failure.
+*     Request ID can't be locked
+      raise_log_exception(
+            iv_text_id  = /iwbep/cx_idp_util=>idp_framework_lock
+            ix_previous = lx_ws_idp_enqueue_failure
+            ).
+  ENDTRY.
+
+ENDMETHOD.
+SOURCE_END

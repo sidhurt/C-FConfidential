@@ -1,0 +1,40 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class CL_WS_IDP_HELPER_IMPL
+STATUS|
+SOURCE_BEGIN|CL_WS_IDP_HELPER_IMPL|GET_TAB_NAMES
+  method get_tab_names.
+
+    data:
+      l_tabname_id_1 type tabname,
+      l_tabname_id_2 type tabname.
+    "-2- get generated object names
+    cl_ws_idp_conf=>get_instance( )->conf_read(
+      exporting
+        i_client         = i_client
+        i_syslog         = abap_false
+      importing
+        e_tabname_bdid_1 = l_tabname_id_1
+        e_tabname_bdid_2 = l_tabname_id_2
+        e_tabname_bd_1   = m_tabname_bd_1
+        e_tabname_bd_2   = m_tabname_bd_2
+        e_access_class   = m_access_class
+    ).
+
+    "-3- get BDIDc ontainers : write, read
+    cl_ws_idp_admin=>get_instance( )->adm_read(
+      exporting
+        i_client      = i_client
+        i_area        = cl_ws_idp_util=>co_area_bdid_switch
+      importing
+        e_container_w = m_tabname_id_w
+    ).
+
+    case  m_tabname_id_w.
+      when l_tabname_id_1.
+        m_tabname_id_r = l_tabname_id_2.
+      when l_tabname_id_2.
+        m_tabname_id_r = l_tabname_id_1.
+    endcase.
+
+  endmethod.
+SOURCE_END

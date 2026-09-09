@@ -1,0 +1,147 @@
+﻿*----------------------------------------------------------------------*
+***INCLUDE ZLEIILMSDOCUMENTS_GRN_BTST.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form f_goodsrec_create_btst
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> GS_TOKEN
+*&      --> GS_STAGESET
+*&      <-- GV_ERROR
+*&      <-- GT_RETURN
+*&---------------------------------------------------------------------*
+FORM f_goodsrec_create_btst  USING    ps_token TYPE zletilmstoken
+                                            ps_stageset TYPE zletilmsstageset
+                                   CHANGING pv_error TYPE c
+                                            pt_return TYPE bapiret2_tt.
+  DATA: lt_delivery  TYPE STANDARD TABLE OF zletilmsdelivery,
+        lt_likp      TYPE STANDARD TABLE OF likp,
+        lt_lips      TYPE STANDARD TABLE OF lips,
+        lt_return    TYPE STANDARD TABLE OF bapiret2,
+        lt_bapi_item TYPE STANDARD TABLE OF bapi2017_gm_item_create.
+  DATA: ls_delivery    TYPE zletilmsdelivery,
+        ls_likp        TYPE likp,
+        ls_lips        TYPE lips,
+        ls_bapi_header TYPE bapi2017_gm_head_01,
+        ls_bapi_gmcode TYPE bapi2017_gm_code,
+        ls_bapi_item   TYPE bapi2017_gm_item_create,
+        ls_return      TYPE bapiret2.
+  DATA: lv_document     TYPE bapi2017_gm_head_ret-mat_doc,
+        lv_documentyear TYPE bapi2017_gm_head_ret-doc_year.
+  SELECT * FROM zletilmsdelivery INTO TABLE lt_delivery
+    WHERE token = ps_token-token AND del = space.
+  IF sy-subrc = 0.
+    SELECT * FROM likp INTO TABLE lt_likp
+      FOR ALL ENTRIES IN lt_delivery
+      WHERE vbeln = lt_delivery-vbeln.
+    SELECT * FROM lips
+      FOR ALL ENTRIES IN @lt_likp
+      WHERE vbeln = @lt_likp-vbeln AND uecha IS NOT INITIAL
+      INTO TABLE @lt_lips.
+*Begin of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+  LOOP AT lt_delivery INTO ls_delivery.
+    IF ls_delivery-zmigo_proc IS INITIAL.
+      UPDATE zletilmsdelivery SET zmigo_proc = abap_true WHERE token = ls_delivery-token
+                                                   AND recordno = ls_delivery-recordno
+                                                   AND serial = ls_delivery-serial.
+      COMMIT WORK AND WAIT.
+    ELSE.
+      _fillbapiret2 'ZLE' zclsg_abap_utilities=>gc_error
+             '070' ls_delivery-vbeln '' '' pt_return[].
+      pv_error = abap_true.
+    ENDIF.
+  ENDLOOP.
+
+  IF pv_error IS NOT INITIAL.
+    DELETE lt_delivery WHERE zmigo_proc = abap_true.
+  ENDIF.
+*End of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+    LOOP AT lt_lips INTO ls_lips.
+      SELECT SINGLE MAX( mblnr ) INTO @DATA(var_mblnr)         "Added on 22.01.2025
+        FROM matdoc WHERE vbeln_im = @ls_lips-vbeln
+        AND vbelp_im = @ls_lips-posnr     " Added by Ashutosh for 61744
+        AND  bwart = '101' AND cancelled = ' '  .  "Added on 22.01.2025
+      IF var_mblnr IS INITIAL .  "Added on 22.01.2025
+        READ TABLE lt_likp INTO ls_likp WITH KEY vbeln = ls_lips-vbeln.
+        IF sy-subrc = 0.
+          IF ls_likp-zzvbeln IS NOT INITIAL OR ls_likp-zzebeln IS NOT INITIAL."confirm if btst scenario
+            ls_bapi_header-pstng_date = sy-datum.
+            ls_bapi_header-doc_date = sy-datum.
+            ls_bapi_gmcode-gm_code = '01'.
+            ls_bapi_item-material = ls_lips-matnr.
+            ls_bapi_item-plant = ls_likp-werks.
+            ls_bapi_item-stge_loc = 'GDF'.
+            ls_bapi_item-move_type = '101'.
+            ls_bapi_item-entry_qnt = ls_lips-lfimg.
+            ls_bapi_item-entry_uom = ls_lips-meins.
+            ls_bapi_item-mvt_ind = 'B'.
+            ls_bapi_item-deliv_item = ls_lips-posnr.
+            ls_bapi_item-deliv_numb = ls_lips-vbeln.
+            ls_bapi_item-deliv_item_to_search = ls_lips-uecha.
+            ls_bapi_item-deliv_numb_to_search = ls_lips-vbeln.
+            ls_bapi_item-batch = ls_lips-charg.
+            APPEND ls_bapi_item TO lt_bapi_item.
+
+            CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+              EXPORTING
+                goodsmvt_header  = ls_bapi_header
+                goodsmvt_code    = ls_bapi_gmcode
+              IMPORTING
+                materialdocument = lv_document
+                matdocumentyear  = lv_documentyear
+              TABLES
+                goodsmvt_item    = lt_bapi_item
+*               extensionin      = lt_extensionin
+                return           = lt_return.
+            IF lv_document IS NOT INITIAL.
+              CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+                EXPORTING
+                  wait = abap_true.
+              _fillbapiret2 'ZLE' zclsg_abap_utilities=>gc_success
+              '049' '' '' '' pt_return[].
+              DATA: ls_migohdr_customer TYPE zmmt_migo_hdr.
+              ls_migohdr_customer-mblnr = lv_document.
+              ls_migohdr_customer-mjahr = lv_documentyear.
+              ls_migohdr_customer-lifnr = ps_token-fwdagent.
+              ls_migohdr_customer-vhcle = ps_token-vehical_no.
+              ls_migohdr_customer-token = ps_token-token.
+              SELECT SINGLE v_typ FROM zlet_vehicle INTO ls_migohdr_customer-model
+                 WHERE vehical_no = ps_token-vehical_no.
+              SELECT SINGLE customerfullname FROM i_customer INTO @ls_migohdr_customer-tname
+                WHERE customer = @ps_token-fwdagent.
+              MODIFY zmmt_migo_hdr FROM ls_migohdr_customer.
+              COMMIT WORK AND WAIT.
+*              break ibmabap18.
+*              CALL FUNCTION 'ZFM_MM_SAP_TO_ILMS_GRN_DETAILS'
+*                EXPORTING
+*                  mblnr = lv_document
+*                  mjahr = lv_documentyear.
+
+            ELSE.
+              LOOP AT lt_return INTO ls_return.
+                _fillbapiret2 ls_return-id ls_return-type
+                ls_return-number ls_return-message_v1 ls_return-message_v2 ls_return-message_v3
+                pt_return[].
+              ENDLOOP.
+              pv_error = abap_true.
+            ENDIF.
+            CLEAR: lt_bapi_item,ls_bapi_item,ls_bapi_header,ls_bapi_gmcode,lt_return.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+* Begin of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+  LOOP AT lt_delivery INTO ls_delivery.
+    UPDATE zletilmsdelivery SET zmigo_proc = abap_false WHERE token = ls_delivery-token
+                                                          AND recordno = ls_delivery-recordno
+                                                          AND serial = ls_delivery-serial.
+    COMMIT WORK AND WAIT.
+  ENDLOOP.
+* End of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+  ENDIF.
+  PERFORM f_update_message_log USING pt_return '6'.
+*Begin of Change by Ashutosh Prakash for ME#54853 on 13-JAN-2026
+  PERFORM f_log_time USING ps_token '6'.
+*End of Change by Ashutosh Prakash for ME#54853 on 13-JAN-2026
+ENDFORM.

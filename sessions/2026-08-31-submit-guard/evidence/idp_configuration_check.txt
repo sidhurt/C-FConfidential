@@ -1,0 +1,19 @@
+Read-only live SAP inspection on 2026-08-31
+
+QS4/700
+TABLE|SRT_IDP_CONF
+STATUS|No table entries found for specified key
+
+DS4/200
+TABLE|SRT_IDP_CONF
+STATUS|No table entries found for specified key
+
+Interpretation:
+- /IWBEP/CL_IDP_UTIL is installed and contains constructor, request locking,
+  result retrieval and result storage logic.
+- Its constructor activates repeatability when the RepeatabilityCreation and
+  RequestID HTTP headers are provided.
+- The underlying CL_WS_IDP_CONF=>CONF_READ raises a configuration fault when
+  SRT_IDP_CONF has no client entry.
+- Therefore SAP Gateway repeatability cannot be claimed active in DS4/200 or
+  QS4/700 until the supported configuration is initialized and certified.

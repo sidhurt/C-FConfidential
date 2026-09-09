@@ -1,0 +1,106 @@
+﻿  METHOD map_item_output.
+
+    DATA:
+      ls_incl_eew_cobl TYPE incl_eew_cobl,
+      ls_matdocitem    TYPE a_materialdocumentitem.
+
+    CLEAR: et_item.
+
+    LOOP AT it_matdoc REFERENCE INTO DATA(lr_matdoc).
+      CLEAR ls_matdocitem.
+      " key
+      ls_matdocitem-materialdocumentyear           = lr_matdoc->mjahr.
+      ls_matdocitem-materialdocument               = lr_matdoc->mblnr.
+      ls_matdocitem-materialdocumentitem           = lr_matdoc->zeile.
+      " fields which are not part of the input but only of the output
+      ls_matdocitem-controllingarea                = lr_matdoc->kokrs.
+      ls_matdocitem-glaccount                      = lr_matdoc->sakto.
+      ls_matdocitem-quantityinentryunit            = lr_matdoc->erfmg.
+      ls_matdocitem-fiscalyear                     = lr_matdoc->gjahr.
+      ls_matdocitem-issgorrcvgspclstockind         = lr_matdoc->umsok.
+      " the following fields are not part of the mseg result structure
+      ls_matdocitem-inventorystocktype             = lr_matdoc->lbbsa_sid.
+      ls_matdocitem-fiscalyearperiod               = lr_matdoc->gjper.
+      ls_matdocitem-fiscalyearvariant              = lr_matdoc->periv.
+      ls_matdocitem-issuingorreceivingstocktype    = lr_matdoc->lbbsa_cid.
+      ls_matdocitem-goodsmovementiscancelled       = lr_matdoc->cancelled.
+      " SlsPrcAmtInclVATInCoCodeCrcy is calculated in the view!
+      IF lr_matdoc->exvkw <> 0.
+        ls_matdocitem-slsprcamtinclvatincocodecrcy   = lr_matdoc->vkwrt.
+      ENDIF.
+      " remaining fields
+      ls_matdocitem-material                       = lr_matdoc->matnr.
+      ls_matdocitem-plant                          = lr_matdoc->werks.
+      ls_matdocitem-storagelocation                = lr_matdoc->lgort.
+      ls_matdocitem-batch                          = lr_matdoc->charg.
+      ls_matdocitem-goodsmovementtype              = lr_matdoc->bwart.
+      ls_matdocitem-inventoryvaluationtype         = lr_matdoc->bwtar.
+      ls_matdocitem-inventoryspecialstocktype      = lr_matdoc->sobkz.
+      ls_matdocitem-supplier                       = lr_matdoc->lifnr.
+      ls_matdocitem-customer                       = lr_matdoc->kunnr.
+      ls_matdocitem-salesorder                     = lr_matdoc->kdauf.
+      ls_matdocitem-salesorderitem                 = lr_matdoc->kdpos.
+      ls_matdocitem-salesorderscheduleline         = lr_matdoc->kdein.
+      ls_matdocitem-purchaseorder                  = lr_matdoc->ebeln.
+      ls_matdocitem-purchaseorderitem              = lr_matdoc->ebelp.
+      ls_matdocitem-manufacturingorder             = lr_matdoc->aufnr.
+      ls_matdocitem-manufacturingorderitem         = lr_matdoc->aufps.
+      ls_matdocitem-goodsmovementrefdoctype        = lr_matdoc->kzbew.
+      ls_matdocitem-goodsmovementreasoncode        = lr_matdoc->grund.
+      ls_matdocitem-delivery                       = lr_matdoc->vbeln_im.
+      ls_matdocitem-deliveryitem                   = lr_matdoc->vbelp_im.
+      ls_matdocitem-accountassignmentcategory      = lr_matdoc->knttp_gr .
+      ls_matdocitem-costcenter                     = lr_matdoc->kostl.
+      ls_matdocitem-costobject                     = lr_matdoc->kstrg.
+      ls_matdocitem-profitabilitysegment           = lr_matdoc->paobjnr.
+      ls_matdocitem-profitcenter                   = lr_matdoc->prctr.
+      ls_matdocitem-functionalarea                 = lr_matdoc->fkber.
+      ls_matdocitem-materialbaseunit               = lr_matdoc->meins.
+      ls_matdocitem-quantityinbaseunit             = lr_matdoc->menge.
+      ls_matdocitem-entryunit                      = lr_matdoc->erfme.
+      ls_matdocitem-companycodecurrency            = lr_matdoc->waers.
+      ls_matdocitem-gdsmvtextamtincocodecrcy       = lr_matdoc->exbwr.
+      ls_matdocitem-issgorrcvgmaterial             = lr_matdoc->ummat.
+      ls_matdocitem-issgorrcvgbatch                = lr_matdoc->umcha.
+      ls_matdocitem-issuingorreceivingplant        = lr_matdoc->umwrk.
+      ls_matdocitem-issuingorreceivingstorageloc   = lr_matdoc->umlgo.
+      ls_matdocitem-issuingorreceivingvaltype      = lr_matdoc->umbar.
+      ls_matdocitem-iscompletelydelivered          = lr_matdoc->elikz.
+      ls_matdocitem-materialdocumentitemtext       = lr_matdoc->sgtxt.
+      ls_matdocitem-unloadingpointname             = lr_matdoc->ablad.
+      ls_matdocitem-shelflifeexpirationdate        = lr_matdoc->vfdat.
+      ls_matdocitem-manufacturedate                = lr_matdoc->hsdat.
+      ls_matdocitem-reservation                    = lr_matdoc->rsnum.
+      ls_matdocitem-reservationitem                = lr_matdoc->rspos.
+      ls_matdocitem-reservationisfinallyissued     = lr_matdoc->kzear.
+      ls_matdocitem-specialstockidfgsalesorder     = lr_matdoc->mat_kdauf.
+      ls_matdocitem-specialstockidfgsalesorderitem = lr_matdoc->mat_kdpos.
+      ls_matdocitem-isautomaticallycreated         = lr_matdoc->xauto.
+      ls_matdocitem-materialdocumentline           = lr_matdoc->line_id  .
+      ls_matdocitem-materialdocumentparentline     = lr_matdoc->parent_id.
+      ls_matdocitem-hierarchynodelevel             = lr_matdoc->line_depth.
+      ls_matdocitem-reversedmaterialdocumentyear   = lr_matdoc->sjahr.
+      ls_matdocitem-reversedmaterialdocument       = lr_matdoc->smbln.
+      ls_matdocitem-reversedmaterialdocumentitem   = lr_matdoc->smblp.
+      ls_matdocitem-SerialNumbersAreCreatedAutomly = lr_matdoc->xsaut.
+      ls_matdocitem-InvtryMgmtReferenceDocument    = lr_matdoc->lfbnr.
+      ls_matdocitem-ReferenceDocumentFiscalYear    = lr_matdoc->lfbja.
+      ls_matdocitem-InvtryMgmtRefDocumentItem      = lr_matdoc->lfpos.
+      ls_matdocitem-MaterialDocumentPostingType    = lr_matdoc->xstor.
+      ls_matdocitem-InventoryUsabilityCode         = lr_matdoc->insmk.
+
+      IF lr_matdoc->ps_psp_pnr IS NOT INITIAL. " WBSElementInternalID
+        SELECT SINGLE wbselement FROM i_wbselementbyinternalkey WITH PRIVILEGED ACCESS WHERE wbselementinternalid = @lr_matdoc->ps_psp_pnr INTO @ls_matdocitem-wbselement.
+      ENDIF.
+      IF lr_matdoc->mat_pspnr IS NOT INITIAL. " SpecialStockIdfgWBSElement,
+        SELECT SINGLE wbselement FROM i_wbselementbyinternalkey WITH PRIVILEGED ACCESS WHERE wbselementinternalid = @lr_matdoc->mat_pspnr INTO @ls_matdocitem-specialstockidfgwbselement.
+      ENDIF.
+
+      " move customer extension fields to output data
+      MOVE-CORRESPONDING lr_matdoc->* TO ls_incl_eew_cobl.
+      MOVE-CORRESPONDING ls_incl_eew_cobl TO ls_matdocitem.
+
+      INSERT ls_matdocitem INTO TABLE et_item.
+    ENDLOOP.
+
+  ENDMETHOD.

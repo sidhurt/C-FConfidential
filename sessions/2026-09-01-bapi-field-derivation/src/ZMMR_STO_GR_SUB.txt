@@ -1,0 +1,636 @@
+﻿*&---------------------------------------------------------------------*
+*& Include          ZMMR_STO_GR_SUB
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form f_fetch_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_fetch_data .
+  CLEAR gt_final[].
+  IF r_rb1 = abap_true.
+    SELECT vbeln,
+           posnr,
+           ge_no,
+           bukrs,
+           werks,
+           geyear,
+           gedate,
+           getime,
+           getype,
+           reftype,
+           gate_no,
+           gestat,
+           vehicle_no,
+           rcno,
+           drive_lic,
+           drivename,
+           ge_in_date,
+           ge_in_time,
+           ge_out_date,
+           ge_out_time,
+           ship,
+           vbeln_d,
+           posnr_d,
+           matnr,
+           maktx,
+           lfimg,
+           vrkme,
+           lgort,
+           charg,
+           meins,
+           ebeln,
+           ebelp,
+           mblnr,
+           wadat_ist,
+           wtbnoi,
+           wtbnoo,
+           tarewt,
+           grosswt,
+           netwt,
+           witime,
+           widate,
+           wotime,
+           wodate,
+           lifnr,
+           lifnrt,
+           kunnr,
+           kunnrt
+      FROM zmm_i_sto_gr
+      INTO TABLE @gt_final
+     WHERE ge_no       IN @s_gat_no
+       AND gedate      IN @s_gedate
+       AND werks       IN @s_werks
+       AND ge_out_date IN @s_outdt
+       AND wodate      IN @s_wout
+       AND vehicle_no  IN @s_vechno
+       AND ebeln       IN @s_ebeln
+       AND matnr       IN @s_matnr
+       AND vbeln       IN @s_vbeln
+       AND getype      IN @s_getype
+       AND mblnr IS NULL.
+  ELSEIF r_rb2 = abap_true.
+    SELECT vbeln,
+           posnr,
+           ge_no,
+           bukrs,
+           werks,
+           geyear,
+           gedate,
+           getime,
+           getype,
+           reftype,
+           gate_no,
+           gestat,
+           vehicle_no,
+           rcno,
+           drive_lic,
+           drivename,
+           ge_in_date,
+           ge_in_time,
+           ge_out_date,
+           ge_out_time,
+           ship,
+           vbeln_d,
+           posnr_d,
+           matnr,
+           maktx,
+           lfimg,
+           vrkme,
+           lgort,
+           charg,
+           meins,
+           ebeln,
+           ebelp,
+           mblnr,
+           wadat_ist,
+           wtbnoi,
+           wtbnoo,
+           tarewt,
+           grosswt,
+           netwt,
+           witime,
+           widate,
+           wotime,
+           wodate,
+           lifnr,
+           lifnrt,
+           kunnr,
+           kunnrt
+      FROM zmm_i_sto_gr
+      INTO TABLE @gt_final
+     WHERE ge_no       IN @s_gat_no
+       AND gedate      IN @s_gedate
+       AND werks       IN @s_werks
+       AND ge_out_date IN @s_outdt
+       AND wodate      IN @s_wout
+       AND vehicle_no  IN @s_vechno
+       AND ebeln       IN @s_ebeln
+       AND matnr       IN @s_matnr
+       AND vbeln       IN @s_vbeln
+       AND getype      IN @s_getype
+       AND mblnr IS NOT NULL.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_display
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_display .
+  DATA : lv_repid TYPE sy-repid.
+
+  PERFORM f_prepare_fcat.
+  lv_repid = sy-repid.
+  gs_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program       = lv_repid
+      is_layout                = gs_layout
+      it_fieldcat              = gt_fieldcat
+      i_callback_user_command  = c_usercom
+      i_callback_pf_status_set = c_setpf
+      i_save                   = abap_true
+    TABLES
+      t_outtab                 = gt_final
+    EXCEPTIONS
+      program_error            = 1
+      OTHERS                   = 2.
+  IF sy-subrc <> 0.
+    MESSAGE c_msg1 TYPE c_e.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form PREPARE_FCAT
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_prepare_fcat.
+  DATA : lv_no TYPE i.
+
+  CLEAR : gt_fieldcat,lv_no.
+
+  IF r_rb1 = abap_true.
+    CLEAR gs_fieldcat.
+    lv_no                 = lv_no + 1.
+    gs_fieldcat-col_pos   = lv_no.
+    gs_fieldcat-fieldname = c_sel.
+    gs_fieldcat-tabname   = c_gtfinal.
+    gs_fieldcat-seltext_m = ct_sel.
+    gs_fieldcat-checkbox  = abap_true.
+    gs_fieldcat-edit      = abap_true.
+    APPEND gs_fieldcat TO gt_fieldcat.
+  ENDIF.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_ebeln.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_ebeln.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_ebelp.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_ebelp.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_lifnr.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_lifnr.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_lifnrt.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_lifnrt.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_kunnr.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_kunnr.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_kunnrt.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_kunnrt.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_vbeln.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_vbeln.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_posnr.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_posnr.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_ge_no.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_ge_no.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_getype.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_getype.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_reftype.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_reftype.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_matnr.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_matnr.
+  gs_fieldcat-no_zero   = abap_true.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_maktx.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_maktx.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_lfimg.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_lfimg.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_vrkme.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_vrkme.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_lgort.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_lgort.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_wadat_ist.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_wadat_ist.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_vehicle_no.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_vehicle_no.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_drive_lic.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_drive_lic.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_drivename.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_drivename.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_ge_in_date.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_ge_in_date.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_ge_in_time.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_ge_in_time.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_ge_out_date.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_ge_out_date.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_ge_out_time.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_ge_out_time.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_tarewt.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_tarewt.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_grosswt.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_grosswt.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_netwt.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_netwt.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.                 "Total Value
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_wtbnoi.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_wtbnoi.
+  APPEND gs_fieldcat TO gt_fieldcat.
+*
+*
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_wtbnoo.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_wtbnoo.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_widate.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_widate.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_witime.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_witime.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_wodate.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_wodate.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_wotime.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_wotime.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_mblnr.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_mblnr.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+  CLEAR gs_fieldcat.
+  lv_no                 = lv_no + 1.
+  gs_fieldcat-col_pos   = lv_no.
+  gs_fieldcat-fieldname = c_msg.
+  gs_fieldcat-tabname   = c_gtfinal.
+  gs_fieldcat-seltext_m = ct_msg.
+  gs_fieldcat-outputlen = '100'.
+  APPEND gs_fieldcat TO gt_fieldcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_user_command
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_user_command USING p_ucomm LIKE sy-ucomm
+                           p_selfield TYPE slis_selfield.
+  DATA ref TYPE REF TO cl_gui_alv_grid.
+  CALL FUNCTION 'GET_GLOBALS_FROM_SLVC_FULLSCR'
+    IMPORTING
+      e_grid = ref.
+  CALL METHOD ref->check_changed_data.
+
+  CASE p_ucomm.
+    WHEN c_post.
+      PERFORM f_post_data.
+    WHEN c_sela.
+      LOOP AT gt_final INTO gs_final.
+        gs_final-sel = abap_true.
+        MODIFY gt_final FROM gs_final.
+      ENDLOOP.
+    WHEN c_dsela.
+      LOOP AT gt_final INTO gs_final.
+        gs_final-sel = abap_false.
+        MODIFY gt_final FROM gs_final.
+      ENDLOOP.
+    WHEN OTHERS.
+  ENDCASE.
+  p_selfield-refresh = abap_true.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_set_pf_status
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_set_pf_status USING rt_extab TYPE slis_t_extab.
+  SET PF-STATUS c_zstand.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_post_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_post_data.
+  TYPES : BEGIN OF ty_s_gr,
+            vbeln TYPE vbeln_vf,
+            mblnr TYPE mblnr,
+            msg   TYPE char200,
+          END OF ty_s_gr.
+
+  DATA : ls_goodsmvt_header  TYPE bapi2017_gm_head_01,
+         ls_goodsmvt_code    TYPE bapi2017_gm_code,
+         ls_goodsmvt_headret TYPE bapi2017_gm_head_ret,
+         lv_materialdocument TYPE bapi2017_gm_head_ret-mat_doc,
+         lv_matdocumentyear  TYPE bapi2017_gm_head_ret-doc_year,
+         lt_goodsmvt_item    TYPE TABLE OF bapi2017_gm_item_create,
+         ls_goodsmvt_item    TYPE bapi2017_gm_item_create,
+         lt_return           TYPE TABLE OF bapiret2,
+         ls_return           TYPE bapiret2,
+         lt_gr               TYPE STANDARD TABLE OF ty_s_gr,
+         ls_gr               TYPE ty_s_gr,
+         line_id             TYPE i.
+
+  CLEAR lt_gr[].
+  LOOP AT gt_final INTO DATA(gs_final1) WHERE sel = abap_true AND mblnr IS INITIAL.
+    CLEAR gs_final.
+    gs_final = gs_final1.
+    AT NEW vbeln.
+      CLEAR : ls_goodsmvt_code,ls_goodsmvt_header,line_id.
+      ls_goodsmvt_code              = '01'.
+      ls_goodsmvt_header-pstng_date = gs_final-wadat_ist.
+      ls_goodsmvt_header-doc_date   = gs_final-wadat_ist.
+      ls_goodsmvt_header-ref_doc_no = gs_final-vbeln.
+    ENDAT.
+
+    CLEAR : ls_goodsmvt_item,lt_goodsmvt_item[].
+    line_id = line_id + 1.
+    ls_goodsmvt_item-line_id    = line_id.
+    ls_goodsmvt_item-material   = gs_final-matnr.
+    ls_goodsmvt_item-plant      = gs_final-werks.
+    ls_goodsmvt_item-stge_loc   = gs_final-lgort.
+    ls_goodsmvt_item-batch      = gs_final-charg.
+    ls_goodsmvt_item-move_type  = '101'.
+    ls_goodsmvt_item-entry_qnt  = gs_final-lfimg.
+    ls_goodsmvt_item-quantity   = gs_final-lfimg.
+    ls_goodsmvt_item-entry_uom  = gs_final-vrkme.
+    ls_goodsmvt_item-base_uom   = gs_final-meins.
+    ls_goodsmvt_item-po_number  = gs_final-ebeln.
+    ls_goodsmvt_item-po_item    = gs_final-ebelp.
+    ls_goodsmvt_item-deliv_numb = gs_final-vbeln.
+    ls_goodsmvt_item-deliv_item = gs_final-posnr.
+    ls_goodsmvt_item-mvt_ind    = 'B'.
+    APPEND ls_goodsmvt_item TO lt_goodsmvt_item.
+
+    AT END OF vbeln.
+      CHECK lt_goodsmvt_item[] IS NOT INITIAL.
+      CLEAR: lt_return.
+      CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+        EXPORTING
+          goodsmvt_header  = ls_goodsmvt_header
+          goodsmvt_code    = ls_goodsmvt_code
+*         testrun          = 'X'
+        IMPORTING
+          goodsmvt_headret = ls_goodsmvt_headret
+          materialdocument = lv_materialdocument
+          matdocumentyear  = lv_matdocumentyear
+        TABLES
+          goodsmvt_item    = lt_goodsmvt_item[]
+          return           = lt_return[].
+
+      IF lv_materialdocument IS NOT INITIAL .
+        gs_final-mblnr =  lv_materialdocument.
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = 'X'.
+        WAIT UP TO 2 SECONDS .
+        gs_final-msg = 'GR Created'.
+
+        CLEAR ls_gr.
+        ls_gr-vbeln = gs_final-vbeln.
+        ls_gr-mblnr = gs_final-mblnr.
+        ls_gr-msg   = 'GR Created'.
+        APPEND ls_gr TO lt_gr.
+      ELSE.
+        CLEAR ls_return.
+        READ TABLE lt_return INTO ls_return WITH KEY type = c_e.
+        IF sy-subrc = 0.
+          CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+          gs_final-msg = ls_return-message.
+
+          CLEAR ls_gr.
+          ls_gr-vbeln = gs_final-vbeln.
+          ls_gr-msg   = gs_final-msg.
+          APPEND ls_gr TO lt_gr.
+        ENDIF.
+      ENDIF.
+      MODIFY gt_final FROM gs_final.
+    ENDAT.
+  ENDLOOP.
+  LOOP AT gt_final INTO gs_final WHERE sel = abap_true.
+    CLEAR ls_gr.
+    READ TABLE lt_gr INTO ls_gr WITH KEY vbeln = gs_final-vbeln.
+    IF sy-subrc = 0.
+      gs_final-mblnr  = ls_gr-mblnr.
+      gs_final-msg    = ls_gr-msg.
+      MODIFY gt_final FROM gs_final TRANSPORTING mblnr msg.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.

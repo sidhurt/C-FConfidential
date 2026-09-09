@@ -1,0 +1,34 @@
+﻿METHOD if_ex_mb_migo_badi~pbo_detail.
+  DATA: ls_extdata TYPE zmmsmigoitem_int.
+** This check is obligatory, otherwise the program flow is incorrect
+** (If there would be more than one implementation of BAdI MB_MIGO_BADI,
+**  only one subscreen would be displayed).
+  CHECK i_class_id = gv_class_id.
+* Show screen only if there is an item
+  CHECK i_line_id <> 0.
+** External subscreen:
+** The content of global field G_NO_INPUT (set in method MODE_SET) will
+** influence the number of external subsreen:
+  IF gv_no_input IS INITIAL.
+    e_cprog   = 'SAPLZMMGMIGOITEM'.
+    e_dynnr   = '9001'.                     "External fields: Input
+    e_heading = 'Additional Data'.
+  ELSE.
+    e_cprog   = 'SAPLZMMGMIGOITEM'.
+    e_dynnr   = '9001'.                     "External fields: Display
+*    e_dynnr   = '9002'.                     "External fields: Display
+    e_heading = 'Additional Data'.
+  ENDIF.
+** Set G_LINE_ID (= line_id of item displayed on detail-tabstrip)
+  gv_line_id = i_line_id.
+** Read data
+  READ TABLE gt_extdata INTO ls_extdata
+     WITH  KEY line_id = i_line_id.
+
+** Export data to function group (for display on subscreen)
+  CALL FUNCTION 'ZMMF_MIGO_PBO_DETAIL'
+    EXPORTING
+      is_item_fields = ls_extdata
+      i_line_id      = i_line_id.
+
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~PBO_DETAIL

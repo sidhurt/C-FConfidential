@@ -1,0 +1,10 @@
+﻿METHOD if_ex_mb_migo_badi~reset.
+* Clear all internal data:
+  CLEAR: gt_extdata,
+         gv_no_input,
+         gs_exdata_header,
+         gv_cancel,
+         gv_line_id.
+
+
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~RESET

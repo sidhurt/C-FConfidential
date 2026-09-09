@@ -1,0 +1,40 @@
+﻿METHOD if_ex_mb_migo_badi~mode_set.
+* ACTION and REFDOC will discribe the mode of transaction MIGO.
+* ----------------------------------------------------------------------
+* i_action:
+* A01 = Goods receipt
+* A02 = Return delivery
+* A03 = Cancellation
+* A04 = Display
+* A05 = Release GR bl.st.
+* A06 = Subsequent deliv.
+* A07 = Goods issue
+*
+* i_refdoc:
+* R01 = Purchase order
+* R02 = Material document
+* R03 = Delivery note
+* R04 = Inbound delivery
+* R05 = Outbound delivery
+* R06 = Transport
+* R07 = Transport ID code
+* R08 = Order
+* R09 = Reservation
+* R10 = Other GR
+*-----------------------------------------------------------------------
+
+* In case of 'DISPLAY' the global field G_NO_INPUT will be set to 'X'.
+* The result is that a different external subscreen will be choosen in
+* method PBO_DETAIL.
+  IF i_action = 'A04' OR i_action = 'A03'.
+    gv_no_input = 'X'.
+  ENDIF.
+* In case of 'CANCEL' the global field G_CANCEL will be set to 'X'.
+* The result is that in method POST_DOCUMENT a different handling is
+* used
+  IF i_action = 'A03'.
+    gv_cancel = 'X'.
+  ENDIF.
+  gv_action = i_action.
+  gv_refdoc = i_refdoc.
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~MODE_SET

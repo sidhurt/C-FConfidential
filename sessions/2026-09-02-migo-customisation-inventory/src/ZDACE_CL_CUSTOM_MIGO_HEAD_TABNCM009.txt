@@ -1,0 +1,16 @@
+﻿  METHOD if_ex_mb_migo_badi~maa_line_id_adjust.        "Begin of 1987428
+* MAA: Business function LOG_MM_MAA_1
+* LINE_ID of MAA items was changed in method MAA_ITEM_DUPLICATOR_CANCEL/MAA_ITEM_DUPLICATOR_MIGO
+* (Class CL_MMIM_MAA_2). LINE_MODIFY was called with GOITEM-GLOBAL_COUNTER hence table GT_EXTDATA
+* was setup with LINE_ID = GOITEM-GLOBAL_COUNTER. GOITEM-GLOBAL_COUNTER is copied to
+* IMSEG-GLOBAL_COUNTER and IMSEG-LINE_ID.
+* As LINE_ID of MAA items was changed in MAA_ITEM_DUPLICATOR_CANCEL/MAA_ITEM_DUPLICATOR_MIGO the
+* external data has to be updated with the new LINE_ID.
+* The original data in the global table gt_extdata is kept to ensure that the entered external data
+* is still available in case the program returns to the MIGO screen because of en error.
+* The global table gt_extdata_maa is setup with the new LINE_ID when the user posts
+* the document (OK_POST, OK_POST1). In method POST_DOCUMENT the adjusted data from table
+* gt_extdata_maa has to be used to update the external data.
+
+
+  ENDMETHOD.                                             "End of 1987428

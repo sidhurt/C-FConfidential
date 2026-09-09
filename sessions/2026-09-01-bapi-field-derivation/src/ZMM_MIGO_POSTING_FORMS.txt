@@ -1,0 +1,2053 @@
+﻿*&---------------------------------------------------------------------*
+*& Include          ZMM_MIGO_POSTING_FORMS
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data .
+  CLEAR gt_exl[].
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      filename                = p_file
+      i_begin_col             = 1
+      i_begin_row             = 1                "2-1   "p_begin
+      i_end_col               = 24
+      i_end_row               = 50000       "p_end
+    TABLES
+      intern                  = gt_exl
+    EXCEPTIONS
+      inconsistent_parameters = 1
+      upload_ole              = 2
+      OTHERS                  = 3.
+  DATA: lv_sno TYPE i.
+  CLEAR lv_sno.
+  CLEAR: lv_xlcols.
+  LOOP AT gt_exl INTO DATA(gs_exlcol) WHERE row = 1.
+    lv_xlcols = lv_xlcols + 1.
+  ENDLOOP.
+  DATA:n            TYPE i.
+*  DESCRIBE TABLE gt_ LINES n.
+*  IF  lv_xlcols = n.
+  IF gt_exl[] IS NOT INITIAL.
+    LOOP AT gt_exl INTO DATA(lw_exl) WHERE row > 1.
+      CASE lw_exl-col.
+        WHEN '0001'.
+          gs_file-doc_type = lw_exl-value.
+        WHEN '0002'.
+          gs_file-ref_doc  = lw_exl-value.
+        WHEN '0003'.
+          gs_file-ebeln = lw_exl-value.
+        WHEN '0004'.
+          gs_file-ebelp = lw_exl-value.
+        WHEN '0005'.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file-bldat.
+*          gs_file-bldat = lw_exl-value.
+        WHEN '0006'.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file-budat .
+*          gs_file-bldat = lw_exl-value.
+*          gs_file-budat = lw_exl-value.
+        WHEN '0007'.
+          gs_file-xblnr  = lw_exl-value.
+        WHEN '0008'.
+          gs_file-frbnr  = lw_exl-value.
+        WHEN '0009'.
+          gs_file-bktxt = lw_exl-value.
+        WHEN '0010'.
+          gs_file-token = lw_exl-value.
+        WHEN '0011'.
+          gs_file-lrdat = lw_exl-value.
+        WHEN '0012'.
+          gs_file-afrno = lw_exl-value.
+        WHEN '0013'.
+          gs_file-ebill = lw_exl-value.
+        WHEN '0014'.
+          gs_file-afrdt = lw_exl-value.
+        WHEN '0015'.
+          gs_file-edate = lw_exl-value.
+        WHEN '0016'.
+          gs_file-lovct = lw_exl-value.
+        WHEN '0017'.
+          gs_file-bwart = lw_exl-value.
+        WHEN '0018'.
+          gs_file-menge = lw_exl-value.
+        WHEN '0019'.
+          gs_file-meins = lw_exl-value.
+        WHEN '0020'.
+          gs_file-lgort = lw_exl-value.
+        WHEN '0021'.
+          gs_file-charg = lw_exl-value.
+*        WHEN '0022'.
+*          gs_file-item_ok = lw_exl-value.
+*        WHEN '0023'.
+*          gs_file-check = lw_exl-value.
+*        WHEN '0024'.
+*          gs_file-save = lw_exl-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND gs_file TO gt_file.
+        CLEAR:gs_file.
+      ENDAT.
+    ENDLOOP.
+  ENDIF.
+  CLEAR gs_file.
+*  BREAK ibmabap32.
+  LOOP AT gt_file INTO gs_file.
+*    *****header************
+    CLEAR: ls_bapi_header.
+    IF gs_file-budat IS NOT INITIAL AND gs_file-bldat IS NOT INITIAL.
+      ls_bapi_header-pstng_date = gs_file-budat.
+      ls_bapi_header-doc_date = gs_file-bldat.
+    ELSE.
+      ls_bapi_header-pstng_date = sy-datum.
+      ls_bapi_header-doc_date = sy-datum.
+    ENDIF.
+    ls_bapi_header-ref_doc_no = gs_file-xblnr.
+    ls_bapi_header-bill_of_lading  = gs_file-frbnr.
+    ls_bapi_header-header_txt  = gs_file-bktxt.
+*    ls_bapi_header-header_txt  = gs_file-bktxt.
+
+***     item tab**********
+    CLEAR:lt_bapi_item[].
+    ls_bapi_item-mvt_ind = 'B'.
+*    ls_bapi_item-deliv_numb = gs_file-xblnr.
+    ls_bapi_item-po_number = gs_file-ebeln.
+    gs_file-ebelp = |{ gs_file-ebelp ALPHA = IN }|.
+    ls_bapi_item-po_item = gs_file-ebelp.
+    ls_bapi_item-batch = gs_file-charg.
+    ls_bapi_item-move_type = '101' ."gs_file-mov_type.'
+    ls_bapi_item-stge_loc = gs_file-lgort.
+    ls_bapi_item-entry_qnt = gs_file-menge.
+    ls_bapi_item-entry_uom = gs_file-meins.
+*    ls_bapi_item-
+    APPEND ls_bapi_item TO lt_bapi_item.
+*    ****************
+    CLEAR:lt_return[],lv_document,lv_document.
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header  = ls_bapi_header
+        goodsmvt_code    = '01'
+      IMPORTING
+        materialdocument = lv_document
+        matdocumentyear  = lv_documentyear
+      TABLES
+        goodsmvt_item    = lt_bapi_item
+        extensionin      = lt_bapi_extension_in
+        return           = lt_return.
+
+    IF lv_document IS NOT INITIAL.
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true.
+      MOVE-CORRESPONDING gs_file TO gs_final.
+      CONCATENATE 'Successful:'lv_document 'is posted' INTO gs_final-status SEPARATED BY space.
+      gs_final-year = lv_documentyear.
+      gs_final-mat_doc = lv_document.
+      APPEND gs_final TO gt_final.
+    ELSE.
+      MOVE-CORRESPONDING gs_file TO gs_final.
+      READ TABLE lt_return INTO DATA(ls_return) WITH KEY  type  = 'E'.
+      IF sy-subrc EQ 0.
+        CONCATENATE 'Unsuccessful:'ls_return-message INTO gs_final-status SEPARATED BY space.
+      ENDIF.
+      APPEND gs_final TO gt_final.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_fcat .
+  PERFORM f_fill_field USING:
+*                   'DOC_TYPE'            'Document Type',
+*                   'REF_DOC'             'Reference Document',
+                   'BWART'             'Movement Type',
+                   'EBELN'             'Purchse order no.',
+                   'EBELP'             'Purchase order item no.',
+                   'BLDAT'                 'Document date',
+                   'BUDAT'                 'Posting date',
+                   'XBLNR'                 'Delivery Note',
+                   'FRBNR'                 'Bill of landing',
+                   'BKTXT'                 'Header text',
+                   'TOKEN'                 'Token',
+                   'LRDAT'                 'LR date',
+                   'AFRNO'                 'AFR Manifesto no.',
+                   'EBILL'                 'E-way bill no.',
+                   'AFRDT'                 'AFR Manifesto date',
+                   'EDATE'                 'EWAY Bill date',
+                   'LOVCT'                 'Waste Category',
+                   'BWART'             'Movement Type',
+                   'MENGE'                 'Quantity',
+                   'MEINS'                'Unit',
+                   'LGORT'                'Storage Location',
+                   'CHARG'               'Batch',
+                   'STATUS'              'Status',
+                   'YEAR'                'Posted Year',
+                   'MAT_DOC'             'Posted Document'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_alv
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_alv .
+  DATA:ls_layout         TYPE slis_layout_alv.
+*  ls_layout-zebra    = abap_true.
+*  ls_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program = sy-repid
+*     i_callback_top_of_page = 'TOP_OF_PAGE'
+      is_layout          = ls_layout
+      it_fieldcat        = gt_fieldcat
+*     i_default          = abap_true
+      i_save             = 'A'
+    TABLES
+      t_outtab           = gt_final[]
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error in ALV Display' TYPE 'I' DISPLAY LIKE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_fill_field
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM f_fill_field  USING p_fieldname TYPE char100    " Fill_field using p_fiel of type CHAR20
+                          p_seltext   TYPE char100. " Seltext of type CHAR100.
+  DATA:ls_fieldcat TYPE slis_fieldcat_alv.
+  ls_fieldcat-fieldname = p_fieldname.
+  ls_fieldcat-seltext_l = p_seltext.
+
+*  ls_fieldcat-lowercase = 'X'.
+  APPEND ls_fieldcat TO gt_fieldcat.
+  CLEAR ls_fieldcat.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_data_102
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data_102 .
+  CLEAR gt_exl[].
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      filename                = p_file
+      i_begin_col             = 1
+      i_begin_row             = 1                "2-1   "p_begin
+      i_end_col               = 11
+      i_end_row               = 50000       "p_end
+    TABLES
+      intern                  = gt_exl
+    EXCEPTIONS
+      inconsistent_parameters = 1
+      upload_ole              = 2
+      OTHERS                  = 3.
+  CLEAR: lv_xlcols.
+  LOOP AT gt_exl INTO DATA(gs_exlcol) WHERE row = 1.
+    lv_xlcols = lv_xlcols + 1.
+  ENDLOOP.
+  IF gt_exl[] IS NOT INITIAL.
+    LOOP AT gt_exl INTO DATA(lw_exl) WHERE row > 1.
+      CASE lw_exl-col.
+        WHEN '0001'.
+          gs_file2-doc_type = lw_exl-value.
+        WHEN '0002'.
+          gs_file2-ref_doc  = lw_exl-value.
+        WHEN '0003'.
+          gs_file2-mblnr = lw_exl-value.
+        WHEN '0004'.
+*          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file-bldat.
+          gs_file2-mjahr = lw_exl-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND gs_file2 TO gt_file2.
+        CLEAR:gs_file2.
+      ENDAT.
+    ENDLOOP.
+  ENDIF.
+  CLEAR gs_file2.
+  LOOP AT gt_file2 INTO gs_file2.
+    SELECT SINGLE mblnr,
+      mjahr,bwart
+      FROM matdoc
+      INTO @DATA(gv_matdoc)
+      WHERE bwart = '101'
+      AND mblnr = @gs_file2-mblnr.
+    IF sy-subrc EQ 0.
+      CALL FUNCTION 'BAPI_GOODSMVT_CANCEL'
+        EXPORTING
+          materialdocument    = gs_file2-mblnr
+          matdocumentyear     = gs_file2-mjahr
+          goodsmvt_pstng_date = sy-datum
+*         GOODSMVT_PR_UNAME   =
+*         DOCUMENTHEADER_TEXT =
+        IMPORTING
+          goodsmvt_headret    = gv_gm_head_ret
+        TABLES
+          return              = lt_return.
+*         GOODSMVT_MATDOCITEM       =
+      .
+      IF gv_gm_head_ret IS NOT INITIAL.
+
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = abap_true.
+        MOVE-CORRESPONDING gs_file2 TO gs_final2.
+        CONCATENATE 'Successful:' gv_gm_head_ret INTO gs_final2-status.
+        gs_final2-bwart = '102'.
+        APPEND gs_final2 TO gt_final2.
+      ELSE.
+        MOVE-CORRESPONDING gs_file2 TO gs_final2.
+        READ TABLE lt_return INTO DATA(ls_return) WITH KEY  type  = 'E'.
+        IF sy-subrc EQ 0.
+          CONCATENATE 'Unsuccessful:'ls_return-message INTO gs_final2-status SEPARATED BY space.
+        ENDIF.
+        gs_final2-bwart = '102'.
+        APPEND gs_final2 TO gt_final2.
+        CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+      ENDIF.
+    ELSE.
+      MOVE-CORRESPONDING gs_file2 TO gs_final2.
+      gs_final2-bwart = '102'.
+      gs_final2-status = 'This Material Doesnot exist for the movement type 101'.
+      APPEND gs_final2 TO gt_final2.
+      CLEAR:gs_final2.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_fcat_102
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_fcat_102 .
+  PERFORM f_fill_field USING:
+*                   'DOC_TYPE'            'Document Type',
+*                   'REF_DOC'             'Reference Document',
+                  'BWART'             'Movement Type',
+                    'MBLNR'             'Material Doc No.',
+                    'MJAHR'             'Year.',
+
+                  'STATUS'              'Status'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_alv_102
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_alv_102 .
+  DATA:ls_layout         TYPE slis_layout_alv.
+*  ls_layout-zebra    = abap_true.
+*  ls_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program     = sy-repid
+      i_callback_top_of_page = 'TOP_OF_PAGE'
+      is_layout              = ls_layout
+      it_fieldcat            = gt_fieldcat
+*     i_default              = abap_true
+      i_save                 = 'A'
+    TABLES
+      t_outtab               = gt_final2[]
+    EXCEPTIONS
+      program_error          = 1
+      OTHERS                 = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error in ALV Display' TYPE 'I' DISPLAY LIKE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_data_201
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data_201 .
+  CLEAR gt_exl[].
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      filename                = p_file
+      i_begin_col             = 1
+      i_begin_row             = 1                "2-1   "p_begin
+      i_end_col               = 22
+      i_end_row               = 50000       "p_end
+    TABLES
+      intern                  = gt_exl
+    EXCEPTIONS
+      inconsistent_parameters = 1
+      upload_ole              = 2
+      OTHERS                  = 3.
+  DATA: lv_sno TYPE i.
+  CLEAR lv_sno.
+  CLEAR: lv_xlcols.
+  LOOP AT gt_exl INTO DATA(gs_exlcol) WHERE row = 1.
+    lv_xlcols = lv_xlcols + 1.
+  ENDLOOP.
+  DATA:n            TYPE i.
+*  DESCRIBE TABLE gt_ LINES n.
+*  IF  lv_xlcols = n.
+  IF gt_exl[] IS NOT INITIAL.
+    LOOP AT gt_exl INTO DATA(lw_exl) WHERE row > 1.
+      CASE lw_exl-col.
+        WHEN '0001'.
+          gs_file3-doc_type = lw_exl-value.
+        WHEN '0002'.
+          gs_file3-ref_doc  = lw_exl-value.
+        WHEN '0003'.
+          gs_file3-bwart  = lw_exl-value.
+        WHEN '0004'.
+          gs_file3-matnr = lw_exl-value.
+        WHEN '0005'.
+          gs_file3-menge = lw_exl-value.
+        WHEN '0006'.
+          gs_file3-meins = lw_exl-value.
+        WHEN '0007'.
+          gs_file3-werks = lw_exl-value.
+        WHEN '0008'.
+          gs_file3-lgort  = lw_exl-value.
+        WHEN '0009'.
+          gs_file3-grund  = lw_exl-value.
+        WHEN '0010'.
+          gs_file3-gl_account = lw_exl-value.
+        WHEN '0011'.
+          gs_file3-costcenter = lw_exl-value.
+        WHEN '0012'.
+          gs_file3-gr_rcpt = lw_exl-value.
+        WHEN '0013'.
+          gs_file3-item_text = lw_exl-value.
+*       Added by Vimal Kant for 37478 on 16.06.2025
+        WHEN '0014'.
+*          gs_file3-budat = lw_exl-value.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO    gs_file3-budat.
+        WHEN '0015'.
+*          gs_file3-bldat = lw_exl-value.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO    gs_file3-bldat.
+*       End of Addition
+*        WHEN '0014'.
+*          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO   gs_file3-lrdat.
+***         = lw_exl-value.
+*        WHEN '0015'.
+*          gs_file3-afrno = lw_exl-value.
+*        WHEN '0016'.
+*          gs_file3-ebill = lw_exl-value.
+*        WHEN '0017'.
+*          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO    gs_file3-afrdt.
+***          gs_file-afrdt = lw_exl-value.
+*        WHEN '0018'.
+*          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file3-edate.
+***          = lw_exl-value.
+*        WHEN '0019'.
+*
+*          gs_file3-lovct = lw_exl-value.
+*        WHEN '0020'.
+*          gs_file3-item_ok = lw_exl-value.
+*        WHEN '0021'.
+*          gs_file3-check = lw_exl-value.
+*        WHEN '0022'.
+*          gs_file3-save = lw_exl-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND gs_file3 TO gt_file3.
+        CLEAR:gs_file.
+      ENDAT.
+    ENDLOOP.
+  ENDIF.
+  CLEAR gs_file3.
+*  BREAK ibmabap32,.
+  LOOP AT gt_file3 INTO gs_file3.
+*    *****header************
+    CLEAR: ls_bapi_header.
+*    Added by Vimal Kant for 37478 on 16.06.2025
+    IF gs_file3-budat IS NOT INITIAL.
+      ls_bapi_header-pstng_date = gs_file3-budat.
+    ELSE.
+      ls_bapi_header-pstng_date = sy-datum.
+    ENDIF.
+    IF gs_file3-bldat IS NOT INITIAL.
+      ls_bapi_header-doc_date = gs_file3-bldat.
+    ELSE.
+      ls_bapi_header-doc_date = sy-datum.
+    ENDIF.
+*    End of Addtion
+*    ls_bapi_header-doc_date = sy-datum.
+*    ls_bapi_header-ref_doc_no = gs_file3-xblnr.
+*    ls_bapi_header-bill_of_lading  = gs_file3-frbnr.
+    ls_bapi_header-header_txt  = gs_file3-bktxt.
+*    ls_bapi_header-header_txt  = gs_file-bktxt.
+
+***     item tab**********
+    CLEAR:lt_bapi_item[].
+*    ls_bapi_item-mvt_ind = 'B'.
+*    ls_bapi_item-deliv_numb = gs_file-xblnr.
+*    ls_bapi_item-po_number = gs_file-ebeln.
+*    ls_bapi_item-po_item = gs_file-ebelp.
+    CALL FUNCTION 'CONVERSION_EXIT_MATN1_INPUT'
+      EXPORTING
+        input        = gs_file3-matnr
+      IMPORTING
+        output       = ls_bapi_item-material
+      EXCEPTIONS
+        length_error = 1
+        OTHERS       = 2.
+    IF sy-subrc <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    ls_bapi_item-plant = gs_file3-werks.
+    ls_bapi_item-move_reas = gs_file3-grund.
+    ls_bapi_item-gl_account = gs_file3-gl_account.
+    ls_bapi_item-costcenter = gs_file3-costcenter.
+*    ls_bapi_item-batch = gs_file3-charg.
+    ls_bapi_item-move_type = '201' ."gs_file-mov_type.'
+    ls_bapi_item-stge_loc = gs_file3-lgort.
+    ls_bapi_item-entry_qnt = gs_file3-menge.
+    ls_bapi_item-entry_uom = gs_file3-meins.
+    ls_bapi_item-item_text = gs_file3-item_text.
+    ls_bapi_item-gr_rcpt = gs_file3-gr_rcpt.
+    APPEND ls_bapi_item TO lt_bapi_item.
+*    ****************
+    CLEAR:lt_return[],lv_document,lv_document.
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header  = ls_bapi_header
+        goodsmvt_code    = '03'
+      IMPORTING
+        materialdocument = lv_document
+        matdocumentyear  = lv_documentyear
+      TABLES
+        goodsmvt_item    = lt_bapi_item
+        extensionin      = lt_bapi_extension_in
+        return           = lt_return.
+
+    IF lv_document IS NOT INITIAL.
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true.
+      MOVE-CORRESPONDING gs_file3 TO gs_final3.
+      CONCATENATE 'Successful:'lv_document 'is posted' INTO gs_final3-status SEPARATED BY space.
+      gs_final3-year = lv_documentyear.
+      gs_final3-mat_doc = lv_document.
+      APPEND gs_final3 TO gt_final3.
+    ELSE.
+      MOVE-CORRESPONDING gs_file3 TO gs_final3.
+      READ TABLE lt_return INTO DATA(ls_return) WITH KEY  type  = 'E'.
+      IF sy-subrc EQ 0.
+        CONCATENATE 'Unsuccessful:'ls_return-message INTO gs_final3-status SEPARATED BY space.
+      ENDIF.
+      APPEND gs_final3 TO gt_final3.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_fcat_201
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_fcat_201 .
+  PERFORM f_fill_field USING:
+                  'BWART'                 'Movement Type',
+                  'MATNR'                 'Material',
+                  'MENGE'                 'Quantity',
+                  'MEINS'                'Unit',
+                  'WERKS'                'Plant',
+                  'LGORT'                'Storage Location',
+                  'GRUND'                'Reason for movement',
+                  'GL_Account'          'G/L Account',
+                  'COSTCENTER'          'Cost center',
+                  'BKTXT'                 'Header text',
+                  'TOKEN'                 'Token',
+                  'LRDAT'                 'LR date',
+                  'AFRNO'                 'AFR Manifesto no.',
+                  'EBILL'                 'E-way bill no.',
+                  'AFRDT'                 'AFR Manifesto date',
+                  'EDATE'                 'EWAY Bill date',
+                  'LOVCT'                 'Waste Category',
+                  'GR_RCPT'               'Goods Recipient',
+                  'ITEM_TEXT'             'Remarks',
+*                   'CHARG'               'Batch',
+                 'STATUS'              'Status',
+                 'YEAR'                'Posted Year',
+                  'MAT_DOC'             'Posted Document',
+                  'BUDAT'                'Posting Date',
+                  'BLDAT'               'Document date'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_alv_201
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_alv_201 .
+  DATA:ls_layout         TYPE slis_layout_alv.
+*  ls_layout-zebra    = abap_true.
+*  ls_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program = sy-repid
+*     i_callback_top_of_page = 'TOP_OF_PAGE'
+      is_layout          = ls_layout
+      it_fieldcat        = gt_fieldcat
+*     i_default          = abap_true
+      i_save             = 'A'
+    TABLES
+      t_outtab           = gt_final3[]
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error in ALV Display' TYPE 'I' DISPLAY LIKE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+ENDFORM.
+
+
+*&---------------------------------------------------------------------*
+*& Form get_data_202
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data_202 .
+  CLEAR gt_exl[].
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      filename                = p_file
+      i_begin_col             = 1
+      i_begin_row             = 1                "2-1   "p_begin
+      i_end_col               = 11
+      i_end_row               = 50000       "p_end
+    TABLES
+      intern                  = gt_exl
+    EXCEPTIONS
+      inconsistent_parameters = 1
+      upload_ole              = 2
+      OTHERS                  = 3.
+  CLEAR: lv_xlcols.
+  LOOP AT gt_exl INTO DATA(gs_exlcol) WHERE row = 1.
+    lv_xlcols = lv_xlcols + 1.
+  ENDLOOP.
+  IF gt_exl[] IS NOT INITIAL.
+    LOOP AT gt_exl INTO DATA(lw_exl) WHERE row > 1.
+      CASE lw_exl-col.
+        WHEN '0001'.
+          gs_file5-doc_type = lw_exl-value.
+        WHEN '0002'.
+          gs_file5-ref_doc  = lw_exl-value.
+        WHEN '0003'.
+          gs_file5-mblnr = lw_exl-value.
+        WHEN '0004'.
+          gs_file5-mjahr = lw_exl-value.
+        WHEN '0005'.
+          gs_file5-grund = lw_exl-value.
+*        WHEN '0006'.
+*          gs_file5-item_ok = lw_exl-value.
+*        WHEN '0007'.
+*          gs_file5-check = lw_exl-value.
+*        WHEN '0008'.
+*          gs_file5-post = lw_exl-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND gs_file5 TO gt_file5.
+        CLEAR:gs_file5.
+      ENDAT.
+    ENDLOOP.
+  ENDIF.
+  CLEAR gs_file5.
+*  BREAK ibmabap32.
+  LOOP AT gt_file5 INTO gs_file5.
+    SELECT SINGLE mblnr,
+      mjahr,bwart
+      FROM matdoc
+      INTO @DATA(gv_matdoc)
+      WHERE bwart = '201'
+      AND mblnr = @gs_file5-mblnr.
+    IF sy-subrc EQ 0.
+      CALL FUNCTION 'BAPI_GOODSMVT_CANCEL'
+        EXPORTING
+          materialdocument    = gs_file5-mblnr
+          matdocumentyear     = gs_file5-mjahr
+          goodsmvt_pstng_date = sy-datum
+*         GOODSMVT_PR_UNAME   =
+*         DOCUMENTHEADER_TEXT =
+        IMPORTING
+          goodsmvt_headret    = gv_gm_head_ret
+        TABLES
+          return              = lt_return.
+*         GOODSMVT_MATDOCITEM       =
+      .
+      IF gv_gm_head_ret IS NOT INITIAL.
+
+        CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+          EXPORTING
+            wait = abap_true.
+        MOVE-CORRESPONDING gs_file5 TO gs_final5.
+        CONCATENATE 'Successful:' gv_gm_head_ret INTO gs_final5-status.
+        gs_final5-bwart = '202'.
+        APPEND gs_final5 TO gt_final5.
+      ELSE.
+        MOVE-CORRESPONDING gs_file5 TO gs_final5.
+        READ TABLE lt_return INTO DATA(ls_return) WITH KEY  type  = 'E'.
+        IF sy-subrc EQ 0.
+          CONCATENATE 'Unsuccessful:'ls_return-message INTO gs_final5-status SEPARATED BY space.
+        ENDIF.
+        gs_final5-bwart = '202'.
+        APPEND gs_final5 TO gt_final5.
+        CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+      ENDIF.
+    ELSE.
+      MOVE-CORRESPONDING gs_file5 TO gs_final5.
+      gs_final5-status = 'This Material Document Doesnot exist for the movement type 201'.
+      gs_final5-bwart = '202'.
+      APPEND gs_final5 TO gt_final5.
+      CLEAR:gs_final5.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_data_201_res
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data_201_res .
+  CLEAR gt_exl[].
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      filename                = p_file
+      i_begin_col             = 1
+      i_begin_row             = 1                "2-1   "p_begin
+      i_end_col               = 22
+      i_end_row               = 50000       "p_end
+    TABLES
+      intern                  = gt_exl
+    EXCEPTIONS
+      inconsistent_parameters = 1
+      upload_ole              = 2
+      OTHERS                  = 3.
+  DATA: lv_sno TYPE i.
+  CLEAR lv_sno.
+  CLEAR: lv_xlcols.
+  LOOP AT gt_exl INTO DATA(gs_exlcol) WHERE row = 1.
+    lv_xlcols = lv_xlcols + 1.
+  ENDLOOP.
+  DATA:n            TYPE i.
+*  DESCRIBE TABLE gt_ LINES n.
+*  IF  lv_xlcols = n.
+  IF gt_exl[] IS NOT INITIAL.
+    LOOP AT gt_exl INTO DATA(lw_exl) WHERE row > 1.
+      CASE lw_exl-col.
+        WHEN '0001'.
+          gs_file4-doc_type = lw_exl-value.
+        WHEN '0002'.
+          gs_file4-ref_doc  = lw_exl-value.
+        WHEN '0003'.
+          gs_file4-bwart  = lw_exl-value.
+        WHEN '0004'.
+          gs_file4-reserv_no = lw_exl-value.
+        WHEN '0005'.
+          gs_file4-res_item = lw_exl-value.
+        WHEN '0006'.
+          gs_file4-menge = lw_exl-value.
+        WHEN '0007'.
+          gs_file4-meins = lw_exl-value.
+        WHEN '0008'.
+          gs_file4-lgort  = lw_exl-value.
+        WHEN '0009'.
+          gs_file4-grund  = lw_exl-value.
+        WHEN '0010'.
+          gs_file4-gr_rcpt = lw_exl-value.
+        WHEN '0011'.
+          gs_file4-item_text = lw_exl-value.
+*        WHEN '0012'.
+*          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO   gs_file4-lrdat.
+***         = lw_exl-value.
+*        WHEN '0013'.
+*          gs_file4-afrno = lw_exl-value.
+*        WHEN '0014'.
+*          gs_file4-ebill = lw_exl-value.
+*        WHEN '0015'.
+*          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO    gs_file4-afrdt.
+***          gs_file-afrdt = lw_exl-value.
+*        WHEN '0016'.
+*          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file4-edate.
+***          = lw_exl-value.
+*        WHEN '0017'.
+*          gs_file4-lovct = lw_exl-value.
+*        WHEN '0018'.
+*          gs_file4-item_ok = lw_exl-value.
+*        WHEN '0019'.
+*          gs_file4-check = lw_exl-value.
+*        WHEN '0020'.
+*          gs_file4-save = lw_exl-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND gs_file4 TO gt_file4.
+        CLEAR:gs_file.
+      ENDAT.
+    ENDLOOP.
+  ENDIF.
+  CLEAR gs_file4.
+*  BREAK ibmabap32,.
+  LOOP AT gt_file4 INTO gs_file4.
+*    *****header************
+    CLEAR: ls_bapi_header.
+    ls_bapi_header-pstng_date = sy-datum.
+    ls_bapi_header-doc_date = sy-datum.
+*    ls_bapi_header-ref_doc_no = gs_file3-xblnr.
+*    ls_bapi_header-bill_of_lading  = gs_file3-frbnr.
+*    ls_bapi_header-header_txt  = gs_file4-bktxt.
+*    ls_bapi_header-header_txt  = gs_file-bktxt.
+
+***     item tab**********
+    CLEAR:lt_bapi_item[].
+*    ls_bapi_item-mvt_ind = 'B'.
+*    ls_bapi_item-deliv_numb = gs_file-xblnr.
+*    ls_bapi_item-po_number = gs_file-ebeln.
+*    ls_bapi_item-po_item = gs_file-ebelp.
+*    ls_bapi_item-material = gs_file3-matnr.
+*    ls_bapi_item-plant = gs_file3-werks.
+    ls_bapi_item-move_reas = gs_file4-grund.
+    ls_bapi_item-reserv_no = gs_file4-reserv_no.
+    ls_bapi_item-item_text = gs_file4-item_text.
+    ls_bapi_item-gr_rcpt = gs_file4-gr_rcpt.
+    SELECT SINGLE rsnum,
+    rspos,rsart,xloek,bwart
+    FROM resb INTO @DATA(gv_rsnum)
+    WHERE rsnum = @gs_file4-reserv_no
+    AND bwart = '201' AND xloek NE 'X'
+    AND rspos = @gs_file4-res_item.
+    IF sy-subrc EQ 0.
+      ls_bapi_item-res_item = gs_file4-res_item.
+    ELSE.
+      MOVE-CORRESPONDING gs_file4 TO gs_final4.
+      gs_final4-status = 'Check for the reservation no. in RESB table/either its deleted or doesnot belong to 201 MVT Type'.
+      APPEND gs_final4 TO gt_final4.
+      CLEAR gs_final.
+      CONTINUE.
+    ENDIF.
+*    ls_bapi_item-gl_account = gs_file4-gl_account.
+*    ls_bapi_item-costcenter = gs_file4-costcenter.
+*    ls_bapi_item-batch = gs_file3-charg.
+    ls_bapi_item-move_type = '201' ."gs_file-mov_type.'
+    ls_bapi_item-stge_loc = gs_file4-lgort.
+    ls_bapi_item-entry_qnt = gs_file4-menge.
+    ls_bapi_item-entry_uom = gs_file4-meins.
+*    ls_bapi_item-
+    APPEND ls_bapi_item TO lt_bapi_item.
+*    ****************
+    CLEAR:lt_return[],lv_document,lv_document.
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header  = ls_bapi_header
+        goodsmvt_code    = '03'
+      IMPORTING
+        materialdocument = lv_document
+        matdocumentyear  = lv_documentyear
+      TABLES
+        goodsmvt_item    = lt_bapi_item
+        extensionin      = lt_bapi_extension_in
+        return           = lt_return.
+
+    IF lv_document IS NOT INITIAL.
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true.
+      MOVE-CORRESPONDING gs_file4 TO gs_final4.
+      CONCATENATE 'Successful:'lv_document 'is posted' INTO gs_final4-status SEPARATED BY space.
+      gs_final4-bwart = '201(Reservation)'.
+      gs_final4-year = lv_documentyear.
+      gs_final4-mat_doc = lv_document.
+      APPEND gs_final4 TO gt_final4.
+      CLEAR gs_final4.
+    ELSE.
+      MOVE-CORRESPONDING gs_file4 TO gs_final4.
+      READ TABLE lt_return INTO DATA(ls_return) WITH KEY  type  = 'E'.
+      IF sy-subrc EQ 0.
+        CONCATENATE 'Unsuccessful:'ls_return-message INTO gs_final4-status SEPARATED BY space.
+      ENDIF.
+      READ TABLE lt_return INTO DATA(ls_return2) WITH KEY  type  = 'S'.
+      IF sy-subrc EQ 0.
+        CONCATENATE 'Unsuccessful:'ls_return2-message INTO gs_final4-status SEPARATED BY space.
+      ENDIF.
+      gs_final4-bwart = '201(Reservation)'.
+      APPEND gs_final4 TO gt_final4.
+      CLEAR gs_final4.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_fcat_201_res
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_fcat_201_res .
+  PERFORM f_fill_field USING:
+                    'BWART'                 'Movement Type',
+                    'RESERV_NO'             'Reservation Number',
+                    'RES_ITEM'             'Reservation Item Number',
+                    'MENGE'                 'Quantity',
+                    'MEINS'                'Unit',
+                    'LGORT'                'Storage Location',
+                    'GRUND'                'Reason for movement',
+*                   'BKTXT'                 'Header text',
+*                   'TOKEN'                 'Token',
+*                   'LRDAT'                 'LR date',
+*                   'AFRNO'                 'AFR Manifesto no.',
+*                   'EBILL'                 'E-way bill no.',
+*                   'AFRDT'                 'AFR Manifesto date',
+*                   'EDATE'                 'EWAY Bill date',
+*                   'LOVCT'                 'Waste Category',
+                   'STATUS'              'Status',
+                   'YEAR'                'Posted Year',
+                    'MAT_DOC'             'Posted Document'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_alv_201_res
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_alv_201_res .
+  DATA:ls_layout         TYPE slis_layout_alv.
+*  ls_layout-zebra    = abap_true.
+*  ls_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program = sy-repid
+*     i_callback_top_of_page = 'TOP_OF_PAGE'
+      is_layout          = ls_layout
+      it_fieldcat        = gt_fieldcat
+*     i_default          = abap_true
+      i_save             = 'A'
+    TABLES
+      t_outtab           = gt_final4[]
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error in ALV Display' TYPE 'I' DISPLAY LIKE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_fcat_202
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_fcat_202 .
+  PERFORM f_fill_field USING:
+*                   'DOC_TYPE'            'Document Type',
+*                   'REF_DOC'             'Reference Document',
+                     'BWART'             'Movement Type',
+                     'MBLNR'             'Material Doc No.',
+                     'MJAHR'             'Year.',
+                     'GRUND'             'Reason for movement',
+                     'STATUS'              'Status'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_alv_202
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_alv_202 .
+  DATA:ls_layout         TYPE slis_layout_alv.
+*  ls_layout-zebra    = abap_true.
+*  ls_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program = sy-repid
+*     i_callback_top_of_page = 'TOP_OF_PAGE'
+      is_layout          = ls_layout
+      it_fieldcat        = gt_fieldcat
+*     i_default          = abap_true
+      i_save             = 'A'
+    TABLES
+      t_outtab           = gt_final5[]
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error in ALV Display' TYPE 'I' DISPLAY LIKE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+ENDFORM.
+*Begin of Change by Ashutosh Prakash for ME46050 on 21-NOV-2025
+*&---------------------------------------------------------------------*
+*& Form get_data_311
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data_311 .
+  CLEAR gt_exl[].
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      filename                = p_file
+      i_begin_col             = 1
+      i_begin_row             = 1                "2-1   "p_begin
+      i_end_col               = 13
+      i_end_row               = 50000       "p_end
+    TABLES
+      intern                  = gt_exl
+    EXCEPTIONS
+      inconsistent_parameters = 1
+      upload_ole              = 2
+      OTHERS                  = 3.
+  CLEAR: lv_xlcols.
+  LOOP AT gt_exl INTO DATA(gs_exlcol) WHERE row = 1.
+    lv_xlcols = lv_xlcols + 1.
+  ENDLOOP.
+  IF gt_exl[] IS NOT INITIAL.
+    LOOP AT gt_exl INTO DATA(lw_exl) WHERE row > 1.
+      CASE lw_exl-col.
+        WHEN '0001'.
+          gs_file6-doc_type = lw_exl-value.
+        WHEN '0002'.
+          gs_file6-ref_doc  = lw_exl-value.
+        WHEN '0003'.
+          gs_file6-bwart = lw_exl-value.
+        WHEN '0004'.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file6-budat.
+        WHEN '0005'.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file6-bldat.
+        WHEN '0006'.
+          gs_file6-matnr = lw_exl-value.
+        WHEN '0007'.
+          gs_file6-werks = lw_exl-value.
+        WHEN '0008'.
+          gs_file6-lgort_frm = lw_exl-value.
+        WHEN '0009'.
+          gs_file6-lgort_to = lw_exl-value.
+        WHEN '0010'.
+          gs_file6-menge = lw_exl-value.
+        WHEN '0011'.
+          gs_file6-meins = lw_exl-value.
+*        WHEN '0012'.
+*          gs_file6-lgpla = lw_exl-value.
+        WHEN '0012'.
+          gs_file6-bktxt = lw_exl-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND gs_file6 TO gt_file6.
+        CLEAR:gs_file6.
+      ENDAT.
+    ENDLOOP.
+  ENDIF.
+  CLEAR gs_file6.
+  LOOP AT gt_file6 INTO gs_file6.
+*    *    *****header************
+    CLEAR: ls_bapi_header.
+*    Added by Vimal Kant for 37478 on 16.06.2025
+    IF gs_file6-budat IS NOT INITIAL.
+      ls_bapi_header-pstng_date = gs_file6-budat.
+    ELSE.
+      ls_bapi_header-pstng_date = sy-datum.
+    ENDIF.
+    IF gs_file6-bldat IS NOT INITIAL.
+      ls_bapi_header-doc_date = gs_file6-bldat.
+    ELSE.
+      ls_bapi_header-doc_date = sy-datum.
+    ENDIF.
+
+    ls_bapi_header-header_txt  = gs_file6-bktxt.
+
+***     item tab**********
+    CLEAR:lt_bapi_item[].
+*    ls_bapi_item-mvt_ind = 'B'.
+*    ls_bapi_item-deliv_numb = gs_file-xblnr.
+*    ls_bapi_item-po_number = gs_file-ebeln.
+*    ls_bapi_item-po_item = gs_file-ebelp.
+    CALL FUNCTION 'CONVERSION_EXIT_MATN1_INPUT'
+      EXPORTING
+        input        = gs_file6-matnr
+      IMPORTING
+        output       = ls_bapi_item-material
+      EXCEPTIONS
+        length_error = 1
+        OTHERS       = 2.
+    IF sy-subrc <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    ls_bapi_item-plant = gs_file6-werks.
+    ls_bapi_item-move_type = '311' ."gs_file-mov_type.'
+    ls_bapi_item-stge_loc = gs_file6-lgort_frm.
+    ls_bapi_item-entry_qnt = gs_file6-menge.
+    ls_bapi_item-entry_uom = gs_file6-meins.
+    ls_bapi_item-move_stloc = gs_file6-lgort_to.
+*    ls_bapi_item-stge_bin = gs_file6-lgpla.
+    APPEND ls_bapi_item TO lt_bapi_item.
+*    ****************
+    CLEAR:lt_return[],lv_document,lv_document.
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header  = ls_bapi_header
+        goodsmvt_code    = '04'
+      IMPORTING
+        materialdocument = lv_document
+        matdocumentyear  = lv_documentyear
+      TABLES
+        goodsmvt_item    = lt_bapi_item
+        extensionin      = lt_bapi_extension_in
+        return           = lt_return.
+
+    IF lv_document IS NOT INITIAL.
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true.
+      MOVE-CORRESPONDING gs_file6 TO gs_final6.
+      CONCATENATE 'Successful:'lv_document 'is posted' INTO gs_final6-status SEPARATED BY space.
+      gs_final6-year = lv_documentyear.
+      gs_final6-mat_doc = lv_document.
+      APPEND gs_final6 TO gt_final6.
+    ELSE.
+      MOVE-CORRESPONDING gs_file6 TO gs_final6.
+      READ TABLE lt_return INTO DATA(ls_return) WITH KEY  type  = 'E'.
+      IF sy-subrc EQ 0.
+        CONCATENATE 'Unsuccessful:'ls_return-message INTO gs_final6-status SEPARATED BY space.
+      ENDIF.
+      APPEND gs_final6 TO gt_final6.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+    ENDIF.
+    CLEAR gs_final6.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_fcat_311
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_fcat_311 .
+  PERFORM f_fill_field USING:
+                         'BWART'             'Movement Type',
+                         'BLDAT'             'Document Date',
+                         'BUDAT'             'Posting Date',
+                         'MATNR'             'Material',
+                         'WERKS'             'Plant',
+                         'LGORT_FRM'         'Storage location From',
+                         'LGORT_TO'          'Storage location To',
+                         'MENGE'             'Quantity',
+                         'MEINS'             'Unit',
+*                         'LGPLA'             'Storage Bin',
+                         'BKTXT'             'Doc. Header Text',
+                         'MAT_DOC'           'Material Doc No.',
+                         'STATUS'            'Status'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_alv_311
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_alv_311 .
+  DATA:ls_layout         TYPE slis_layout_alv.
+*  ls_layout-zebra    = abap_true.
+*  ls_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program = sy-repid
+*     i_callback_top_of_page = 'TOP_OF_PAGE'
+      is_layout          = ls_layout
+      it_fieldcat        = gt_fieldcat
+*     i_default          = abap_true
+      i_save             = 'A'
+    TABLES
+      t_outtab           = gt_final6[]
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error in ALV Display' TYPE 'I' DISPLAY LIKE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_data_311_ewm
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data_311_ewm .
+  CLEAR gt_exl[].
+  CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+    EXPORTING
+      filename                = p_file
+      i_begin_col             = 1
+      i_begin_row             = 1                "2-1   "p_begin
+      i_end_col               = 13
+      i_end_row               = 50000       "p_end
+    TABLES
+      intern                  = gt_exl
+    EXCEPTIONS
+      inconsistent_parameters = 1
+      upload_ole              = 2
+      OTHERS                  = 3.
+  CLEAR: lv_xlcols.
+  LOOP AT gt_exl INTO DATA(gs_exlcol) WHERE row = 1.
+    lv_xlcols = lv_xlcols + 1.
+  ENDLOOP.
+  IF gt_exl[] IS NOT INITIAL.
+    LOOP AT gt_exl INTO DATA(lw_exl) WHERE row > 1.
+      CASE lw_exl-col.
+        WHEN '0001'.
+          gs_file7-doc_type = lw_exl-value.
+        WHEN '0002'.
+          gs_file7-ref_doc  = lw_exl-value.
+        WHEN '0003'.
+          gs_file7-bwart = lw_exl-value.
+        WHEN '0004'.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file7-budat.
+        WHEN '0005'.
+          CONCATENATE lw_exl-value+6(4) lw_exl-value+3(2) lw_exl-value+0(2) INTO gs_file7-bldat.
+        WHEN '0006'.
+          gs_file7-matnr = lw_exl-value.
+        WHEN '0007'.
+          gs_file7-werks = lw_exl-value.
+        WHEN '0008'.
+          gs_file7-lgort_frm = lw_exl-value.
+        WHEN '0009'.
+          gs_file7-lgort_to = lw_exl-value.
+        WHEN '0010'.
+          gs_file7-menge = lw_exl-value.
+        WHEN '0011'.
+          gs_file7-meins = lw_exl-value.
+        WHEN '0012'.
+          gs_file7-lgpla = lw_exl-value.
+        WHEN '0013'.
+          gs_file7-bktxt = lw_exl-value.
+      ENDCASE.
+      AT END OF row.
+        APPEND gs_file7 TO gt_file7.
+        CLEAR:gs_file7.
+      ENDAT.
+    ENDLOOP.
+  ENDIF.
+  CLEAR gs_file7.
+  CLEAR: bdcdata[].
+  BREAK ibmabap32.
+  BREAK ibmabap30.
+*****    check for a different bdc first and before calling the actual one****
+
+  SELECT SINGLE * FROM esdus INTO @DATA(ls_esdus)
+    WHERE uname = @sy-uname AND action = 'MIGO_FIRSTLINE'
+      AND element = 'ACTION'.
+  IF sy-subrc = 0 AND ls_esdus-active NE 'A08'.
+    ls_esdus-active = 'A08'.
+    MODIFY esdus FROM ls_esdus.
+    COMMIT WORK.
+  ENDIF.
+  LOOP AT gt_file7 INTO gs_file7.
+    CONDENSE  gs_file7-menge .
+    CONCATENATE gs_file7-bldat+6(2) gs_file7-bldat+4(2) gs_file7-bldat+0(4) INTO DATA(lv_bldat) SEPARATED BY '.'.
+    CONCATENATE  gs_file7-budat+6(2)  gs_file7-budat+4(2)  gs_file7-budat+0(4) INTO DATA(lv_budat) SEPARATED BY '.'.
+
+
+    CLEAR bdcdata[].
+************** 311 EWM **************************************************************************************************************************************
+    BREAK ibmabap32.
+
+    PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+    PERFORM bdc_field       USING 'BDC_OKCODE'
+                                  '=OK_GO'.
+    PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                  '311'.
+    PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                    lv_bldat.
+    PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                   lv_budat.
+    PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                    gs_file7-bktxt.
+    PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                  '2'.
+    PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                  '   1'.
+    PERFORM bdc_field       USING 'BDC_CURSOR'
+                                  'GOITEM-UMLGOBE'.
+    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+                                   gs_file7-matnr.
+    PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                   gs_file7-werks.
+    PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+                                    gs_file7-lgort_frm.
+    PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+                                  gs_file7-lgort_to.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                    gs_file7-menge.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                     gs_file7-meins.
+    PERFORM bdc_field       USING 'GOITEM-BWART'
+                                  '311'.
+    PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+    PERFORM bdc_field       USING 'BDC_OKCODE'
+                                  '=OK_GO'.
+    PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                  '311'.
+    PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                   lv_bldat.
+    PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                   lv_budat.
+    PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                    gs_file7-bktxt.
+    PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                  '2'.
+    PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                  '   1'.
+**    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+**                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+*    PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+*                                  'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+*                                  'STORE'.
+    PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+                                  'Stores Receipt'.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                      gs_file7-menge.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                     gs_file7-meins.
+**    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+**                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+    PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                     gs_file7-meins.
+    PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                  gs_file7-menge.
+    PERFORM bdc_field       USING 'GOITEM-BWART'
+                                  '311'.
+*    PERFORM bdc_field       USING 'GOITEM-NAME1'
+*                                  'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GOITEM-LGOBE'
+*                                  'STORE'.
+    PERFORM bdc_field       USING 'BDC_CURSOR'
+                                  '/SCWM/S_MIGO_S4_UI-UI_LGPLA'.
+    PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                  gs_file7-lgpla.
+    PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                  'X'.
+    PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+    PERFORM bdc_field       USING 'BDC_OKCODE'
+                                  '=OK_CHECK'.
+    PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                  '311'.
+    PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                   lv_bldat.
+    PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                     lv_budat.
+    PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                    gs_file7-bktxt.
+    PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                  '2'.
+    PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                  '   1'.
+**    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+**                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+*    PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+*                                  'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+*                                  'STORE'.
+*    PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+*                                  'Stores Receipt'.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                  gs_file7-menge.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                    gs_file7-meins.
+**    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+**                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+    PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                     gs_file7-meins.
+    PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                   gs_file7-menge.
+    PERFORM bdc_field       USING 'GOITEM-BWART'
+                                  '311'.
+*    PERFORM bdc_field       USING 'GOITEM-NAME1'
+*                                  'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GOITEM-LGOBE'
+*                                  'STORE'.
+    PERFORM bdc_field       USING 'BDC_CURSOR'
+                                  '/SCWM/S_MIGO_S4_UI-UI_LGPLA'.
+    PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                  gs_file7-lgpla.
+    PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                  'X'.
+    PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+    PERFORM bdc_field       USING 'BDC_OKCODE'
+                                  '=OK_POST1'.
+    PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                  '311'.
+    PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                      lv_bldat.
+    PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                      lv_budat.
+    PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                     gs_file7-bktxt.
+    PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                  '2'.
+    PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                  '   1'.
+**    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+**                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+*    PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+*                                  'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+*                                  'STORE'.
+*    PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+*                                  'Stores Receipt'.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                    gs_file7-menge.
+    PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                    gs_file7-meins.
+**    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+**                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+    PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                   gs_file7-meins.
+    PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                    gs_file7-menge.
+    PERFORM bdc_field       USING 'GOITEM-BWART'
+                                  '311'.
+*    PERFORM bdc_field       USING 'GOITEM-NAME1'
+*                                  'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GOITEM-LGOBE'
+*                                  'STORE'.
+    PERFORM bdc_field       USING 'BDC_CURSOR'
+                                  '/SCWM/S_MIGO_S4_UI-UI_LGPLA'.
+    PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                  gs_file7-lgpla.
+    PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                  'X'.
+    IF 1 = 3.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=MIGO_OK_ACTION'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GODYNPRO-ACTION'.
+      PERFORM bdc_field       USING 'GODYNPRO-ACTION'
+                                    'A01'.
+      PERFORM bdc_field       USING 'GODYNPRO-REFDOC'
+                                    'R10'.
+*    PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+*                                  '311'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '101'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                      lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                       lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '101'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=MIGO_OK_ACTION'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GODYNPRO-ACTION'.
+      PERFORM bdc_field       USING 'GODYNPRO-ACTION'
+                                    'A08'.
+      PERFORM bdc_field       USING 'GODYNPRO-REFDOC'
+                                    'R01'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '101'.
+*    PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+*                                  '311'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                      lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                      lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '1'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=OK_GO'.
+      PERFORM bdc_field       USING 'GODYNPRO-ACTION'
+                                    'A08'.
+      PERFORM bdc_field       USING 'GODYNPRO-REFDOC'
+                                    'R10'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                     lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                     lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                    gs_file7-bktxt.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GODYNPRO-ERFME'.
+      PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+                                    gs_file7-matnr.
+      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                      gs_file7-werks.
+      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+                                     gs_file7-lgort_frm.
+      PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+                                     gs_file7-lgort_to.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                     gs_file7-meins.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=MIGO_OK_DUMMY'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GOHEAD-WEVER'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                      lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                      lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                     gs_file7-bktxt.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '1'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+*    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+*    PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+*                                  'SCL Beawar'.
+*      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+*                                    'STORE'.
+*      PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+*                                    'Stores Receipt'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                     gs_file7-meins.
+*    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                     gs_file7-meins.
+      PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+*      PERFORM bdc_field       USING 'GOITEM-NAME1'
+*                                    'SCL Beawar'.
+*      PERFORM bdc_field       USING 'GOITEM-LGOBE'
+*                                    'STORE'.
+      PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                     gs_file7-lgpla.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                    'X'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=MIGO_OK_DUMMY'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GOHEAD-WEVER'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                      lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                       lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                   gs_file7-bktxt.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+**      PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+**                                    'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+*      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+*                                    'SCL Beawar'.
+*      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+*                                    'STORE'.
+*      PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+*                                    'Stores Receipt'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                    gs_file7-menge.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                    gs_file7-meins.
+*    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                     gs_file7-meins.
+      PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+*    PERFORM bdc_field       USING 'GOITEM-NAME1'
+*                                  'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GOITEM-LGOBE'
+*                                  'STORE'.
+      PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                    gs_file7-lgpla.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                    'X'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=OK_GO'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GOHEAD-WEVER'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                      lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                     lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                    gs_file7-bktxt.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+*    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                    'SCL Beawar'.
+*    PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+*                                  'STORE'.
+*    PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+*                                  'Stores Receipt'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                      gs_file7-menge.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                     gs_file7-meins.
+*    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                    gs_file7-meins.
+      PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+*      PERFORM bdc_field       USING 'GOITEM-NAME1'
+*                                    'SCL Beawar'.
+*      PERFORM bdc_field       USING 'GOITEM-LGOBE'
+*                                    'STORE'.
+      PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                    gs_file7-lgpla.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                    'X'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=OK_CHECK'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GOHEAD-WEVER'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                       lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                       lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                    gs_file7-bktxt.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+*    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+                                    'Stores Receipt'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                      gs_file7-menge.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                     gs_file7-meins.
+*    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                    gs_file7-meins.
+      PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOITEM-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GOITEM-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                     gs_file7-lgpla.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                    'X'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=OK_POST1'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GOHEAD-WEVER'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                       lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                       lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-BKTXT'
+                                     gs_file7-bktxt.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+*    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+                                    'Stores Receipt'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                    gs_file7-meins.
+*    PERFORM bdc_field       USING 'GOITEM-MAKTX'
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                     gs_file7-meins.
+      PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                     gs_file7-menge.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOITEM-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GOITEM-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                     gs_file7-lgpla.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                    'X'.
+
+    ENDIF.
+    IF 1 = 2.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=OK_GO'.
+      PERFORM bdc_field       USING 'GODYNPRO-ACTION'
+                                  'A08'.
+      PERFORM bdc_field       USING 'GODYNPRO-REFDOC'
+                                    'R10'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                    lv_bldat.
+*                                  '27.10.2025'.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                     lv_budat.
+*                                  '27.10.2025'.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    'GODYNPRO-SOBKZ'.
+      PERFORM bdc_field       USING 'GODYNPRO-MAKTX'
+                                     gs_file7-matnr.
+*                                  '17000211'.
+      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                    gs_file7-werks.
+*                                  '1000'.
+      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+                                     gs_file7-lgort_frm.
+*                                  'STK'.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=OK_GO'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                     lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                      lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+*    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'.
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+                                 gs_file7-lgort_to.
+*                                  'RCPT'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                     gs_file7-menge.
+*                                  '1'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                    gs_file7-meins.
+*                                  'EA'.
+*    PERFORM bdc_field       USING 'GOITEM-MAKTX'.
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                     gs_file7-meins.
+*                                  'EA'.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOITEM-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GOITEM-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    '/SCWM/S_MIGO_S4_UI-UI_LGPLA'.
+      PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                    gs_file7-lgpla.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                    'X'.
+      PERFORM bdc_dynpro      USING 'SAPLMIGO' '0001'.
+      PERFORM bdc_field       USING 'BDC_OKCODE'
+                                    '=OK_POST1'.
+      PERFORM bdc_field       USING 'GODEFAULT_TV-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOHEAD-BLDAT'
+                                     lv_bldat.
+      PERFORM bdc_field       USING 'GOHEAD-BUDAT'
+                                     lv_budat.
+      PERFORM bdc_field       USING 'GOHEAD-WEVER'
+                                    '2'.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_ZEILE'
+                                    '   1'.
+*    PERFORM bdc_field       USING 'GODYNPRO-MAKTX'.
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GODYNPRO-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GODYNPRO-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING 'GOITEM-UMLGOBE'
+                                    'Stores Receipt'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFMG'
+                                     gs_file7-menge.
+*                                  '1'.
+      PERFORM bdc_field       USING 'GODYNPRO-ERFME'
+                                    gs_file7-meins.
+*                                  'EA'.
+*    PERFORM bdc_field       USING 'GOITEM-MAKTX'.
+*                                  'BLT MACH;HI TNSL,M24,3MM,MTRC CRS,HLF'.
+      PERFORM bdc_field       USING 'GOITEM-ERFME'
+                                    gs_file7-meins.
+*                                  'EA'.
+      PERFORM bdc_field       USING 'GOITEM-ERFMG'
+                                    gs_file7-menge.
+*                                  '1'.
+      PERFORM bdc_field       USING 'GOITEM-BWART'
+                                    '311'.
+      PERFORM bdc_field       USING 'GOITEM-NAME1'
+                                    'SCL Beawar'.
+      PERFORM bdc_field       USING 'GOITEM-LGOBE'
+                                    'STORE'.
+      PERFORM bdc_field       USING 'BDC_CURSOR'
+                                    '/SCWM/S_MIGO_S4_UI-UI_LGPLA'.
+      PERFORM bdc_field       USING '/SCWM/S_MIGO_S4_UI-UI_LGPLA'
+                                    gs_file7-lgpla.
+      PERFORM bdc_field       USING 'GODYNPRO-DETAIL_TAKE'
+                                    'X'.
+      BREAK ibmabap32.
+    ENDIF.
+    BREAK ibmabap32.
+    CALL TRANSACTION 'MIGO' USING bdcdata[] OPTIONS FROM ls_options
+                            MESSAGES INTO messtab.
+    READ TABLE messtab[] INTO gs_messtab WITH KEY msgtyp = 'E'.
+    IF sy-subrc = 0.
+      CALL FUNCTION 'MESSAGE_TEXT_BUILD'
+        EXPORTING
+          msgid               = gs_messtab-msgid
+          msgnr               = gs_messtab-msgnr
+          msgv1               = gs_messtab-msgv1
+          msgv2               = gs_messtab-msgv2
+          msgv3               = gs_messtab-msgv3
+          msgv4               = gs_messtab-msgv4
+        IMPORTING
+          message_text_output = lv_message.
+      MOVE-CORRESPONDING gs_file7 TO gs_final7.
+      gs_final7-status = lv_message.
+    ELSE.
+      CLEAR:gs_messtab.
+      BREAK ibmabap32.
+      READ TABLE messtab[] INTO gs_messtab WITH KEY msgtyp = 'S'
+       msgnr = '012'.
+      IF sy-subrc EQ 0.
+        CLEAR:lv_message.
+        CALL FUNCTION 'MESSAGE_TEXT_BUILD'
+          EXPORTING
+            msgid               = gs_messtab-msgid
+            msgnr               = gs_messtab-msgnr
+            msgv1               = gs_messtab-msgv1
+            msgv2               = gs_messtab-msgv2
+            msgv3               = gs_messtab-msgv3
+            msgv4               = gs_messtab-msgv4
+          IMPORTING
+            message_text_output = lv_message.
+        MOVE-CORRESPONDING gs_file7 TO gs_final7.
+        gs_final7-mat_doc = lv_message+18(11).
+        gs_final7-status = lv_message.
+      ELSEIF sy-subrc NE 0.
+        CLEAR:lv_message.
+        CALL FUNCTION 'MESSAGE_TEXT_BUILD'
+          EXPORTING
+            msgid               = gs_messtab-msgid
+            msgnr               = gs_messtab-msgnr
+            msgv1               = gs_messtab-msgv1
+            msgv2               = gs_messtab-msgv2
+            msgv3               = gs_messtab-msgv3
+            msgv4               = gs_messtab-msgv4
+          IMPORTING
+            message_text_output = lv_message.
+        MOVE-CORRESPONDING gs_file7 TO gs_final7.
+        gs_final7-status = lv_message.
+      ENDIF.
+    ENDIF.
+*    PERFORM bdc_transaction USING 'MIGO'.
+    APPEND gs_final7 TO gt_final7.
+    CLEAR gs_final7.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_fcat_311_ewm
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_fcat_311_ewm .
+  PERFORM f_fill_field USING:
+                       'BWART'             'Movement Type',
+                       'BLDAT'             'Document Date',
+                       'BUDAT'             'Posting Date',
+                       'MATNR'             'Material',
+                       'WERKS'             'Plant',
+                       'LGORT_FRM'         'Storage location From',
+                       'LGORT_TO'          'Storage location To',
+                       'MENGE'             'Quantity',
+                       'MEINS'             'Unit',
+                       'LGPLA'             'Storage Bin',
+                       'BKTXT'             'Doc. Header Text',
+                       'MAT_DOC'           'Material Doc No.',
+                       'STATUS'            'Status'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_alv_311_ewm
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_alv_311_ewm .
+  DATA:ls_layout         TYPE slis_layout_alv.
+*  ls_layout-zebra    = abap_true.
+*  ls_layout-colwidth_optimize = abap_true.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      i_callback_program = sy-repid
+*     i_callback_top_of_page = 'TOP_OF_PAGE'
+      is_layout          = ls_layout
+      it_fieldcat        = gt_fieldcat
+*     i_default          = abap_true
+      i_save             = 'A'
+    TABLES
+      t_outtab           = gt_final7[]
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error in ALV Display' TYPE 'I' DISPLAY LIKE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form bdc_dynpro
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM bdc_dynpro  USING program dynpro.
+  CLEAR bdcdata.
+  bdcdata-program  = program.
+  bdcdata-dynpro   = dynpro.
+  bdcdata-dynbegin = 'X'.
+  APPEND bdcdata.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form bdc_field
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM bdc_field  USING fnam fval.
+  CLEAR bdcdata.
+  bdcdata-fnam = fnam.
+  bdcdata-fval = fval.
+  APPEND bdcdata.
+ENDFORM.
+*End of Change by Ashutosh Prakash for ME46050 on 21-NOV-2025

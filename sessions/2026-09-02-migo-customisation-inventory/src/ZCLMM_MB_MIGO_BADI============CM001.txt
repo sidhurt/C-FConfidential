@@ -1,0 +1,94 @@
+﻿METHOD if_ex_mb_migo_badi~check_header .
+  DATA: lv_fy TYPE gjahr.
+*  DATA: ls_bapiret TYPE bapiret2.
+*
+** Refresh return table
+*  REFRESH: et_bapiret2.
+** Check header data (W-/E-Messages are useful)
+*  IF gs_exdata_header-badi_nummer IS INITIAL.
+*    ls_bapiret-type       = 'W'.
+*    ls_bapiret-id         = 'M7'.
+*    ls_bapiret-number     = '895'.
+*    ls_bapiret-message_v1 = 'Enter number on external screen'(001).
+*    APPEND ls_bapiret TO et_bapiret2.
+*  ENDIF.
+
+  FIELD-SYMBOLS: <ls_header> TYPE gohead.
+  DATA: ls_return TYPE bapiret2.
+  ls_return-type = zclsg_abap_utilities=>gc_error.
+  ls_return-id = 'ZMM'.
+  ASSIGN ('(SAPLMIGO)GOHEAD') TO <ls_header>.
+  IF <ls_header> IS ASSIGNED.
+    IF <ls_header>-budat > sy-datum.
+      ls_return-number = '011'.
+      APPEND ls_return TO et_bapiret2.
+    ENDIF.
+    IF <ls_header>-bldat > sy-datum.
+      ls_return-number = '010'.
+      APPEND ls_return TO et_bapiret2.
+    ENDIF.
+    IF <ls_header>-budat < <ls_header>-bldat.
+      ls_return-number = '013'.
+      APPEND ls_return TO et_bapiret2.
+    ENDIF.
+*check for duplicate vendor invoice
+    IF <ls_header>-xblnr IS NOT INITIAL.
+      IF gv_cancel = abap_false.
+        CALL FUNCTION 'GET_CURRENT_YEAR'
+          EXPORTING
+            bukrs = '1000' "just used as reference to get fiscal year.
+            date  = <ls_header>-bldat
+          IMPORTING
+*           CURRM =
+            curry = lv_fy.
+        IF gv_action = 'A01' AND gv_refdoc = 'R01'.
+*          lv_fy = <ls_header>-bldat(4).
+          SELECT SINGLE @abap_true FROM matdoc
+            INTO @DATA(lv_invoice_exists)
+            WHERE record_type = 'MDOC'
+              AND gjahr = @lv_fy
+              AND lifnr = @<ls_header>-lifnr
+              AND xblnr = @<ls_header>-xblnr
+              AND cancelled = @abap_false
+              AND reversal_movement = @abap_false
+              AND bwart IN ( '101', '103' ).
+          IF lv_invoice_exists = abap_true.
+            ls_return-number = '015'.
+            ls_return-type = zclsg_abap_utilities=>gc_error.
+            APPEND ls_return TO et_bapiret2.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+  "---------------------------------------------------------"
+  "---------------------------------------------------------"
+  "GSTIN Check
+  SELECT SINGLE low FROM tvarvc INTO @DATA(lv_chk) WHERE name = 'ZMM_GSTIN_CHECK'.
+  IF lv_chk = abap_true.
+    FIELD-SYMBOLS: <ls_header_tmp> TYPE gohead.
+    DATA: ls_return_tmp TYPE bapiret2.
+    ls_return_tmp-type = zclsg_abap_utilities=>gc_error.
+    ls_return_tmp-id = 'ZGSTIN'.
+    ASSIGN ('(SAPLMIGO)GOHEAD') TO <ls_header_tmp>.
+    IF <ls_header_tmp> IS ASSIGNED AND <ls_header_tmp>-lifnr IS NOT INITIAL.
+      SELECT SINGLE * FROM zta_gstin_sat INTO @DATA(ls_data)
+      WHERE buspattner = @<ls_header_tmp>-lifnr." AND zstatus = 'X'.
+      IF sy-subrc EQ 0.
+        IF ls_data-zstatus EQ ''.
+          ls_return_tmp-number = '000'.
+          ls_return_tmp-type = zclsg_abap_utilities=>gc_error.
+          ls_return_tmp-message_v1 = <ls_header_tmp>-lifnr.
+          APPEND ls_return_tmp TO et_bapiret2.
+        ENDIF.
+      ELSE.
+        ls_return_tmp-number = '002'.
+        ls_return_tmp-type = zclsg_abap_utilities=>gc_warning.
+        ls_return_tmp-message_v1 = <ls_header_tmp>-lifnr.
+        APPEND ls_return_tmp TO et_bapiret2.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+  "---------------------------------------------------------"
+  "---------------------------------------------------------"
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~CHECK_HEADER

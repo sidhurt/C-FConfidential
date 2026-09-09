@@ -1,0 +1,16 @@
+﻿METHOD if_ex_mb_migo_badi~status_and_header .
+* In case of 'Display Material document' select external header data
+  SELECT SINGLE * FROM zgpt_mm_param
+                  INTO @DATA(ls_active)
+                 WHERE program_name = 'ZDACE_CUSTOM_MIGO_HEADER_TAB'
+                   AND object_id = 'GATE'
+                   AND field = 'ACTIVE'
+                   AND active_flag = @abap_true.
+  IF ls_active IS NOT INITIAL.
+*    CALL FUNCTION 'ZDACE_MIGO_GET_SET_VALUE'
+*      EXPORTING
+*        im_go_head = is_gohead.
+*
+*    gs_gohead = is_gohead.
+  ENDIF.
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~STATUS_AND_HEADER

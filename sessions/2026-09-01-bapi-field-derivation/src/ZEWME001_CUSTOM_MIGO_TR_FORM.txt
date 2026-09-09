@@ -1,0 +1,636 @@
+﻿*----------------------------------------------------------------------*
+***INCLUDE ZEWM_CUSTOM_MIGO_TR_FORM.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Module STATUS_9000 OUTPUT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+MODULE status_9000 OUTPUT.
+  DATA: g_answer(1)   TYPE c.
+  SET PF-STATUS 'ZEWM_CUSTOM_MIGO'.
+  SELECT SINGLE mblnr FROM matdoc
+  INTO @DATA(wa_matdoc) WHERE
+  bktxt = @p_mblnr AND mjahr = @p_mjahr.
+  IF wa_matdoc IS NOT INITIAL.
+
+    CALL FUNCTION 'POPUP_TO_CONFIRM'
+      EXPORTING
+        titlebar              = | Conifrm to Proceed |
+        text_question         = | Transfer Posting for GR document | &
+                                | { p_mblnr } | & | is already completed  against material document | & | { wa_matdoc } | &
+                                |,| & | Do you still want to Proceed ? |
+        text_button_1         = 'OK'
+        icon_button_1         = 'ICON_CHECKED'
+        text_button_2         = 'CANCEL'
+        icon_button_2         = 'ICON_CANCEL'
+        display_cancel_button = ' '
+        popup_type            = 'ICON_MESSAGE_ERROR'
+      IMPORTING
+        answer                = g_answer.
+    IF g_answer = 1.
+      PERFORM Readdata.
+      PERFORM alvdisplay.
+    ELSE.
+      SET SCREEN 0.
+      LEAVE SCREEN.
+    ENDIF.
+  ELSE.
+    PERFORM Readdata.
+    PERFORM alvdisplay.
+  ENDIF.
+
+
+ENDMODULE.
+FORM get_fieldcatalog.
+
+  DATA: ls_fcat TYPE lvc_s_fcat.
+
+  REFRESH: fieldcat.
+  ls_layout-zebra = 'X'.
+
+  ls_layout-cwidth_opt = 'X' .
+
+  ls_layout-box_fname = 'SEL' .
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Mat Doc No'.
+  ls_fcat-fieldname  = 'MBLNR'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '10'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Mat Doc Itm'.
+  ls_fcat-fieldname  = 'ZEILE'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '4'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Material'.
+  ls_fcat-fieldname  = 'MATNR'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '18'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'BATCH'.
+  ls_fcat-fieldname  = 'CHARG'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '8'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'QTY'.
+  ls_fcat-fieldname  = 'MENGE'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '10'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'UoM'.
+  ls_fcat-fieldname  = 'MEINS'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '4'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Plant'.
+  ls_fcat-fieldname  = 'WERKS'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '4'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Source Location'.
+  ls_fcat-coltext   = 'Source Location'.
+  ls_fcat-fieldname  = 'LGORT'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '15'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Recieving Location'.
+  ls_fcat-coltext   = 'Recieving Location'.
+  ls_fcat-fieldname  = 'UMLGO'.
+  ls_fcat-ref_field  = 'LGORT'.
+  ls_fcat-ref_table  = 'MSEG'.
+  ls_fcat-outputlen  = '20'.
+  ls_fcat-edit  = 'X'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Movement Type'.
+  ls_fcat-fieldname  = 'BWART'.
+  ls_fcat-ref_table  = 'IT_FINAL'.
+  ls_fcat-outputlen  = '20'.
+  ls_fcat-edit  = 'X'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Warehouse'.
+  ls_fcat-fieldname  = 'LGNUM'.
+  ls_fcat-outputlen  = '10'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Destination Storage bin'.
+  ls_fcat-fieldname  = 'LGPLA'.
+*  ls_fcat-ref_field  = 'LGPLA'.
+*  ls_fcat-ref_table  = '/SCWM/LAGP'.
+  ls_fcat-f4availabl = 'X'.
+  ls_fcat-outputlen  = '18'.
+  ls_fcat-edit  = 'X'.
+  APPEND ls_fcat TO fieldcat.
+
+  CLEAR: ls_fcat.
+  ls_fcat-reptext    = 'Serial profile'.
+  ls_fcat-fieldname  = 'SERNP'.
+  ls_fcat-ref_table  = 'MARC'.
+  ls_fcat-outputlen  = '4'.
+  APPEND ls_fcat TO fieldcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form alvdisplay
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM alvdisplay .
+  DATA ls_exclude TYPE ui_func.
+  DATA: lt_exclude TYPE ui_functions.
+
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_append_row.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_insert_row.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_find.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_find_more.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_print.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_refresh.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_copy.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_cut.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_views.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_sum.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_subtot.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_copy_row.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_undo.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_info.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_check.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_detail.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_paste.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_fc_loc_paste_new_row.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_mb_variant.
+  APPEND ls_exclude TO lt_exclude.
+  ls_exclude = cl_gui_alv_grid=>mc_mb_export.
+  APPEND ls_exclude TO lt_exclude.
+
+
+
+  IF main_container IS INITIAL.
+* create a custom container control for ALV Control
+    CREATE OBJECT main_container
+      EXPORTING
+        container_name              = 'CONT_ON_MAIN'
+      EXCEPTIONS
+        cntl_error                  = 1
+        cntl_system_error           = 2
+        create_error                = 3
+        lifetime_error              = 4
+        lifetime_dynpro_dynpro_link = 5.
+
+* create an instance of alv control
+    CREATE OBJECT grid_main
+      EXPORTING
+        i_parent = main_container.
+  ENDIF.
+
+  ...
+  PERFORM get_fieldcatalog.
+  gs_f4-fieldname = 'LGPLA'.
+  gs_f4-register = 'X'.
+  gs_f4-getbefore = 'X'.
+  gs_f4-chngeafter = 'X'.
+  INSERT gs_f4 INTO TABLE gt_f4.
+
+
+  ...
+  DATA gr_event_handler TYPE REF TO lcl_event_handler .
+  .. ..
+
+  CALL METHOD grid_main->register_f4_for_fields
+    EXPORTING
+      it_f4 = gt_f4[].
+*--Creating an instance for the event handler
+  CREATE OBJECT gr_event_handler.
+*--Registering handler methods to handle ALV Grid events
+  SET HANDLER gr_event_handler->handle_toolbar FOR grid_main.
+  SET HANDLER gr_event_handler->handle_user_command FOR grid_main.
+  SET HANDLER gr_event_handler->handle_on_f4 FOR grid_main.
+  CALL METHOD grid_main->set_table_for_first_display
+    EXPORTING
+      it_toolbar_excluding = lt_exclude
+      is_layout            = ls_layout
+    CHANGING
+      it_outtab            = it_final[]
+      it_fieldcatalog      = fieldcat[].
+  ...
+*  CALL METHOD grid_main->set_ready_for_input.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form Readdata
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM Readdata .
+  DATA:
+*        it_matnr TYPE  rsdsselopt_t,
+*        wa_matnr LIKE LINE OF it_matnr,
+        lchk     TYPE i.
+  SELECT   a~matnr,
+           a~charg,
+           a~menge,
+           a~meins,
+           a~werks,
+           a~lgort,
+    CASE WHEN b~bednr = 'POWER' THEN  'WH01'
+         WHEN b~bednr = 'CEMENT' THEN  'WH01'
+          END AS umlgo,
+         '311' AS  bwart,
+    a~zeile AS zeile,
+    a~bwtar AS bwtar
+  FROM mseg AS a
+LEFT OUTER JOIN ekpo AS a1
+ON a~ebeln = a1~ebeln  AND
+   a~ebelp = a1~ebelp
+LEFT OUTER JOIN eban AS b
+ON a1~banfn = b~banfn AND
+   a1~bnfpo = b~bnfpo AND
+    a1~bednr = b~bednr
+INTO CORRESPONDING FIELDS OF TABLE @it_final
+  WHERE a~werks = @p_werks AND
+        a~mblnr = @p_mblnr AND
+        a~mjahr = @p_mjahr AND
+        a~budat_mkpf IN @s_budat.
+
+  IF it_final[] IS NOT INITIAL.
+    SELECT plant ,
+      stge_loc,
+      lgnum  FROM /scwm/tmapstloc
+      INTO TABLE @DATA(it_data)
+      FOR ALL ENTRIES IN @it_final
+      WHERE plant = @it_final-werks .
+
+    SELECT matnr,werks,sernp FROM marc
+    INTO TABLE @DATA(it_serial)
+    FOR ALL ENTRIES IN @it_final
+    WHERE matnr =  @it_final-matnr AND
+    werks = @it_final-werks.
+
+    LOOP AT it_final ASSIGNING FIELD-SYMBOL(<lfs_final>).
+      <lfs_final>-mblnr = p_mblnr.
+      <lfs_final>-lgnum = VALUE #( it_data[ plant = <lfs_final>-werks ]-lgnum OPTIONAL ).
+      <lfs_final>-sernp = VALUE #( it_serial[ matnr = <lfs_final>-matnr
+      werks = <lfs_final>-werks ]-sernp OPTIONAL ).
+    ENDLOOP.
+
+
+    SELECT lgnum,lgpla,matnr FROM /scwm/binmat
+      INTO TABLE @gt_sto
+     FOR ALL ENTRIES IN @it_final
+    WHERE
+       matnr =  @it_final-matnr AND
+      lgnum = @it_final-lgnum.
+
+    DELETE ADJACENT DUPLICATES FROM gt_sto.
+    LOOP AT it_final ASSIGNING <lfs_final>.
+      CLEAR lchk.
+      LOOP AT gt_sto INTO gs_sto WHERE matnr = <lfs_final>-matnr AND
+       lgnum = <lfs_final>-lgnum .
+        lchk = lchk + 1.
+      ENDLOOP.
+      IF lchk = 1.
+        <lfs_final>-lgpla =  gs_sto-lgpla.
+      ENDIF.
+    ENDLOOP.
+
+  ENDIF.
+*         lgpla TYPE /scwm/lgpla,
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_9000  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_9000 INPUT.
+  CASE sy-ucomm.
+    WHEN 'BACK'.
+      SET SCREEN '0'.
+      LEAVE SCREEN.
+    WHEN 'EXIT'.
+      SET SCREEN '0'.
+      LEAVE SCREEN.
+    WHEN 'CANCEL'.
+      SET SCREEN '0'.
+      LEAVE SCREEN.
+  ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*& Form goodsmovement
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM goodsmovement .
+  DATA: ls_bapi_header TYPE bapi2017_gm_head_01,
+        ls_bapi_gmcode TYPE bapi2017_gm_code,
+        ls_bapi_item   TYPE bapi2017_gm_item_create,
+        lt_bapi_item   TYPE STANDARD TABLE OF bapi2017_gm_item_create,
+        l_document     TYPE bapi2017_gm_head_ret-mat_doc,
+        it_return      TYPE bapiret2_t.
+  DATA: index_rows  TYPE lvc_t_row,
+        goodsserial TYPE TABLE OF bapi2017_gm_serialnumber,
+        serial      TYPE bapi2017_gm_serialnumber,
+        index       LIKE LINE OF index_rows.
+
+  CLEAR index_rows. REFRESH index_rows.
+
+  CALL METHOD grid_main->get_selected_rows
+    IMPORTING
+      et_index_rows = index_rows.
+  CLEAR it_error[].
+*Do something with those selected rows here
+  CLEAR lt_bapi_item[].
+  IF index_rows  IS NOT INITIAL.
+    LOOP AT index_rows INTO index.
+      LOOP AT it_final INTO DATA(wa_final) FROM index-index TO index-index.
+        IF wa_final-lgpla IS NOT INITIAL.
+          LOOP AT gt_serial INTO gs_serial WHERE mblnr = wa_final-mblnr AND zeile = wa_final-zeile.
+            serial-matdoc_itm = gs_serial-zeile.
+            serial-serialno = gs_serial-gernr.
+            APPEND serial TO goodsserial.
+          ENDLOOP.
+
+          ls_bapi_header-pstng_date = sy-datum.
+          ls_bapi_header-doc_date = sy-datum.
+          ls_bapi_header-header_txt  = p_mblnr.
+          ls_bapi_header-ext_wms = '3'.
+          ls_bapi_gmcode-gm_code = '04'.
+          ls_bapi_item-material = wa_final-matnr.
+          ls_bapi_item-plant = wa_final-werks.
+          ls_bapi_item-stge_loc = wa_final-lgort.
+          ls_bapi_item-move_type = wa_final-bwart.
+          ls_bapi_item-entry_qnt = wa_final-menge.
+          ls_bapi_item-entry_uom = wa_final-meins.
+          ls_bapi_item-move_stloc = wa_final-umlgo.
+          ls_bapi_item-warehouse_ewm  = wa_final-lgnum.
+          ls_bapi_item-stge_bin_ewm = wa_final-lgpla.
+          ls_bapi_item-val_type = wa_final-bwtar.
+          "to add batch
+          ls_bapi_item-batch = wa_final-charg.
+          "to add batch
+
+
+          APPEND ls_bapi_item TO lt_bapi_item.
+
+        ELSE.
+          wa_error-werks = wa_final-werks.
+          wa_error-etype  = 'E'.
+          wa_error-errmsg  = 'Storage Bin not maintained'.
+          APPEND wa_error TO it_error.
+        ENDIF.
+      ENDLOOP.
+    ENDLOOP.
+    SET UPDATE TASK LOCAL.
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header       = ls_bapi_header
+        goodsmvt_code         = ls_bapi_gmcode
+      IMPORTING
+        materialdocument      = l_document
+      TABLES
+        goodsmvt_item         = lt_bapi_item
+        goodsmvt_serialnumber = goodsserial
+        return                = it_return.
+
+    IF l_document IS NOT INITIAL.
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true.
+      wa_error-werks = wa_final-werks.
+      wa_error-etype  = 'S'.
+      CONCATENATE l_document ':'  'Posting successful' INTO
+        wa_error-errmsg.
+      APPEND wa_error TO it_error.
+    ELSE.
+      READ TABLE it_return INTO DATA(ls_detail_return) INDEX 1.
+      IF sy-subrc = 0.
+        wa_error-werks = wa_final-werks.
+        wa_error-etype  = 'E'.
+        wa_error-errmsg  = ls_detail_return-message.
+        APPEND wa_error TO it_error.
+      ENDIF.
+    ENDIF.
+    CALL METHOD cl_salv_table=>factory
+      IMPORTING
+        r_salv_table = gr_table
+      CHANGING
+        t_table      = it_error.
+
+*... Display Table
+    gr_table->display( ).
+    SET SCREEN  '0'.
+    LEAVE SCREEN.
+  ELSE.
+***    MESSAGE 'Please select line item for posting' TYPE 'E'.
+    MESSAGE 'Please select line item for posting' TYPE 'S' DISPLAY LIKE 'E'.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form serialprofile
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM serialprofile .
+  DATA:index_rows TYPE lvc_t_row,
+       index      LIKE LINE OF index_rows,
+       it_fldcat  TYPE slis_t_fieldcat_alv,
+       wa_fldcat  TYPE slis_fieldcat_alv.
+
+  wa_fldcat-fieldname = 'MBLNR'.
+  wa_fldcat-outputlen  = '10'.
+  wa_fldcat-reptext_ddic    = 'Mat Doc No'.
+  APPEND wa_fldcat TO it_fldcat.
+  wa_fldcat-fieldname = 'ZEILE'.
+  wa_fldcat-outputlen  = '4'.
+  wa_fldcat-reptext_ddic    = 'Mat Doc Item'.
+  APPEND wa_fldcat TO it_fldcat.
+  wa_fldcat-fieldname = 'GERNR'.
+  wa_fldcat-outputlen  = '18'.
+  wa_fldcat-reptext_ddic    = 'Serial No'.
+  APPEND wa_fldcat TO it_fldcat.
+  CALL METHOD grid_main->get_selected_rows
+    IMPORTING
+      et_index_rows = index_rows.
+  IF index_rows IS NOT INITIAL.
+    IF lines( index_rows ) = 1.
+      LOOP AT index_rows INTO index.
+        LOOP AT it_final INTO DATA(wa_final) FROM index-index TO index-index.
+          LOOP AT gt_serial INTO DATA(ls_serial) WHERE mblnr = wa_final-mblnr AND
+            zeile    = wa_final-zeile.
+            gs_serial-mblnr = p_mblnr.
+            gs_serial-zeile    = wa_final-zeile.
+            gs_serial-gernr = ls_serial-gernr.
+            APPEND gs_serial TO it_serial.
+          ENDLOOP.
+        ENDLOOP.
+      ENDLOOP.
+      CALL FUNCTION 'REUSE_ALV_POPUP_TO_SELECT'
+        EXPORTING
+          i_tabname     = 'GT_SERIAL'
+          it_fieldcat   = it_fldcat
+        TABLES
+          t_outtab      = gt_serial
+        EXCEPTIONS
+          program_error = 1
+          OTHERS        = 2.
+      IF sy-subrc <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ELSE.
+      MESSAGE 'Only one record to be selected for saving serial numbers' TYPE 'E'.
+    ENDIF.
+  ELSE.
+    MESSAGE 'Please select line item for posting' TYPE 'E'.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form F4_documentnum
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM F4_documentnum .
+  DATA: it_mblnr TYPE RANGE OF mblnr,
+        lday(2),
+        lmon(2),
+        lyear(4),
+        wa_mblnr LIKE LINE OF it_mblnr.
+  DATA: lt_ret        TYPE STANDARD TABLE OF ddshretval,
+        s_budat1      TYPE RANGE OF budat WITH HEADER LINE,
+        dynpro_values TYPE TABLE OF dynpread,
+        field_value   LIKE LINE OF dynpro_values.
+  CLEAR: field_value, dynpro_values. REFRESH dynpro_values.
+  field_value-fieldname = 'P_WERKS'.
+  APPEND field_value TO dynpro_values.
+  field_value-fieldname = 'S_BUDAT-LOW'.
+  APPEND field_value TO dynpro_values.
+  field_value-fieldname = 'S_BUDAT-HIGH'.
+  APPEND field_value TO dynpro_values.
+  CALL FUNCTION 'DYNP_VALUES_READ'
+    EXPORTING
+      dyname             = sy-repid
+      dynumb             = sy-dynnr
+      translate_to_upper = 'X'
+    TABLES
+      dynpfields         = dynpro_values.
+
+  READ TABLE dynpro_values INDEX 1 INTO field_value.
+  IF sy-subrc = 0.
+    p_werks =  field_value-fieldvalue.
+  ENDIF.
+  CLEAR: lday ,lmon ,lyear.
+  READ TABLE dynpro_values INDEX 2 INTO field_value.
+  IF sy-subrc = 0.
+    SPLIT field_value-fieldvalue AT '.' INTO
+    lday lmon lyear.
+    CONCATENATE lyear lmon lday INTO s_budat1-low.
+  ENDIF.
+  READ TABLE dynpro_values INDEX 3 INTO field_value.
+  IF sy-subrc = 0.
+    SPLIT field_value-fieldvalue AT '.' INTO
+    lday lmon lyear.
+    CONCATENATE lyear lmon lday INTO s_budat1-high.
+  ENDIF.
+  s_budat1-sign = 'I'.
+  IF s_budat1-low IS NOT INITIAL AND s_budat1-high IS NOT INITIAL.
+    s_budat1-option =  'BT'.
+  ELSE.
+    s_budat1-option =  'EQ'.
+  ENDIF.
+  APPEND s_budat1.
+  SELECT DISTINCT mblnr FROM matdoc
+  INTO TABLE @DATA(it_matdoc)
+  WHERE werks = @p_werks AND
+  budat IN @s_budat1 AND
+    ( bwart  = '101' OR  bwart  = '105' ).
+
+  wa_mblnr-sign =  'I'.
+  wa_mblnr-option =  'EQ'.
+
+  LOOP AT it_matdoc INTO DATA(wa_matdoc).
+    wa_mblnr-low = wa_matdoc-mblnr.
+    APPEND wa_mblnr TO it_mblnr.
+  ENDLOOP.
+
+  SELECT DISTINCT mblnr,bktxt FROM matdoc
+  INTO TABLE @DATA(lt_matdoc)
+  WHERE bktxt IN @it_mblnr.
+
+  LOOP AT lt_matdoc INTO DATA(ls_matdoc).
+    DELETE it_matdoc WHERE mblnr = ls_matdoc-bktxt.
+  ENDLOOP.
+
+  CALL FUNCTION 'F4IF_INT_TABLE_VALUE_REQUEST'
+    EXPORTING
+      retfield        = 'MBLNR'
+      dynpprog        = sy-repid
+      dynpnr          = sy-dynnr
+      dynprofield     = 'P_MBLNR'
+      value_org       = 'S'
+    TABLES
+      value_tab       = it_matdoc[] "F4 value list table
+      return_tab      = lt_ret[]  "user selected table
+    EXCEPTIONS
+      parameter_error = 1
+      no_values_found = 2
+      OTHERS          = 3.
+
+  IF sy-subrc = 0.
+    LOOP AT lt_ret INTO DATA(ls_sel).
+      p_mblnr     = ls_sel-fieldval.
+    ENDLOOP.
+  ENDIF.
+ENDFORM.

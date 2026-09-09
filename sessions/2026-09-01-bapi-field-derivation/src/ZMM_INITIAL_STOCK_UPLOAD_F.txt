@@ -1,0 +1,1044 @@
+﻿*&---------------------------------------------------------------------*
+*&      Form  FILENAME_F4_HELP
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+
+
+ FORM filename_f4_help .
+
+   CALL FUNCTION 'F4_FILENAME'
+     EXPORTING
+       program_name  = syst-cprog
+       dynpro_number = syst-dynnr
+     IMPORTING
+       file_name     = p_file.
+
+ ENDFORM. " FILENAME_F4_HELP
+
+
+*&---------------------------------------------------------------------*
+*&      FORM  READ_FILE_DATA
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+
+
+ FORM read_file_data .
+   CALL FUNCTION 'ALSM_EXCEL_TO_INTERNAL_TABLE'
+     EXPORTING
+       filename                = p_file
+       i_begin_col             = 1
+       i_begin_row             = p_beg_r
+       i_end_col               = 30
+       i_end_row               = p_end_r
+     TABLES
+       intern                  = it_excel
+     EXCEPTIONS
+       inconsistent_parameters = 1
+       upload_ole              = 2
+       OTHERS                  = 3.
+   IF sy-subrc NE 0.
+
+     MESSAGE 'Error while opening file' TYPE 'S' DISPLAY LIKE 'E'.
+     LEAVE LIST-PROCESSING.
+   ELSE.
+     SORT it_excel BY row col.
+     LOOP AT it_excel ASSIGNING <fs_excel>.
+       AT NEW row.
+         APPEND INITIAL LINE TO it_item ASSIGNING <fs_item>.
+       ENDAT.
+       CASE <fs_excel>-col.
+         WHEN 1.
+           CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+             EXPORTING
+               date_external            = <fs_excel>-value
+             IMPORTING
+               date_internal            = <fs_item>-bldat
+             EXCEPTIONS
+               date_external_is_invalid = 1
+               OTHERS                   = 2.
+           IF sy-subrc <> 0.
+             MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+             WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+           ENDIF.
+           CONDENSE <fs_item>-bldat.
+
+         WHEN 2.
+           CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+             EXPORTING
+               date_external            = <fs_excel>-value
+             IMPORTING
+               date_internal            = <fs_item>-budat
+             EXCEPTIONS
+               date_external_is_invalid = 1
+               OTHERS                   = 2.
+           IF sy-subrc <> 0.
+             MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+             WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+           ENDIF.
+           CONDENSE <fs_item>-budat.
+
+         WHEN 3.
+           <fs_item>-bktxt    = <fs_excel>-value.
+
+         WHEN 4.
+           <fs_item>-mvt_typ  = <fs_excel>-value.
+
+         WHEN 5.
+           <fs_item>-sobkz    = <fs_excel>-value.
+
+         WHEN 6.
+           <fs_item>-sgtxt    = <fs_excel>-value.
+
+         WHEN 7.
+           <fs_item>-material = <fs_excel>-value.
+
+           CALL FUNCTION 'CONVERSION_EXIT_MATN1_INPUT'
+             EXPORTING
+               input  = <fs_item>-material
+             IMPORTING
+               output = <fs_item>-material.
+
+           TRANSLATE <fs_item>-material TO UPPER CASE.
+
+         WHEN 8.
+           <fs_item>-plant               = <fs_excel>-value.
+
+         WHEN 9.
+           <fs_item>-sloc                = <fs_excel>-value.
+
+         WHEN 10.
+           <fs_item>-batch_number        = <fs_excel>-value.
+           CONDENSE  <fs_item>-batch_number.
+           TRANSLATE <fs_item>-batch_number TO UPPER CASE.
+
+*         WHEN 11.
+*           <fs_item>-zustd                = <fs_excel>-value.
+*
+*         WHEN 12.
+*           CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+*             EXPORTING
+*               date_external            = <fs_excel>-value
+*             IMPORTING
+*               date_internal            = <fs_item>-hsdat
+*             EXCEPTIONS
+*               date_external_is_invalid = 1
+*               OTHERS                   = 2.
+*           IF sy-subrc <> 0.
+*             MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+*             WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+*           ENDIF.
+*           CONDENSE <fs_item>-hsdat.
+*
+*         WHEN 13.
+*           CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+*             EXPORTING
+*               date_external            = <fs_excel>-value
+*             IMPORTING
+*               date_internal            = <fs_item>-vfdat
+*             EXCEPTIONS
+*               date_external_is_invalid = 1
+*               OTHERS                   = 2.
+*           IF sy-subrc <> 0.
+*             MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+*             WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+*           ENDIF.
+*           CONDENSE <fs_item>-vfdat.
+*
+*         WHEN 14.
+*           <fs_item>-bwtar = <fs_excel>-value.
+*
+*         WHEN 15.
+*           <fs_item>-licha = <fs_excel>-value.
+*
+*         WHEN 16.
+*           CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+*             EXPORTING
+*               date_external            = <fs_excel>-value
+*             IMPORTING
+*               date_internal            = <fs_item>-lwedt
+*             EXCEPTIONS
+*               date_external_is_invalid = 1
+*               OTHERS                   = 2.
+*           IF sy-subrc <> 0.
+*             MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+*             WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+*           ENDIF.
+*           CONDENSE <fs_item>-lwedt.
+
+         WHEN 11.
+           <fs_item>-qty                 = <fs_excel>-value.
+           CONDENSE  <fs_item>-qty.
+
+         WHEN 12.
+           <fs_item>-uom                 = <fs_excel>-value.
+
+           CALL FUNCTION 'CONVERSION_EXIT_CUNIT_INPUT'
+             EXPORTING
+               input    = <fs_item>-uom
+               language = sy-langu
+             IMPORTING
+               output   = <fs_item>-uom.
+
+           TRANSLATE <fs_item>-uom TO UPPER CASE.
+
+         WHEN 13.
+           <fs_item>-value               = <fs_excel>-value.
+           CONDENSE  <fs_item>-value.
+
+         WHEN 14.
+           CONDENSE <fs_excel>-value.
+           CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+             EXPORTING
+               input  = <fs_excel>-value
+             IMPORTING
+               output = <fs_item>-lifnr.
+
+*         WHEN 21.
+*           CONDENSE <fs_excel>-value.
+*           CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+*             EXPORTING
+*               input  = <fs_excel>-value
+*             IMPORTING
+*               output = <fs_item>-kunnr.
+         WHEN 15.
+           CONDENSE <fs_excel>-value.
+           <fs_item>-lgtyp = <fs_excel>-value.
+         WHEN 16.
+           CONDENSE <fs_excel>-value.
+           <fs_item>-lgpla = <fs_excel>-value.
+       ENDCASE.
+     ENDLOOP.
+     it_header  = it_item.
+     DELETE ADJACENT DUPLICATES FROM it_header COMPARING ALL FIELDS.
+     FREE it_excel.
+   ENDIF.
+ ENDFORM. " READ_FILE_DATA
+
+
+*&---------------------------------------------------------------------*
+*&      FORM  PROCESS_DATA
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+ FORM process_data .
+
+
+   IF r_fr IS NOT INITIAL.
+     LOOP AT it_header ASSIGNING <fs_header>.
+
+       CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+         EXPORTING
+           date_external            = <fs_header>-bldat
+         IMPORTING
+           date_internal            = <fs_header>-bldat
+         EXCEPTIONS
+           date_external_is_invalid = 1
+           OTHERS                   = 2.
+       IF sy-subrc <> 0.
+*         MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+*         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+       ENDIF.
+
+       CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+         EXPORTING
+           date_external            = <fs_header>-budat
+         IMPORTING
+           date_internal            = <fs_header>-budat
+         EXCEPTIONS
+           date_external_is_invalid = 1
+           OTHERS                   = 2.
+       IF sy-subrc <> 0.
+*         MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+*         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+       ENDIF.
+
+       CALL FUNCTION 'CONVERSION_EXIT_MATN1_INPUT'
+         EXPORTING
+           input        = <fs_header>-material
+         IMPORTING
+           output       = <fs_header>-material
+         EXCEPTIONS
+           length_error = 1
+           OTHERS       = 2.
+       IF sy-subrc <> 0.
+* Implement suitable error handling here
+       ENDIF.
+
+
+       TRANSLATE <fs_header>-material TO UPPER CASE.
+
+       CALL FUNCTION 'CONVERSION_EXIT_CUNIT_INPUT'
+         EXPORTING
+           input          = <fs_header>-uom
+           language       = sy-langu
+         IMPORTING
+           output         = <fs_header>-uom
+         EXCEPTIONS
+           unit_not_found = 1
+           OTHERS         = 2.
+       IF sy-subrc <> 0.
+* Implement suitable error handling here
+       ENDIF.
+
+
+       TRANSLATE <fs_header>-uom TO UPPER CASE.
+
+
+       CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+         EXPORTING
+           input  = <fs_header>-lifnr
+         IMPORTING
+           output = <fs_header>-lifnr.
+
+
+
+
+     ENDLOOP.
+
+   ENDIF.
+
+   SELECT matnr bwkey bwtar bwtty
+   INTO TABLE it_mbew
+   FROM mbew FOR ALL ENTRIES IN it_header
+   WHERE matnr = it_header-material
+     AND bwkey = it_header-plant
+*     AND bwtar = it_header-bwtar
+     AND bwtty <> space.
+
+
+   DATA(lt_header) = it_header[].
+   SORT lt_header BY doc_counter.
+   DELETE ADJACENT DUPLICATES FROM lt_header COMPARING doc_counter.
+
+   BREAK ibmabap08.
+
+   LOOP AT lt_header INTO DATA(ls_header).
+*     **  Initialize data objects
+     REFRESH: it_goodsmvt_item, it_return,it_serial_no.
+     CLEAR:   wa_header, wa_headret, v_mblnr, v_mjahr.
+
+     "Post Initial Stock
+     LOOP AT it_header ASSIGNING <fs_header> WHERE doc_counter = ls_header-doc_counter.
+       gv_index = sy-tabix.
+
+**  fill goods movement header data
+       wa_header-pstng_date = <fs_header>-budat."p_budat.
+       wa_header-doc_date   = <fs_header>-bldat.
+       wa_header-pr_uname   = sy-uname.
+       wa_header-header_txt = <fs_header>-bktxt.
+       wa_header-ref_doc_no = <fs_header>-xabln.
+
+
+       IF r_stock = gc_x.
+
+**  fill goods movement item data
+         DATA(ls_goodsmvt) = VALUE bapi2017_gm_item_create( ).
+         ls_goodsmvt-material   = <fs_header>-material.
+         ls_goodsmvt-plant      = <fs_header>-plant.
+         ls_goodsmvt-stge_loc   = <fs_header>-sloc.
+         ls_goodsmvt-batch      = <fs_header>-batch_number.
+         ls_goodsmvt-move_type  = <fs_header>-mvt_typ.
+         ls_goodsmvt-stck_type  = <fs_header>-insmk.
+         ls_goodsmvt-item_text  = <fs_header>-sgtxt.
+*       ls_goodsmvt-val_type   = <fs_header>-bwtar.
+         ls_goodsmvt-entry_qnt  = <fs_header>-qty.
+         ls_goodsmvt-entry_uom  = <fs_header>-uom.
+         ls_goodsmvt-amount_lc  = <fs_header>-value.
+         ls_goodsmvt-move_reas  = ''.
+         ls_goodsmvt-stge_type  = <fs_header>-lgtyp.
+
+***         IF <fs_header>-lgpla IS NOT INITIAL. "code commented by IBMABAP11
+         SELECT SINGLE lgnum
+         FROM /scwm/tmapstloc
+         INTO @DATA(lv_lgnum)
+         WHERE plant    = @<fs_header>-plant
+         AND   stge_loc = @<fs_header>-sloc.
+         IF sy-subrc = 0.
+           wa_header-ext_wms    = '3'.
+           ls_goodsmvt-stge_bin_ewm   = <fs_header>-lgpla.
+           ls_goodsmvt-warehouse_ewm = lv_lgnum.
+         ENDIF.
+***         ENDIF.            " code commented by IBMABAP11
+         IF NOT <fs_header>-lifnr IS INITIAL.
+           ls_goodsmvt-spec_stock     = 'O'.
+           ls_goodsmvt-vendor = <fs_header>-lifnr.
+         ELSE.
+*         ls_goodsmvt-customer = <fs_header>-kunnr.
+         ENDIF.
+         ls_goodsmvt-expirydate = <fs_header>-batch_ex.
+         ls_goodsmvt-prod_date = <fs_header>-batch_man.
+         APPEND ls_goodsmvt TO it_goodsmvt_item.
+         ls_serial_no-matdoc_itm  = '0001'.
+         ls_serial_no-serialno  = <fs_header>-serialno.
+         append ls_serial_no to it_serial_no.
+
+       else.
+*       wa_batchatt-prod_date = <fs_header>-hsdat.
+*       wa_batchatt-expirydate = <fs_header>-vfdat.
+*       wa_batchatt-vendor_no  = <fs_header>-lifnr.
+*       wa_batchatt-lastgrdate = <fs_header>-lwedt.
+*       wa_batchatt-vendrbatch = <fs_header>-licha.
+*       wa_batchatt-val_type   = <fs_header>-bwtar.
+*
+*       wa_batchattx-prod_date  = 'X'.
+*       wa_batchattx-expirydate = 'X'.
+*       wa_batchattx-vendor_no  = 'X'.
+*       wa_batchattx-val_type   = 'X'.
+*       wa_batchattx-vendrbatch = 'X'.
+*       wa_batchattx-lastgrdate = 'X'.
+*
+*       IF p_test = gc_x.
+*         wa_bapibatchctrl-no_cfc_calls = gc_x.
+*         wa_bapibatchctrl-nocommit     = gc_x.
+*       ENDIF.
+*
+*       IF NOT <fs_header>-batch_number IS INITIAL.
+*         gv_matnr = <fs_header>-material.
+*         CALL FUNCTION 'BAPI_BATCH_SAVE_REPLICA'
+*           EXPORTING
+*             material           = gv_matnr
+*             batch              = <fs_header>-batch_number
+*             plant              = <fs_header>-plant
+*             batchattributes    = wa_batchatt
+*             batchattributesx   = wa_batchattx
+*             batchstatus        = <fs_header>-zustd
+*             batchstatusx       = 'X'
+*             batchcontrolfields = wa_bapibatchctrl
+*           TABLES
+*             return             = it_return[].
+*
+*         IF p_test = 'X'.
+*           CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'.
+*         ENDIF.
+*
+*         READ TABLE it_return INTO wa_return WITH KEY type = 'E'.
+*         IF sy-subrc = 0.
+*           PERFORM write_bapi_error_messages.
+*         ELSE.
+*           PERFORM f_fill_success_message_batch.
+*         ENDIF.
+*
+***--- Check from MBEW table
+*         IF <fs_header>-bwtar = space.
+*           READ TABLE it_mbew INTO wa_mbew WITH KEY matnr = gv_matnr
+*                                                    bwkey = <fs_header>-plant.
+*           IF sy-subrc = 0.
+*             wa_return-message = 'valuation type Empty'.
+*             wa_return-type    = 'E'.
+*             APPEND wa_return TO it_return.
+*             PERFORM write_bapi_error_messages.
+*           ENDIF.
+*         ENDIF.
+*       ENDIF.
+       ENDIF. " r_stock = gc_x.
+
+     ENDLOOP.
+
+** Call Function to Post Initial Stock with 561 Movement Type
+     CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+       EXPORTING
+         goodsmvt_header       = wa_header
+         goodsmvt_code         = '05'
+         testrun               = p_test
+       IMPORTING
+         goodsmvt_headret      = wa_headret
+         materialdocument      = v_mblnr
+         matdocumentyear       = v_mjahr
+       TABLES
+         goodsmvt_item         = it_goodsmvt_item
+         goodsmvt_serialnumber = it_serial_no
+         return                = it_return.
+
+     READ TABLE it_return INTO wa_return WITH KEY type = 'E'.
+     IF sy-subrc = 0.
+       PERFORM write_bapi_error_messages.
+     ELSE.
+       IF p_test IS INITIAL.
+         PERFORM commit_data.
+       ENDIF.
+       PERFORM f_fill_success_message.
+     ENDIF.
+     CLEAR gv_matnr.
+     CLEAR it_return.
+
+   ENDLOOP.
+
+ ENDFORM. " PROCESS_DATA
+
+
+*&---------------------------------------------------------------------*
+*&      FORM  COMMIT_DATA
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+
+
+ FORM commit_data .
+
+   CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+     EXPORTING
+       wait = 'X'.
+
+ ENDFORM. " COMMIT_DATA
+
+
+*&---------------------------------------------------------------------*
+*&      FORM  WRITE_BAPI_ERROR_MESSAGES
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+
+
+ FORM write_bapi_error_messages .
+   LOOP AT it_return ASSIGNING <fs_return>.
+
+     APPEND INITIAL LINE TO it_message ASSIGNING <fs_message>.
+     <fs_message>-matnr = <fs_header>-material.
+     <fs_message>-werks = <fs_header>-plant.
+
+     IF ( <fs_return>-type EQ 'E' OR <fs_return>-type EQ 'A' ).
+       <fs_message>-light = '@0A@'.
+     ELSE.
+       <fs_message>-light = '@09@'.
+     ENDIF.
+     <fs_message>-index = gv_index.
+     IF <fs_return>-message IS NOT INITIAL.
+       <fs_message>-message = <fs_return>-message.
+     ELSE.
+       SELECT SINGLE text FROM t100 INTO <fs_message>-message
+         WHERE sprsl = sy-langu
+         AND   arbgb = <fs_return>-id
+         AND   msgnr = <fs_return>-number.
+     ENDIF.
+   ENDLOOP.
+
+ ENDFORM. " WRITE_BAPI_ERROR_MESSAGES
+
+
+*&---------------------------------------------------------------------*
+*&      FORM  DISPLAY_FROM_POSTING
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+
+
+ FORM display_from_posting .
+
+   IF r_stock = gc_x.
+     PERFORM call_alv_grid.
+   ELSE.
+     PERFORM call_alv_grid_batch.
+   ENDIF.
+
+   FREE: it_message, it_fieldcat, it_header, it_item, it_1iexgrps.
+
+ ENDFORM. " DISPLAY_FROM_POSTING
+
+
+*&---------------------------------------------------------------------*
+*&      FORM  CALL_ALV_GRID
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+
+ FORM call_alv_grid .
+
+   REFRESH : it_fieldcat.
+
+*----------------------------------------------------------------------*
+* Build Field Catalog
+*----------------------------------------------------------------------*
+
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Type'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'LIGHT'.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Index'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'INDEX'.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Material'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'MATNR'.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Plant'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'WERKS'.
+
+
+   IF p_test IS INITIAL.
+     APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+     <fs_fcat>-scrtext_m   = 'Mat.Doc.No.'.
+     <fs_fcat>-colddictxt  = 'M'.
+     <fs_fcat>-fieldname   = 'MBLNR'.
+*     <fs_fcat>-hotspot     = 'X'.
+
+     APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+     <fs_fcat>-scrtext_m   = 'Mat.Doc.Year'.
+     <fs_fcat>-colddictxt  = 'M'.
+     <fs_fcat>-fieldname   = 'MJAHR'.
+   ENDIF.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Message'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'MESSAGE'.
+
+   wa_layout-cwidth_opt  = 'X'.
+
+   CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY_LVC'
+     EXPORTING
+       i_callback_program = sy-repid
+*      i_callback_pf_status_set = 'PF_STATUS'
+*      i_callback_user_command  = 'USER_COMMAND'
+       i_grid_title       = 'Message Log'
+       it_fieldcat_lvc    = it_fieldcat
+       is_layout_lvc      = wa_layout
+     TABLES
+       t_outtab           = it_message
+     EXCEPTIONS
+       program_error      = 1
+       OTHERS             = 2.
+   IF sy-subrc <> 0.
+     MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+             WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+   ENDIF.
+
+   CLEAR: it_message, it_fieldcat.
+
+ ENDFORM. " CALL_ALV_GRID
+
+
+*&---------------------------------------------------------------------*
+*&      FORM  CALL_ALV_GRID_BATCH
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*  -->  P1        TEXT
+*  <--  P2        TEXT
+*----------------------------------------------------------------------*
+
+
+ FORM call_alv_grid_batch.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Type'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'LIGHT'.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Index'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'INDEX'.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Material'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'MATNR'.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Batch'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'BATCH'.
+
+   APPEND INITIAL LINE TO it_fieldcat ASSIGNING <fs_fcat>.
+   <fs_fcat>-scrtext_m   = 'Message'.
+   <fs_fcat>-colddictxt  = 'M'.
+   <fs_fcat>-fieldname   = 'message'.
+
+   wa_layout-cwidth_opt  = 'X'.
+
+   CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY_LVC'
+     EXPORTING
+       i_callback_program = sy-repid
+*      i_callback_pf_status_set = 'PF_STATUS'
+*      i_callback_user_command  = 'USER_COMMAND'
+       i_grid_title       = 'Message Log'
+       it_fieldcat_lvc    = it_fieldcat
+       is_layout_lvc      = wa_layout
+     TABLES
+       t_outtab           = it_message
+     EXCEPTIONS
+       program_error      = 1
+       OTHERS             = 2.
+   IF sy-subrc <> 0.
+     MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+             WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+   ENDIF.
+
+   CLEAR: it_message, it_fieldcat.
+
+ ENDFORM.
+
+
+
+*&---------------------------------------------------------------------*
+*&      Form  pf_status
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*      -->RT_EXTAB   TEXT
+*----------------------------------------------------------------------*
+
+
+ FORM pf_status USING rt_extab TYPE slis_t_extab.
+
+   READ TABLE it_header ASSIGNING <fs_header> INDEX 1.
+   IF sy-subrc = 0 AND <fs_header>-plant IS NOT INITIAL.
+
+     " Check for Depot Plant
+     READ TABLE it_1iexgrps ASSIGNING <fs_1iexgrps>
+            WITH KEY j_1iwerks = <fs_header>-plant.
+     IF sy-subrc = 0 AND <fs_1iexgrps>-j_1idepot IS INITIAL.
+
+       " Exclude POST Function Code in case of non depot plants.
+       SET PF-STATUS 'STANDARD' EXCLUDING 'POST' IMMEDIATELY .
+
+     ELSE.
+
+       SET PF-STATUS 'STANDARD'.
+
+     ENDIF.
+
+   ELSE.
+
+     " Exclude POST Function Code in case of non depot plants.
+     SET PF-STATUS 'STANDARD'   EXCLUDING 'POST' IMMEDIATELY .
+
+   ENDIF.
+
+ ENDFORM. "PF_STATUS
+
+
+*&---------------------------------------------------------------------*
+*&      Form  user_command
+*&---------------------------------------------------------------------*
+*       TEXT
+*----------------------------------------------------------------------*
+*      -->R_UCOMM      TEXT
+*      -->RS_SELFIELD  TEXT
+*----------------------------------------------------------------------*
+
+ FORM user_command USING r_ucomm LIKE sy-ucomm
+                         rs_selfield TYPE slis_selfield.
+
+   CASE r_ucomm.
+
+     WHEN '&F03'."BACK'.
+       LEAVE TO CURRENT TRANSACTION.
+
+     WHEN OTHERS.
+   ENDCASE.
+
+   CLEAR r_ucomm.
+
+ ENDFORM. "user_command
+
+*&---------------------------------------------------------------------*
+*& Form F_FILL_SUCCESS_MESSAGE
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+ FORM f_fill_success_message .
+
+   APPEND INITIAL LINE TO it_message ASSIGNING <fs_message>.
+   <fs_message>-light    =  '@08@'.
+   <fs_message>-index    =  gv_index.
+   <fs_message>-matnr = <fs_header>-material.
+   <fs_message>-werks = <fs_header>-plant.
+   <fs_message>-mblnr    =  v_mblnr.
+   <fs_message>-mjahr    =  v_mjahr.
+
+   IF p_test IS INITIAL.
+     <fs_message>-message  = 'Document Created'.
+   ELSE.
+     <fs_message>-message  = 'Data is Simulated Successfully' .
+   ENDIF.
+ ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form F_FILL_SUCCESS_MESSAGE_BATCH
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+ FORM f_fill_success_message_batch .
+
+   APPEND INITIAL LINE TO it_message  ASSIGNING <fs_message>.
+   <fs_message>-light    =  '@08@'.
+   <fs_message>-index    =  gv_index.
+   <fs_message>-matnr   =  gv_matnr.
+   <fs_message>-batch    =  <fs_header>-batch_number.
+   IF p_test IS INITIAL.
+     <fs_message>-message  = 'Batch Created'.
+   ELSE.
+     <fs_message>-message  = 'Data is Simulated Successfully' .
+   ENDIF.
+
+ ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form F_BG_DATA
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+ FORM f_bg_data .
+
+   DATA : lv_str     TYPE string,
+          lv_file    TYPE string,
+          lv_file_op TYPE string,
+          l_string   TYPE string,
+          lv_1       TYPE string,
+          lv_source  TYPE sapb-sappfad,
+          lv_target  TYPE sapb-sappfad,
+          lv_file_dl TYPE epsfilnam,
+          lv_exe     TYPE flag,
+          lv_message TYPE string,
+          lv_dir     TYPE epsdirnam.
+
+   DATA: it_file    TYPE TABLE OF salfldir,
+         wa_file    TYPE salfldir,
+         wa_item    TYPE ty_file,
+         lv_index   TYPE sy-index,
+         lwa_header TYPE ty_file.
+
+   CALL FUNCTION 'RZL_READ_DIR_LOCAL'
+     EXPORTING
+       name               = p_fl_bg
+*      FROMLINE           = 0
+*      NRLINES            = 1000
+     TABLES
+       file_tbl           = it_file
+     EXCEPTIONS
+       argument_error     = 1
+       not_found          = 2
+       no_admin_authority = 3
+       OTHERS             = 4.
+
+   IF sy-subrc NE 0.
+
+   ELSE.
+
+     LOOP AT it_file INTO wa_file.
+       IF wa_file-name+0(1) <> '.' .
+         CONCATENATE p_fl_bg '/'  wa_file-name  INTO lv_file.
+         OPEN DATASET lv_file FOR INPUT IN TEXT MODE ENCODING DEFAULT.
+
+         IF sy-subrc EQ 0.
+           DO.
+             CLEAR : l_string.
+             READ DATASET lv_file INTO l_string.
+             IF sy-subrc NE 0.
+               EXIT.
+             ELSE.
+               SPLIT l_string AT ',' INTO wa_item-bldat
+                                          wa_item-budat
+                                          wa_item-bktxt
+                                          wa_item-mvt_typ
+                                          wa_item-sobkz
+                                          wa_item-sgtxt
+                                          wa_item-material
+                                          wa_item-plant
+                                          wa_item-sloc
+                                          wa_item-batch_number
+*                                          wa_item-zustd
+*                                          wa_item-hsdat
+*                                          wa_item-vfdat
+*                                          wa_item-bwtar
+*                                          wa_item-licha
+*                                          wa_item-lwedt
+                                          wa_item-qty
+                                          wa_item-uom
+                                          wa_item-value
+                                          wa_item-lifnr.
+*                                          wa_item-kunnr.
+               APPEND wa_item TO it_item.
+             ENDIF.
+           ENDDO.
+           lv_index = p_beg_r - 1.
+           DELETE it_item FROM 1 TO lv_index.
+           CLOSE DATASET lv_file.
+
+           IF it_item[] IS NOT INITIAL.
+             LOOP AT it_item INTO wa_item.
+               CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+                 EXPORTING
+                   date_external            = wa_item-bldat
+                 IMPORTING
+                   date_internal            = lwa_header-bldat
+                 EXCEPTIONS
+                   date_external_is_invalid = 1
+                   OTHERS                   = 2.
+
+               lwa_header-budat    = wa_item-budat.
+               lwa_header-bktxt    = wa_item-bktxt.
+               lwa_header-mvt_typ  = wa_item-mvt_typ.
+               lwa_header-sobkz    = wa_item-sobkz.
+               lwa_header-sgtxt    = wa_item-sgtxt.
+
+               CALL FUNCTION 'CONVERSION_EXIT_MATN1_INPUT'
+                 EXPORTING
+                   input  = wa_item-material
+                 IMPORTING
+                   output = lwa_header-material.
+
+               TRANSLATE lwa_header-material TO UPPER CASE.
+               lwa_header-plant               = wa_item-plant.
+               lwa_header-sloc                = wa_item-sloc.
+
+               lwa_header-batch_number        = wa_item-batch_number.
+               CONDENSE  lwa_header-batch_number.
+               TRANSLATE lwa_header-batch_number TO UPPER CASE.
+*               lwa_header-zustd               = wa_item-zustd.
+
+*               CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+*                 EXPORTING
+*                   date_external = wa_item-hsdat
+*                 IMPORTING
+*                   date_internal = lwa_header-hsdat.
+*
+*               CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+*                 EXPORTING
+*                   date_external = wa_item-vfdat
+*                 IMPORTING
+*                   date_internal = lwa_header-vfdat.
+*
+*               lwa_header-bwtar = wa_item-bwtar.
+*               lwa_header-licha = wa_item-licha.
+*
+*               IF wa_item-lwedt IS NOT INITIAL.
+*                 CALL FUNCTION 'CONVERT_DATE_TO_INTERNAL'
+*                   EXPORTING
+*                     date_external = wa_item-lwedt
+*                   IMPORTING
+*                     date_internal = lwa_header-lwedt.
+*               ENDIF.
+
+               lwa_header-qty              = wa_item-qty.
+               CONDENSE lwa_header-qty.
+
+               CALL FUNCTION 'CONVERSION_EXIT_CUNIT_INPUT'
+                 EXPORTING
+                   input    = wa_item-uom
+                   language = sy-langu
+                 IMPORTING
+                   output   = lwa_header-uom.
+
+               TRANSLATE lwa_header-uom TO UPPER CASE.
+               lwa_header-value               = wa_item-value.
+               CONDENSE  lwa_header-value.
+
+               CONDENSE wa_item-value.
+
+               IF wa_item-lifnr IS NOT INITIAL.
+                 CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+                   EXPORTING
+                     input  = wa_item-lifnr
+                   IMPORTING
+                     output = lwa_header-lifnr.
+               ENDIF.
+
+*               IF wa_item-kunnr IS NOT INITIAL.
+*                 CONDENSE wa_item-kunnr.
+*                 CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+*                   EXPORTING
+*                     input  = wa_item-kunnr
+*                   IMPORTING
+*                     output = lwa_header-kunnr.
+*               ENDIF.
+               APPEND lwa_header TO it_header.
+               CLEAR lwa_header.
+             ENDLOOP.
+           ENDIF.
+         ELSE.
+           CONCATENATE TEXT-005 wa_file-name INTO lv_message SEPARATED BY space.
+           MESSAGE lv_message TYPE 'E'.
+         ENDIF.
+         lv_dir = p_fl_bg.
+         lv_file_dl = wa_file-name.
+         IF p_test IS INITIAL AND r_batch IS INITIAL.
+           CALL FUNCTION 'EPS_DELETE_FILE'
+             EXPORTING
+               file_name              = lv_file_dl
+               dir_name               = lv_dir
+             EXCEPTIONS
+               invalid_eps_subdir     = 1
+               sapgparam_failed       = 2
+               build_directory_failed = 3
+               no_authorization       = 4
+               build_path_failed      = 5
+               delete_failed          = 6
+               OTHERS                 = 7.
+           CLEAR: lv_dir, lv_file_dl.
+         ENDIF.
+       ENDIF.
+       CLEAR wa_file.
+     ENDLOOP.
+   ENDIF.
+
+
+ ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form UPLOAD_FILE
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+ FORM upload_file .
+
+
+   DATA : lt_raw_data TYPE truxs_t_text_data.
+
+
+   CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
+     EXPORTING
+*      I_FIELD_SEPERATOR    =
+       i_line_header        = abap_true
+       i_tab_raw_data       = lt_raw_data
+       i_filename           = p_file
+     TABLES
+       i_tab_converted_data = it_header
+     EXCEPTIONS
+       conversion_failed    = 1
+       OTHERS               = 2.
+   IF sy-subrc <> 0.
+* Implement suitable error handling here
+   ENDIF.
+
+ ENDFORM.

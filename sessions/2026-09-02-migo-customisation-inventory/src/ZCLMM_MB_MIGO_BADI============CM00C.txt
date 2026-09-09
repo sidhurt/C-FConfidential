@@ -1,0 +1,18 @@
+﻿METHOD if_ex_mb_migo_badi~pai_header .
+* Get Header data from external screen:
+*  CALL FUNCTION 'MIGO_BADI_EXAMPLE_GET_HEADER'
+*    IMPORTING
+*      es_migo_badi_header_fields = gs_exdata_header.
+
+  DATA(lt_item_temp) = gt_item.
+  DELETE lt_item_temp WHERE vbeln = ''.
+  IF lt_item_temp  IS NOT INITIAL AND is_gohead-xblnr IS NOT INITIAL.
+    DATA(lv_xblnr) = |{ VALUE #( lt_item_temp[ 1 ]-vbeln OPTIONAL ) ALPHA = IN }|.
+    IF is_gohead-xblnr NE lv_xblnr.
+      MESSAGE s079(zmm) DISPLAY LIKE 'E'.
+      gv_error_hn = abap_true.
+    ELSE.
+      CLEAR gv_error_hn.
+    ENDIF.
+  ENDIF.
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~PAI_HEADER

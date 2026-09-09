@@ -1,0 +1,329 @@
+﻿*&---------------------------------------------------------------------*
+*& Include          ZMMR_GAS_CYL_FRM
+*&---------------------------------------------------------------------*
+
+  data:lv_tab    type i,
+       gw_return type bapiret2,
+       gv_stat   type asttx,
+       gt_status type standard table of bapi_itob_userstatus_maintain,
+       gw_status type bapi_itob_userstatus_maintain,
+       gw_eqip   type bapi_itob_parms.
+
+  start-of-selection.
+
+    perform get_data.
+
+    l_pos = l_pos + 1.
+    gw_fieldcat-col_pos   = l_pos.
+    gw_fieldcat-seltext_m = 'Select'.
+    gw_fieldcat-fieldname = 'SELECT'.
+    gw_fieldcat-tabname   = 'GT_FINAL'.
+    gw_fieldcat-outputlen = 6.
+    gw_fieldcat-checkbox = 'X'.
+    gw_fieldcat-input = 'X'.
+    gw_fieldcat-edit = 'X'.
+    append gw_fieldcat to gt_fieldcat.
+    clear gw_fieldcat.
+
+    l_pos = l_pos + 1.
+    gw_fieldcat-col_pos   = l_pos.
+    gw_fieldcat-seltext_m = 'Material no.'.
+    gw_fieldcat-fieldname = 'MATNR'.
+    gw_fieldcat-tabname   = 'GT_FINAL'.
+    gw_fieldcat-outputlen = 20.
+    append gw_fieldcat to gt_fieldcat.
+    clear gw_fieldcat.
+
+    l_pos = l_pos + 1.
+    gw_fieldcat-col_pos   = l_pos.
+    gw_fieldcat-seltext_m = 'Serial no.'.
+    gw_fieldcat-fieldname = 'SERNR'.
+    gw_fieldcat-tabname   = 'GT_FINAL'.
+    gw_fieldcat-outputlen = 16.
+    append gw_fieldcat to gt_fieldcat.
+    clear gw_fieldcat.
+
+    l_pos = l_pos + 1.
+    gw_fieldcat-col_pos   = l_pos.
+    gw_fieldcat-seltext_m = 'Equipment no.'.
+    gw_fieldcat-fieldname = 'EQUNR'.
+    gw_fieldcat-tabname   = 'GT_FINAL'.
+    gw_fieldcat-outputlen = 14.
+    append gw_fieldcat to gt_fieldcat.
+    clear gw_fieldcat.
+
+    l_pos = l_pos + 1.
+    gw_fieldcat-col_pos   = l_pos.
+    gw_fieldcat-seltext_m = 'Plant'.
+    gw_fieldcat-fieldname = 'WERKS'.
+    gw_fieldcat-tabname   = 'GT_FINAL'.
+    gw_fieldcat-outputlen = 14.
+    append gw_fieldcat to gt_fieldcat.
+    clear gw_fieldcat.
+
+    l_pos = l_pos + 1.
+    gw_fieldcat-col_pos   = l_pos.
+    gw_fieldcat-seltext_m = 'Storage location'.
+    gw_fieldcat-fieldname = 'SLOC'.
+    gw_fieldcat-tabname   = 'GT_FINAL'.
+    gw_fieldcat-outputlen = 14.
+    append gw_fieldcat to gt_fieldcat.
+    clear gw_fieldcat.
+
+    l_pos = l_pos + 1.
+    gw_fieldcat-col_pos   = l_pos.
+    gw_fieldcat-seltext_m = 'Current Status'.
+    gw_fieldcat-fieldname = 'CSTAT'.
+    gw_fieldcat-tabname   = 'GT_FINAL'.
+    gw_fieldcat-outputlen = 14.
+    append gw_fieldcat to gt_fieldcat.
+    clear gw_fieldcat.
+
+    call function 'REUSE_ALV_GRID_DISPLAY'
+      exporting
+        i_callback_program       = sy-repid
+        i_callback_pf_status_set = 'SET_PF_STATUS'
+        i_callback_user_command  = 'USER_COMMAND'
+        is_layout                = gw_layout
+        it_fieldcat              = gt_fieldcat
+      tables
+        t_outtab                 = gt_final
+      exceptions
+        program_error            = 1
+        others                   = 2.
+    if sy-subrc <> 0.
+* Implement suitable error handling here
+    endif.
+
+*----------------------------------------------------------------------*
+*                      FORM SET_PF_STATUS                              *
+*----------------------------------------------------------------------*
+  form set_pf_status using rt_extab   type  slis_t_extab.
+    set pf-status 'ZMM_STAT' . "EXCLUDING RT_EXTAB.
+  endform.
+*&--------------------------------------------------------------------*
+*&      Form  user_command
+*&--------------------------------------------------------------------*
+*       text
+*---------------------------------------------------------------------*
+*      -->R_UCOMM    text
+*      -->RS_SELFIELDtext
+*---------------------------------------------------------------------*
+  form user_command  using r_ucomm like sy-ucomm
+                           rs_selfield type slis_selfield.
+***-------------------------------------------------------------***
+    data ls_hdr   type bapi2017_gm_head_01.
+    data ls_cod   type bapi2017_gm_code.
+    data lc_ghd   type bapi2017_gm_head_ret.
+    data lv_doc   type bapi2017_gm_head_ret-mat_doc.
+    data lv_yer   type bapi2017_gm_head_ret-doc_year.
+    data lt_itm   type table of bapi2017_gm_item_create.
+    data ls_itm   type bapi2017_gm_item_create.
+    data lt_ser   type table of bapi2017_gm_serialnumber.
+    data ls_ser   type bapi2017_gm_serialnumber.
+    data lt_ret   type table of bapiret2.
+    data lv_stonr type tj30-stonr.
+***-------------------------------------------------------------***
+    case r_ucomm.
+      when '&DEL_ALL'.
+        loop at gt_final into gw_final .
+          gw_final-select = ' '.
+          modify gt_final from gw_final index sy-tabix transporting select .
+          clear gw_final .
+        endloop.
+        rs_selfield-refresh = 'X'.
+      when '&SEL_ALL'.
+        loop at gt_final into gw_final .
+          gw_final-select = 'X'.
+          modify gt_final from gw_final index sy-tabix transporting select .
+          clear gw_final.
+        endloop.
+        rs_selfield-refresh = 'X'.
+      when '&DATA_SAVE'.
+        loop at gt_final into gw_final where select = 'X'.
+          clear:gw_status, gw_eqip .
+          if gw_final-cstat = 'FILD' or gw_final-cstat = 'ISUD'.
+            gw_status-status_ext = 'EMPT'.
+          endif.
+          gw_status-langu = sy-langu .
+          gw_eqip-equipment = gw_final-equnr.
+
+          call function 'IBAPI_EQUI_USERSTATUS_CHANGE'
+            exporting
+              equipment         = gw_eqip-equipment
+              status_parameters = gw_status
+            importing
+              userstatus        = gv_stat
+              return            = gw_return.
+          if gv_stat is not initial.
+
+            call function 'BAPI_TRANSACTION_COMMIT'
+              exporting
+                wait = abap_true.
+            if sy-subrc eq 0.
+              message 'Equipment status changes successfully' type 'S'.
+            endif.
+          else.
+            message gw_return-message type 'E'.
+          endif.
+        endloop.
+      when '&REF'.
+        perform get_data.
+      when '&IC1'.
+        break ibmabap07.
+        loop at gt_final into gw_final where select = 'X'.
+          "Start by GS on 19.01.2024
+          ls_hdr-doc_date   = sy-datum.
+          ls_hdr-pstng_date = sy-datum.
+          ls_cod-gm_code    = '04'.
+
+          ls_itm-material      = |{ gw_final-matnr alpha = in }|.
+          ls_itm-plant         = gw_final-werks.
+          ls_itm-stge_loc      = gw_final-sloc.
+          ls_itm-move_type     = '309'.
+          ls_itm-val_type      = 'EMPTY'.
+          ls_itm-entry_qnt     = '1.000'.
+          ls_itm-entry_uom     = 'NOS'.
+          ls_itm-entry_uom_iso = 'NOS'.
+          ls_itm-move_val_type = 'FILLED'.
+          append ls_itm to lt_itm.
+          clear ls_itm.
+
+          ls_ser-matdoc_itm = '0001'.
+          ls_ser-serialno   = gw_final-sernr.
+          append ls_ser to lt_ser.
+          clear ls_ser.
+
+          call function 'BAPI_GOODSMVT_CREATE'
+            exporting
+              goodsmvt_header       = ls_hdr
+              goodsmvt_code         = ls_cod
+            importing
+              goodsmvt_headret      = lc_ghd
+              materialdocument      = lv_doc
+              matdocumentyear       = lv_yer
+            tables
+              goodsmvt_item         = lt_itm
+              goodsmvt_serialnumber = lt_ser
+              return                = lt_ret.
+          try.
+              data(ls_msg) = lt_ret[ type = 'E' ].
+              if ls_msg-type eq 'E'.
+                call function 'BAPI_TRANSACTION_ROLLBACK'.
+              endif.
+            catch cx_sy_itab_line_not_found.
+              call function 'BAPI_TRANSACTION_COMMIT'
+                exporting
+                  wait = abap_true.
+              wait up to 2 seconds.
+          endtry.
+          refresh :lt_itm[],lt_ser[].
+          clear :ls_hdr,ls_cod.
+          "End by GS on 19.01.2024
+
+          clear:gw_status, gw_eqip .
+          if gw_final-cstat = 'EMPT' or gw_final-cstat = 'ISUD'.
+            gw_status-status_ext = 'FILD'.
+          endif.
+          gw_status-langu = sy-langu .
+          gw_eqip-equipment = gw_final-equnr.
+
+          call function 'IBAPI_EQUI_USERSTATUS_CHANGE'
+            exporting
+              equipment         = gw_eqip-equipment
+              status_parameters = gw_status
+            importing
+              userstatus        = gv_stat
+              return            = gw_return.
+          if gv_stat is not initial.
+
+            call function 'BAPI_TRANSACTION_COMMIT'
+              exporting
+                wait = abap_true.
+            if sy-subrc = 0.
+              message 'Equipment status changes successfully' type 'S'.
+            endif.
+          else.
+            message gw_return-message type 'E'.
+          endif.
+        endloop.
+      when others.
+    endcase.
+  endform.
+*&---------------------------------------------------------------------*
+*& Form get_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+  form get_data .
+    select * from objk
+      into table @data(lt_objk)
+     where matnr = @p_mat
+       and sernr in @s_ser .
+
+    sort lt_objk by equnr sernr matnr.
+    delete adjacent duplicates from lt_objk comparing equnr sernr matnr .
+
+    if lt_objk is not initial .
+      select * from eqbs into table @data(lt_eqbs)
+      for all entries in @lt_objk
+      where equnr = @lt_objk-equnr
+      and b_werk = @p_werks .
+      if lt_eqbs is not initial.
+        select * from equi into table @data(lt_equi)
+        for all entries in @lt_eqbs
+        where equnr = @lt_eqbs-equnr .
+        if lt_equi is not initial.
+          select * from jest into table @data(lt_jest)
+          for all entries in @lt_equi
+          where objnr = @lt_equi-objnr
+            and inact = ' '
+            and stat like 'E%'.
+
+          sort lt_jest by objnr chgnr descending .
+
+          if lt_jest is not initial .
+            select * from tj30t into table @data(lt_tj30t)
+              for all entries in @lt_jest
+              where estat = @lt_jest-stat
+              and stsma = 'PM_EQUP1'
+              and spras = @sy-langu .
+
+          endif.
+        endif.
+      endif.
+    endif.
+
+    loop at lt_objk into data(lw_objk).
+      read table lt_eqbs into data(lw_eqbs) with key equnr = lw_objk-equnr .
+      if sy-subrc = 0.
+        gw_final-matnr = lw_objk-matnr .
+        shift gw_final-matnr left deleting leading '0'.
+        gw_final-sernr = lw_objk-sernr .
+        shift gw_final-sernr left deleting leading '0'.
+        gw_final-equnr = lw_objk-equnr .
+        shift gw_final-equnr left deleting leading '0'.
+        gw_final-werks = lw_eqbs-b_werk .
+        gw_final-sloc = lw_eqbs-b_lager .
+        read table lt_equi into data(lw_equi) with key equnr = lw_objk-equnr.
+        if sy-subrc = 0.
+          gw_final-objnr = lw_equi-objnr .
+          read table lt_jest into data(lw_jest) with key objnr = lw_equi-objnr .
+          if sy-subrc = 0.
+            gw_final-stat = lw_jest-stat .
+            read table lt_tj30t into data(lw_tj30t) with key estat = lw_jest-stat .
+            if sy-subrc = 0.
+              gw_final-cstat = lw_tj30t-txt04.
+            endif.
+          endif.
+        endif.
+      endif.
+      append gw_final to gt_final.
+      clear gw_final.
+    endloop.
+
+    delete gt_final where matnr = ' '.
+  endform.

@@ -1,0 +1,6 @@
+﻿METHOD if_ex_mb_migo_badi~hold_data_delete .
+
+* Delete entry from database table
+  DELETE FROM migo_badi_hold WHERE guid = i_guid.
+
+ENDMETHOD.

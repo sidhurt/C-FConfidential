@@ -1,0 +1,41 @@
+﻿  method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITY.
+    " ----------------   !! GENERATED CODE !! --------------------
+    " !!  DO NOT CHANGE, WILL BE OVERWRITTEN AT NEXT GENERATION !!
+
+    CLEAR es_response_context.
+
+    flx_load_runtime_api( ).
+
+    mo_flx_runtime_api->get_entity(
+      EXPORTING
+        io_tech_request_context = io_tech_request_context
+      IMPORTING
+        er_entity               = er_entity
+        ev_request_processed    = DATA(lv_processed) ).
+
+    IF lv_processed EQ abap_true.
+      RETURN.
+    ENDIF.
+
+    super->/iwbep/if_mgw_appl_srv_runtime~get_entity(
+      EXPORTING
+        iv_entity_name          = iv_entity_name
+        iv_entity_set_name      = iv_entity_set_name
+        iv_source_name          = iv_source_name
+        it_key_tab              = it_key_tab
+        it_navigation_path      = it_navigation_path
+        io_tech_request_context = io_tech_request_context
+      IMPORTING
+        er_entity               = er_entity
+        es_response_context     = es_response_context ).
+
+    IF er_entity IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    mo_flx_runtime_api->enrich_entity(
+      EXPORTING
+        io_tech_request_context = io_tech_request_context
+        ir_entity               = er_entity ).
+
+  endmethod.

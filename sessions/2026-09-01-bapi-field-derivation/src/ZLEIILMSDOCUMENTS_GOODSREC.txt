@@ -1,0 +1,503 @@
+﻿*----------------------------------------------------------------------*
+***INCLUDE ZLEIILMSDOCUMENTS_GOODSREC.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form f_goodsrec_create
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> GS_TOKEN
+*&      --> GS_STAGESET
+*&      <-- GV_ERROR
+*&---------------------------------------------------------------------*
+FORM f_goodsrec_create  USING   ps_token TYPE zletilmstoken
+                                            ps_stageset TYPE zletilmsstageset
+                                   CHANGING pv_error TYPE c
+                                            pt_return TYPE bapiret2_tt.
+  SET UPDATE TASK LOCAL.
+  DATA:ls_delivery          TYPE zletilmsdelivery,
+       ls_ddcregister       TYPE zletddcregister,
+       ls_bapi_header       TYPE bapi2017_gm_head_01,
+       ls_bapi_gmcode       TYPE bapi2017_gm_code,
+       ls_bapi_item         TYPE bapi2017_gm_item_create,
+       ls_return            TYPE bapiret2,
+       ls_lips              TYPE lips,
+       ls_grossweight       TYPE zletilmstrans,
+       ls_tareweight        TYPE zletilmstrans,
+       ls_extensionin       TYPE bapiparex,
+       ls_highest_qty       TYPE zletilmsdelivery,
+       ls_highest_lips      TYPE lips,
+       ls_bapi_extention_in TYPE bapiparex,
+       ls_bapi_po_totals    TYPE bapiekbes.
+  DATA: lt_delivery          TYPE STANDARD TABLE OF zletilmsdelivery,
+        lt_lips              TYPE STANDARD TABLE OF lips,
+        lt_return            TYPE STANDARD TABLE OF bapiret2,
+        lt_bapi_item         TYPE STANDARD TABLE OF bapi2017_gm_item_create,
+        lt_bapi_extension_in TYPE bapiparex_t,
+        lt_bapi_po_totals    TYPE STANDARD TABLE OF bapiekbes.
+  DATA: lv_document        TYPE bapi2017_gm_head_ret-mat_doc,
+        lv_documentyear    TYPE bapi2017_gm_head_ret-doc_year,
+        lv_inco1           TYPE ekko-inco1,
+        lv_weighbridge_qty TYPE menge_d,
+        lv_difference_qty  TYPE menge_d,
+        lv_remaining_qty   TYPE menge_d,
+        lv_bapi_purord     TYPE bapiekko-po_number.
+  SELECT * FROM zletilmsdelivery INTO TABLE lt_delivery
+    WHERE token = ps_token-token AND del = abap_false.
+  SORT lt_delivery BY menge DESCENDING.
+
+*Begin of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+  LOOP AT lt_delivery INTO ls_delivery.
+    IF ls_delivery-zmigo_proc IS INITIAL.
+      UPDATE zletilmsdelivery SET zmigo_proc = abap_true WHERE token = ls_delivery-token
+                                                   AND recordno = ls_delivery-recordno
+                                                   AND serial = ls_delivery-serial.
+      COMMIT WORK AND WAIT.
+    ELSE.
+      _fillbapiret2 'ZLE' zclsg_abap_utilities=>gc_error
+             '070' ls_delivery-vbeln '' '' pt_return[].
+      pv_error = abap_true.
+    ENDIF.
+  ENDLOOP.
+
+  IF pv_error IS NOT INITIAL.
+    DELETE lt_delivery WHERE zmigo_proc = abap_true.
+  ENDIF.
+*End of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+
+  IF lt_delivery IS NOT INITIAL. " Added by Ashutosh for ME62279
+*for weight shortage in loose cement and clinker, the logic has again
+*changed!!!there is no need to transfer cement in more than 1 delivery
+*as it is only meant for internal consumption
+    READ TABLE lt_delivery INTO ls_highest_qty INDEX 1.
+    IF ps_token-mfrgr = 'A0000002' OR ps_token-mfrgr = 'A0000022' OR
+       ps_token-mfrgr = 'A0000001' OR "loose cement - batch managed
+       ps_token-mfrgr = 'A0000007'. "* added by PG~ on 22-11-2024, Ticket #23858
+      SELECT * FROM lips
+        FOR ALL ENTRIES IN @lt_delivery
+        WHERE vbeln = @lt_delivery-vbeln AND uecha IS NOT INITIAL
+        INTO TABLE @lt_lips.
+      SORT lt_lips BY lfimg DESCENDING.
+      IF lt_lips IS NOT INITIAL.
+        SELECT vbeln,werks FROM likp INTO TABLE @DATA(lt_likp) FOR ALL ENTRIES IN @lt_lips WHERE vbeln = @lt_lips-vbeln.
+*Begin of Change by Ashutosh Prakash for ME62279 on 09-APR-2026
+        IF sy-subrc EQ 0.
+          SORT lt_likp BY vbeln.
+        ENDIF.
+
+        SELECT DISTINCT umwrk
+          FROM zletvirtualplnt
+          INTO TABLE @DATA(lt_virtual)
+          FOR ALL ENTRIES IN @lt_lips
+          WHERE umwrk = @lt_lips-werks.
+        IF sy-subrc EQ 0.
+          SORT lt_virtual BY umwrk.
+        ENDIF.
+*End of Change by Ashutosh Prakash for ME62279 on 09-APR-2026
+      ENDIF.
+
+      READ TABLE lt_lips INTO ls_highest_lips INDEX 1.
+      LOOP AT lt_lips INTO ls_lips.
+        SELECT SINGLE MAX( mblnr ) INTO @DATA(var_mblnr)         "Added on 22.01.2025
+          FROM matdoc WHERE vbeln_im = @ls_lips-vbeln
+          AND vbelp_im = @ls_lips-posnr                 " Added by AShutosh for 38932 / 54299
+          AND  bwart = '101' AND cancelled = ' '  .  "Added on 22.01.2025
+* Begin of Change by Ashutosh for 36572
+        IF var_mblnr IS NOT INITIAL.
+          SELECT SINGLE vbeln
+            FROM likp
+            INTO @DATA(lv_vbeln_203)
+            WHERE vbeln = @ls_delivery-vbeln
+              AND vsbed = '04'
+              AND vsart = '03'
+              AND vbtyp = 'J'.
+          IF sy-subrc EQ 0.
+*Begin of Change by Ashutosh Prakash for ME57740 on 24-MAR-2026
+            SELECT mblnr
+              UP TO 1 ROWS
+              FROM zmmt_migo_hdr
+              INTO @DATA(lv_mblnr_token)
+              WHERE token = @p_token.
+            ENDSELECT.
+            IF sy-subrc NE 0.
+*End of Change by Ashutosh Prakash for ME57740 on 24-MAR-2026
+              DATA(lv_multy) = abap_true.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+* End of Change by Ashutosh for 36572
+        IF var_mblnr IS INITIAL OR lv_multy IS NOT INITIAL.                         "Added on 22.01.2025
+          SELECT SINGLE inco1 FROM ekko INTO lv_inco1
+            WHERE ebeln = ls_lips-vgbel.
+          SELECT SINGLE * FROM zletilmstrans
+            WHERE token = @ps_token-token AND stageid = '08'
+            INTO @ls_grossweight.
+          SELECT SINGLE * FROM zletilmstrans
+            WHERE token = @ps_token-token AND stageid = '04'
+            INTO @ls_tareweight.
+          lv_weighbridge_qty = abs( ls_grossweight-tareweight - ls_tareweight-tareweight )."should be abs(gross-tare)
+          lv_difference_qty = abs( lv_weighbridge_qty - ps_token-quantity ).
+          ls_bapi_header-pstng_date = sy-datum.
+          ls_bapi_header-doc_date = sy-datum.
+          ls_bapi_header-ref_doc_no = ls_lips-vbeln.
+          ls_bapi_gmcode-gm_code = '01'.
+          ls_bapi_item-material = ls_lips-matnr.
+          ls_bapi_item-plant = ps_token-docplant.
+*for grn of sto, pick the receiving plant of source token and do the grn.
+          IF ps_token-reftoken IS NOT INITIAL.
+            SELECT SINGLE umwrk INTO @ls_bapi_item-plant FROM zletilmstoken
+              WHERE token = @ps_token-reftoken.
+          ENDIF.
+* For mfrgr = 'A0000007' STO(Depo), there will be no Outbound Token fo reference
+* Pick Receiving Plant from Delivery
+          IF ps_token-mfrgr = 'A0000007' AND ps_token-process = '2' AND ps_token-refdoctype = '3'.
+            TRY.
+                ls_bapi_item-plant =  lt_likp[ vbeln = ls_lips-vbeln ]-werks.
+              CATCH cx_sy_itab_line_not_found.
+            ENDTRY.
+          ENDIF.
+
+*Begin of Change by Ashutosh Prakash for ME62279 on 10-APR-2026
+          READ TABLE lt_likp INTO DATA(ls_likp) WITH KEY ls_lips-vbeln
+                                                BINARY SEARCH.
+          IF sy-subrc EQ 0 AND ls_likp-werks = '3791'.
+            READ TABLE lt_virtual TRANSPORTING NO FIELDS WITH KEY umwrk = ls_lips-werks
+                                                BINARY SEARCH.
+            IF sy-subrc EQ 0.
+              ls_bapi_item-plant = ls_likp-werks.
+            ENDIF.
+          ENDIF.
+*End of Change by Ashutosh Prakash for ME62279 on 10-APR-2026
+
+          IF ls_bapi_item-plant NE '3791'. " Added by AShutosh for 58076.
+            ls_bapi_item-stge_loc = 'RMYD'.
+          ELSE.
+            ls_bapi_item-stge_loc = ls_tareweight-silo.
+          ENDIF.
+          ls_bapi_item-move_type = '101'.
+          IF lv_weighbridge_qty > ls_lips-lfimg.
+            ls_bapi_item-entry_qnt = ls_lips-lfimg.
+          ELSE.
+            ls_bapi_item-entry_qnt = lv_weighbridge_qty .
+          ENDIF.
+          IF ls_lips-vbeln = ls_highest_lips-vbeln.
+            IF lv_weighbridge_qty < ps_token-quantity.
+              ls_bapi_item-entry_qnt = ls_lips-lfimg - ( ps_token-quantity - lv_weighbridge_qty ).
+            ENDIF.
+          ENDIF.
+          ls_bapi_item-entry_uom = ls_lips-meins.
+          ls_bapi_item-mvt_ind = 'B'.
+          ls_bapi_item-deliv_item = ls_lips-posnr.
+          ls_bapi_item-deliv_numb = ls_lips-vbeln.
+          ls_bapi_item-deliv_item_to_search = ls_lips-uecha.
+          ls_bapi_item-deliv_numb_to_search = ls_lips-vbeln.
+          ls_bapi_item-batch = ls_lips-charg.
+          APPEND ls_bapi_item TO lt_bapi_item.
+          IF lv_weighbridge_qty < ps_token-quantity AND ls_lips-vbeln = ls_highest_lips-vbeln.
+            ls_bapi_item-entry_qnt = lv_difference_qty.
+            ls_bapi_item-stck_type = '3'.
+            APPEND ls_bapi_item TO lt_bapi_item.
+          ENDIF.
+          SET UPDATE TASK LOCAL.
+          CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+            EXPORTING
+              goodsmvt_header  = ls_bapi_header
+              goodsmvt_code    = ls_bapi_gmcode
+            IMPORTING
+              materialdocument = lv_document
+              matdocumentyear  = lv_documentyear
+            TABLES
+              goodsmvt_item    = lt_bapi_item
+              extensionin      = lt_bapi_extension_in
+              return           = lt_return.
+
+          IF lv_document IS NOT INITIAL.
+            CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+              EXPORTING
+                wait = abap_true.
+            _fillbapiret2 'ZLE' zclsg_abap_utilities=>gc_success
+            '049' '' '' '' pt_return[].
+            DATA: ls_migohdr_customer TYPE zmmt_migo_hdr.
+            ls_migohdr_customer-mblnr = lv_document.
+            ls_migohdr_customer-mjahr = lv_documentyear.
+            ls_migohdr_customer-lifnr = ps_token-fwdagent.
+            ls_migohdr_customer-vhcle = ps_token-vehical_no.
+            ls_migohdr_customer-token = ps_token-token.
+            SELECT SINGLE v_typ FROM zlet_vehicle INTO ls_migohdr_customer-model
+               WHERE vehical_no = ps_token-vehical_no.
+            SELECT SINGLE customerfullname FROM i_customer INTO @ls_migohdr_customer-tname
+              WHERE customer = @ps_token-fwdagent.
+            MODIFY zmmt_migo_hdr FROM ls_migohdr_customer.
+            COMMIT WORK AND WAIT.
+          ELSE.
+            LOOP AT lt_return INTO ls_return.
+              _fillbapiret2 ls_return-id ls_return-type
+              ls_return-number ls_return-message_v1 ls_return-message_v2 ls_return-message_v3
+              pt_return[].
+            ENDLOOP.
+            pv_error = abap_true.
+          ENDIF.
+        ENDIF.   "Ended on 22.01.2025
+*    APPEND LINES OF lt_return TO pt_return.
+        CLEAR: lt_bapi_item,ls_bapi_item,ls_bapi_header,ls_bapi_gmcode,lt_return,
+        lv_inco1,lv_difference_qty,ls_grossweight,ls_tareweight,lv_weighbridge_qty,
+        lv_multy.
+      ENDLOOP.
+*other than loose cement
+    ELSE.
+      LOOP AT lt_delivery INTO ls_delivery.
+        "*"*commented by PG~
+*      SELECT SINGLE MAX( mblnr ) INTO var_mblnr         "Added on 22.01.2025
+*        FROM MATDOC WHERE VBELN_IM = ls_lips-vbeln
+        "*"*commented by PG~
+****added by PG~
+        IF ls_delivery-vbeln IS NOT INITIAL.
+          SELECT SINGLE MAX( mblnr ) FROM matdoc
+                                   WHERE vbeln_im = @ls_delivery-vbeln AND
+                                          vbelp_im = @ls_lips-posnr AND          " Added by Ashutosh for 38932 / 54299
+                                         cancelled = @abap_false AND
+                                          bwart = '101'
+                                   INTO @DATA(lv_mblnr).
+          IF lv_mblnr IS NOT INITIAL.
+* Begin of Change by Ashutosh for 36572
+            SELECT SINGLE vbeln
+              FROM likp
+              INTO lv_vbeln_203
+              WHERE vbeln = ls_delivery-vbeln
+                AND vsbed = '04'
+                AND vsart = '03'
+                AND vbtyp = 'J'.
+            IF sy-subrc EQ 0.
+              DATA(lv_le203_skip) = abap_true.
+            ENDIF.
+
+            IF lv_le203_skip IS INITIAL.
+* End of Change by Ashutosh for 36572
+              pv_error = abap_true.
+              _fillbapiret2 'ZLE' zclsg_abap_utilities=>gc_success
+              '203' lv_mblnr ls_delivery-vbeln '' pt_return[].
+              CONTINUE.
+            ENDIF.
+
+            CLEAR lv_le203_skip.
+          ENDIF.
+        ENDIF.
+**end of addition by PG~
+
+*      IF var_mblnr IS INITIAL .                         "Added on 22.01.2025
+        SELECT SINGLE * FROM lips INTO ls_lips
+          WHERE vbeln = ls_delivery-vbeln AND posnr = ls_delivery-posnr.
+        SELECT SINGLE * FROM zletddcregister INTO ls_ddcregister
+          WHERE ddctrid = ps_token-ddctrid.
+        SELECT SINGLE inco1 FROM ekko INTO lv_inco1
+          WHERE ebeln = ls_lips-vgbel.
+        SELECT SINGLE * FROM zletilmstrans
+          WHERE token = @ps_token-token AND stageid = '08'
+          INTO @ls_grossweight.
+        SELECT SINGLE * FROM zletilmstrans
+          WHERE token = @ps_token-token AND stageid = '04'
+          INTO @ls_tareweight.
+**DDC
+        IF ls_ddcregister-ddctrid IS NOT INITIAL."ddc process
+          ls_bapi_header-pstng_date = sy-datum.
+          ls_bapi_header-doc_date = ls_ddcregister-gstinvdt.
+          ls_bapi_header-bill_of_lading = ls_ddcregister-biltygrno.
+          ls_bapi_header-ref_doc_no = ls_ddcregister-gstinvno.
+          ls_bapi_gmcode-gm_code = '01'.
+          ls_bapi_item-material = ls_lips-matnr.
+          ls_bapi_item-plant = ls_lips-werks.
+          ls_bapi_item-stge_loc = 'RMYD'.
+          ls_bapi_item-move_type = '101'.
+          lv_weighbridge_qty = abs( ls_grossweight-tareweight - ls_tareweight-tareweight )."should be abs(gross-tare)
+          lv_difference_qty = abs( lv_weighbridge_qty - ls_delivery-menge ).
+          IF lv_inco1 = 'EXP'.
+            ls_bapi_item-entry_qnt = ls_lips-lfimg."weighbridge qty(already updated in delivery)
+*        ELSEIF lv_inco1 = 'EXN'.
+*          ls_bapi_item-entry_qnt = ls_delivery-menge.
+*        ELSEIF lv_inco1 = 'EXW' OR lv_inco1 = 'FOR' OR lv_inco1 = 'EXN'. "Commented BY vk on 20.06.2024
+          ELSEIF lv_inco1 = 'EXW' OR lv_inco1 = 'FOR' OR lv_inco1 = 'EXN' OR lv_inco1 = 'FON'. "Added BY vk on 20.06.2024
+            IF lv_weighbridge_qty < ls_delivery-menge.
+              ls_bapi_item-entry_qnt = lv_weighbridge_qty.
+            ELSE.
+              ls_bapi_item-entry_qnt = ls_delivery-menge.
+            ENDIF.
+          ENDIF.
+          ls_bapi_item-entry_uom = ls_lips-meins.
+          ls_bapi_item-mvt_ind = 'B'.
+          ls_bapi_item-deliv_item = ls_lips-posnr.
+          ls_bapi_item-deliv_numb = ls_lips-vbeln.
+          ls_bapi_item-deliv_item_to_search = ls_lips-posnr.
+          ls_bapi_item-deliv_numb_to_search = ls_lips-vbeln.
+          APPEND ls_bapi_item TO lt_bapi_item.
+*genereate another line for blocked. quantity = weighbridge qty
+*        IF lv_inco1 = 'EXW' OR lv_inco1 = 'FOR' OR lv_inco1 = 'EXN'. "Commented BY vk on 20.06.2024.
+          IF lv_inco1 = 'EXW' OR lv_inco1 = 'FOR' OR lv_inco1 = 'EXN' OR  lv_inco1 = 'FON'. "Added BY vk on 20.06.2024.
+            IF lv_weighbridge_qty < ls_delivery-menge.
+              ls_bapi_item-entry_qnt = lv_difference_qty.
+              ls_bapi_item-stck_type = '3'.
+              APPEND ls_bapi_item TO lt_bapi_item.
+            ENDIF.
+          ENDIF.
+          ls_bapi_extention_in-structure = 'MSEG'.
+          ls_bapi_extention_in-valuepart1 = 'LSMNG'.
+          ls_bapi_extention_in-valuepart2 = '000000'.
+          IF lv_inco1 = 'EXP'.
+            ls_bapi_extention_in-valuepart3 = ls_bapi_item-entry_qnt.
+          ELSE.
+            ls_bapi_extention_in-valuepart3 = ls_ddcregister-invqty.
+          ENDIF.
+          APPEND ls_bapi_extention_in TO lt_bapi_extension_in.
+************GRN against STO**********
+        ELSE."normal STO process
+          lv_weighbridge_qty = abs( ls_grossweight-tareweight - ls_tareweight-tareweight )."should be abs(gross-tare)
+          ls_bapi_header-pstng_date = sy-datum.
+          ls_bapi_header-doc_date = sy-datum.
+          ls_bapi_header-bill_of_lading = ls_delivery-lrnumber.
+          ls_bapi_header-ref_doc_no = ls_delivery-vbeln.
+          ls_bapi_gmcode-gm_code = '01'.
+          ls_bapi_item-material = ls_lips-matnr.
+          SELECT SINGLE werks FROM likp INTO ls_bapi_item-plant
+            WHERE vbeln = ls_delivery-vbeln.
+          ls_bapi_item-stge_loc = 'RMYD'.
+          ls_bapi_item-move_type = '101'.
+*      ls_bapi_item-entry_qnt = ls_lips-lfimg.
+          IF lv_weighbridge_qty > ls_lips-lfimg.
+            ls_bapi_item-entry_qnt = ls_lips-lfimg.
+          ELSE.
+            ls_bapi_item-entry_qnt = lv_weighbridge_qty .
+          ENDIF.
+          IF ls_delivery-vbeln = ls_highest_qty-vbeln.
+            IF lv_weighbridge_qty < ps_token-quantity.
+              ls_bapi_item-entry_qnt = ls_delivery-menge - ( ps_token-quantity - lv_weighbridge_qty ).
+            ENDIF.
+          ENDIF.
+          SELECT SINGLE a~ebeln,a~ebelp,b~vsbed FROM ekpo AS a INNER JOIN ekpv AS b
+            ON a~ebeln = b~ebeln AND a~ebelp = b~ebelp
+             INTO @DATA(ls_vsbed)
+            WHERE a~ebeln = @ls_lips-vgbel AND a~ebelp = @ls_lips-vgpos
+                 AND  a~loekz = @space.
+          IF ls_vsbed-vsbed = '04'.
+            lv_bapi_purord = ls_lips-vgbel.
+            CALL FUNCTION 'BAPI_PO_GETDETAIL'
+              EXPORTING
+                purchaseorder          = ls_lips-vgbel
+                history                = abap_true
+              TABLES
+                po_item_history_totals = lt_bapi_po_totals.
+*in case remaining PO qty in case of multimodal rail
+*movement exceeds weigh bridge qty, then take remaining po qty
+            READ TABLE lt_bapi_po_totals INTO ls_bapi_po_totals WITH KEY po_item = ls_lips-vgpos.
+            IF sy-subrc = 0.
+              DATA(lv_pending_po_qty) = ls_bapi_po_totals-withdr_qty - ls_bapi_po_totals-deliv_qty.
+              IF lv_weighbridge_qty > lv_pending_po_qty.
+                ls_bapi_item-entry_qnt = lv_pending_po_qty.
+              ENDIF.
+            ENDIF.
+
+          ENDIF.
+          ls_bapi_item-entry_uom = ls_lips-meins.
+          ls_bapi_item-mvt_ind = 'B'.
+          ls_bapi_item-deliv_item = ls_lips-posnr.
+          ls_bapi_item-deliv_numb = ls_lips-vbeln.
+          ls_bapi_item-deliv_item_to_search = ls_lips-posnr.
+          ls_bapi_item-deliv_numb_to_search = ls_lips-vbeln.
+*genereate another line for blocked. quantity = weighbridge qty
+*      lv_weighbridge_qty = abs( ls_grossweight-tareweight - ls_tareweight-tareweight )."should be abs(gross-tare)
+          lv_difference_qty = abs( lv_weighbridge_qty - ps_token-quantity ).
+          APPEND ls_bapi_item TO lt_bapi_item.
+          IF ls_vsbed-vsbed <> '04'."skip generation of blocked quantity in case of rail-multimode transport
+            IF lv_weighbridge_qty < ps_token-quantity AND ls_delivery-vbeln = ls_highest_qty-vbeln.
+              ls_bapi_item-entry_qnt = lv_difference_qty.
+              ls_bapi_item-stck_type = '3'.
+              APPEND ls_bapi_item TO lt_bapi_item.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+
+*    ls_extensionin-structure = 'BAPI_TE_XMKPF'.
+*    ls_extensionin-valuepart1 = ps_token-token.
+*    APPEND ls_extensionin TO lt_extensionin.
+
+        SET UPDATE TASK LOCAL.
+        CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+          EXPORTING
+            goodsmvt_header  = ls_bapi_header
+            goodsmvt_code    = ls_bapi_gmcode
+          IMPORTING
+            materialdocument = lv_document
+            matdocumentyear  = lv_documentyear
+          TABLES
+            goodsmvt_item    = lt_bapi_item
+            extensionin      = lt_bapi_extension_in
+            return           = lt_return.
+
+        IF lv_document IS NOT INITIAL.
+          CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+            EXPORTING
+              wait = abap_true.
+*        _fillbapiret2 'ZLE' zclsg_abap_utilities=>gc_success
+*        '049' '' '' '' pt_return[].
+          _fillbapiret2 'ZLE' zclsg_abap_utilities=>gc_success
+          '049' lv_document lv_documentyear '' pt_return[].
+          ls_migohdr_customer-mblnr = lv_document.
+          ls_migohdr_customer-mjahr = lv_documentyear.
+          ls_migohdr_customer-lifnr = ps_token-fwdagent.
+          ls_migohdr_customer-vhcle = ps_token-vehical_no.
+          ls_migohdr_customer-token = ps_token-token.
+          ls_migohdr_customer-lrdat = ls_ddcregister-biltygrdt.
+          ls_migohdr_customer-lfsnr = ls_ddcregister-gstinvno.
+          ls_migohdr_customer-ebill = ls_ddcregister-ewaybillno.
+          ls_migohdr_customer-edate = ls_ddcregister-ewaybilldt.
+
+**........start of changes by PG~ on 19-07-2024..............
+* below fields now will be updated on delivery basis not from DDC
+* Commented by PG~19-07-2024
+*        ls_migohdr_customer-afrno = ls_ddcregister-hzrdmanifest.
+*        ls_migohdr_customer-afrdt = ls_ddcregister-hzrdmanifestdt.
+*        ls_migohdr_customer-lovct = ls_ddcregister-hzrdmanifestct.
+******* end of comment........
+          ls_migohdr_customer-afrno = ls_delivery-hzrdmanifest.
+          ls_migohdr_customer-afrdt = ls_delivery-hzrdmanifestdt.
+          ls_migohdr_customer-lovct = ls_delivery-hzrdmanifestct.
+*******.......end of changes........
+
+          ls_migohdr_customer-chldt = ls_ddcregister-challandate.
+          ls_migohdr_customer-chlno = ls_ddcregister-challanno.
+          SELECT SINGLE v_typ FROM zlet_vehicle INTO ls_migohdr_customer-model
+             WHERE vehical_no = ps_token-vehical_no.
+          SELECT SINGLE customerfullname FROM i_customer INTO @ls_migohdr_customer-tname
+            WHERE customer = @ps_token-fwdagent.
+          MODIFY zmmt_migo_hdr FROM ls_migohdr_customer.
+          COMMIT WORK AND WAIT.
+        ELSE.
+          LOOP AT lt_return INTO ls_return.
+            ls_return-message_v1 = COND #( WHEN ls_return-message_v1 IS INITIAL THEN lv_document ELSE ls_return-message_v1 ).
+            ls_return-message_v2 = COND #( WHEN ls_return-message_v2 IS INITIAL THEN lv_document ELSE ls_return-message_v2 ).
+            _fillbapiret2 ls_return-id ls_return-type
+            ls_return-number ls_return-message_v1 ls_return-message_v2 ls_return-message_v3
+            pt_return[].
+          ENDLOOP.
+          pv_error = abap_true.
+        ENDIF.
+*      ENDIF.   "Ended on 22.01.2025 "*Commented by PG~
+*    APPEND LINES OF lt_return TO pt_return.
+        CLEAR: lt_bapi_item,ls_bapi_item,ls_bapi_header,ls_bapi_gmcode,lt_return,
+        lv_inco1,lv_difference_qty,ls_grossweight,ls_tareweight,lv_weighbridge_qty,
+        lt_bapi_extension_in,ls_bapi_extention_in.
+      ENDLOOP.
+    ENDIF.
+  ENDIF.
+* Begin of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+  LOOP AT lt_delivery INTO ls_delivery.
+    UPDATE zletilmsdelivery SET zmigo_proc = abap_false WHERE token = ls_delivery-token
+                                                          AND recordno = ls_delivery-recordno
+                                                          AND serial = ls_delivery-serial.
+    COMMIT WORK AND WAIT.
+  ENDLOOP.
+* End of Change by Ashutosh Prakash for ME40624 on 27-AUG-2025
+
+  PERFORM f_update_message_log USING pt_return '7'.
+*Begin of Change by Ashutosh Prakash for ME#54853 on 13-JAN-2026
+  PERFORM f_log_time USING ps_token '7'.
+*End of Change by Ashutosh Prakash for ME#54853 on 13-JAN-2026
+ENDFORM.

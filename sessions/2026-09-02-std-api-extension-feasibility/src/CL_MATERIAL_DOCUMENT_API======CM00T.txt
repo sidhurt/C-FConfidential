@@ -1,0 +1,16 @@
+﻿  METHOD prepare_serial_numbers.
+    CLEAR et_sernr_input.
+    LOOP AT it_sernr ASSIGNING FIELD-SYMBOL(<ls_sernr>).
+      APPEND INITIAL LINE TO et_sernr_input ASSIGNING FIELD-SYMBOL(<ls_sernr_input>).
+      IF <ls_sernr>-lineitem IS INITIAL.
+        INSERT VALUE #( msgid = gc_message_class
+                  msgno = '021'
+                  msgty = if_nsdm_odata_text_message=>sc_severity-error
+                  msgv1 = <ls_sernr>-serialnumber ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+        EXIT.
+      ENDIF.
+      <ls_sernr_input>-matdoc_itm = <ls_sernr>-lineitem.
+      <ls_sernr_input>-serialno = <ls_sernr>-serialnumber.
+    ENDLOOP.
+  ENDMETHOD.

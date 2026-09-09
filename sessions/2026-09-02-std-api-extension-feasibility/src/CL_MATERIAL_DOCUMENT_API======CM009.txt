@@ -1,0 +1,53 @@
+﻿  METHOD if_material_document_api~cancel_material_document.
+
+    DATA:
+      ls_emkpf             TYPE emkpf,
+      ls_mkpf_output       TYPE mkpf,
+      ls_emkpf_post_output TYPE emkpf,
+      lt_emseg             TYPE STANDARD TABLE OF emseg WITH DEFAULT KEY.
+
+    CLEAR: es_header, et_message.
+
+    DATA(lv_posting_date) = iv_posting_date.
+    IF lv_posting_date IS INITIAL.
+      lv_posting_date = sy-datum.
+    ENDIF.
+
+    mo_mdoc_maintain->cancel_goods_movement(
+      EXPORTING
+        iv_budat = lv_posting_date
+        iv_mjahr = iv_material_document_year
+        iv_mblnr = iv_material_document
+      IMPORTING
+        es_emkpf = ls_emkpf
+        es_mkpf  = ls_mkpf_output
+        et_emseg = lt_emseg ).
+
+    copy_and_map_messages(
+      EXPORTING
+        is_emkpf   = ls_emkpf
+        it_emseg   = lt_emseg
+      CHANGING
+        ct_message = et_message ).
+
+    map_header_output(
+      EXPORTING
+        is_mkpf_output = ls_mkpf_output
+      IMPORTING
+        es_header      = es_header ).
+
+    IF ls_emkpf-mblnr IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    mo_mdoc_maintain->post_goods_movement(
+      IMPORTING
+        es_emkpf = ls_emkpf_post_output ).
+
+    copy_and_map_messages(
+      EXPORTING
+        is_emkpf   = ls_emkpf_post_output
+      CHANGING
+        ct_message = et_message ).
+
+  ENDMETHOD.

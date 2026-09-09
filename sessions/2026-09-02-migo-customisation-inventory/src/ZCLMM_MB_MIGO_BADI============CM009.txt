@@ -1,0 +1,4 @@
+﻿  METHOD if_ex_mb_migo_badi~maa_line_id_adjust.        "Begin of 1987428
+
+
+  ENDMETHOD.                                             "End of 1987428

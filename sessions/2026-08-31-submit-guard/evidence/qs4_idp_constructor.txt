@@ -1,0 +1,73 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class /IWBEP/CL_IDP_UTIL
+STATUS|
+SOURCE_BEGIN|/IWBEP/CL_IDP_UTIL|CONSTRUCTOR
+METHOD constructor.
+
+  DATA: ls_http_parameter   TYPE /iwbep/s_mgw_name_value_pair.
+  DATA: lv_request_id       TYPE  guid_32.
+  DATA: lv_parameter_length TYPE i.
+  DATA: lx_ws_idp_fault     TYPE REF TO cx_soap_idp_fault.
+  DATA: lx_idp              TYPE REF TO /iwbep/cx_idp_util.
+
+
+
+  mo_logger = /iwbep/cl_cos_logger=>get_logger( ).
+
+
+* 2 http header fields are needed to request idempotent behavior
+* RepeatabilityCreation - the date and time at which the request was first created
+  READ TABLE it_http_header_parameters
+    WITH KEY name = /iwbep/if_mgw_core_srv_runtime=>gcs_http_header_attributes-repeatability_creation
+    INTO     ls_http_parameter.
+
+  IF ( sy-subrc = 0 ).
+    " do something with it - for the time being just use it as a trigger to request idempotent behavior
+    " Ideally RepeatabilityCreation time is compared against the range of values stored by the server.
+    " (I.e. if we store the results for 6 hours than only time stamps inside the last 6 hours are accepted)
+    mv_is_idp_requested = abap_true.
+  ELSE.
+    mv_is_idp_requested = abap_false.
+    RETURN. "do nothing - no idempotent behavior requested
+  ENDIF.
+
+
+* RequestID - a client-generated GUID - identifier for the request.
+  READ TABLE it_http_header_parameters
+    WITH KEY name = /iwbep/if_mgw_core_srv_runtime=>gcs_http_header_attributes-request_id
+    INTO     ls_http_parameter.
+
+  IF ( sy-subrc = 0 ).
+    lv_parameter_length = STRLEN( ls_http_parameter-value ).
+        IF ( lv_parameter_length > 0 AND lv_parameter_length <= 36 ).
+          DATA(lv_request_id_with_hyphens) = ls_http_parameter-value.
+          REPLACE ALL OCCURRENCES OF '-' IN lv_request_id_with_hyphens WITH space.
+          CONDENSE lv_request_id_with_hyphens.
+          lv_request_id = lv_request_id_with_hyphens.
+        ELSE. "Invalid Request ID
+          raise_log_exception(
+            iv_text_id = /iwbep/cx_idp_util=>request_id_too_long
+          ).
+        ENDIF.
+  ELSE.   "Missing Request ID - If RepeatabilityCreation also 'RequestID' must be provided
+    raise_log_exception(
+      iv_text_id          = /iwbep/cx_idp_util=>request_id_missing
+      iv_http_status_code = /iwbep/cx_mgw_busi_exception=>gcs_http_status_codes-bad_request
+    ).
+  ENDIF.
+
+
+* RepeatabilityCreation and RequestID provided
+  TRY.
+      mo_idp_helper = cl_ws_idp_factory=>create_idp_helper( lv_request_id ).
+
+    CATCH cx_soap_idp_fault INTO lx_ws_idp_fault.
+*     NetWeaver "Idempotent Service Framework" error - most likely missing configuration
+      raise_log_exception(
+          iv_text_id  = /iwbep/cx_idp_util=>idp_framework_fault
+          ix_previous = lx_ws_idp_fault
+          ).
+  ENDTRY.
+
+ENDMETHOD.
+SOURCE_END

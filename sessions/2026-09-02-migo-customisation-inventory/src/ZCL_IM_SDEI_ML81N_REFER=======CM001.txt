@@ -1,0 +1,6 @@
+﻿  method IF_EX_MB_CHECK_LINE_BADI~CHECK_LINE.
+     BREAK IBMABAP17 .
+     IF SY-TCODE = 'ML81N' .
+
+     ENDIF.
+  endmethod.

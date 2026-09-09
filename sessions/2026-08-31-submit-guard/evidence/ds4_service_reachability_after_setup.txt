@@ -1,0 +1,15 @@
+DS4/200 service-root checks after authorized idempotency setup, 2026-08-31.
+
+GET /sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/?sap-client=200&$format=json
+HTTP 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 107
+
+GET /sap/opu/odata/sap/API_OUTBOUND_DELIVERY_SRV;v=2/?sap-client=200&$format=json
+HTTP 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 324
+
+No RepeatabilityResult response header was returned by these GETs. This is
+reachability evidence only; it does not prove repeatability of business POSTs.
+No credentials, cookies or CSRF-token values were captured in this evidence.

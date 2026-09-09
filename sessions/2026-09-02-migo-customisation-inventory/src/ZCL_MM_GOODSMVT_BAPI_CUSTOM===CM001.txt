@@ -1,0 +1,20 @@
+﻿METHOD if_ex_mb_bapi_goodsmvt_create~extensionin_to_matdoc.
+*this implementation can be used to fill other fieds of MKPF and MSEG as well
+LOOP AT extension_in INTO DATA(ls_extension).
+  CASE ls_extension-structure.
+    WHEN 'MSEG'.
+      CASE ls_extension-valuepart1.
+        WHEN 'LSMNG'.
+          READ TABLE ct_imseg WITH KEY line_id = ls_extension-valuepart1 ASSIGNING FIELD-SYMBOL(<ls_mseg>).
+          IF <ls_mseg> IS ASSIGNED.
+            <ls_mseg>-lsmng = ls_extension-valuepart3.
+          ENDIF.
+        WHEN ''.
+        WHEN OTHERS.
+      ENDCASE.
+    WHEN 'MKPF'.
+    WHEN OTHERS.
+  ENDCASE.
+ENDLOOP.
+
+ENDMETHOD.

@@ -1,0 +1,2 @@
+﻿method IF_EX_MB_MIGO_BADI~PROPOSE_SERIALNUMBERS.
+endmethod.

@@ -1,0 +1,119 @@
+﻿CLASS lcl_mdoc_maintain DEFINITION FINAL.
+  PUBLIC SECTION.
+    INTERFACES lif_mdoc_maintain.
+ENDCLASS.
+
+CLASS lcl_mdoc_maintain IMPLEMENTATION.
+
+  METHOD lif_mdoc_maintain~post_goods_movement.
+
+    CLEAR: es_emkpf.
+    CALL FUNCTION 'MB_POST_GOODS_MOVEMENT'
+      IMPORTING
+        emkpf = es_emkpf.
+
+  ENDMETHOD.
+
+
+  METHOD lif_mdoc_maintain~cancel_goods_movement.
+
+    CLEAR: es_emkpf, et_emseg.
+
+    " inform the MB code that the next method call is in the context of a BAPI execution
+    CALL FUNCTION 'MB_SET_BAPI_FLAG'
+      EXPORTING
+        action = 1.
+
+    CALL FUNCTION 'MB_CANCEL_GOODS_MOVEMENT'
+      EXPORTING
+        budat     = iv_budat
+        mblnr     = iv_mblnr
+        mjahr     = iv_mjahr
+        tcode     = 'MBST'
+*       i_bktxt   = i_bktxt    " Document Header Text
+      IMPORTING
+        emkpf     = es_emkpf
+        es_mkpf   = es_mkpf
+      TABLES
+        mblpo_tab = it_item_tab
+        emseg     = et_emseg.
+
+  ENDMETHOD.
+
+
+
+  METHOD lif_mdoc_maintain~get_tcode_4_goodsmovementcode.
+    SELECT SINGLE tcode FROM t158g INTO @rv_tcode WHERE gmcode = @iv_goodsmovementcode.
+  ENDMETHOD.
+
+
+
+  METHOD lif_mdoc_maintain~get_goodsmovementcode_4_tcode.
+    SELECT SINGLE gmcode FROM t158g INTO @rv_goodsmovementcode WHERE tcode = @iv_tcode. "#EC CI_NOORDER
+  ENDMETHOD.
+
+  METHOD lif_mdoc_maintain~create_goods_movement_bapi.
+    DATA lt_items TYPE BAPI2017_GM_ITEM_CREATE_t.
+    DATA lt_items_display TYPE STANDARD TABLE OF bapi2017_gm_item_show.
+    DATA ls_header TYPE bapi2017_gm_head_ret.
+    DATA lt_extensionin TYPE tt_BAPIPAREX.
+    FIELD-SYMBOLS <lt_mkpf> TYPE STANDARD TABLE.
+
+    lt_items = it_goodsmvt_item.
+
+
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header       = is_goodsmvt_header
+        goodsmvt_code         = iv_goodsmvt_code
+        goodsmvt_print_ctrl   = is_goodsmvt_print_ctrl
+      IMPORTING
+        goodsmvt_headret      = ls_header
+      TABLES
+        goodsmvt_item         = lt_items
+        extensionin           = it_extensionin
+        goodsmvt_serialnumber = it_goodsmvt_serialnumber
+        return                = et_return.
+
+    es_goodsmvt_header = cl_mmim_api_access_bapi_data=>get_bapi_mkpf_data(
+                           iv_mblnr = ls_header-mat_doc
+                           iv_mjahr = ls_header-doc_year
+                         ).
+  ENDMETHOD.
+ENDCLASS.
+
+
+CLASS lcl_migo_settings DEFINITION FINAL.
+  PUBLIC SECTION.
+    INTERFACES lif_migo_settings.
+  PRIVATE SECTION.
+    DATA mt_transfer_movements TYPE SORTED TABLE OF bwart WITH UNIQUE KEY table_line.
+ENDCLASS.
+
+CLASS lcl_migo_settings IMPLEMENTATION.
+
+  METHOD lif_migo_settings~get_customizing_fields.
+    cl_mmim_migo_move_fields=>get_fields(
+      EXPORTING
+        i_bwart   = iv_goodsmovementtype
+      IMPORTING
+        et_fields = et_fields ).
+  ENDMETHOD.
+
+  METHOD lif_migo_settings~is_transfer_movement.
+    DATA lv_bustr TYPE bustr.
+
+    IF mt_transfer_movements IS INITIAL.
+      SELECT bustr FROM migo_t156 INTO TABLE mt_transfer_movements WHERE xtransfer_mvt = abap_true.
+    ENDIF.
+
+    SELECT SINGLE bustr FROM t156 INTO lv_bustr WHERE bwart = iv_goodsmovementtype. "ER9K8ACCL5
+
+*   READ TABLE mt_transfer_movements TRANSPORTING NO FIELDS WITH KEY table_line = iv_goodsmovementtype.
+    READ TABLE mt_transfer_movements TRANSPORTING NO FIELDS WITH KEY table_line = lv_bustr. "ER9K8ACCL5
+    IF sy-subrc = 0.
+      rv_is_transfer = abap_true.
+    ENDIF.
+  ENDMETHOD.
+
+ENDCLASS.

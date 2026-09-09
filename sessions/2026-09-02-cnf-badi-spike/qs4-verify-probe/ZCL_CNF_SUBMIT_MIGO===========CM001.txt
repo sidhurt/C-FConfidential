@@ -1,0 +1,26 @@
+﻿  method IF_EX_MB_BAPI_GOODSMVT_CREATE~EXTENSIONIN_TO_MATDOC.
+
+  DATA: lv_cnt  TYPE char10,
+        lv_info TYPE char50.
+
+  lv_cnt = lines( ct_imseg ).
+
+  READ TABLE ct_imseg ASSIGNING FIELD-SYMBOL(<ls_probe>) INDEX 1.
+  IF sy-subrc = 0.
+    CONCATENATE <ls_probe>-bwart <ls_probe>-kzbew
+                <ls_probe>-vbeln <ls_probe>-posnr
+           INTO lv_info SEPARATED BY '/'.
+  ELSE.
+    lv_info = 'NO ITEMS IN CT_IMSEG'.
+  ENDIF.
+
+  ct_return = VALUE #( type       = 'E'
+                       id         = '00'
+                       number     = '398'
+                       message_v1 = 'CNF PROBE'
+                       message_v2 = sy-sysid
+                       message_v3 = lv_cnt
+                       message_v4 = lv_info ).
+  RETURN.
+
+  endmethod.

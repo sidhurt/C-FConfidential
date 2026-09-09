@@ -1,0 +1,24 @@
+﻿  method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~EXECUTE_ACTION.
+    " ----------------   !! GENERATED CODE !! --------------------
+    " !!  DO NOT CHANGE, WILL BE OVERWRITTEN AT NEXT GENERATION !!
+
+    super->/iwbep/if_mgw_appl_srv_runtime~execute_action(
+      EXPORTING
+        iv_action_name          = iv_action_name
+        it_parameter            = it_parameter
+        io_tech_request_context = io_tech_request_context
+      IMPORTING
+        er_data                 = er_data ).
+
+    IF er_data IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    flx_load_runtime_api( ).
+
+    mo_flx_runtime_api->enrich_execute_action(
+      EXPORTING
+        io_tech_request_context = io_tech_request_context
+        ir_data                 = er_data ).
+
+  endmethod.

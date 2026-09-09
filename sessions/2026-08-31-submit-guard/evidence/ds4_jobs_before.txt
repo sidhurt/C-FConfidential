@@ -1,0 +1,64 @@
+SESSION|DS4|200
+QUERY|SAP_BC_IDP_WS_SWITCH_*|ALL_USERS|ALL_STATUSES|20000101-99991231
+TITLE|Simple Job Selection
+STATUS|No job matches the selection criteria
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr|GuiUserArea|
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblJOBNAME|GuiLabel|Job Name
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/txtBTCH2170-JOBNAME|GuiTextField|SAP_BC_IDP_WS_SWITCH_*
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblUSERNAME|GuiLabel|User Name
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/txtBTCH2170-USERNAME|GuiTextField|*
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/boxSTATUS|GuiBox|Job Status
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chkBTCH2170-PRELIM|GuiCheckBox|Sched.
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chkBTCH2170-SCHEDUL|GuiCheckBox|Released
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chkBTCH2170-READY|GuiCheckBox|Ready
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chkBTCH2170-RUNNING|GuiCheckBox|Active
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chkBTCH2170-FINISHED|GuiCheckBox|Finished
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/chkBTCH2170-ABORTED|GuiCheckBox|Canceled
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/boxSTARTCONDITION|GuiBox|Job Start Condition
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblFROM|GuiLabel|From
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblFROMDATE|GuiLabel|
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/ctxtBTCH2170-FROM_DATE|GuiCTextField|01.01.2000
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblTO|GuiLabel|To
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblTODATE|GuiLabel|
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/ctxtBTCH2170-TO_DATE|GuiCTextField|31.12.9999
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblFROM_TIME|GuiLabel|From
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblFROMTIME|GuiLabel|
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/ctxtBTCH2170-FROM_TIME|GuiCTextField|
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblTO_TIME|GuiLabel|To
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblTOTIME|GuiLabel|
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/ctxtBTCH2170-TO_TIME|GuiCTextField|
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblEVENT|GuiLabel|Or after event
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/cmbBTCH2170-EVENTID|GuiComboBox|                                                                                                                                                                                                                                                               
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/boxSTEPBOX|GuiBox|Job Step
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/lblSTEPNAME|GuiLabel|ABAP Program Name
+ROW|
+CONTROL|/app/con[1]/ses[0]/wnd[0]/usr/txtBTCH2170-ABAPNAME|GuiTextField|
+ROW|

@@ -1,0 +1,3 @@
+﻿  METHOD matdoc_created_handler.
+    mt_matdoc = it_matdoc.
+  ENDMETHOD.

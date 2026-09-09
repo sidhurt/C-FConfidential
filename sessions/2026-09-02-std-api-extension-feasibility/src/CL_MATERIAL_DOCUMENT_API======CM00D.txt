@@ -1,0 +1,162 @@
+﻿  METHOD get_relevant_fields.
+
+    DATA:
+      lt_ddfields   TYPE ddfields,
+      lo_strucdescr TYPE REF TO cl_abap_structdescr.
+
+    " customizing field control but with legacy field names
+    mo_migo_settings->get_customizing_fields(
+      EXPORTING
+        iv_goodsmovementtype = iv_goodsmovementtype
+      IMPORTING
+        et_fields            = DATA(lt_fields) ).
+
+    LOOP AT lt_fields INTO DATA(ls_field).
+      CHECK ls_field-bwart = iv_goodsmovementtype.
+      CHECK ls_field-entry IS NOT INITIAL.
+      CASE ls_field-fieldname.
+        WHEN 'SGTXT'. INSERT VALUE #( field_name = 'MaterialDocumentItemText' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'AUFNR'.
+          INSERT VALUE #( field_name = 'ManufacturingOrder' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+          IF iv_goodsmovementrefdoctype <> sc_goodsmovementrefdoctype-gm_wo_reference. "no item required
+            INSERT VALUE #( field_name = 'ManufacturingOrderItem' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+          ENDIF.
+          " WHEN 'FIPOS'. INSERT VALUE #( field_name = '' property = ls_field-entry ) INTO TABLE rt_fields.
+          " WHEN 'IMKEY'. INSERT VALUE #( field_name = '' property = ls_field-entry ) INTO TABLE rt_fields.
+        WHEN 'KDAUF'.
+          INSERT VALUE #( field_name = 'SalesOrder' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+          INSERT VALUE #( field_name = 'SalesOrderItem' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+          INSERT VALUE #( field_name = 'SalesOrderScheduleLine' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+
+          " WHEN 'KONTO'. INSERT VALUE #( field_name = '' property = ls_field-entry ) INTO TABLE rt_fields.
+        WHEN 'KOSTL'. INSERT VALUE #( field_name = 'CostCenter' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'KSTRG'. INSERT VALUE #( field_name = 'CostObject' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'NPLNR'. INSERT VALUE #( field_name = 'ProjectNetwork' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'PAOBJNR'. INSERT VALUE #( field_name = 'ProfitabilitySegment' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'PRCTR'. INSERT VALUE #( field_name = 'ProfitCenter' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'ANLN1'. INSERT VALUE #( field_name = 'MasterFixedAsset' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'ANLN2'. INSERT VALUE #( field_name = 'FixedAsset' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'PS_PSP_PNR'. INSERT VALUE #( field_name = 'WBSElement' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'WEMPF'. INSERT VALUE #( field_name = 'GoodsRecipientName' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+          " WHEN 'ANLN1'. INSERT VALUE #( field_name = '' property = ls_field-entry ) INTO TABLE rt_fields.
+        WHEN 'EBELN'.
+          INSERT VALUE #( field_name = 'PurchaseOrder' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+          INSERT VALUE #( field_name = 'PurchaseOrderItem' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+
+        WHEN 'EXVKW'. INSERT VALUE #( field_name = 'EnteredSlsAmtInCoCodeCrcy' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'GSBER'. INSERT VALUE #( field_name = 'BusinessArea' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'LIFNR'. INSERT VALUE #( field_name = 'Supplier' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'UMWRK'. INSERT VALUE #( field_name = 'IssuingOrReceivingPlant' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'UMLGO'. INSERT VALUE #( field_name = 'IssuingOrReceivingStorageLoc' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'UMCHA'. INSERT VALUE #( field_name = 'IssgOrRcvgBatch' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'UMBAR'. INSERT VALUE #( field_name = 'IssuingOrReceivingValType' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'KUNNR'. INSERT VALUE #( field_name = 'Customer' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'EXBWR'. INSERT VALUE #( field_name = 'GdsMvtExtAmtInCoCodeCrcy' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'GRUND'. INSERT VALUE #( field_name = 'GoodsMovementReasonCode' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+        WHEN 'UMMAT'. INSERT VALUE #( field_name = 'IssgOrRcvgMaterial' property = ls_field-entry ) INTO TABLE rt_field ##NO_TEXT.
+          " WHEN 'CUSTNAME'. INSERT VALUE #( field_name = '' property = ls_field-entry ) INTO TABLE rt_fields.
+          " WHEN 'WEANZ'. INSERT VALUE #( field_name = '' property = ls_field-entry ) INTO TABLE rt_fields.
+          " no WHEN OTHERS! Customizing table may contain MIGO field names that we do not know and do not support
+      ENDCASE.
+    ENDLOOP.
+
+    " static fields that are always there - will not overwrite any settings provided by the customizing settings above due to unique key of the table
+    INSERT VALUE #( field_name = 'Material' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'Plant' property = lif_migo_settings=>sc_requirement_type-mandatory ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'Batch' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'MaterialDocumentItemText' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'GoodsMovementType' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'EntryUnit' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'QuantityInEntryUnit' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'StorageLocation' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'InventoryValuationType' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT. "3039006
+    INSERT VALUE #( field_name = 'InventorySpecialStockType' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'IsCompletelyDelivered' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'UnloadingPointName' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'Reservation' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'ReservationItem' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'ReservationIsFinallyIssued' property = lif_migo_settings=>sc_requirement_type-optional )  INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'ManufactureDate' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'ShelfLifeExpirationDate' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'GoodsMovementRefDocType' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'GoodsMovementReasonCode' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'MaterialDocumentLine'       property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'MaterialDocumentParentLine' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'SerialNumbersAreCreatedAutomly' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'MaterialDocumentPostingType' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    "Reference Docuement Fields
+    INSERT VALUE #( field_name = 'InvtryMgmtReferenceDocument' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'InvtryMgmtRefDocumentItem' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'ReferenceDocumentFiscalYear' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    "EWM Data
+    INSERT VALUE #( field_name = 'EWMWarehouse' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'EWMStorageBin' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    "GLAccount
+    INSERT VALUE #( field_name = 'GLAccount' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    "Stock Type
+    INSERT VALUE #( field_name = 'InventoryUsabilityCode' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    " can be used as accounting object also for blank iv_goodsmovementrefdoctype
+    INSERT VALUE #( field_name = 'ManufacturingOrder' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'ManufacturingOrderItem' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    " statically enabled for now but check how MB_CREATE behaves in different scenarios
+    INSERT VALUE #( field_name = 'SalesOrder' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'SalesOrderItem' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'SalesOrderScheduleLine' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'SpecialStockIdfgSalesOrder' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'SpecialStockIdfgSalesOrderItem' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    INSERT VALUE #( field_name = 'Supplier' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'Customer' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+*    INSERT VALUE #( field_name = 'CtrlPostgForExtWhseMgmtSyst' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+*    INSERT VALUE #( field_name = 'StorageBin' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    "Corrective Measure 250931 (2020)
+    INSERT VALUE #( field_name = 'ManualPrintIsTriggered' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    INSERT VALUE #( field_name = 'VersionForPrintingSlip' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+
+    IF iv_goodsmovementrefdoctype = sc_goodsmovementrefdoctype-gm_for_purchase_order.
+      INSERT VALUE #( field_name = 'PurchaseOrder' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'PurchaseOrderItem' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      "delivery shall only be enabled for processes where also a PO is in place
+      INSERT VALUE #( field_name = 'Delivery' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'DeliveryItem' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    ENDIF.
+
+    " get transfer specific movement types only once as this method is called for every item in a deep create
+    IF mo_migo_settings->is_transfer_movement( iv_goodsmovementtype = iv_goodsmovementtype ).
+      INSERT VALUE #( field_name = 'IssgOrRcvgSpclStockInd' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'IssuingOrReceivingPlant' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'IssuingOrReceivingStorageLoc' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'IssgOrRcvgBatch' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'IssuingOrReceivingValType' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'IssgOrRcvgMaterial' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    ENDIF.
+
+    " for Project Stock
+    IF iv_inventoryspecialstocktype EQ 'Q' OR iv_inventoryspecialstocktype = 'R'.
+      INSERT VALUE #( field_name = 'SpecialStockIdfgWBSElement' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    ENDIF.
+    SELECT SINGLE bustr FROM t156 INTO @DATA(lv_bustr) WHERE bwart = @iv_goodsmovementtype.
+    IF sy-subrc IS INITIAL AND lv_bustr = '415'.
+      INSERT VALUE #( field_name = 'WBSElement' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    ENDIF.
+
+    IF cl_sgt_switch_check=>segmentation_switch_check( ) EQ abap_on.
+      INSERT VALUE #( field_name = 'StockSegment' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+      INSERT VALUE #( field_name = 'IssgOrRcvgStockSegment' property = lif_migo_settings=>sc_requirement_type-optional ) INTO TABLE rt_field ##NO_TEXT.
+    ENDIF.
+
+    " finally fill the upper case field
+    LOOP AT rt_field REFERENCE INTO DATA(lr_field).
+      lr_field->field_name_uppercase = lr_field->field_name.
+      TRANSLATE lr_field->field_name_uppercase TO UPPER CASE.
+    ENDLOOP.
+
+  ENDMETHOD.

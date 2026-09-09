@@ -1,0 +1,137 @@
+﻿  PRIVATE SECTION.
+
+    TYPES:
+      BEGIN OF ty_field_properties,
+        field_name           TYPE string,
+        field_name_uppercase TYPE string,
+        property             TYPE migo_field_entry,
+      END OF ty_field_properties .
+    TYPES:
+      tt_field_properties TYPE SORTED TABLE OF ty_field_properties WITH UNIQUE KEY field_name
+                                  WITH NON-UNIQUE SORTED KEY uppercase COMPONENTS field_name_uppercase .
+
+    CONSTANTS gc_message_class TYPE msgid VALUE 'MM_IM_ODATA_API_MDOC' ##NO_TEXT.
+    CONSTANTS gc_xprint_1 TYPE xnapr VALUE '1' ##NO_TEXT.
+    CONSTANTS gc_xprint_2 TYPE xnapr VALUE '2' ##NO_TEXT.
+    CONSTANTS:
+      BEGIN OF sc_goodsmovementrefdoctype,
+        gm_wo_reference         TYPE kzbew VALUE space,
+        gm_for_purchase_order   TYPE kzbew VALUE 'B',
+        gm_for_production_order TYPE kzbew VALUE 'F',
+        " there are others, but they are not yet required in this API implementation
+      END OF sc_goodsmovementrefdoctype .
+    DATA mo_mdoc_maintain TYPE REF TO lif_mdoc_maintain .
+    DATA mo_migo_settings TYPE REF TO lif_migo_settings .
+    DATA:
+      mt_matdoc TYPE STANDARD TABLE OF matdoc .
+
+    METHODS map_item_input
+      IMPORTING
+        !ir_item                TYPE REF TO if_material_document_api=>ty_item_input
+      EXPORTING
+        !es_goodsmvt_item_input TYPE bapi2017_gm_item_create
+        !es_extensionin         TYPE bapiparex
+      CHANGING
+        !ct_message             TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed)        TYPE abap_bool .
+    METHODS map_header_output
+      IMPORTING
+        !is_mkpf_output TYPE mkpf
+      EXPORTING
+        !es_header      TYPE a_materialdocumentheader .
+    METHODS map_item_output
+      IMPORTING
+        !it_matdoc TYPE lif_mdoc_maintain=>tt_matdoc
+      EXPORTING
+        !et_item   TYPE if_material_document_api=>tt_item_output .
+    METHODS check_bapi_header_dates
+      IMPORTING
+        !is_goodsmvt_header TYPE bapi2017_gm_head_01
+      CHANGING
+        !ct_message         TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed)    TYPE abap_bool .
+    METHODS prepare_header
+      IMPORTING
+        !is_header              TYPE if_material_document_api=>ty_header_input
+      EXPORTING
+        !es_goodsmvt_header     TYPE bapi2017_gm_head_01
+        !ev_goodsmvt_code       TYPE bapi2017_gm_code
+        !es_goodsmvt_print_ctrl TYPE bapi2017_gm_print
+      CHANGING
+        !ct_message             TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed)        TYPE abap_bool .
+    METHODS prepare_items
+      IMPORTING
+        !it_item                TYPE if_material_document_api=>tt_item_input
+      EXPORTING
+        !et_goodsmvt_item_input TYPE lif_mdoc_maintain=>tt_goodsmvt_item
+        !et_extensionin         TYPE bapiparextab
+      CHANGING
+        !ct_message             TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed)        TYPE abap_bool .
+    METHODS prepare_serial_numbers
+      IMPORTING
+        !it_sernr        TYPE if_material_document_api=>tt_sernr_input
+      EXPORTING
+        !et_sernr_input  TYPE lif_mdoc_maintain=>tt_goodsmvt_serialnumber
+      CHANGING
+        !ct_message      TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed) TYPE abap_bool .
+    METHODS copy_and_map_messages
+      IMPORTING
+        !is_emkpf   TYPE emkpf OPTIONAL
+        !it_emseg   TYPE lif_mdoc_maintain=>tt_emseg OPTIONAL
+      CHANGING
+        !ct_message TYPE if_nsdm_odata_text_message=>tt_message .
+    METHODS copy_and_map_bapi_messages
+      IMPORTING
+        !it_return  TYPE bapiret2_t
+      CHANGING
+        !ct_message TYPE if_nsdm_odata_text_message=>tt_message .
+    METHODS matdoc_created_handler
+      FOR EVENT records_created OF cl_nsdm_stock
+      IMPORTING
+        !it_matdoc .
+    METHODS get_relevant_fields
+      IMPORTING
+        !iv_goodsmovementtype         TYPE bwart
+        !iv_inventoryspecialstocktype TYPE sobkz
+        !iv_goodsmovementrefdoctype   TYPE kzbew
+      RETURNING
+        VALUE(rt_field)               TYPE tt_field_properties .
+    METHODS item_check_allowed_fields
+      IMPORTING
+        !ir_item         TYPE REF TO if_material_document_api=>ty_item_input
+        !it_component    TYPE cl_abap_structdescr=>component_table
+      CHANGING
+        !ct_message      TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed) TYPE abap_bool .
+    METHODS item_batch_checks
+      IMPORTING
+        !ir_item         TYPE REF TO if_material_document_api=>ty_item_input
+      CHANGING
+        !ct_message      TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed) TYPE abap_bool .
+    METHODS item_wbs_checks
+      IMPORTING
+        !ir_item         TYPE REF TO if_material_document_api=>ty_item_input
+      CHANGING
+        !ct_message      TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rv_failed) TYPE abap_bool .
+    METHODS check_and_map_cancel_items
+      IMPORTING
+        !it_material_document_item TYPE if_material_document_api=>tt_item_cancel
+        !iv_material_document_year TYPE mjahr
+        !iv_material_document      TYPE mblnr
+      CHANGING
+        !ct_message                TYPE if_nsdm_odata_text_message=>tt_message
+      RETURNING
+        VALUE(rt_item_tab)         TYPE lif_mdoc_maintain=>tt_item_cancel .

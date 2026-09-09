@@ -1,0 +1,306 @@
+CREATE DI — POSTMAN
+===================
+
+1. Select collection:
+   CNF C&F Agent — SAP APIs (runtime-certified 2026-08-25)
+
+2. Select environment:
+   CNF SAP QS4/700 (certified 2026-08-25)
+
+3. Open the environment and set:
+   shippingPoint -> 1002
+   referenceSDDocument -> 5600084223
+   referenceSDDocumentItem -> 000010
+   actualDeliveryQuantity -> 1
+   deliveryQuantityUnit -> TO
+   confirmCreateDI -> NO
+
+4. Save the environment.
+
+5. Open folder 0 — Setup.
+
+6. Send:
+   Fetch CSRF token — outbound delivery v2 [PROVEN QS4/700]
+
+7. Check:
+   HTTP status -> 200 OK
+
+8. Open folder 3 — Create DI: outbound delivery from STO.
+
+9. Send:
+   GET delivery item by STO predecessor [PROVEN readback]
+
+10. Check:
+    HTTP status -> 200 OK
+    ReferenceSDDocument -> 5600084223
+    ReferenceSDDocumentItem -> 000010 or 10
+    Available quantity -> at least 1 TO
+
+11. If less than 1 TO remains, do not continue.
+
+12. Open the environment and set:
+    confirmCreateDI -> YES
+
+13. Save the environment.
+
+14. Open:
+    POST Create DI — STO deep insert [PROVEN — CREATES DOCUMENT]
+
+15. Open Body and confirm:
+    ShippingPoint -> 1002
+    ReferenceSDDocument -> 5600084223
+    ReferenceSDDocumentItem -> 000010
+    ActualDeliveryQuantity -> 1
+    DeliveryQuantityUnit -> TO
+
+16. Press Send once.
+
+17. Check:
+    HTTP status -> 201 Created
+    DeliveryDocument -> new delivery number
+
+18. Note the new DeliveryDocument number.
+
+19. Send:
+    GET created delivery header [PROVEN readback]
+
+20. Check:
+    HTTP status -> 200 OK
+    DeliveryDocument -> same new delivery number
+
+21. Send:
+    GET delivery item by STO predecessor [PROVEN readback]
+
+22. Find the new delivery and check:
+    HTTP status -> 200 OK
+    DeliveryDocument -> new delivery number
+    DeliveryDocumentItem -> 000010 or 10
+    ReferenceSDDocument -> 5600084223
+    ReferenceSDDocumentItem -> 000010 or 10
+    ActualDeliveryQuantity -> 1.000
+    DeliveryQuantityUnit -> TO
+
+
+SUBMIT MIGO — POSTMAN
+=====================
+
+1. Select collection:
+   CNF — Submit MIGO (goods receipt against STO delivery) [QS4/700 certified]
+
+2. Select environment:
+   CNF Submit MIGO — QS4/700
+
+3. Open the environment and set:
+   purchaseOrder -> 5600074808
+   purchaseOrderItem -> 00010
+   delivery -> 9004952821
+   deliveryItem -> 000010
+   material -> 000000000014000035
+   receivingPlant -> 1006
+   storageLocation -> RMYD
+   quantity -> 45.610
+   unit -> TO
+   materialDocumentHeaderText -> CNF CLIENT DEMO
+   materialDocument -> leave blank
+   materialDocumentYear -> leave blank
+   confirmSubmitMIGO -> NO
+
+4. Save the environment.
+
+5. Open folder 0 — Setup.
+
+6. Send:
+   Fetch CSRF token [PROVEN]
+
+7. Check:
+   HTTP status -> 200 OK
+
+8. Open folder 1 — Find an eligible STO item [PROVEN reads].
+
+9. Send:
+   Candidate STO items in plant [PROVEN]
+
+10. Check that the results contain:
+    HTTP status -> 200 OK
+    PurchaseOrder -> 5600074808
+    PurchaseOrderItem -> 00010 or 10
+    Material -> 14000035
+    Plant -> 1006
+    IsCompletelyDelivered -> false
+
+11. Send:
+    Deliveries raised against this STO [PROVEN]
+
+12. Check that the results contain:
+    HTTP status -> 200 OK
+    DeliveryDocument -> 9004952821
+    DeliveryDocumentItem -> 000010 or 10
+    ActualDeliveryQuantity -> 45.610
+    DeliveryQuantityUnit -> TO
+    ReferenceSDDocument -> 5600074808
+
+13. Send:
+    Read the chosen purchase order + schedule lines [PROVEN]
+
+14. Check:
+    HTTP status -> 200 OK
+    Purchase order item -> open for goods receipt
+    Available receipt quantity -> at least 45.610 TO
+
+15. If the item is complete or less than 45.610 TO remains, do not continue.
+
+16. Open the environment and set:
+    confirmSubmitMIGO -> YES
+
+17. Save the environment.
+
+18. Open folder 2 — Submit MIGO [PROVEN — creates a real document].
+
+19. Open:
+    POST Submit MIGO [PROVEN — CREATES DOCUMENT]
+
+20. Open Body and confirm:
+    GoodsMovementCode -> 01
+    GoodsMovementType -> 101
+    GoodsMovementRefDocType -> B
+    PurchaseOrder -> 5600074808
+    PurchaseOrderItem -> 00010
+    Delivery -> 9004952821
+    DeliveryItem -> 000010
+    Material -> 000000000014000035
+    Plant -> 1006
+    StorageLocation -> RMYD
+    QuantityInEntryUnit -> 45.610
+    EntryUnit -> TO
+
+21. Press Send once.
+
+22. Check:
+    HTTP status -> 201 Created
+    MaterialDocument -> new material document number
+    MaterialDocumentYear -> returned fiscal year
+
+23. Note the new MaterialDocument number and MaterialDocumentYear.
+
+24. Send:
+    GET created material document + items [PROVEN readback]
+
+25. Check:
+    HTTP status -> 200 OK
+    Test Results -> all passed
+    MaterialDocument -> number returned by the POST
+    MaterialDocumentYear -> year returned by the POST
+    GoodsMovementType -> 101
+    GoodsMovementRefDocType -> B
+    PurchaseOrder -> 5600074808
+    PurchaseOrderItem -> 00010 or 10
+    Delivery -> 9004952821
+    DeliveryItem -> 000010 or 10
+    Plant -> 1006
+    StorageLocation -> RMYD
+    QuantityInEntryUnit -> 45.610
+    EntryUnit -> TO
+    GoodsMovementIsCancelled -> false
+
+
+SAP GUI — PERSISTENCE SCREENS
+=============================
+
+CREATE DI RESULT
+----------------
+
+1. Enter transaction:
+   /nME23N
+
+2. Select Other Purchase Order and enter:
+   Purchase order -> 5600084223
+
+3. Select item:
+   Item -> 00010
+
+4. Show:
+   Material -> 14000035
+   Receiving plant -> 1023
+   Order quantity -> 1000 TO
+   Delivery/PO History -> new delivery reference, if displayed
+
+5. Enter transaction:
+   /nVL03N
+
+6. Enter:
+   Outbound delivery -> new DeliveryDocument returned by Postman
+
+7. Press Enter.
+
+8. Show the delivery overview and item details:
+   Delivery number -> new DeliveryDocument
+   Delivery item -> 000010
+   Delivery quantity -> 1 TO
+   Reference document -> 5600084223
+   Reference item -> 000010
+
+9. Open Document Flow and show the STO predecessor linked to the delivery.
+
+
+SUBMIT MIGO RESULT
+------------------
+
+1. Enter transaction:
+   /nME23N
+
+2. Select Other Purchase Order and enter:
+   Purchase order -> 5600074808
+
+3. Select item:
+   Item -> 00010
+
+4. Open the Purchase Order History tab.
+
+5. Show:
+   Outbound delivery -> 9004952821
+   Goods issue movement -> 641
+   Goods receipt movement -> 101
+   Material document -> new MaterialDocument returned by Postman
+
+6. Enter transaction:
+   /nMIGO
+
+7. In the first dropdown select:
+   Display
+
+8. In the reference dropdown select:
+   Material Document
+
+9. Enter:
+   Material document -> new MaterialDocument returned by Postman
+   Material document year -> MaterialDocumentYear returned by Postman
+
+10. Press Enter or Execute.
+
+11. Select the material-document item and show:
+    Movement type -> 101
+    Material -> 14000035
+    Quantity -> 45.610 TO
+    Plant -> 1006
+    Storage location -> RMYD
+    Purchase order -> 5600074808
+    Purchase order item -> 00010
+    Delivery -> 9004952821
+    Delivery item -> 000010
+
+12. If MIGO Display is unavailable, enter:
+    /nMB03
+
+13. Enter the same MaterialDocument and MaterialDocumentYear.
+
+14. Show the movement-101 material-document item.
+
+15. Optional list confirmation:
+    /nMB51
+
+16. Filter:
+    Material document -> new MaterialDocument
+    Material document year -> returned MaterialDocumentYear
+    Movement type -> 101
+
+17. Execute and show the material-document row.

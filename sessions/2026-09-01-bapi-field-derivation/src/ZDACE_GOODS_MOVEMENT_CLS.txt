@@ -1,0 +1,2087 @@
+﻿*&---------------------------------------------------------------------*
+*& Include          ZDACE_GOODS_MOVEMENT_CLS
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form F_DISPLAY
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_display .
+
+  DATA : lv_colpos TYPE sy-cucol.
+
+  REFRESH : gt_fcat.
+
+  lv_colpos = 1.
+
+  IF r_rb1 = abap_true OR r_rb3 = abap_true.
+
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_check."'CHECK'.
+    gs_fcat-seltext_l = gc_tcheck."'Select'.
+    gs_fcat-checkbox = abap_true..
+    gs_fcat-edit = abap_true.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+  ENDIF.
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos .
+  gs_fcat-fieldname = gc_ge."'REPORT_ID'.
+  gs_fcat-seltext_l = gc_tge_no."'Report ID'.
+  gs_fcat-no_zero = abap_true.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos .
+  gs_fcat-fieldname = gc_gi.
+  gs_fcat-seltext_l = gc_tg_item.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos .
+  gs_fcat-fieldname = gc_bukrs.
+  gs_fcat-seltext_l = gc_tbukrs.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos .
+  gs_fcat-fieldname = gc_werks.
+  gs_fcat-seltext_l = gc_twerks.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos .
+  gs_fcat-fieldname = gc_gedate.
+  gs_fcat-seltext_l = gc_tgedate.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos .
+  gs_fcat-fieldname = gc_getime.
+  gs_fcat-seltext_l = gc_tgetime.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  IF r_rb3 NE abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_indate.
+    gs_fcat-seltext_l = gc_tindate.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_intime.
+    gs_fcat-seltext_l = gc_tintime.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_outdate.
+    gs_fcat-seltext_l = gc_toutdate.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_outtime.
+    gs_fcat-seltext_l = gc_touttime.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_windate.
+    gs_fcat-seltext_l = gc_twindate.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_wintime.
+    gs_fcat-seltext_l = gc_twintime.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_woutdate.
+    gs_fcat-seltext_l = gc_twoutdate.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_wouttime.
+    gs_fcat-seltext_l = gc_twouttime.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+  ENDIF.
+
+  IF r_rb3 NE abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_expdate.
+    gs_fcat-seltext_l = gc_texpdate.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+  ENDIF.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_getype.
+  gs_fcat-seltext_l = gc_tgetype.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_gestat.
+  gs_fcat-seltext_l = gc_tgestat.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_vechno.
+  gs_fcat-seltext_l = gc_tvechno.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_dep.
+  gs_fcat-seltext_l = gc_tdep.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_iepartner.
+  gs_fcat-seltext_l = gc_tiepartner.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_vcode.
+  gs_fcat-seltext_l = gc_vcodet.
+  gs_fcat-no_zero = abap_true.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_vname.
+  gs_fcat-seltext_l = gc_vnamet.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_trcode.
+  gs_fcat-seltext_l = gc_ttrcode.
+  gs_fcat-no_zero = abap_true.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_tname.
+  gs_fcat-seltext_l = gc_ttrname.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_lr_no.
+  gs_fcat-seltext_l = gc_tlr_no.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  IF r_rb3 EQ abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_vbeln.
+    gs_fcat-seltext_l = gc_tvbeln.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_posnr.
+    gs_fcat-seltext_l = gc_tposnr.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+  ENDIF.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_ebeln.
+  gs_fcat-seltext_l = gc_tebeln.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_ebelp.
+  gs_fcat-seltext_l = gc_tebelp.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  IF r_rb3 NE abap_true.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_matkl.
+    gs_fcat-seltext_l = gc_matklt.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_mgdes.
+    gs_fcat-seltext_l = gc_mgdest.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_mtart.
+    gs_fcat-seltext_l = gc_mtartt.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+  ENDIF.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_matnr.
+  gs_fcat-seltext_l = gc_tmatnr.
+  gs_fcat-no_zero = abap_true.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_maktx.
+  gs_fcat-seltext_l = gc_tmaktx.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  IF r_rb1 = abap_true OR r_rb2 = abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_cqty.
+    gs_fcat-seltext_l = gc_tcqty.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+  ENDIF.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_meins.
+  gs_fcat-seltext_l = gc_tmeins.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_grs_wt.
+  gs_fcat-seltext_l = gc_grs_wtt.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_tare_wt.
+  gs_fcat-seltext_l = gc_tare_wtt.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+*  gs_fcat-fieldname = gc_net_wt_j.
+*  gs_fcat-seltext_l = gc_net_wtt_j.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_grs_wt_j.
+*  gs_fcat-seltext_l = gc_grs_wtt_j.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_tare_wt_j.
+*  gs_fcat-seltext_l = gc_tare_wtt_j.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos .
+  gs_fcat-fieldname = gc_net_wt.
+  gs_fcat-seltext_l = gc_net_wtt.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  IF r_rb3 NE abap_true AND r_rb1 NE abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_low_qty.
+    gs_fcat-seltext_l = gc_low_qtyt.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+  ENDIF.
+  lv_colpos = lv_colpos + 1.
+  gs_fcat-col_pos = lv_colpos.
+  gs_fcat-fieldname = gc_final_grq.
+  gs_fcat-seltext_l = gc_final_grqt.
+  gs_fcat-tabname = gc_tabn.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  IF r_rb1 = abap_true OR r_rb3 = abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_lgort.
+    gs_fcat-seltext_l = gc_tlgort.
+    gs_fcat-edit = abap_true.
+*    gs_fcat-datatype = 'LGORT_D'.
+*    GS_FCAT-ref_fieldname = 'MSEG-LGORT'.
+    gs_fcat-tabname = gc_tabn."'GT_RB1_FINAL'.
+    gs_fcat-ref_tabname = gc_refn."'T001L'.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+  ENDIF.
+
+  IF r_rb1 EQ abap_true OR r_rb3 = abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_pdate.
+    gs_fcat-seltext_l = gc_tpdate.
+    gs_fcat-checkbox = abap_true..
+    gs_fcat-edit = abap_true.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+  ENDIF.
+
+  IF r_rb3 NE abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_xblnr.
+    gs_fcat-seltext_l = gc_txblnr.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_bldat.
+    gs_fcat-seltext_l = gc_tbldat.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+  ENDIF.
+
+  IF r_rb2 EQ abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_mblnr.
+    gs_fcat-seltext_l = gc_tmblnr.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_mjahr.
+    gs_fcat-seltext_l = gc_tmjahr.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_budat.
+    gs_fcat-seltext_l = gc_tbudat.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_zeile.
+    gs_fcat-seltext_l = gc_tzeile.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_charg.
+    gs_fcat-seltext_l = gc_tcharg.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = 'ZRETTYP'.
+    gs_fcat-seltext_l = 'Return Type'.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+  ENDIF.
+
+  IF r_rb2 EQ abap_true.
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_rmat.
+    gs_fcat-seltext_l = gc_trmat.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_rdate.
+    gs_fcat-seltext_l = gc_trdate.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_ryear.
+    gs_fcat-seltext_l = gc_tryear.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_rjqty.
+    gs_fcat-seltext_l = gc_trjqty.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_rvalue.
+    gs_fcat-seltext_l = gc_trvalue.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+    lv_colpos = lv_colpos + 1.
+    gs_fcat-col_pos = lv_colpos.
+    gs_fcat-fieldname = gc_fc_remarks_h.
+    gs_fcat-seltext_l = gc_remarks_h.
+    gs_fcat-tabname = gc_tabn.
+    APPEND gs_fcat TO gt_fcat.
+    CLEAR gs_fcat.
+
+  ENDIF.
+
+*  gs_fcat-fieldname = gc_msgl."'MSG_LOGO'.
+*  gs_fcat-seltext_l = gc_tmatnr.
+*  gs_fcat-no_zero = abap_true.
+*  gs_fcat-no_out = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_ge.
+*  gs_fcat-seltext_l = gc_tge_no.
+*  gs_fcat-no_zero = abap_true.
+*  gs_fcat-no_out = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_gi."'GATE_ITEM'.
+*  gs_fcat-seltext_l = gc_tg_item.
+*  gs_fcat-no_zero = abap_true.
+*  gs_fcat-no_out = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_vbln."'VBELN'.
+*  gs_fcat-seltext_l = gc_delt."'Delivery'.
+*  gs_fcat-no_zero = abap_true.
+*  gs_fcat-no_out = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_mblnr.
+*  gs_fcat-seltext_l = gc_tmblnr.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_mjahr.
+*  gs_fcat-seltext_l = gc_tmjahr.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_typ."'TYPE'.
+*  gs_fcat-seltext_l = gc_typt."'Type'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_id."'ID'.
+*  gs_fcat-seltext_l = gc_id."'ID'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_no."'NUMBER'.
+*  gs_fcat-seltext_l = gc_not."'No'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_msg."'MESSAGE'.
+*  gs_fcat-seltext_l = gc_msgt."'Message'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_msg1."'MESSAGE_V1'.
+*  gs_fcat-seltext_l = gc_msgt1."'Message 1'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_msg2."'MESSAGE_V2'.
+*  gs_fcat-seltext_l = gc_msgt2."'Message 2'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_msg3."'MESSAGE_V3'.
+*  gs_fcat-seltext_l = gc_msgt3."'Message 3'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+*
+*  gs_fcat-fieldname = gc_msg4."'MESSAGE_V4'.
+*  gs_fcat-seltext_l = gc_msgt4."'Message 4'.
+*  gs_fcat-no_zero = abap_true.
+*  APPEND gs_fcat TO gt_fcat.
+*  CLEAR gs_fcat.
+
+  gs_lo-zebra = abap_true.
+  gs_lo-colwidth_optimize = abap_true.
+
+*  gs_exclude-fcode = gc_post1.
+*  APPEND gs_exclude to  gt_exclude.
+
+  IF r_rb1 = abap_true OR r_rb3 = abap_true.
+
+    IF  gt_rb1_final IS NOT INITIAL.
+
+      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+        EXPORTING
+*         I_INTERFACE_CHECK        = ' '
+*         I_BYPASSING_BUFFER       = ' '
+*         I_BUFFER_ACTIVE          = ' '
+          i_callback_program       = sy-repid
+          i_callback_pf_status_set = gc_status
+          i_callback_user_command  = gc_ucomm
+*         I_CALLBACK_TOP_OF_PAGE   = ' '
+*         I_CALLBACK_HTML_TOP_OF_PAGE       = ' '
+*         I_CALLBACK_HTML_END_OF_LIST       = ' '
+*         I_STRUCTURE_NAME         =
+*         I_BACKGROUND_ID          = ' '
+*         i_grid_title             = 'Unprocessed Gate Entry'
+*         I_GRID_SETTINGS          =
+          is_layout                = gs_lo
+          it_fieldcat              = gt_fcat
+*         IT_EXCLUDING             = gt_exclude
+*         IT_SPECIAL_GROUPS        =
+*         IT_SORT                  =
+*         IT_FILTER                =
+*         IS_SEL_HIDE              =
+*         I_DEFAULT                = 'X'
+          i_save                   = 'A'  "'U'
+*         IS_VARIANT               =
+*         IT_EVENTS                =
+*         IT_EVENT_EXIT            =
+*         IS_PRINT                 =
+*         IS_REPREP_ID             =
+*         I_SCREEN_START_COLUMN    = 0
+*         I_SCREEN_START_LINE      = 0
+*         I_SCREEN_END_COLUMN      = 0
+*         I_SCREEN_END_LINE        = 0
+*         I_HTML_HEIGHT_TOP        = 0
+*         I_HTML_HEIGHT_END        = 0
+*         IT_ALV_GRAPHICS          =
+*         IT_HYPERLINK             =
+*         IT_ADD_FIELDCAT          =
+*         IT_EXCEPT_QINFO          =
+*         IR_SALV_FULLSCREEN_ADAPTER        =
+*         O_PREVIOUS_SRAL_HANDLER  =
+* IMPORTING
+*         E_EXIT_CAUSED_BY_CALLER  =
+*         ES_EXIT_CAUSED_BY_USER   =
+        TABLES
+          t_outtab                 = gt_rb1_final
+        EXCEPTIONS
+          program_error            = 1
+          OTHERS                   = 2.
+
+    ENDIF.
+  ELSE.
+    IF  gt_rb1_final IS NOT INITIAL.
+      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+        EXPORTING
+*         I_INTERFACE_CHECK  = ' '
+*         I_BYPASSING_BUFFER = ' '
+*         I_BUFFER_ACTIVE    = ' '
+          i_callback_program = sy-repid
+*         i_callback_pf_status_set = gc_status
+*         i_callback_user_command  = gc_ucomm
+*         I_CALLBACK_TOP_OF_PAGE   = ' '
+*         I_CALLBACK_HTML_TOP_OF_PAGE       = ' '
+*         I_CALLBACK_HTML_END_OF_LIST       = ' '
+*         I_STRUCTURE_NAME   =
+*         I_BACKGROUND_ID    = ' '
+*         i_grid_title       = 'Unprocessed Gate Entry'
+*         I_GRID_SETTINGS    =
+          is_layout          = gs_lo
+          it_fieldcat        = gt_fcat
+*         IT_EXCLUDING       = gt_exclude
+*         IT_SPECIAL_GROUPS  =
+*         IT_SORT            =
+*         IT_FILTER          =
+*         IS_SEL_HIDE        =
+*         I_DEFAULT          = 'X'
+          i_save             = 'A'   "'U'
+*         IS_VARIANT         =
+*         IT_EVENTS          =
+*         IT_EVENT_EXIT      =
+*         IS_PRINT           =
+*         IS_REPREP_ID       =
+*         I_SCREEN_START_COLUMN    = 0
+*         I_SCREEN_START_LINE      = 0
+*         I_SCREEN_END_COLUMN      = 0
+*         I_SCREEN_END_LINE  = 0
+*         I_HTML_HEIGHT_TOP  = 0
+*         I_HTML_HEIGHT_END  = 0
+*         IT_ALV_GRAPHICS    =
+*         IT_HYPERLINK       =
+*         IT_ADD_FIELDCAT    =
+*         IT_EXCEPT_QINFO    =
+*         IR_SALV_FULLSCREEN_ADAPTER        =
+*         O_PREVIOUS_SRAL_HANDLER  =
+* IMPORTING
+*         E_EXIT_CAUSED_BY_CALLER  =
+*         ES_EXIT_CAUSED_BY_USER   =
+        TABLES
+          t_outtab           = gt_rb1_final
+        EXCEPTIONS
+          program_error      = 1
+          OTHERS             = 2.
+    ENDIF.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  SET_PF_STATUS
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->RT_EXTAB   text
+*----------------------------------------------------------------------*
+FORM f_status USING lv_extab TYPE slis_t_extab.
+
+  DATA: lt_fcode TYPE TABLE OF sy-ucomm,
+        ls_fcode TYPE sy-ucomm.
+  REFRESH : lt_fcode.
+  IF r_rb1 EQ abap_true.
+    ls_fcode = gc_gr. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_cgr. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_calc. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_post1. APPEND ls_fcode TO lt_fcode.
+  ELSEIF r_rb2 EQ abap_true.
+    ls_fcode = gc_post. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_post1. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_calc. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_gr. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_cgr. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_disp. APPEND ls_fcode TO lt_fcode.
+  ELSEIF r_rb3 EQ abap_true.
+    ls_fcode = gc_post. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_post1. APPEND ls_fcode TO lt_fcode.
+    ls_fcode = gc_calc. APPEND ls_fcode TO lt_fcode.
+  ENDIF.
+  SET PF-STATUS gc_pfs EXCLUDING lt_fcode .
+
+ENDFORM. "SET_PF_STATUS
+
+FORM f_ucomm USING lv_ucomm LIKE sy-ucomm
+                                  lv_selfield TYPE slis_selfield.
+
+
+  IF gcl_ref IS INITIAL.
+    CALL FUNCTION 'GET_GLOBALS_FROM_SLVC_FULLSCR'
+      IMPORTING
+        e_grid = gcl_ref.
+  ENDIF.
+
+  IF NOT gcl_ref IS INITIAL.
+    CALL METHOD gcl_ref->check_changed_data.
+  ENDIF.
+
+  CASE lv_ucomm.
+    WHEN gc_all."'/&ALL'.
+      LOOP AT gt_rb1_final INTO gw_rb1_final.
+        gw_rb1_final-zchk = abap_true.
+        MODIFY gt_rb1_final FROM gw_rb1_final.
+      ENDLOOP.
+
+      lv_selfield-refresh = abap_true.
+
+    WHEN gc_calc.
+
+      LOOP AT gt_rb1_final INTO gw_rb1_final.
+        gw_rb1_final-final_grq = gw_rb1_final-receivedqty + gw_rb1_final-net_wt.
+        MODIFY gt_rb1_final FROM gw_rb1_final.
+      ENDLOOP.
+
+      lv_selfield-refresh = abap_true.
+
+    WHEN gc_sal."'/&SAL'.
+      LOOP AT gt_rb1_final INTO gw_rb1_final.
+        gw_rb1_final-zchk = gc_space."' '.
+        MODIFY gt_rb1_final FROM gw_rb1_final.
+      ENDLOOP.
+
+      lv_selfield-refresh = abap_true.
+
+    WHEN gc_post.
+*
+      PERFORM f_popup.
+      IF lv_yes = abap_true.
+        PERFORM f_bapi.
+      ENDIF.
+      lv_selfield-refresh = abap_true.
+
+    WHEN gc_post1.
+      PERFORM f_popup.
+      IF lv_yes = abap_true.
+        PERFORM f_collective.
+      ENDIF.
+      lv_selfield-refresh = abap_true.
+
+    WHEN gc_gr.
+      PERFORM f_popup.
+      IF lv_yes = abap_true.
+        PERFORM gr_at_plant.
+      ENDIF.
+      lv_selfield-refresh = abap_true.
+
+    WHEN gc_cgr.
+      PERFORM f_popup.
+      IF lv_yes = abap_true.
+        PERFORM c_gr_at_plant.
+      ENDIF.
+      lv_selfield-refresh = abap_true.
+
+    WHEN gc_disp."'DISP_LOG'.
+
+      PERFORM f_displog.
+
+    WHEN OTHERS.
+      LEAVE TO SCREEN 0.
+  ENDCASE.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_bapi
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_bapi .
+  DATA: lw_goodsmvt         TYPE bapi2017_gm_head_01,
+        lw_gm_code          TYPE bapi2017_gm_code,
+        lt_goodsmvt_item    TYPE TABLE OF bapi2017_gm_item_create,
+        lw_goodsmvt_item    TYPE bapi2017_gm_item_create,
+        lw_materialdocument TYPE bapi2017_gm_head_ret-mat_doc,
+        lw_matdocumentyear  TYPE bapi2017_gm_head_ret-doc_year,
+        lt_return           TYPE TABLE OF bapiret2,
+        lt_ext              TYPE TABLE OF bapiparex,
+        ls_ext              TYPE bapiparex,
+*        ls_mkpf             TYPE bapi_te_xmkpf,
+        lv_trans_code       TYPE zdacetran.
+
+  CONSTANTS : lc_movtyp    TYPE bapi2017_gm_item_create-move_type VALUE '101',
+              lc_mvtind    TYPE bapi2017_gm_item_create-move_type VALUE 'B',
+              lc_gmcode(2) TYPE c VALUE '01',
+              lc_s         TYPE bapi_mtype VALUE 'S',
+              lc_w         TYPE bapi_mtype VALUE 'W',
+              lc_e         TYPE bapi_mtype VALUE 'E',
+              lc_msg       TYPE bapi_msg VALUE 'GR Created',
+              lc_msg1      TYPE bapi_msg VALUE 'Delivery Created',
+              lc_error1    TYPE bapi_msg VALUE 'Final GR Qty cannot be zero',
+              lc_str       TYPE bapiparex-structure VALUE 'BAPI_TE_XMKPF',
+              lc_cls       TYPE zdace_gateh-gestat VALUE 'CLS'.
+
+  FREE: gt_log.
+  IF r_rb1 EQ abap_true.
+
+    SELECT * FROM zdace_gatei INTO TABLE @DATA(lt_item)   "#EC CI_SUBRC
+       FOR ALL ENTRIES IN @gt_rb1_final
+      WHERE ge_no = @gt_rb1_final-ge_no
+      AND   bukrs = @gt_rb1_final-bukrs
+      AND   werks_r = @gt_rb1_final-werks
+*            AND   GEYEAR = @gt_rb1_final-GEYEAR
+      AND   gate_item = @gt_rb1_final-gate_item.
+    IF sy-subrc EQ 0.
+
+      SELECT * FROM zdace_gateh                    "#EC CI_NO_TRANSFORM
+        INTO TABLE @DATA(lt_head)
+        FOR ALL ENTRIES IN @lt_item
+        WHERE ge_no = @lt_item-ge_no
+        AND bukrs = @lt_item-bukrs.
+      IF sy-subrc EQ 0.
+        SORT lt_head BY ge_no.
+      ENDIF.
+    ENDIF.
+
+    LOOP AT gt_rb1_final ASSIGNING FIELD-SYMBOL(<lfs_rb1_final>) WHERE zchk EQ abap_true." AND lgort IS NOT INITIAL .
+
+      FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+            lw_materialdocument, lw_matdocumentyear.", gt_gemigo.
+
+      IF <lfs_rb1_final>-zchk_pdate = abap_true.
+        lw_goodsmvt-pstng_date = sy-datlo.
+      ELSE.
+        lw_goodsmvt-pstng_date = <lfs_rb1_final>-wo_date.
+      ENDIF.
+      lw_goodsmvt-doc_date = <lfs_rb1_final>-bldat.
+      lw_goodsmvt-pr_uname = sy-uname.
+      lw_goodsmvt-ref_doc_no = <lfs_rb1_final>-xblnr.
+      lw_goodsmvt-bill_of_lading = <lfs_rb1_final>-lr_no.
+
+*      lw_goodsmvt-bill_of_lading = wa_wb_h-invamt. " INVOCIE AMOUNT
+*            lw_goodsmvt-ref_doc_no = wa_wb_h-delchl.
+*            lw_goodsmvt-header_txt =  wa_wb_h-bktxt.
+
+      lw_gm_code-gm_code = lc_gmcode."'01'.    " 01 - MB01 - Goods Receipts for Purchase Order
+
+      lw_goodsmvt_item-move_type  = lc_movtyp."'101'.
+      lw_goodsmvt_item-mvt_ind    = lc_mvtind."'B'.
+      lw_goodsmvt_item-plant      = <lfs_rb1_final>-werks.
+      lw_goodsmvt_item-material   = <lfs_rb1_final>-matnr.
+      lw_goodsmvt_item-entry_qnt  = <lfs_rb1_final>-final_grq.
+      lw_goodsmvt_item-stge_loc   = <lfs_rb1_final>-lgort..
+      lw_goodsmvt_item-po_number  = <lfs_rb1_final>-ebeln.
+      lw_goodsmvt_item-po_item    = <lfs_rb1_final>-ebelp.
+
+      APPEND lw_goodsmvt_item TO lt_goodsmvt_item.
+      CLEAR: lw_goodsmvt_item.
+
+***      ls_mkpf-ge_no = <lfs_rb1_final>-ge_no.
+***      ls_mkpf-geyear = <lfs_rb1_final>-geyear.
+***
+***      ls_ext-structure = lc_str. "'BAPI_TE_XMKPF'.
+***      ls_ext-valuepart1+0(10) = ls_mkpf-ge_no.
+***      ls_ext-valuepart1+10(4) = ls_mkpf-geyear.
+***
+***      APPEND ls_ext TO lt_ext.
+***      CLEAR ls_ext.
+      IF <lfs_rb1_final>-final_grq IS NOT INITIAL.
+        lv_trans_code = <lfs_rb1_final>-trans_code.
+        EXPORT lv_trans_code FROM lv_trans_code TO MEMORY ID 'ZDACE_GATE'.
+        CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+          EXPORTING
+            goodsmvt_header  = lw_goodsmvt
+            goodsmvt_code    = lw_gm_code
+*           TESTRUN          = ' '
+*           GOODSMVT_REF_EWM =
+*           GOODSMVT_PRINT_CTRL           =
+          IMPORTING
+*           GOODSMVT_HEADRET =
+            materialdocument = lw_materialdocument
+            matdocumentyear  = lw_matdocumentyear
+          TABLES
+            goodsmvt_item    = lt_goodsmvt_item
+*           GOODSMVT_SERIALNUMBER         =
+            return           = lt_return
+*           GOODSMVT_SERV_PART_DATA       =
+***            extensionin      = lt_ext.
+*           GOODSMVT_ITEM_CWM             =
+          .
+        IF lw_materialdocument IS NOT INITIAL.
+
+          CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+            EXPORTING
+              wait = abap_true
+*               IMPORTING
+*             RETURN        =
+            .
+          WAIT UP TO 2 SECONDS .
+
+          gw_log-msg_logo = icon_led_green.
+          gw_log-ge_no = <lfs_rb1_final>-ge_no.
+          gw_log-gate_item = <lfs_rb1_final>-gate_item.
+
+          gw_log-mblnr = lw_materialdocument.
+          gw_log-mjahr = lw_matdocumentyear.
+          gw_log-type = lc_s."'S'.
+          gw_log-message = lc_msg."'GR created'.
+
+          READ TABLE lt_item INTO DATA(ls_item) WITH KEY ge_no = <lfs_rb1_final>-ge_no
+                                                         bukrs = <lfs_rb1_final>-bukrs
+                                                         werks_r = <lfs_rb1_final>-werks
+                                                         gate_item = <lfs_rb1_final>-gate_item.
+          IF sy-subrc EQ 0.
+            MOVE-CORRESPONDING ls_item TO gs_item.
+
+          ENDIF.
+          gs_item-mblnr = lw_materialdocument.
+          gs_item-mjahr = lw_matdocumentyear.
+
+          MOVE-CORRESPONDING gs_item TO gs_gemigo.
+          gs_gemigo-crtby = sy-uname.
+          gs_gemigo-crton = sy-datlo.
+          gs_gemigo-crtat = sy-timlo.
+
+          APPEND gs_gemigo TO gt_gemigo.
+          CLEAR gs_gemigo.
+
+          APPEND gs_item TO gt_item.
+          CLEAR gs_item.
+
+          APPEND gw_log TO gt_log.
+          CLEAR: gw_log.
+
+          READ TABLE lt_head ASSIGNING FIELD-SYMBOL(<lfs_head>) WITH KEY ge_no = <lfs_rb1_final>-ge_no
+                                                                         bukrs = <lfs_rb1_final>-bukrs.
+          IF sy-subrc EQ 0.
+            <lfs_head>-gestat = lc_cls.
+          ENDIF.
+
+        ELSE.
+
+          CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+*              IMPORTING
+*                RETURN        =
+            .
+
+          LOOP AT lt_return INTO DATA(lw_return).
+            MOVE-CORRESPONDING lw_return TO gw_log.
+
+            IF lw_return-type = lc_e."'E'.
+              gw_log-msg_logo = icon_led_red.
+            ELSEIF lw_return-type = lc_w."'W'.
+              gw_log-msg_logo = icon_led_yellow.
+            ELSEIF lw_return-type = lc_s."'S'.
+              gw_log-msg_logo = icon_led_green.
+            ENDIF.
+
+            gw_log-ge_no = <lfs_rb1_final>-ge_no.
+            gw_log-gate_item = <lfs_rb1_final>-gate_item.
+
+            APPEND gw_log TO gt_log.
+            CLEAR: gw_log.
+          ENDLOOP.
+        ENDIF.
+
+      ELSE.
+        gw_log-msg_logo = icon_led_red.
+        gw_log-ge_no = <lfs_rb1_final>-ge_no.
+        gw_log-gate_item = <lfs_rb1_final>-gate_item.
+        gw_log-message = lc_error1.
+        APPEND gw_log TO gt_log.
+        CLEAR: gw_log.
+
+      ENDIF.
+
+      FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+            lw_materialdocument, lw_matdocumentyear.
+
+    ENDLOOP.
+
+    IF NOT gt_item IS INITIAL.
+      SELECT * FROM zdace_weight_in INTO TABLE @DATA(lt_wt)
+  FOR ALL ENTRIES IN @gt_item
+WHERE ge_no = @gt_item-ge_no
+  AND   geyear = @gt_item-geyear
+  AND   bukrs = @gt_item-bukrs.
+      IF sy-subrc EQ 0.
+        SORT lt_wt BY ge_no.
+      ENDIF.
+
+      SELECT mblnr, mjahr,zeile,ebeln,ebelp
+        FROM mseg INTO TABLE @DATA(lt_mesg)
+        FOR ALL ENTRIES IN @gt_item
+        WHERE mblnr = @gt_item-mblnr
+        AND   mjahr = @gt_item-mjahr
+        AND   ebeln = @gt_item-ebeln
+        AND   ebelp = @gt_item-ebelp.
+      IF sy-subrc EQ 0.
+        SORT lt_mesg BY mblnr.
+      ENDIF.
+
+      LOOP AT gt_item ASSIGNING FIELD-SYMBOL(<lfs_item1>).
+
+        READ TABLE lt_mesg INTO DATA(ls_mseg) WITH KEY mblnr = <lfs_item1>-mblnr mjahr = <lfs_item1>-mjahr
+                                                       ebeln = <lfs_item1>-ebeln ebelp = <lfs_item1>-ebelp.
+        IF sy-subrc EQ 0.
+          <lfs_item1>-zeile = ls_mseg-zeile.
+        ENDIF.
+      ENDLOOP.
+
+      LOOP AT lt_wt ASSIGNING FIELD-SYMBOL(<lfs_wt>).
+        <lfs_wt>-plant_receipt = abap_true.
+      ENDLOOP.
+      MODIFY zdace_gatei FROM TABLE gt_item.
+      IF sy-subrc EQ 0.
+        WAIT UP TO 2 SECONDS.
+        COMMIT WORK.
+        DELETE gt_rb1_final WHERE zchk = abap_true..
+        MODIFY zdace_weight_in FROM TABLE lt_wt.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+        MODIFY zdace_gateh FROM TABLE lt_head.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+
+        MODIFY zdace_ge_migo FROM TABLE gt_gemigo.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+    SELECT SINGLE param1
+           FROM zgpt_mm_param
+           INTO @DATA(lv_user)
+          WHERE program_name = 'ZDACE_GOODS_MOVEMENT'
+            AND object_id    = 'G2G'
+            AND field        = 'UNAME'
+            AND param1       = @sy-uname
+            AND active_flag  = @abap_true.
+    IF lv_user IS NOT INITIAL.
+
+    ELSE.
+      IF gt_log IS NOT INITIAL.
+        PERFORM f_displog.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form F_DISPLOG
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_displog .
+
+  REFRESH : gt_fcat.
+
+  gs_fcat-fieldname = gc_msgl."'MSG_LOGO'.
+  gs_fcat-seltext_l = gc_tmatnr.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_ge.
+  gs_fcat-seltext_l = gc_tge_no.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_gi."'GATE_ITEM'.
+  gs_fcat-seltext_l = gc_tg_item.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_vbln."'VBELN'.
+  gs_fcat-seltext_l = gc_delt."'Delivery'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_mblnr.
+  gs_fcat-seltext_l = gc_tmblnr.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_mjahr.
+  gs_fcat-seltext_l = gc_tmjahr.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_typ."'TYPE'.
+  gs_fcat-seltext_l = gc_typt."'Type'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_id."'ID'.
+  gs_fcat-seltext_l = gc_id."'ID'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_no."'NUMBER'.
+  gs_fcat-seltext_l = gc_not."'No'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_msg."'MESSAGE'.
+  gs_fcat-seltext_l = gc_msgt."'Message'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_msg1."'MESSAGE_V1'.
+  gs_fcat-seltext_l = gc_msgt1."'Message 1'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_msg2."'MESSAGE_V2'.
+  gs_fcat-seltext_l = gc_msgt2."'Message 2'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_msg3."'MESSAGE_V3'.
+  gs_fcat-seltext_l = gc_msgt3."'Message 3'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+  gs_fcat-fieldname = gc_msg4."'MESSAGE_V4'.
+  gs_fcat-seltext_l = gc_msgt4."'Message 4'.
+  gs_fcat-no_zero = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+
+  gs_elo-colwidth_optimize = abap_true.
+  gs_elo-zebra = abap_true.
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+*     I_STRUCTURE_NAME   =
+      i_callback_program = sy-repid
+*     i_callback_pf_status_set = gc_estatus
+      is_layout          = gs_elo
+      it_fieldcat        = gt_fcat
+      i_save             = 'A'
+    TABLES
+      t_outtab           = gt_log
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_pop-up
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_popup .
+
+  CLEAR : gv_answer.
+
+  CALL FUNCTION 'POPUP_TO_CONFIRM'                 "#EC CI_SUBRC
+    EXPORTING
+      titlebar       = gc_title1 "'Post Document'
+*     DIAGNOSE_OBJECT             = ' '
+      text_question  = gc_title2 "'Do You want to Post?'
+*     TEXT_BUTTON_1  = 'Ja'(001)
+*     ICON_BUTTON_1  = ' '
+*     TEXT_BUTTON_2  = 'Nein'(002)
+*     ICON_BUTTON_2  = ' '
+*     DEFAULT_BUTTON = '1'
+*     DISPLAY_CANCEL_BUTTON       = 'X'
+*     USERDEFINED_F1_HELP         = ' '
+*     START_COLUMN   = 25
+*     START_ROW      = 6
+*     POPUP_TYPE     =
+*     IV_QUICKINFO_BUTTON_1       = ' '
+*     IV_QUICKINFO_BUTTON_2       = ' '
+    IMPORTING
+      answer         = gv_answer
+*       TABLES
+*     PARAMETER      =
+    EXCEPTIONS
+      text_not_found = 1
+      OTHERS         = 2.
+  CLEAR lv_yes.
+  IF gv_answer = gc_ans."'1'.
+    lv_yes = abap_true.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form f_collective
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM f_collective .
+
+  DATA: lw_goodsmvt         TYPE bapi2017_gm_head_01,
+        lw_gm_code          TYPE bapi2017_gm_code,
+        lt_goodsmvt_item    TYPE TABLE OF bapi2017_gm_item_create,
+        lw_goodsmvt_item    TYPE bapi2017_gm_item_create,
+        lw_materialdocument TYPE bapi2017_gm_head_ret-mat_doc,
+        lw_matdocumentyear  TYPE bapi2017_gm_head_ret-doc_year,
+        lt_return           TYPE TABLE OF bapiret2,
+        lt_ext              TYPE TABLE OF bapiparex,
+        ls_ext              TYPE bapiparex,
+*        ls_mkpf             TYPE bapi_te_xmkpf,
+        lv_line1            TYPE sy-tabix,
+        lv_line2            TYPE sy-tabix.
+
+  CONSTANTS : lc_movtyp    TYPE bapi2017_gm_item_create-move_type VALUE '101',
+              lc_mvtind    TYPE bapi2017_gm_item_create-move_type VALUE 'B',
+              lc_gmcode(2) TYPE c VALUE '01',
+              lc_s1        TYPE bapi_mtype VALUE 'S',
+              lc_w1        TYPE bapi_mtype VALUE 'W',
+              lc_e1        TYPE bapi_mtype VALUE 'E',
+              lc_msg       TYPE bapi_msg VALUE 'GR Created',
+              lc_msg1      TYPE bapi_msg VALUE 'Delivery Created',
+              lc_msg4      TYPE bapi_msg VALUE 'Please select only one Vendor',
+              lc_msg5      TYPE bapi_msg VALUE 'Please select only one Bill of Lading',
+              lc_msg6      TYPE bapi_msg VALUE 'Single GR cannot be created for multiple GEs',
+              lc_msg7      TYPE bapi_msg VALUE 'Collective GR cannot be created for single GE',
+              lc_cls       TYPE zdace_gateh-gestat VALUE 'CLS',
+              lc_str       TYPE bapiparex-structure VALUE 'BAPI_TE_XMKPF'.
+
+  FREE: gt_log.
+
+  IF r_rb1 EQ abap_true.
+
+    SELECT * FROM zdace_gatei INTO TABLE @DATA(lt_item)   "#EC CI_SUBRC
+       FOR ALL ENTRIES IN @gt_rb1_final
+      WHERE ge_no = @gt_rb1_final-ge_no
+      AND   bukrs = @gt_rb1_final-bukrs
+      AND   werks_r = @gt_rb1_final-werks
+*            AND   GEYEAR = @gt_rb1_final-GEYEAR
+      AND   gate_item = @gt_rb1_final-gate_item.
+    IF sy-subrc EQ 0.
+
+      SELECT * FROM zdace_gateh                    "#EC CI_NO_TRANSFORM
+        INTO TABLE @DATA(lt_head)
+        FOR ALL ENTRIES IN @lt_item
+        WHERE ge_no = @lt_item-ge_no
+        AND bukrs = @lt_item-bukrs.
+      IF sy-subrc EQ 0.
+        SORT lt_head BY ge_no.
+      ENDIF.
+    ENDIF.
+    FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+          lw_materialdocument, lw_matdocumentyear.", gt_gemigo.
+
+    LOOP AT gt_rb1_final INTO DATA(gs_final) WHERE zchk = abap_true.
+
+      MOVE-CORRESPONDING gs_final TO gw_tfinal.
+      APPEND gw_tfinal TO gt_tfinal.
+      CLEAR gw_tfinal.
+    ENDLOOP.
+
+    CLEAR : lv_line1,lv_line2.
+    DESCRIBE TABLE gt_tfinal LINES lv_line1.
+    SORT gt_tfinal BY ge_no.
+    DELETE ADJACENT DUPLICATES FROM gt_tfinal COMPARING ge_no.
+    DESCRIBE TABLE gt_tfinal LINES lv_line2.
+
+    IF lv_line1 = lv_line2.
+      gw_log-msg_logo = icon_led_red.
+      gw_log-type = lc_e1.
+      IF lv_line1 EQ 1.
+        gw_log-message = lc_msg7.
+      ELSE.
+        gw_log-message = lc_msg6.
+      ENDIF.
+
+      APPEND gw_log TO gt_log.
+      CLEAR: gw_log.
+      REFRESH : gt_rb1_final.
+    ENDIF.
+
+
+    CLEAR lv_index.
+    LOOP AT gt_rb1_final ASSIGNING FIELD-SYMBOL(<lfs_rb1_final>) WHERE zchk EQ abap_true." AND lgort IS NOT INITIAL ..
+
+      lv_index = lv_index + 1.
+
+      lv_flag = abap_true. "'X'.
+      lv_flag1 = abap_true. "'X'.
+
+      IF lv_index = 1.
+
+        lv_lifnr = <lfs_rb1_final>-lifnr.
+        lv_frbnr = <lfs_rb1_final>-frbnr.
+      ENDIF..
+
+      IF lv_lifnr IS NOT INITIAL.
+
+        IF lv_lifnr NE <lfs_rb1_final>-lifnr.
+          lv_flag = space. "' '.
+          EXIT.
+        ENDIF.
+      ENDIF.
+
+***      ls_mkpf-ge_no = <lfs_rb1_final>-ge_no.
+***      ls_mkpf-geyear = <lfs_rb1_final>-geyear.
+***
+***      ls_ext-structure = lc_str. "'BAPI_TE_XMKPF'.
+***      ls_ext-valuepart1+0(10) = ls_mkpf-ge_no.
+***      ls_ext-valuepart1+10(4) = ls_mkpf-geyear.
+***
+***      APPEND ls_ext TO lt_ext.
+***      CLEAR ls_ext.
+
+      IF <lfs_rb1_final>-zchk_pdate = abap_true.
+        lw_goodsmvt-pstng_date = sy-datlo.
+      ELSE.
+        lw_goodsmvt-pstng_date = <lfs_rb1_final>-ge_out_date.
+      ENDIF.
+*      lw_goodsmvt-pstng_date = <lfs_rb1_final>-ge_out_date.
+      lw_goodsmvt-doc_date = sy-datlo.
+      lw_goodsmvt-pr_uname = sy-uname.
+      lw_goodsmvt-bill_of_lading = <lfs_rb1_final>-lr_no.
+
+      lw_gm_code-gm_code = lc_gmcode.
+
+      lw_goodsmvt_item-move_type  = lc_movtyp."'101'.
+      lw_goodsmvt_item-mvt_ind    = lc_mvtind."'B'.
+      lw_goodsmvt_item-plant      = <lfs_rb1_final>-werks.
+      lw_goodsmvt_item-material   = <lfs_rb1_final>-matnr.
+      lw_goodsmvt_item-entry_qnt  = <lfs_rb1_final>-final_grq.
+      lw_goodsmvt_item-stge_loc   = <lfs_rb1_final>-lgort..
+      lw_goodsmvt_item-po_number  = <lfs_rb1_final>-ebeln.
+      lw_goodsmvt_item-po_item    = <lfs_rb1_final>-ebelp.
+
+      APPEND lw_goodsmvt_item TO lt_goodsmvt_item.
+      CLEAR: lw_goodsmvt_item.
+
+    ENDLOOP.
+
+    IF lv_flag = abap_true AND lv_flag1 = abap_true. "'X'.
+
+      CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+        EXPORTING
+          goodsmvt_header  = lw_goodsmvt
+          goodsmvt_code    = lw_gm_code
+*         TESTRUN          = ' '
+*         GOODSMVT_REF_EWM =
+*         GOODSMVT_PRINT_CTRL           =
+        IMPORTING
+*         GOODSMVT_HEADRET =
+          materialdocument = lw_materialdocument
+          matdocumentyear  = lw_matdocumentyear
+        TABLES
+          goodsmvt_item    = lt_goodsmvt_item
+*         GOODSMVT_SERIALNUMBER         =
+          return           = lt_return
+*         GOODSMVT_SERV_PART_DATA       =
+***          extensionin      = lt_ext
+*         GOODSMVT_ITEM_CWM             =
+        .
+
+    ELSE.
+      IF gt_rb1_final IS NOT INITIAL.
+        gw_log-msg_logo = icon_led_red.
+        gw_log-type = lc_e1."'S'.
+
+        IF lv_flag NE abap_true.
+          gw_log-message = lc_msg4.
+        ELSEIF lv_flag1 NE abap_true.
+          gw_log-message = lc_msg5.
+        ENDIF.
+
+
+        APPEND gw_log TO gt_log.
+        CLEAR: gw_log.
+      ENDIF.
+    ENDIF.
+    IF lw_materialdocument IS NOT INITIAL.
+
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true
+*               IMPORTING
+*         RETURN        =
+        .
+      WAIT UP TO 2 SECONDS.
+
+      gw_log-msg_logo = icon_led_green.
+      gw_log-ge_no = <lfs_rb1_final>-ge_no.
+      gw_log-gate_item = <lfs_rb1_final>-gate_item.
+
+      gw_log-mblnr = lw_materialdocument.
+      gw_log-mjahr = lw_matdocumentyear.
+      gw_log-type = lc_s1."'S'.
+      gw_log-message = lc_msg."'GR created'.
+
+      LOOP AT gt_rb1_final ASSIGNING FIELD-SYMBOL(<lfs_item>) WHERE zchk EQ abap_true.
+
+        READ TABLE lt_item INTO DATA(ls_item) WITH KEY ge_no = <lfs_item>-ge_no
+                                                       bukrs = <lfs_item>-bukrs
+                                                       werks_r = <lfs_item>-werks
+                                                       gate_item = <lfs_item>-gate_item.
+        IF sy-subrc EQ 0.
+          MOVE-CORRESPONDING ls_item TO gs_item.
+
+        ENDIF.
+
+*        MOVE-CORRESPONDING <lfs_item> TO gs_item.
+
+        gs_item-mblnr = lw_materialdocument.
+        gs_item-mjahr = lw_matdocumentyear.
+
+        MOVE-CORRESPONDING gs_item TO gs_gemigo.
+        gs_gemigo-crtby = sy-uname.
+        gs_gemigo-crton = sy-datlo.
+        gs_gemigo-crtat = sy-timlo.
+
+        APPEND gs_gemigo TO gt_gemigo.
+        CLEAR gs_gemigo.
+
+        APPEND gs_item TO gt_item.
+        CLEAR gs_item.
+
+        READ TABLE lt_head ASSIGNING FIELD-SYMBOL(<lfs_head>) WITH KEY ge_no = <lfs_item>-ge_no
+                                                                       bukrs = <lfs_item>-bukrs.
+        IF sy-subrc EQ 0.
+          <lfs_head>-gestat = lc_cls.
+        ENDIF.
+      ENDLOOP.
+
+      APPEND gw_log TO gt_log.
+      CLEAR: gw_log.
+
+    ELSE.
+
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+*              IMPORTING
+*                RETURN        =
+        .
+
+      LOOP AT lt_return INTO DATA(lw_return).
+        MOVE-CORRESPONDING lw_return TO gw_log.
+
+        IF lw_return-type = lc_e1."'E'.
+          gw_log-msg_logo = icon_led_red.
+        ELSEIF lw_return-type = lc_w1."'W'.
+          gw_log-msg_logo = icon_led_yellow.
+        ELSEIF lw_return-type = lc_s1."'S'.
+          gw_log-msg_logo = icon_led_green.
+        ENDIF.
+
+        gw_log-ge_no = <lfs_rb1_final>-ge_no.
+        gw_log-gate_item = lw_return-message_v2.
+
+        APPEND gw_log TO gt_log.
+        CLEAR: gw_log.
+      ENDLOOP.
+
+    ENDIF.
+
+    FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+          lw_materialdocument, lw_matdocumentyear.
+
+    IF NOT gt_item IS INITIAL.
+      SELECT * FROM zdace_weight_in INTO TABLE @DATA(lt_wt)
+    FOR ALL ENTRIES IN @gt_item
+WHERE ge_no = @gt_item-ge_no
+    AND   geyear = @gt_item-geyear
+    AND   bukrs = @gt_item-bukrs.
+      IF sy-subrc EQ 0.
+        SORT lt_wt BY ge_no.
+      ENDIF.
+
+      SELECT mblnr, mjahr,zeile,ebeln,ebelp
+        FROM mseg INTO TABLE @DATA(lt_mesg)
+        FOR ALL ENTRIES IN @gt_item
+        WHERE mblnr = @gt_item-mblnr
+        AND   mjahr = @gt_item-mjahr
+        AND   ebeln = @gt_item-ebeln
+        AND   ebelp = @gt_item-ebelp.
+      IF sy-subrc EQ 0.
+        SORT lt_mesg BY mblnr.
+      ENDIF.
+
+      LOOP AT gt_item ASSIGNING FIELD-SYMBOL(<lfs_item1>).
+
+        READ TABLE lt_mesg INTO DATA(ls_mseg) WITH KEY mblnr = <lfs_item1>-mblnr mjahr = <lfs_item1>-mjahr
+                                                       ebeln = <lfs_item1>-ebeln ebelp = <lfs_item1>-ebelp.
+        IF sy-subrc EQ 0.
+          <lfs_item1>-zeile = ls_mseg-zeile.
+        ENDIF.
+      ENDLOOP.
+
+      LOOP AT lt_wt ASSIGNING FIELD-SYMBOL(<lfs_wt>).
+        <lfs_wt>-plant_receipt = abap_true.
+      ENDLOOP.
+      MODIFY zdace_gatei FROM TABLE gt_item.
+      IF sy-subrc EQ 0.
+        WAIT UP TO 2 SECONDS.
+        COMMIT WORK.
+        DELETE gt_rb1_final WHERE zchk = abap_true..
+        MODIFY zdace_weight_in FROM TABLE lt_wt.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+        MODIFY zdace_gateh FROM TABLE lt_head.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+        MODIFY zdace_ge_migo FROM TABLE gt_gemigo.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    IF gt_log IS NOT INITIAL.
+      PERFORM f_displog.
+    ENDIF.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form gr_at_plant
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM gr_at_plant .
+
+  DATA: lw_goodsmvt         TYPE bapi2017_gm_head_01,
+        lw_gm_code          TYPE bapi2017_gm_code,
+        lt_goodsmvt_item    TYPE TABLE OF bapi2017_gm_item_create,
+        lw_goodsmvt_item    TYPE bapi2017_gm_item_create,
+        lw_materialdocument TYPE bapi2017_gm_head_ret-mat_doc,
+        lw_matdocumentyear  TYPE bapi2017_gm_head_ret-doc_year,
+        lt_return           TYPE TABLE OF bapiret2,
+        lt_ext              TYPE TABLE OF bapiparex,
+        ls_ext              TYPE bapiparex,
+*        ls_mkpf             TYPE bapi_te_xmkpf,
+        lv_trans_code       TYPE zdacetran.
+
+  CONSTANTS : lc_movtyp    TYPE bapi2017_gm_item_create-move_type VALUE '101',
+              lc_mvtind    TYPE bapi2017_gm_item_create-move_type VALUE 'B',
+              lc_gmcode(2) TYPE c VALUE '01',
+              lc_s         TYPE bapi_mtype VALUE 'S',
+              lc_w         TYPE bapi_mtype VALUE 'W',
+              lc_e         TYPE bapi_mtype VALUE 'E',
+              lc_msg       TYPE bapi_msg VALUE 'GR Created',
+              lc_msg1      TYPE bapi_msg VALUE 'Delivery Created',
+              lc_error1    TYPE bapi_msg VALUE 'Final GR Qty cannot be zero',
+              lc_str       TYPE bapiparex-structure VALUE 'BAPI_TE_XMKPF'.
+  FREE: gt_log.
+  IF r_rb3 EQ abap_true.
+    SELECT * FROM zdace_gatei INTO TABLE @DATA(lt_item)   "#EC CI_SUBRC
+     FOR ALL ENTRIES IN @gt_rb1_final
+    WHERE ge_no = @gt_rb1_final-ge_no
+    AND   bukrs = @gt_rb1_final-bukrs
+    AND   werks_r = @gt_rb1_final-werks
+*            AND   GEYEAR = @gt_rb1_final-GEYEAR
+    AND   gate_item = @gt_rb1_final-gate_item.
+
+    LOOP AT gt_rb1_final ASSIGNING FIELD-SYMBOL(<lfs_rb1_final>) WHERE zchk EQ abap_true." AND lgort IS NOT INITIAL .
+
+      FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+            lw_materialdocument, lw_matdocumentyear.", gt_gemigo.
+
+      IF <lfs_rb1_final>-zchk_pdate = abap_true.
+        lw_goodsmvt-pstng_date = sy-datlo.
+      ELSE.
+        lw_goodsmvt-pstng_date = <lfs_rb1_final>-ge_out_date.
+      ENDIF.
+*     lw_goodsmvt-pstng_date = sy-datum.
+      lw_goodsmvt-doc_date = sy-datlo.  "<lfs_rb1_final>-bldat.
+      lw_goodsmvt-pr_uname = sy-uname.
+      lw_goodsmvt-ref_doc_no = <lfs_rb1_final>-vbeln.
+      lw_goodsmvt-bill_of_lading = <lfs_rb1_final>-lr_no.
+
+      lw_gm_code-gm_code = lc_gmcode."'01'.    " 01 - MB01 - Goods Receipts for Purchase Order
+
+      lw_goodsmvt_item-move_type  = lc_movtyp. "'101'.
+      lw_goodsmvt_item-mvt_ind    = lc_mvtind. "'B'.
+      lw_goodsmvt_item-plant      = <lfs_rb1_final>-werks.
+      lw_goodsmvt_item-material   = <lfs_rb1_final>-matnr.
+      lw_goodsmvt_item-entry_qnt  = <lfs_rb1_final>-final_grq.
+      lw_goodsmvt_item-entry_uom    = <lfs_rb1_final>-meins.
+      lw_goodsmvt_item-stge_loc   = <lfs_rb1_final>-lgort..
+      lw_goodsmvt_item-deliv_numb  = <lfs_rb1_final>-vbeln.
+      lw_goodsmvt_item-deliv_item    = <lfs_rb1_final>-posnr.
+      lw_goodsmvt_item-po_number  = <lfs_rb1_final>-ebeln.
+      lw_goodsmvt_item-po_item    = <lfs_rb1_final>-ebelp.
+
+      APPEND lw_goodsmvt_item TO lt_goodsmvt_item.
+      CLEAR: lw_goodsmvt_item.
+
+***      ls_mkpf-ge_no = <lfs_rb1_final>-ge_no.
+***      ls_mkpf-geyear = <lfs_rb1_final>-geyear.
+***
+***      ls_ext-structure = lc_str. "'BAPI_TE_XMKPF'.
+***      ls_ext-valuepart1+0(10) = ls_mkpf-ge_no.
+***      ls_ext-valuepart1+10(4) = ls_mkpf-geyear.
+***
+***      APPEND ls_ext TO lt_ext.
+***      CLEAR ls_ext.
+
+      IF <lfs_rb1_final>-final_grq IS NOT INITIAL.
+        lv_trans_code = <lfs_rb1_final>-trans_code.
+        EXPORT lv_trans_code FROM lv_trans_code TO MEMORY ID 'ZDACE_GATE'.
+
+        CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+          EXPORTING
+            goodsmvt_header  = lw_goodsmvt
+            goodsmvt_code    = lw_gm_code
+*           TESTRUN          = ' '
+*           GOODSMVT_REF_EWM =
+*           GOODSMVT_PRINT_CTRL           =
+          IMPORTING
+*           GOODSMVT_HEADRET =
+            materialdocument = lw_materialdocument
+            matdocumentyear  = lw_matdocumentyear
+          TABLES
+            goodsmvt_item    = lt_goodsmvt_item
+*           GOODSMVT_SERIALNUMBER         =
+            return           = lt_return
+*           GOODSMVT_SERV_PART_DATA       =
+***            extensionin      = lt_ext.
+*           GOODSMVT_ITEM_CWM             =
+          .
+        IF lw_materialdocument IS NOT INITIAL.
+
+          CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+            EXPORTING
+              wait = abap_true
+*               IMPORTING
+*             RETURN        =
+            .
+          WAIT UP TO 2 SECONDS.
+          gw_log-msg_logo = icon_led_green.
+          gw_log-ge_no = <lfs_rb1_final>-ge_no.
+          gw_log-gate_item = <lfs_rb1_final>-gate_item.
+
+          gw_log-mblnr = lw_materialdocument.
+          gw_log-mjahr = lw_matdocumentyear.
+          gw_log-type = lc_s."'S'.
+          gw_log-message = lc_msg."'GR created'.
+
+          MOVE-CORRESPONDING <lfs_rb1_final> TO gs_item.
+          READ TABLE lt_item INTO DATA(ls_item) WITH KEY ge_no = <lfs_rb1_final>-ge_no bukrs = <lfs_rb1_final>-bukrs
+                                                         werks_r = <lfs_rb1_final>-werks gate_item = <lfs_rb1_final>-gate_item.
+          IF sy-subrc EQ 0.
+            MOVE-CORRESPONDING ls_item TO gs_item.
+          ENDIF.
+          CLEAR : gs_item-vbeln, gs_item-posnr.
+          gs_item-vbeln_d = <lfs_rb1_final>-vbeln.
+          gs_item-posnr_d = <lfs_rb1_final>-posnr.
+          gs_item-werks_r = <lfs_rb1_final>-werks.
+          gs_item-mblnr = lw_materialdocument.
+          gs_item-mjahr = lw_matdocumentyear.
+
+          MOVE-CORRESPONDING gs_item TO gs_gemigo.
+          gs_gemigo-crtby = sy-uname.
+          gs_gemigo-crton = sy-datlo.
+          gs_gemigo-crtat = sy-timlo.
+
+          APPEND gs_gemigo TO gt_gemigo.
+          CLEAR gs_gemigo.
+
+          APPEND gs_item TO gt_item.
+          CLEAR gs_item.
+
+          APPEND gw_log TO gt_log.
+          CLEAR: gw_log.
+
+        ELSE.
+
+          CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+*              IMPORTING
+*                RETURN        =
+            .
+
+          LOOP AT lt_return INTO DATA(lw_return).
+            MOVE-CORRESPONDING lw_return TO gw_log.
+
+            IF lw_return-type = lc_e."'E'.
+              gw_log-msg_logo = icon_led_red.
+            ELSEIF lw_return-type = lc_w."'W'.
+              gw_log-msg_logo = icon_led_yellow.
+            ELSEIF lw_return-type = lc_s."'S'.
+              gw_log-msg_logo = icon_led_green.
+            ENDIF.
+
+            gw_log-ge_no = <lfs_rb1_final>-ge_no.
+            gw_log-gate_item = <lfs_rb1_final>-gate_item.
+
+            APPEND gw_log TO gt_log.
+            CLEAR: gw_log.
+          ENDLOOP.
+
+        ENDIF.
+
+      ELSE.
+        gw_log-msg_logo = icon_led_red.
+        gw_log-ge_no = <lfs_rb1_final>-ge_no.
+        gw_log-gate_item = <lfs_rb1_final>-gate_item.
+        gw_log-message = lc_error1.
+        APPEND gw_log TO gt_log.
+        CLEAR: gw_log.
+
+      ENDIF.
+
+      FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+            lw_materialdocument, lw_matdocumentyear.
+
+    ENDLOOP.
+
+    IF NOT gt_item IS INITIAL.
+      SELECT * FROM zdace_weight_in INTO TABLE @DATA(lt_wt)
+      FOR ALL ENTRIES IN @gt_item
+  WHERE ge_no = @gt_item-ge_no
+      AND   geyear = @gt_item-geyear
+      AND   bukrs = @gt_item-bukrs.
+      IF sy-subrc EQ 0.
+        SORT lt_wt BY ge_no.
+      ENDIF.
+
+      LOOP AT lt_wt ASSIGNING FIELD-SYMBOL(<lfs_wt>).
+        <lfs_wt>-plant_receipt = abap_true.
+      ENDLOOP.
+
+      MODIFY zdace_gatei FROM TABLE gt_item.
+
+      IF sy-subrc EQ 0.
+        WAIT UP TO 2 SECONDS.
+        DELETE gt_rb1_final WHERE zchk = abap_true..
+        MODIFY zdace_weight_in FROM TABLE lt_wt.
+        COMMIT WORK.
+
+        MODIFY zdace_ge_migo FROM TABLE gt_gemigo.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    IF gt_log IS NOT INITIAL.
+      PERFORM f_displog.
+    ENDIF.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form c_gr_at_plant
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM c_gr_at_plant .
+
+  DATA: lw_goodsmvt         TYPE bapi2017_gm_head_01,
+        lw_gm_code          TYPE bapi2017_gm_code,
+        lt_goodsmvt_item    TYPE TABLE OF bapi2017_gm_item_create,
+        lw_goodsmvt_item    TYPE bapi2017_gm_item_create,
+        lw_materialdocument TYPE bapi2017_gm_head_ret-mat_doc,
+        lw_matdocumentyear  TYPE bapi2017_gm_head_ret-doc_year,
+        lt_return           TYPE TABLE OF bapiret2,
+        lt_ext              TYPE TABLE OF bapiparex,
+        ls_ext              TYPE bapiparex.
+*        ls_mkpf             TYPE bapi_te_xmkpf.
+
+  CONSTANTS : lc_movtyp    TYPE bapi2017_gm_item_create-move_type VALUE '101',
+              lc_mvtind    TYPE bapi2017_gm_item_create-move_type VALUE 'B',
+              lc_gmcode(2) TYPE c VALUE '01',
+              lc_s1        TYPE bapi_mtype VALUE 'S',
+              lc_w1        TYPE bapi_mtype VALUE 'W',
+              lc_e1        TYPE bapi_mtype VALUE 'E',
+              lc_msg       TYPE bapi_msg VALUE 'GR Created',
+              lc_msg1      TYPE bapi_msg VALUE 'Delivery Created',
+              lc_msg4      TYPE bapi_msg VALUE 'Please select only one Vendor',
+              lc_msg5      TYPE bapi_msg VALUE 'Please select only one Bill of Lading'.
+
+  FREE: gt_log.
+
+  IF r_rb3 EQ abap_true.
+    SELECT * FROM zdace_gatei INTO TABLE @DATA(lt_item)   "#EC CI_SUBRC
+      FOR ALL ENTRIES IN @gt_rb1_final
+     WHERE ge_no = @gt_rb1_final-ge_no
+     AND   bukrs = @gt_rb1_final-bukrs
+     AND   werks_r = @gt_rb1_final-werks
+*            AND   GEYEAR = @gt_rb1_final-GEYEAR
+     AND   gate_item = @gt_rb1_final-gate_item.
+
+    FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+         lw_materialdocument, lw_matdocumentyear.", gt_gemigo.
+
+    CLEAR lv_index.
+    LOOP AT gt_rb1_final ASSIGNING FIELD-SYMBOL(<lfs_rb1_final>) WHERE zchk EQ abap_true." AND lgort IS NOT INITIAL ..
+
+      lv_index = lv_index + 1.
+
+      IF <lfs_rb1_final>-zchk_pdate = abap_true.
+        lw_goodsmvt-pstng_date = sy-datlo.
+      ELSE.
+        lw_goodsmvt-pstng_date = <lfs_rb1_final>-ge_out_date.
+      ENDIF.
+*      lw_goodsmvt-pstng_date = sy-datum.
+      lw_goodsmvt-doc_date = sy-datlo.
+      lw_goodsmvt-pr_uname = sy-uname.
+      lw_gm_code-gm_code = lc_gmcode. "'01'.
+      lw_goodsmvt-ref_doc_no = <lfs_rb1_final>-vbeln.
+*      lw_goodsmvt-bill_of_lading = <lfs_rb1_final>-lr_no.
+
+      lw_goodsmvt_item-move_type  = lc_movtyp. "'101'.
+      lw_goodsmvt_item-mvt_ind    = lc_mvtind. "'B'.
+      lw_goodsmvt_item-plant      = <lfs_rb1_final>-werks.
+      lw_goodsmvt_item-material   = <lfs_rb1_final>-matnr.
+      lw_goodsmvt_item-entry_qnt  = <lfs_rb1_final>-final_grq.
+      lw_goodsmvt_item-entry_uom    = <lfs_rb1_final>-meins.
+      lw_goodsmvt_item-stge_loc   = <lfs_rb1_final>-lgort..
+      lw_goodsmvt_item-deliv_numb  = <lfs_rb1_final>-vbeln.
+      lw_goodsmvt_item-deliv_item    = <lfs_rb1_final>-posnr.
+      lw_goodsmvt_item-po_number  = <lfs_rb1_final>-ebeln.
+      lw_goodsmvt_item-po_item    = <lfs_rb1_final>-ebelp.
+
+      APPEND lw_goodsmvt_item TO lt_goodsmvt_item.
+      CLEAR: lw_goodsmvt_item.
+
+    ENDLOOP.
+
+    CALL FUNCTION 'BAPI_GOODSMVT_CREATE'
+      EXPORTING
+        goodsmvt_header  = lw_goodsmvt
+        goodsmvt_code    = lw_gm_code
+*       TESTRUN          = ' '
+*       GOODSMVT_REF_EWM =
+*       GOODSMVT_PRINT_CTRL           =
+      IMPORTING
+*       GOODSMVT_HEADRET =
+        materialdocument = lw_materialdocument
+        matdocumentyear  = lw_matdocumentyear
+      TABLES
+        goodsmvt_item    = lt_goodsmvt_item
+*       GOODSMVT_SERIALNUMBER         =
+        return           = lt_return
+*       GOODSMVT_SERV_PART_DATA       =
+*       extensionin      = lt_ext
+*       GOODSMVT_ITEM_CWM             =
+      .
+
+    IF lw_materialdocument IS NOT INITIAL.
+
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait = abap_true
+*               IMPORTING
+*         RETURN        =
+        .
+      WAIT UP TO 2 SECONDS.
+      gw_log-msg_logo = icon_led_green.
+      gw_log-ge_no = <lfs_rb1_final>-ge_no.
+      gw_log-gate_item = <lfs_rb1_final>-gate_item.
+
+      gw_log-mblnr = lw_materialdocument.
+      gw_log-mjahr = lw_matdocumentyear.
+      gw_log-type = lc_s1."'S'.
+      gw_log-message = lc_msg."'GR created'.
+
+      LOOP AT gt_rb1_final ASSIGNING FIELD-SYMBOL(<lfs_item>) WHERE zchk EQ abap_true.
+
+        READ TABLE lt_item INTO DATA(ls_item) WITH KEY ge_no = <lfs_item>-ge_no
+                                                       bukrs = <lfs_item>-bukrs
+                                                       werks_r = <lfs_item>-werks
+                                                       gate_item = <lfs_item>-gate_item.
+        IF sy-subrc EQ 0.
+          MOVE-CORRESPONDING ls_item TO gs_item.
+*
+        ENDIF.
+
+*        MOVE-CORRESPONDING <lfs_item> TO gs_item.
+        CLEAR : gs_item-vbeln, gs_item-posnr.
+        gs_item-vbeln_d = <lfs_item>-vbeln.
+        gs_item-posnr_d = <lfs_item>-posnr.
+        gs_item-werks_r = <lfs_item>-werks.
+
+        gs_item-mblnr = lw_materialdocument.
+        gs_item-mjahr = lw_matdocumentyear.
+
+        MOVE-CORRESPONDING gs_item TO gs_gemigo.
+        gs_gemigo-crtby = sy-uname.
+        gs_gemigo-crton = sy-datlo.
+        gs_gemigo-crtat = sy-timlo.
+
+        APPEND gs_gemigo TO gt_gemigo.
+        CLEAR gs_gemigo.
+
+        APPEND gs_item TO gt_item.
+        CLEAR gs_item.
+      ENDLOOP.
+
+      APPEND gw_log TO gt_log.
+      CLEAR: gw_log.
+
+    ELSE.
+
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+*              IMPORTING
+*                RETURN        =
+        .
+
+      LOOP AT lt_return INTO DATA(lw_return).
+        MOVE-CORRESPONDING lw_return TO gw_log.
+
+        IF lw_return-type = lc_e1."'E'.
+          gw_log-msg_logo = icon_led_red.
+        ELSEIF lw_return-type = lc_w1."'W'.
+          gw_log-msg_logo = icon_led_yellow.
+        ELSEIF lw_return-type = lc_s1."'S'.
+          gw_log-msg_logo = icon_led_green.
+        ENDIF.
+
+        gw_log-ge_no = <lfs_rb1_final>-ge_no.
+        gw_log-gate_item = lw_return-message_v2.
+
+        APPEND gw_log TO gt_log.
+        CLEAR: gw_log.
+      ENDLOOP.
+
+    ENDIF.
+
+    FREE: lt_return, lt_goodsmvt_item, lw_goodsmvt, lw_gm_code,
+          lw_materialdocument, lw_matdocumentyear.
+
+    IF NOT gt_item IS INITIAL.
+      SELECT * FROM zdace_weight_in INTO TABLE @DATA(lt_wt)
+      FOR ALL ENTRIES IN @gt_item
+  WHERE ge_no = @gt_item-ge_no
+      AND   geyear = @gt_item-geyear
+      AND   bukrs = @gt_item-bukrs.
+      IF sy-subrc EQ 0.
+        SORT lt_wt BY ge_no.
+      ENDIF.
+
+      LOOP AT lt_wt ASSIGNING FIELD-SYMBOL(<lfs_wt>).
+        <lfs_wt>-plant_receipt = abap_true.
+      ENDLOOP.
+
+      MODIFY zdace_gatei FROM TABLE gt_item.
+      IF sy-subrc EQ 0.
+        DELETE gt_rb1_final WHERE zchk = abap_true..
+        MODIFY zdace_weight_in FROM TABLE lt_wt.
+        COMMIT WORK.
+
+        MODIFY zdace_ge_migo FROM TABLE gt_gemigo.
+        IF sy-subrc EQ 0.
+          COMMIT WORK.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    IF gt_log IS NOT INITIAL.
+      PERFORM f_displog.
+    ENDIF.
+  ENDIF.
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+*&      Form  SET_PF_STATUS
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->RT_EXTAB   text
+*----------------------------------------------------------------------*
+FORM f_estatus USING lv_extab TYPE slis_t_extab.
+
+  DATA: lt_fcode TYPE TABLE OF sy-ucomm,
+        ls_fcode TYPE sy-ucomm.
+  REFRESH : lt_fcode.
+
+  ls_fcode = gc_post. APPEND ls_fcode TO lt_fcode.
+  ls_fcode = gc_post1. APPEND ls_fcode TO lt_fcode.
+  ls_fcode = gc_calc. APPEND ls_fcode TO lt_fcode.
+  ls_fcode = gc_gr. APPEND ls_fcode TO lt_fcode.
+  ls_fcode = gc_cgr. APPEND ls_fcode TO lt_fcode.
+  ls_fcode = gc_disp. APPEND ls_fcode TO lt_fcode.
+  SET PF-STATUS gc_epfs EXCLUDING lt_fcode .
+
+ENDFORM. "SET_PF_STATUS

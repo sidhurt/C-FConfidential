@@ -1,0 +1,3 @@
+﻿private section.
+
+  constants GC_FLX_GENERATION_VERSION type I value 5 ##NO_TEXT.

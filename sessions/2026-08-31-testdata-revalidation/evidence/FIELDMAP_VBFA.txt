@@ -1,0 +1,45 @@
+SESSION|System=QS4|Client=700|Table=VBFA
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I1_%_APP_%-TEXT|Text=RUUID|Name=%_I1_%_APP_%-TEXT|Tip=|X=48|Y=254
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI1-LOW|Text=00000000000000000000000000000000|Name=I1-LOW|Tip=|X=432|Y=254
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I1_%_APP_%-TO_TEXT|Text=to|Name=%_I1_%_APP_%-TO_TEXT|Tip=|X=660|Y=254
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI1-HIGH|Text=00000000000000000000000000000000|Name=I1-HIGH|Tip=|X=732|Y=254
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I2_%_APP_%-TEXT|Text=VBELV|Name=%_I2_%_APP_%-TEXT|Tip=|X=48|Y=320
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI2-LOW|Text=|Name=I2-LOW|Tip=|X=432|Y=320
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I2_%_APP_%-TO_TEXT|Text=to|Name=%_I2_%_APP_%-TO_TEXT|Tip=|X=660|Y=320
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI2-HIGH|Text=|Name=I2-HIGH|Tip=|X=732|Y=320
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I3_%_APP_%-TEXT|Text=POSNV|Name=%_I3_%_APP_%-TEXT|Tip=|X=48|Y=353
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI3-LOW|Text=|Name=I3-LOW|Tip=|X=432|Y=353
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I3_%_APP_%-TO_TEXT|Text=to|Name=%_I3_%_APP_%-TO_TEXT|Tip=|X=660|Y=353
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI3-HIGH|Text=|Name=I3-HIGH|Tip=|X=732|Y=353
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I4_%_APP_%-TEXT|Text=VBELN|Name=%_I4_%_APP_%-TEXT|Tip=|X=48|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI4-LOW|Text=|Name=I4-LOW|Tip=|X=432|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I4_%_APP_%-TO_TEXT|Text=to|Name=%_I4_%_APP_%-TO_TEXT|Tip=|X=660|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtI4-HIGH|Text=|Name=I4-HIGH|Tip=|X=732|Y=386
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I5_%_APP_%-TEXT|Text=VBTYP_N|Name=%_I5_%_APP_%-TEXT|Tip=|X=48|Y=419
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI5-LOW|Text=|Name=I5-LOW|Tip=|X=432|Y=419
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I5_%_APP_%-TO_TEXT|Text=to|Name=%_I5_%_APP_%-TO_TEXT|Tip=|X=660|Y=419
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI5-HIGH|Text=|Name=I5-HIGH|Tip=|X=732|Y=419
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I6_%_APP_%-TEXT|Text=WAERS|Name=%_I6_%_APP_%-TEXT|Tip=|X=48|Y=452
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI6-LOW|Text=|Name=I6-LOW|Tip=|X=432|Y=452
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I6_%_APP_%-TO_TEXT|Text=to|Name=%_I6_%_APP_%-TO_TEXT|Tip=|X=660|Y=452
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI6-HIGH|Text=|Name=I6-HIGH|Tip=|X=732|Y=452
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I7_%_APP_%-TEXT|Text=VBTYP_V|Name=%_I7_%_APP_%-TEXT|Tip=|X=48|Y=485
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI7-LOW|Text=|Name=I7-LOW|Tip=|X=432|Y=485
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I7_%_APP_%-TO_TEXT|Text=to|Name=%_I7_%_APP_%-TO_TEXT|Tip=|X=660|Y=485
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI7-HIGH|Text=|Name=I7-HIGH|Tip=|X=732|Y=485
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I8_%_APP_%-TEXT|Text=MATNR|Name=%_I8_%_APP_%-TEXT|Tip=|X=48|Y=518
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI8-LOW|Text=|Name=I8-LOW|Tip=|X=432|Y=518
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I8_%_APP_%-TO_TEXT|Text=to|Name=%_I8_%_APP_%-TO_TEXT|Tip=|X=660|Y=518
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI8-HIGH|Text=|Name=I8-HIGH|Tip=|X=732|Y=518
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I9_%_APP_%-TEXT|Text=BWART|Name=%_I9_%_APP_%-TEXT|Tip=|X=48|Y=551
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI9-LOW|Text=|Name=I9-LOW|Tip=|X=432|Y=551
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I9_%_APP_%-TO_TEXT|Text=to|Name=%_I9_%_APP_%-TO_TEXT|Tip=|X=660|Y=551
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI9-HIGH|Text=|Name=I9-HIGH|Tip=|X=732|Y=551
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I10_%_APP_%-TEXT|Text=VRKME|Name=%_I10_%_APP_%-TEXT|Tip=|X=48|Y=584
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI10-LOW|Text=|Name=I10-LOW|Tip=|X=432|Y=584
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_I10_%_APP_%-TO_TEXT|Text=to|Name=%_I10_%_APP_%-TO_TEXT|Tip=|X=660|Y=584
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtI10-HIGH|Text=|Name=I10-HIGH|Tip=|X=732|Y=584
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_LIST_BRE_%_APP_%-TEXT|Text=Width of Output List|Name=%_LIST_BRE_%_APP_%-TEXT|Tip=|X=48|Y=650
+NODE|Type=GuiCTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/ctxtLIST_BRE|Text=250|Name=LIST_BRE|Tip=|X=432|Y=650
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txt%_MAX_SEL_%_APP_%-TEXT|Text=Maximum No. of Hits|Name=%_MAX_SEL_%_APP_%-TEXT|Tip=|X=48|Y=683
+NODE|Type=GuiTextField|Id=/app/con[0]/ses[0]/wnd[0]/usr/txtMAX_SEL|Text=200 |Name=MAX_SEL|Tip=|X=432|Y=683

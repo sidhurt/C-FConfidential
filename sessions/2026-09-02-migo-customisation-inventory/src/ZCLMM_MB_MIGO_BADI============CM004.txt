@@ -1,0 +1,15 @@
+﻿METHOD if_ex_mb_migo_badi~hold_data_load .
+
+  DATA: ls_migo_badi_hold TYPE migo_badi_hold.
+* Select hold data from database
+  SELECT SINGLE * FROM migo_badi_hold INTO ls_migo_badi_hold
+            WHERE guid = i_guid.
+* Get internal structure gs_exdata_header from data buffer
+*  IMPORT gs_exdata_header TO gs_exdata_header FROM DATA BUFFER
+*     ls_migo_badi_hold-hold_string_head.
+* Get internal table gt_extdata from data buffer
+
+  IMPORT gt_extdata TO gt_extdata FROM DATA BUFFER
+     ls_migo_badi_hold-hold_string.
+
+ENDMETHOD.                    "if_ex_mb_migo_badi~hold_data_load

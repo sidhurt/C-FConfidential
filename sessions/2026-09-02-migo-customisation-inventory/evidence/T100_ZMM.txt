@@ -1,0 +1,26 @@
+﻿SESSION|QS4/700|User=QNOVATE8
+FILTER|ARBGB(I2)=ZMM
+FILTER|MSGNR(I3)=060..080
+FILTER|SPRSL(I1)=E
+RESULT|Table=T100|Rows=20|SBAR=
+COLS|SPRSL,ARBGB,MSGNR,TEXT
+ROW0|SPRSL=E|ARBGB=ZMM|MSGNR=060|TEXT=User &1 is not authorized for plant &2
+ROW1|SPRSL=E|ARBGB=ZMM|MSGNR=061|TEXT=You are not authorized for this option
+ROW2|SPRSL=E|ARBGB=ZMM|MSGNR=063|TEXT=Migo no &1 is not valid
+ROW3|SPRSL=E|ARBGB=ZMM|MSGNR=064|TEXT=Material or plant mismatch with 561 Material Document
+ROW4|SPRSL=E|ARBGB=ZMM|MSGNR=065|TEXT=Please enter either of PR or 561 Ref Material Document
+ROW5|SPRSL=E|ARBGB=ZMM|MSGNR=066|TEXT=&1 Quantity left for Material document &2
+ROW6|SPRSL=E|ARBGB=ZMM|MSGNR=067|TEXT=GRN quantity exceeds delivery & quantity
+ROW7|SPRSL=E|ARBGB=ZMM|MSGNR=068|TEXT=Invoice not created/Cancelled for outbound Delivery &
+ROW8|SPRSL=E|ARBGB=ZMM|MSGNR=069|TEXT=Enter Valid Buyer code on item &
+ROW9|SPRSL=E|ARBGB=ZMM|MSGNR=070|TEXT=GRN quantity should be equal to delivery & quantity.
+ROW10|SPRSL=E|ARBGB=ZMM|MSGNR=071|TEXT=Tolerance limit should not exceed & %
+ROW11|SPRSL=E|ARBGB=ZMM|MSGNR=072|TEXT=Vendor & Bank details are missing
+ROW12|SPRSL=E|ARBGB=ZMM|MSGNR=073|TEXT=Changes not possible;subsequent document available
+ROW13|SPRSL=E|ARBGB=ZMM|MSGNR=074|TEXT=Receiving storage location must be GDRK
+ROW14|SPRSL=E|ARBGB=ZMM|MSGNR=075|TEXT=Receiving storage location must be RSD
+ROW15|SPRSL=E|ARBGB=ZMM|MSGNR=076|TEXT=Required data is not found in database
+ROW16|SPRSL=E|ARBGB=ZMM|MSGNR=077|TEXT=Po reference not allowed please use outbound delivery
+ROW17|SPRSL=E|ARBGB=ZMM|MSGNR=078|TEXT=You can use more than one outbound develivery for single MIGO
+ROW18|SPRSL=E|ARBGB=ZMM|MSGNR=079|TEXT=You can not changes delivery notes
+ROW19|SPRSL=E|ARBGB=ZMM|MSGNR=080|TEXT=Old MBLNR do not exist

@@ -1,0 +1,8 @@
+﻿METHOD if_ex_mb_migo_badi~status_and_header .
+* In case of 'Display Material document' select external header data
+*  IF NOT gv_no_input IS INITIAL.
+*    SELECT SINGLE * FROM migo_badi_examp2 INTO gs_exdata_header
+*       WHERE mblnr = is_gohead-mblnr
+*       AND   mjahr = is_gohead-mjahr.
+*  ENDIF.
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~STATUS_AND_HEADER

@@ -1,0 +1,12 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class CL_MDOC_API_FACTORY
+STATUS|
+SOURCE_BEGIN|CL_MDOC_API_FACTORY|GET_API
+  METHOD get_api.
+    IF go_api IS NOT BOUND.
+      CREATE OBJECT go_api TYPE cl_material_document_api.
+    ENDIF.
+
+    ro_api = go_api.
+  ENDMETHOD.
+SOURCE_END

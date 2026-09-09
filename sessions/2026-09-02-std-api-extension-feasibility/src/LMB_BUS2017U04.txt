@@ -1,0 +1,762 @@
+﻿FUNCTION bapi_goodsmvt_create.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(GOODSMVT_HEADER) LIKE  BAPI2017_GM_HEAD_01 STRUCTURE
+*"        BAPI2017_GM_HEAD_01
+*"     VALUE(GOODSMVT_CODE) LIKE  BAPI2017_GM_CODE STRUCTURE
+*"        BAPI2017_GM_CODE
+*"     VALUE(TESTRUN) LIKE  BAPI2017_GM_GEN-TESTRUN DEFAULT SPACE
+*"     VALUE(GOODSMVT_REF_EWM) LIKE  /SPE/BAPI2017_GM_REF_EWM STRUCTURE
+*"        /SPE/BAPI2017_GM_REF_EWM OPTIONAL
+*"     VALUE(GOODSMVT_PRINT_CTRL) LIKE  BAPI2017_GM_PRINT STRUCTURE
+*"        BAPI2017_GM_PRINT OPTIONAL
+*"  EXPORTING
+*"     VALUE(GOODSMVT_HEADRET) LIKE  BAPI2017_GM_HEAD_RET STRUCTURE
+*"        BAPI2017_GM_HEAD_RET
+*"     VALUE(MATERIALDOCUMENT) TYPE  BAPI2017_GM_HEAD_RET-MAT_DOC
+*"     VALUE(MATDOCUMENTYEAR) TYPE  BAPI2017_GM_HEAD_RET-DOC_YEAR
+*"  TABLES
+*"      GOODSMVT_ITEM STRUCTURE  BAPI2017_GM_ITEM_CREATE
+*"      GOODSMVT_SERIALNUMBER STRUCTURE  BAPI2017_GM_SERIALNUMBER
+*"       OPTIONAL
+*"      RETURN STRUCTURE  BAPIRET2
+*"      GOODSMVT_SERV_PART_DATA STRUCTURE
+*"        /SPE/BAPI2017_SERVICEPART_DATA OPTIONAL
+*"      EXTENSIONIN STRUCTURE  BAPIPAREX OPTIONAL
+*"      GOODSMVT_ITEM_CWM STRUCTURE  /CWM/BAPI2017_GM_ITEM_CREATE
+*"       OPTIONAL
+*"----------------------------------------------------------------------
+ENHANCEMENT-POINT bapi_goodsmvt_create_g8 SPOTS es_saplmb_bus2017 STATIC.
+
+ENHANCEMENT-POINT bapi_goodsmvt_create_g6 SPOTS es_saplmb_bus2017.
+* Begin FLE MATNR BAPI Changes
+  DATA: lt_fnames TYPE cl_matnr_chk_mapper=>tt_matnr_bapi_fname,
+        ls_return TYPE bapiret2.
+  lt_fnames = VALUE #( ( int = 'MATERIAL' ext = 'MATERIAL_EXTERNAL' vers = 'MATERIAL_VERSION' guid = 'MATERIAL_GUID' long = 'MATERIAL_LONG' )
+                       ( int = 'MOVE_MAT' ext = 'MOVE_MAT_EXTERNAL' vers = 'MOVE_MAT_VERSION' guid = 'MOVE_MAT_GUID' long = 'MOVE_MAT_LONG' ) ).
+  cl_matnr_chk_mapper=>bapi_tables_conv_tab( EXPORTING iv_int_to_external = ' '
+                                                       it_fnames          = lt_fnames
+                                             CHANGING  ct_matnr           = goodsmvt_item[]
+                                             EXCEPTIONS OTHERS = 1 ).
+  IF sy-subrc <> 0.
+    cl_matnr_chk_mapper=>bapi_get_last_error( IMPORTING ev_return = ls_return ).
+    APPEND ls_return TO return.
+    IF ls_return-type NA 'SIW'.
+      RETURN.
+    ENDIF.
+  ENDIF.
+* End FLE MATNR BAPI Changes
+
+** Begin FLE segmentation BAPI Changes
+  PERFORM sfle_instk_seg_table TABLES goodsmvt_item
+                               USING return ' '.
+  IF sy-subrc IS NOT INITIAL.
+    APPEND return.
+    RETURN.
+  ENDIF.
+** End FLE segmentation BAPI Changes
+
+  DATA: l_buffer_export TYPE c VALUE false.                 "321507
+
+* SPE Related Data declartions.
+  DATA: lt_goodsmvt_rma_data       TYPE TABLE OF /spe/bapi2017_ret_auth_data,
+        lt_goodsmvt_timestamp      TYPE TABLE OF /spe/bapi2017_timestamp,
+        lt_goodsmvt_scrap_ind      TYPE TABLE OF /spe/bapi2017_scrap_ind,
+        lt_goodsmvt_gts_stock_type TYPE /spe/bapi2017_gts_stock_tab,
+        ls_goodsmvt_rma_data       TYPE /spe/bapi2017_ret_auth_data,
+        ls_goodsmvt_timestamp      TYPE /spe/bapi2017_timestamp,
+        ls_goodsmvt_scrap_ind      TYPE /spe/bapi2017_scrap_ind,
+        ls_goodsmvt_serv_part_data TYPE /spe/bapi2017_servicepart_data.
+
+*  reference to BAdI MB_BAPI_GOODSMVT_CREATE
+  DATA lo_mb_bapi_goodsmvt_create  TYPE REF TO mb_bapi_goodsmvt_create.
+
+  DATA : lv_sgt_catv  TYPE sgt_catv,
+         lv_sgt_scope TYPE sgt_scope.
+
+*--> Brazil - Trigger NF geneartion via special code            "783591
+  DATA: j1b_action TYPE goaction VALUE 'BGM'.               "783591
+  EXPORT lv_action FROM j1b_action TO MEMORY ID 'J1B_ACTION'. "783591
+
+*check if importing table GOODSMVT_SERV_PART_DATA is filled
+
+  IF ( goodsmvt_serv_part_data[] IS NOT INITIAL ).
+
+* Populate RMA data, Time stamp and Scrap indicator data into separate
+* internal tables from SPE data importing table
+    LOOP AT goodsmvt_serv_part_data INTO ls_goodsmvt_serv_part_data.
+
+      CLEAR: ls_goodsmvt_rma_data,
+             ls_goodsmvt_timestamp,
+             ls_goodsmvt_scrap_ind.
+
+      MOVE-CORRESPONDING ls_goodsmvt_serv_part_data TO ls_goodsmvt_rma_data.
+      APPEND ls_goodsmvt_rma_data TO lt_goodsmvt_rma_data.
+      MOVE-CORRESPONDING ls_goodsmvt_serv_part_data TO ls_goodsmvt_timestamp.
+      APPEND ls_goodsmvt_timestamp TO lt_goodsmvt_timestamp.
+      MOVE-CORRESPONDING ls_goodsmvt_serv_part_data TO ls_goodsmvt_scrap_ind.
+      APPEND ls_goodsmvt_scrap_ind TO lt_goodsmvt_scrap_ind.
+    ENDLOOP.
+  ENDIF.
+
+* Save RMA-Data in global table
+  IF ( lt_goodsmvt_rma_data[] IS NOT INITIAL ).
+    CALL FUNCTION '/SPE/RMA_DATA_SET'
+      EXPORTING
+        it_rma_data = lt_goodsmvt_rma_data[].
+  ENDIF.
+
+* Save Timestamp Data in global table
+  CALL FUNCTION '/SPE/TIMESTAMP_DATA_SET'
+    EXPORTING
+      it_timestamp = lt_goodsmvt_timestamp[].
+
+* Save Scrap Indicators in global table
+  IF ( lt_goodsmvt_scrap_ind[] IS NOT INITIAL ).
+    CALL FUNCTION '/SPE/SCRAP_INDICATORS_SET'
+      EXPORTING
+        it_scrap_indicator = lt_goodsmvt_scrap_ind[].
+  ENDIF.
+
+
+
+* check if field longnum is active and translate it to
+* internal po_number
+  DATA cl_change TYPE REF TO /sappspro/cl_numbers.
+  DATA lf_active TYPE boolean.
+  FIELD-SYMBOLS: <itab> LIKE goodsmvt_item.
+
+  CLEAR: lf_active.
+  CREATE OBJECT cl_change.
+
+  CALL METHOD cl_change->is_active
+    RECEIVING
+      rv_active = lf_active.
+
+  IF lf_active = 'X'.
+    LOOP AT goodsmvt_item ASSIGNING <itab>.
+
+      TRY.
+          <itab>-po_number =
+             /sappspro/cl_numbers=>lookup_by_longnum( <itab>-longnum ).
+        CATCH /sappspro/cx_number_not_found.
+*               number does not exist.
+      ENDTRY.
+    ENDLOOP.
+  ENDIF.
+
+  DO 1 TIMES.                                               "321507
+* Reset Data Definition ***********************************************
+    CLEAR: return,
+           global_error,
+           loc_tab,
+           t_imseg,
+          t_emseg,                                          "544764
+          currency,                                         "774104
+           s_imkpf.
+
+    REFRESH: return,
+             t_imseg,
+             t_emseg,
+             t_iseri.
+
+* Initialize HU data                                          "n1026874
+    CALL FUNCTION 'HU_PACKING_REFRESH'. "n1026874
+
+* TESTRUN: Simulate a gooods movement
+    f_testrun = testrun.
+
+* Check GMCODE ********************************************************
+    SELECT SINGLE * FROM t158g WHERE gmcode = goodsmvt_code.
+    IF sy-subrc <> 0.
+      global_error = true.
+      PERFORM set_msg_to_bapiret2 TABLES return
+                                  USING  'M7'
+                                         'E'
+                                         '259'
+                                          goodsmvt_code
+                                          l_blank_msgv
+                                          l_blank_msgv
+                                          l_blank_msgv
+                                          'GOODSMVT_CODE'
+                                          0
+                                          space.
+    ENDIF.
+
+    CHECK global_error = false.
+
+* map head to internal structure **************************************
+    CALL FUNCTION 'MAP2I_B2017_GM_HEAD_01_TO_IMKP'
+      EXPORTING
+        bapi2017_gm_head_01 = goodsmvt_header
+      CHANGING
+        imkpf               = s_imkpf.
+    s_imkpf-usnam = sy-uname.
+
+    IF goodsmvt_print_ctrl IS SUPPLIED.
+      MOVE goodsmvt_print_ctrl-pr_print TO  s_imkpf-pr_print.
+    ENDIF.
+
+* Map additonal header fields for EWM reference document to internal
+* structure
+
+    CALL FUNCTION '/SPE/MAP_GOODSMVT_REF_EWM'
+      EXPORTING
+        goodsmvt_ref_ewm = goodsmvt_ref_ewm
+      CHANGING
+        imkpf            = s_imkpf.
+
+
+* map items to internal structure *************************************
+    LOOP AT goodsmvt_item.
+      loc_tab = sy-tabix.
+      CLEAR: t_imseg,
+             ean_entry.
+      IF currency IS INITIAL.
+        PERFORM currency_determination TABLES   return
+                                       USING    goodsmvt_item
+                                                loc_tab
+                                       CHANGING currency.
+      ENDIF.
+      t_imseg-waers = currency.
+      CALL FUNCTION 'MAP2I_B2017_GM_ITEM_TO_IMSEG'
+        EXPORTING
+          bapi2017_gm_item_create      = goodsmvt_item
+        CHANGING
+          imseg                        = t_imseg
+        EXCEPTIONS
+          error_converting_iso_code    = 1
+          error_converting_curr_amount = 2
+          OTHERS                       = 3.
+      IF sy-subrc <> 0.
+        global_error = true.
+        PERFORM sy_msg_to_bapiret2 TABLES return
+                                   USING  loc_tab
+                                          'GOODSMVT_ITEM'.
+      ENDIF.
+
+      IF cl_psm_core_switch_check=>psm_fm_core_bud_per_rev_1( ) IS NOT INITIAL.
+        MOVE goodsmvt_item-budget_period
+             TO t_imseg-budget_pd .
+      ENDIF.
+* Currency must be initial. CLEAR.
+      CLEAR t_imseg-waers.
+* If there is a reservation - field XRERE has to be filled
+      IF NOT t_imseg-rsnum IS INITIAL AND
+         t_imseg-kzbew IS INITIAL.
+        t_imseg-xrere = x.
+      ENDIF.
+
+* check if field XSTOR is filled according to allowed processes
+      IF t_imseg-xstor IS NOT INITIAL.
+        DATA(lo_posting_type_handler) = cl_mdoc_api_factory=>create(  )->get_posting_type_handler_bapi( is_imseg  = t_imseg ).
+        TRY.
+            t_imseg-xstor = lo_posting_type_handler->determine_posting_type( ).
+          CATCH cx_mmim_api INTO DATA(lo_posting_type_exception).
+            ls_return = lo_posting_type_handler->fill_bapi_return_table( EXPORTING io_cx_mmim_api = lo_posting_type_exception ).
+            APPEND ls_return TO return.
+            global_error = true.
+            CLEAR t_imseg-xstor.
+        ENDTRY.
+      ENDIF.
+
+* EAN is not an element of IMSEG...
+      MOVE goodsmvt_item-ean_upc TO ean_upc.
+      IF NOT ean_upc IS INITIAL AND
+         t_imseg-matnr IS INITIAL AND
+         t_imseg-kzbew IS INITIAL.
+* Bring EAN to material number. If there is no entry: no error.
+* The error will be send by MB_CREATE_GOODS_MOVEMENT
+        CLEAR ean_entry.
+        SELECT * FROM m_mat1n WHERE ean11 = ean_upc.
+          CHECK ean_entry < 1.
+          ean_entry = ean_entry + 1.
+        ENDSELECT.
+        IF ean_entry = 1.
+          t_imseg-matnr = m_mat1n-matnr.
+        ENDIF.
+
+        IF cl_ops_switch_check=>sfsw_segmentation_03( ) EQ abap_on. " Release 1.6
+
+          " redetermine the segment value from the EAN number
+          " api to be called only for scope 1 article
+
+          CALL FUNCTION 'SGTG_CHECK_CAT_REL'
+            EXPORTING
+              iv_matnr = m_mat1n-matnr
+              iv_werks = t_imseg-werks
+            IMPORTING
+              ev_scope = lv_sgt_scope.
+
+          IF lv_sgt_scope EQ '1'.
+
+            CALL METHOD cl_sgt_ean=>validate_matnr_ean_migo
+              EXPORTING
+                iv_ean11    = ean_upc
+                iv_matnr    = m_mat1n-matnr
+                iv_meinh    = t_imseg-meins
+                iv_lifnr    = t_imseg-lifnr
+              IMPORTING
+                ev_sgt_catv = lv_sgt_catv
+              EXCEPTIONS
+                not_found   = 1
+                OTHERS      = 2.
+            t_imseg-sgt_scat = lv_sgt_catv.
+
+          ENDIF.
+        ENDIF.
+
+      ENDIF.
+      CLEAR t_imseg-kzear_old.
+*Put the BWH specific data to item
+      IF NOT goodsmvt_serv_part_data[] IS INITIAL.
+        CLEAR ls_goodsmvt_serv_part_data.
+
+        READ TABLE goodsmvt_serv_part_data INTO ls_goodsmvt_serv_part_data
+        WITH KEY line_id = t_imseg-line_id.
+
+        IF sy-subrc EQ 0.
+          t_imseg-spe_gts_stock_ty = ls_goodsmvt_serv_part_data-gts_stock_type.
+          t_imseg-spe_um_gts_st_ty = ls_goodsmvt_serv_part_data-move_gts_stock_type.
+ENHANCEMENT-POINT ehp_bapi_goodsmvt_create_01 SPOTS es_saplmb_bus2017.
+*$*$-Start: EHP_BAPI_GOODSMVT_CREATE_01---------------------------------------------------------$*$*
+ENHANCEMENT 1  VL_SFWS_BAPI_GOODSMVT_CREATE.    "active version
+*   Added with CWM enabled EWM:
+*   Only executed if called from there, if warehouse number is EWM managed
+    PERFORM map_cw_fields IN PROGRAM /SPE/SAPLIM_GENERIC_FUNCTIONS
+                          USING ls_goodsmvt_serv_part_data
+                       CHANGING t_imseg
+                              .
+
+ENDENHANCEMENT.
+*$*$-End:   EHP_BAPI_GOODSMVT_CREATE_01---------------------------------------------------------$*$*
+        ENDIF.
+
+      ENDIF.
+      IF goodsmvt_ref_ewm        IS NOT INITIAL AND        "v_n_1977564
+         goodsmvt_item-reserv_no IS NOT INITIAL AND
+         cl_ewm_switch_check=>man_sfws_sc_ewm_man_2( ) = cl_ewm_switch_check=>switch_active_true.
+* Goods movement posting from EWM with reference to a reservation item:
+* Fill complete reservation data to allow posting even if order is in
+* status TECO (and hence RESB-XLOEK ='X')
+        TRY.                                                "n_2442675
+            CALL METHOD /spe/cl_ewm_material_request=>imseg_fill
+              EXPORTING
+                i_aufnr  = goodsmvt_item-orderid
+                i_rsnum  = goodsmvt_item-reserv_no
+                i_rspos  = goodsmvt_item-res_item
+                i_rsart  = goodsmvt_item-res_type
+              CHANGING
+                cs_imseg = t_imseg.
+
+          CATCH /spe/cx_ewm_man INTO DATA(lx_ewm_man).    "v_n_2442675
+            global_error = true.
+            PERFORM set_msg_to_bapiret2 TABLES return
+                                        USING  lx_ewm_man->t100key-msgid
+                                               /spe/if_const=>c_msgty-error
+                                               lx_ewm_man->t100key-msgno
+                                               lx_ewm_man->t100key-attr1
+                                               lx_ewm_man->t100key-attr2
+                                               lx_ewm_man->t100key-attr3
+                                               lx_ewm_man->t100key-attr4
+                                               'EWM_RESERVATION_FILL'
+                                               0
+                                               space.
+            EXIT.
+        ENDTRY.                                           "^_n_2442675
+      ENDIF.
+
+*Begin ENHO:/SAPMP/PIECEBAT_SAPLMB_BUS2017, IS-MP-MM, /SAPMP/SINGLE_UNIT_BATCH, Single Unit Batch
+*Set single unit batch information
+      CALL FUNCTION '/SAPMP/MB_BUS2017_GM_PREPARE'
+        EXPORTING
+          im_index_gdsmvt = loc_tab
+        CHANGING
+          ch_error        = global_error
+          ch_imseg        = t_imseg
+          ch_return       = return[].
+      IF global_error = true.
+        EXIT.
+      ENDIF.
+*
+*End IS-MP-MM, /SAPMP/SINGLE_UNIT_BATCH, Single Unit Batch
+ENHANCEMENT-POINT bapi_goodsmvt_create_01 SPOTS es_saplmb_bus2017.
+      APPEND t_imseg.
+    ENDLOOP.
+
+    CHECK global_error = false.
+
+* map serialnumber to internal structure ******************************
+    LOOP AT goodsmvt_serialnumber.
+      CLEAR t_iseri.
+      CALL FUNCTION 'MAP2I_B2017_GM_SERIALNUMBER'
+        EXPORTING
+          bapi2017_gm_serialnumber = goodsmvt_serialnumber
+        CHANGING
+          iseri                    = t_iseri.
+      APPEND t_iseri.
+    ENDLOOP.
+
+    "{ Begin ENHO AD_SUB_01_BAPI_GOODSMVT_CREATE IS-AD-SUC AD_SUB_SFWS_01 }
+* GA1624701 - SUBRK: flag for recursive serial numbers
+    TYPES:
+      BEGIN OF lty_adsub_iseri,
+        mblpo    TYPE mblpo,
+        serialnr TYPE gernr,
+        subrk    TYPE subrk,
+      END OF lty_adsub_iseri.
+    DATA: lr_parex     TYPE REF TO cl_nls_struc_container,
+          lt_codepage  TYPE nls_langu_cp_tab,
+          lv_container TYPE me_max_container,
+          ls_adsub     TYPE lty_adsub_iseri,
+          ls_iseri     TYPE iseri,
+          lv_len       TYPE i.
+    FIELD-SYMBOLS: <fs_iseri> TYPE iseri,
+                   <fs_parex> TYPE bapiparex.
+*   codepage handle for customer extension
+    CALL FUNCTION 'NLS_GET_LANGU_CP_TAB'
+      EXPORTING
+        destination           = ' '
+      TABLES
+        cp_tab                = lt_codepage
+      EXCEPTIONS
+        system_failure        = 0
+        communication_failure = 0
+        unknown_error         = 0
+        OTHERS                = 0.
+    lr_parex = cl_nls_struc_container=>create( cp_tab = lt_codepage ).
+    DESCRIBE FIELD extensionin-structure LENGTH lv_len IN CHARACTER MODE.
+    LOOP AT extensionin
+        ASSIGNING <fs_parex>
+        WHERE structure = cl_adsub_constants=>extin_gm_subrk.
+      TRY .
+          MOVE <fs_parex>+lv_len TO lv_container.
+          lr_parex->cont_to_struc( EXPORTING cont   = lv_container
+                                             langu  = sy-langu
+                                   IMPORTING struc  = ls_adsub ).
+          MOVE-CORRESPONDING ls_adsub TO ls_iseri.
+          READ TABLE t_iseri ASSIGNING <fs_iseri>
+                 WITH KEY mblpo    = ls_iseri-mblpo
+                          serialnr = ls_iseri-serialnr.
+          IF sy-subrc EQ 0.
+            <fs_iseri>-subrk = ls_iseri-subrk.
+          ENDIF.
+        CATCH: cx_sy_conversion_codepage
+               cx_parameter_invalid_range.
+          PERFORM set_msg_to_bapiret2 TABLES return
+                                      USING  'RSDS_ACCESS'
+                                             'E'
+                                             '014'
+                                             sy-msgv1
+                                             sy-msgv2
+                                             sy-msgv3
+                                             sy-msgv4
+                                             space
+                                             0
+                                             space.
+      ENDTRY.
+    ENDLOOP.
+    "{ End ENHO AD_SUB_01_BAPI_GOODSMVT_CREATE IS-AD-SUC AD_SUB_SFWS_01 }
+
+ENHANCEMENT-POINT ehp603_bapi_goodsmvt_create_02 SPOTS es_saplmb_bus2017.
+*$*$-Start: EHP603_BAPI_GOODSMVT_CREATE_02------------------------------------------------------$*$*
+ENHANCEMENT 1  IUID_APPL_01_BAPI_GOODSMVT_CRE.    "active version
+* map UII from extension to internal structure ************************
+    DATA: ls_goodsmvt_uii TYPE bapi2017_gm_uii.
+    FIELD-SYMBOLS <ls_iseri> TYPE iseri.
+*   in EHP604 following coding is not necessary any more
+    IF cl_iuid_switch_check=>appl_uid_02( ) IS INITIAL.
+      LOOP AT extensionin WHERE structure = 'BAPI2017_GM_UII'.
+        ls_goodsmvt_uii = extensionin-valuepart1.
+        READ TABLE t_iseri ASSIGNING <ls_iseri>
+             WITH KEY mblpo    = ls_goodsmvt_uii-matdoc_itm
+                      serialnr = ls_goodsmvt_uii-serialno.
+        IF sy-subrc EQ 0.
+          <ls_iseri>-uii = ls_goodsmvt_uii-uii.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   EHP603_BAPI_GOODSMVT_CREATE_02------------------------------------------------------$*$*
+
+* Transfer information to local memory of serial number management
+* 965218: always call this function to supply xbpsn with the right data
+*    IF NOT t_iseri[] IS INITIAL.                                 "965218
+    CALL FUNCTION 'DOCUMENT_SERIALNOS_IMPORT'
+      TABLES
+        ser_tab = t_iseri.
+*    ENDIF.                                                       "965218
+
+* Initialization of serialnumber tables *******************************
+    CALL FUNCTION 'SERIALPROFILE_CHECK'
+      EXPORTING
+        operation = 'SNCL'
+                    EXCEPTIONS error_message.
+    IF sy-subrc <> 0.
+      global_error = true.
+      PERFORM sy_msg_to_bapiret2 TABLES return
+                                 USING  0
+                                        'GOODSMVT_HEADER'.
+    ENDIF.
+
+    CHECK global_error = false.
+
+    LOG-POINT ID /cwm/enh SUBKEY to_upper( sy-tcode && '\/CWM/APPL_MM_SAPLMB_BUS2017\BAPI_GOODSMVT_CREATE_02\' && sy-cprog ) FIELDS /cwm/cl_enh_layer=>get_field( ).
+* mapping CWM-data to item ********************************************
+    IF goodsmvt_item_cwm IS SUPPLIED.
+      LOOP AT goodsmvt_item_cwm.
+        loc_tab = sy-tabix.
+        CALL FUNCTION '/CWM/MP2I_B2017_GM_ITEM_CREATE'
+          EXPORTING
+            goodsmvt_item_cwm = goodsmvt_item_cwm
+          TABLES
+            imseg             = t_imseg[]
+          EXCEPTIONS
+            error_mapping     = 1
+            OTHERS            = 2.
+        IF sy-subrc <> 0.
+          global_error = true.
+          PERFORM sy_msg_to_bapiret2 TABLES return
+                                     USING  loc_tab 'GOODSMVT_ITEM_CWM'.
+        ENDIF.
+      ENDLOOP.
+      CHECK global_error = false.
+    ENDIF.
+ENHANCEMENT-POINT bapi_goodsmvt_create_02 SPOTS es_saplmb_bus2017.
+
+* Set flag XBAPI FOR MB_CREATE_GOODS_MOVEMENT *************************
+    CALL FUNCTION 'MB_SET_BAPI_FLAG'
+      EXPORTING
+        action = '1'.
+
+* Move STATUS (used by serialno., prod.order,...) to memory
+    CALL FUNCTION 'STATUS_BUFFER_EXPORT_TO_MEMORY'          "321507
+      EXPORTING                                          "321507
+        i_memory_id = 'BAPI_GOODSMVT_CREATE'.         "321507
+    l_buffer_export = true.                                 "321507
+* Call BAdI MB_BAPI_GOODSMVT_CREATE to fill own fields
+    TRY.
+        GET BADI lo_mb_bapi_goodsmvt_create.
+      CATCH cx_badi_not_implemented.                    "#EC NO_HANDLER
+    ENDTRY.
+
+    TRY.
+
+        CALL BADI lo_mb_bapi_goodsmvt_create->extensionin_to_matdoc
+          EXPORTING
+            extension_in = extensionin[]
+          CHANGING
+            cs_imkpf     = s_imkpf
+            ct_imseg     = t_imseg[]
+            ct_return    = return.
+      CATCH cx_badi_initial_reference.                  "#EC NO_HANDLER
+
+    ENDTRY.
+
+* Beg hint 984907/1310186 error processing
+* Error processing after BADI is called
+    IF NOT return IS INITIAL.
+      global_error = true.
+
+      DATA: badiret LIKE return.
+      CLEAR badiret.
+      MOVE-CORRESPONDING return TO badiret.
+      CLEAR return.
+
+      PERFORM set_msg_to_bapiret2 TABLES return
+                                  USING  badiret-id
+                                         badiret-type
+                                         badiret-number
+                                          badiret-message_v1
+                                          badiret-message_v2
+                                          badiret-message_v3
+                                          badiret-message_v4
+                                          space
+                                          0
+                                          space.
+    ENDIF.
+
+    CHECK global_error = false.
+* End hint 984907/1310186
+
+* Check format of the posting date and document date         v_n1550163
+
+    CALL FUNCTION 'DATE_CHECK_PLAUSIBILITY'
+      EXPORTING
+        date                      = s_imkpf-budat
+      EXCEPTIONS
+        plausibility_check_failed = 1.
+    IF sy-subrc <> 0.
+      global_error = true.
+      PERFORM set_msg_to_bapiret2 TABLES return
+                            USING  'BC'
+                                   'E'
+                                   '011'
+                                   'GOODSMVT_HEADER-PSTNG_DATE'
+                                    s_imkpf-budat
+                                    l_blank_msgv
+                                    l_blank_msgv
+                                    'GOODSMVT_HEADER-PSTNG_DATE'
+                                    0
+                                    space.
+    ENDIF.
+
+    IF s_imkpf-bldat IS NOT INITIAL.
+      CALL FUNCTION 'DATE_CHECK_PLAUSIBILITY'
+        EXPORTING
+          date                      = s_imkpf-bldat
+        EXCEPTIONS
+          plausibility_check_failed = 1.
+      IF sy-subrc <> 0.
+        global_error = true.
+        PERFORM set_msg_to_bapiret2 TABLES return
+                              USING  'BC'
+                                     'E'
+                                     '011'
+                                     'GOODSMVT_HEADER-DOC_DATE'
+                                      s_imkpf-bldat
+                                      l_blank_msgv
+                                      l_blank_msgv
+                                      'GOODSMVT_HEADER-DOC_DATE'
+                                      0
+                                      space.
+      ENDIF.
+    ENDIF.
+
+    CHECK global_error = false.
+*                                                            ^_n1550163
+
+* Call function MB_CREATE_GOODS_MOVEMENT ******************************
+
+    PERFORM mb_create_goods_movement.
+
+* Check the result ****************************************************
+    PERFORM return_handling TABLES return.
+
+* Posting only possible, if there was no error until now **************
+* or the bapi runs in modus 'TESTRUN'.
+    CHECK global_error = false.
+    CHECK f_testrun IS INITIAL.
+
+* Call function MB_POST_GOODS_MOVEMENT ********************************
+    PERFORM mb_post_goods_movement TABLES return
+                                   USING  goodsmvt_headret.
+    MOVE goodsmvt_headret-mat_doc  TO materialdocument.
+    MOVE goodsmvt_headret-doc_year TO matdocumentyear.
+  ENDDO.                                                    "321507
+
+  FREE MEMORY ID 'J1B_ACTION'.                              "783591
+
+***********************************************************************
+* Error/Testrun handling:
+* Get STATUS back from memory if error or bapi runs in mode 'TESTRUN'
+* But only if status was filled during this BAPI.
+  CHECK l_buffer_export = true.                             "321507
+  IF global_error = true OR NOT f_testrun IS INITIAL.       "321507
+ENHANCEMENT-POINT bapi_goodsmvt_create_03 SPOTS es_saplmb_bus2017.
+*$*$-Start: BAPI_GOODSMVT_CREATE_03-------------------------------------------------------------$*$*
+ENHANCEMENT 2  ISU_SAPLMB_BUS2017.    "active version
+*-- IS-U Modifikation    IS-U Modifikation   IS-U Modifikation      -*
+    call function 'STATUS_BUFFER_EXPORT_TO_MEMORY'
+         exporting
+              i_memory_id = 'BAPI_ISU_2_DEVICE'.
+ENDENHANCEMENT.
+*$*$-End:   BAPI_GOODSMVT_CREATE_03-------------------------------------------------------------$*$*
+ENHANCEMENT-POINT saplmb_bus2017_20 SPOTS es_saplmb_bus2017.
+*$*$-Start: SAPLMB_BUS2017_20-------------------------------------------------------------------$*$*
+ENHANCEMENT 1  ISU_SAPLMB_BUS2017.    "active version
+*-- IS-U Modifikation    IS-U Modifikation   IS-U Modifikation      -*
+  CALL FUNCTION 'STATUS_BUFFER_EXPORT_TO_MEMORY'
+       EXPORTING
+            i_memory_id = 'BAPI_ISU_2_DEVICE'.
+ENDENHANCEMENT.
+*$*$-End:   SAPLMB_BUS2017_20-------------------------------------------------------------------$*$*
+    CALL FUNCTION 'STATUS_BUFFER_REFRESH'. "321507
+    CALL FUNCTION 'STATUS_BUFFER_IMPORT_FROM_MEMO'          "321507
+      EXPORTING                                          "321507
+        i_memory_id = 'BAPI_GOODSMVT_CREATE'          "321507
+        i_client    = sy-mandt.                       "321507
+
+* clear buffer for batch data in error case                 "n981969
+    CALL FUNCTION 'VB_INIT_ALL'. "n981969
+
+* clear buffer for classification data in error case        "921353
+    CALL FUNCTION 'CLAP_DDB_INIT_CLASSIFICATION'            "921353
+      EXPORTING                                              "921353
+        init_all = 'X'.                                "921353
+* clear buffer for QM data in error case
+    CALL FUNCTION 'QPL1_RESET_CURRENT_LOTS'                  "1521757
+      EXCEPTIONS                                        "1521757
+        OTHERS = 1.                                       "1521757
+    CALL FUNCTION 'QCPR_INITIALIZE'. "1521757
+
+  ENDIF.                                                    "321507
+
+* Clear flag XBAPI *****************************************************
+  CALL FUNCTION 'MB_SET_BAPI_FLAG'                          "386958
+    EXPORTING
+      action = '4'.                              "386958
+* Begin FLE MATNR BAPI Changes
+  cl_matnr_chk_mapper=>bapi_tables_conv_tab( EXPORTING iv_int_to_external = 'X'
+                                                       it_fnames          = lt_fnames
+                                             CHANGING  ct_matnr           = goodsmvt_item[]
+                                             EXCEPTIONS OTHERS = 1 ).
+  IF sy-subrc <> 0.
+    cl_matnr_chk_mapper=>bapi_get_last_error( IMPORTING ev_return = ls_return ).
+    APPEND ls_return TO return.
+    RETURN.
+  ENDIF.
+* End FLE MATNR BAPI Changes
+
+** Begin FLE segmentation BAPI Changes
+  PERFORM sfle_instk_seg_table TABLES goodsmvt_item
+                               USING return 'X'.
+
+  IF sy-subrc IS NOT INITIAL.
+    APPEND return.
+    RETURN.
+  ENDIF.
+** End FLE segmentation BAPI Changes
+
+ENHANCEMENT-POINT bapi_goodsmvt_create_g7 SPOTS es_saplmb_bus2017.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(1) Function Module BAPI_GOODSMVT_CREATE, End                                                                                                         A
+*$*$-Start: (1)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 1  EEWA_GET_GOODSMVTITEM.    "active version
+  data:
+    LEWAGETDATA,
+    LEWAMSEG  type MSEG,
+    LEWATMSEG type standard table of MSEG.
+
+  field-symbols:
+    <LEWAEMSEG> type EMSEG,
+    <LEWAIMSEG> type IMSEG.
+
+  clear: LEWAGETDATA.
+
+  if TESTRUN is initial.
+    import PAR_GETDATA = LEWAGETDATA from memory id CL_EEWA_CONSTANTS_WEIGHING=>C_MEMID_GOODSMVT_DATA.
+    free memory id CL_EEWA_CONSTANTS_WEIGHING=>C_MEMID_GOODSMVT_DATA.
+    if LEWAGETDATA is not initial.
+      loop at T_EMSEG assigning <LEWAEMSEG>.
+        clear LEWAMSEG.
+
+        LEWAMSEG-ZEILE = SY-TABIX.
+
+        read table T_IMSEG assigning <LEWAIMSEG> with key LINE_ID = <LEWAEMSEG>-LINE_ID.
+        move-corresponding <LEWAIMSEG> to LEWAMSEG.
+        move-corresponding <LEWAEMSEG> to LEWAMSEG.
+        LEWAMSEG-CHARG = <LEWAEMSEG>-E_CHARG.
+        LEWAMSEG-UMCHA = <LEWAEMSEG>-E_UMCHA.
+
+        LEWAMSEG-MBLNR = MATERIALDOCUMENT.
+        LEWAMSEG-MJAHR = MATDOCUMENTYEAR.
+
+        insert LEWAMSEG into table LEWATMSEG.
+      endloop.
+      export PAR_TMSEG from LEWATMSEG to memory id CL_EEWA_CONSTANTS_WEIGHING=>C_MEMID_GOODSMVT_DATA.
+    endif.
+  endif.
+ENDENHANCEMENT.
+*$*$-End:   (1)---------------------------------------------------------------------------------$*$*
+ENDFUNCTION.

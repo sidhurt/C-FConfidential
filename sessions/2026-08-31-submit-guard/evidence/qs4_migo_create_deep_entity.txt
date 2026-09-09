@@ -1,0 +1,20 @@
+SESSION|QS4|700|QNOVATE8
+TITLE|Class Builder: Display Class CL_API_MATERIAL_DOCUME_DPC_EXT
+STATUS|
+SOURCE_BEGIN|CL_API_MATERIAL_DOCUME_DPC_EXT|/IWBEP/IF_MGW_APPL_SRV_RUNTIME~CREATE_DEEP_ENTITY
+  METHOD /iwbep/if_mgw_appl_srv_runtime~create_deep_entity.
+
+    DATA(lo_msg_container) = mo_context->get_message_container( ).
+    DATA(lo_api) = cl_mdoc_api_factory=>get_api( ).
+
+    create_document(
+      EXPORTING
+        io_api                       = lo_api
+        io_data_provider             = io_data_provider
+        io_msg_container             = lo_msg_container
+        iv_is_changeset              = abap_false
+      IMPORTING
+        er_deep_entity               = er_deep_entity ).
+
+  ENDMETHOD.
+SOURCE_END

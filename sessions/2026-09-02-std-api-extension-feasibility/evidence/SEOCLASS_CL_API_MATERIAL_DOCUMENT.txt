@@ -1,0 +1,3 @@
+SESSION|QS4/700|User=QNOVATE8
+FILTER|CLSNAME(I1)=CL_API_MATERIAL_DOCUMENT..CL_API_MATERIAL_DOCUMENU
+NO_GRID|Title=Data Browser: Table SEOCLASS: Selection Screen|SBAR=No table entries found for specified key

@@ -1,0 +1,28 @@
+﻿METHOD if_ex_mb_migo_badi~pai_detail.
+*-----------------------------------------------------------------------
+* Changing parameter E_FORCE_CHANGE can be set to 'X'. In this case
+* method LINE_MODIFY is called.
+* ATTENTION:
+* DO NOT SET parameter E_FORCE_CHANGE = ' '. In this case you might
+* overwrite parameter E_FORCE_CHANGE of another BAdI implementation.
+*-----------------------------------------------------------------------
+  DATA: ls_extdata_new TYPE zmmsmigoitem_int,
+        ls_extdata_old TYPE zmmsmigoitem_int.
+
+* Only if a line exists
+  CHECK i_line_id <> 0.
+* Get data from external screen
+  CALL FUNCTION 'ZMMF_MIGO_PAI_DETAIL'
+    IMPORTING
+      es_goitem = ls_extdata_new.
+** Compare new data with old data
+  READ TABLE gt_extdata INTO ls_extdata_old
+     WITH KEY line_id = i_line_id.
+  ls_extdata_new-line_id = i_line_id.
+  IF ls_extdata_old <> ls_extdata_new.
+**   If there were any changes, it's obligatory to force MIGO to trigger
+**   method LINE_MODIFY.
+    e_force_change = 'X'.
+  ENDIF.
+
+ENDMETHOD.                    "IF_EX_MB_MIGO_BADI~PAI_DETAIL

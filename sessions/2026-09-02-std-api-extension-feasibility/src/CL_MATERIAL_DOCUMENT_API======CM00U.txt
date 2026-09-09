@@ -1,0 +1,108 @@
+﻿  METHOD prepare_items.
+    DATA:
+*      ls_mseg_input TYPE imseg,
+      lt_ddfields   TYPE ddfields,
+      ls_component  TYPE abap_componentdescr,
+      lt_component  TYPE cl_abap_structdescr=>component_table,
+      lo_strucdescr TYPE REF TO cl_abap_structdescr.
+
+    DATA ls_goodsmvt_item_input TYPE bapi2017_gm_item_create.
+    DATA ls_extensionin TYPE bapiparex.
+
+    CLEAR: et_goodsmvt_item_input.
+
+    LOOP AT it_item REFERENCE INTO DATA(lr_item).
+      IF lr_item->goodsmovementtype IS INITIAL.
+        INSERT VALUE #( msgid = gc_message_class
+                        msgno = '009'
+                        msgty = if_nsdm_odata_text_message=>sc_severity-error ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+        CONTINUE. " do not run subsequent checks for this item as some of them rely on the GoodsMovementType
+      ENDIF.
+      SELECT SINGLE bwart FROM t156 INTO @DATA(ls_t156) WHERE bwart = @lr_item->goodsmovementtype.
+      IF sy-subrc <> 0 OR ls_t156 IS INITIAL.
+        INSERT VALUE #( msgid = gc_message_class
+                        msgno = '018'
+                        msgty = if_nsdm_odata_text_message=>sc_severity-error
+                        msgv1 = lr_item->goodsmovementtype ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+        CONTINUE. " do not run subsequent checks for this item as some of them rely on the GoodsMovementType
+      ENDIF.
+
+      "input check
+
+      IF lo_strucdescr IS NOT BOUND.
+        lo_strucdescr ?= cl_abap_structdescr=>describe_by_data_ref( lr_item ).
+        lt_component  = lo_strucdescr->get_components( ).
+        DELETE lt_component WHERE name = 'COBL_EXT'  ##NO_TEXT.
+        DELETE lt_component WHERE name = 'MATDOCITEM_EXT'.
+      ENDIF.
+
+      DATA(lv_field_check_failed) = item_check_allowed_fields(
+        EXPORTING
+          ir_item      = lr_item
+          it_component = lt_component
+        CHANGING
+          ct_message   = ct_message ).
+      IF lv_field_check_failed = abap_true.
+        rv_failed = abap_true.
+      ENDIF.
+
+      DATA(extensions) = cl_mdoc_api_factory=>create( )->create_extensibility_handler( )->create_extensions(
+       EXPORTING
+         item       = lr_item->*
+       CHANGING
+         ct_message = ct_message ).
+      IF extensions IS INITIAL.
+        rv_failed = abap_true.
+        EXIT.
+      ENDIF.
+
+      DATA(lv_batch_check_failed) = item_batch_checks(
+        EXPORTING
+          ir_item    = lr_item
+        CHANGING
+          ct_message = ct_message ).
+      IF lv_batch_check_failed = abap_true.
+        rv_failed = abap_true.
+      ENDIF.
+
+      DATA(lv_wbsid_check_failed) = item_wbs_checks(
+        EXPORTING
+          ir_item    = lr_item
+        CHANGING
+          ct_message = ct_message ).
+      IF lv_wbsid_check_failed = abap_true.
+        rv_failed = abap_true.
+      ENDIF.
+
+      IF lv_field_check_failed = abap_true OR
+         lv_batch_check_failed = abap_true OR
+         lv_wbsid_check_failed = abap_true.
+        CONTINUE.
+      ENDIF.
+
+      DATA(lv_item_mapping_failed) = map_item_input(
+        EXPORTING
+          ir_item                = lr_item
+        IMPORTING
+          es_goodsmvt_item_input = ls_goodsmvt_item_input
+          es_extensionin         = ls_extensionin
+        CHANGING
+          ct_message             = ct_message ).
+      IF lv_item_mapping_failed = abap_true.
+        rv_failed = abap_true.
+      ENDIF.
+
+      " If there is a reservation - field XRERE has to be filled
+*      IF goodsmvt_item_input- IS NOT INITIAL AND
+*         ls_mseg_input-kzbew IS INITIAL.
+*        ls_mseg_input-xrere = abap_true.
+*      ENDIF.
+
+*      CLEAR ls_mseg_input-kzear_old.
+      APPEND ls_goodsmvt_item_input TO et_goodsmvt_item_input.
+      APPEND LINES OF extensions TO et_extensionin.
+    ENDLOOP.
+
+  ENDMETHOD.

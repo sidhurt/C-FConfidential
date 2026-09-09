@@ -1,0 +1,13 @@
+﻿CLASS cl_material_document_api DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE
+
+  GLOBAL FRIENDS cl_mdoc_api_factory .
+
+  PUBLIC SECTION.
+    INTERFACE lif_mdoc_create LOAD .
+
+    INTERFACES if_material_document_api .
+
+    METHODS constructor .

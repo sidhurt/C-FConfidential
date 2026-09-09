@@ -1,0 +1,33 @@
+﻿  METHOD copy_and_map_messages.
+
+    IF is_emkpf-msgid IS NOT INITIAL.
+      INSERT VALUE #(
+        msgid = is_emkpf-msgid
+        msgno = is_emkpf-msgno
+        msgty = is_emkpf-msgty
+        msgv1 = is_emkpf-msgv1
+        msgv2 = is_emkpf-msgv2
+        msgv3 = is_emkpf-msgv3
+        msgv4 = is_emkpf-msgv4
+      ) INTO TABLE ct_message.
+    ENDIF.
+
+    LOOP AT it_emseg REFERENCE INTO DATA(lr_emseg).
+      CHECK lr_emseg->msgid IS NOT INITIAL.
+
+      INSERT VALUE #(
+        msgid = lr_emseg->msgid
+        msgno = lr_emseg->msgno
+        msgty = lr_emseg->msgty
+        msgv1 = lr_emseg->msgv1
+        msgv2 = lr_emseg->msgv2
+        msgv3 = lr_emseg->msgv3
+        msgv4 = lr_emseg->msgv4
+      ) INTO TABLE ct_message.
+    ENDLOOP.
+
+    cl_mdoc_api_factory=>get_message_mapper( )->adjust_messages(
+      CHANGING
+        ct_message = ct_message ).
+
+  ENDMETHOD.

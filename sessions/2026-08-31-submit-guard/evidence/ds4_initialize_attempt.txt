@@ -1,0 +1,8 @@
+EXECUTE_ONCE|DS4|200|WSIDPADMIN|BD=6h|BDID=12h
+TITLE|Program SRT_WS_IDP_CUSTOMIZE
+STATUS|
+STATUS_TYPE|
+DIALOG|Information
+CONTROL|/app/con[1]/ses[0]/wnd[1]/usr|GuiUserArea|
+CONTROL|/app/con[1]/ses[0]/wnd[1]/usr/txtIK1|GuiTextField|
+CONTROL|/app/con[1]/ses[0]/wnd[1]/usr/txtMESSTXT1|GuiTextField|Job SAP_BC_IDP_WS_SWITCH_BD scheduled

@@ -1,0 +1,1136 @@
+﻿function map2i_b2017_gm_item_to_imseg.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(BAPI2017_GM_ITEM_CREATE) LIKE  BAPI2017_GM_ITEM_CREATE
+*"       STRUCTURE  BAPI2017_GM_ITEM_CREATE
+*"  CHANGING
+*"     REFERENCE(IMSEG) LIKE  IMSEG STRUCTURE  IMSEG
+*"  EXCEPTIONS
+*"      ERROR_CONVERTING_ISO_CODE
+*"      ERROR_CONVERTING_KEYS
+*"      ERROR_CONVERTING_CURR_AMOUNT
+*"----------------------------------------------------------------------
+
+* Don't forget to enhance Function Module MP2E_IMSEG_TO_2017_ITEM_CREATE !!!
+
+  data tmp_amount like bapicurr-bapicurr.
+  data lv_wbs_elem(24) type c.                              "n1294212
+
+* <BAPI_FIELD>|CMMT_ITEM
+* <SAP_FIELD>|FIPOS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-vendrbatch
+    to imseg-licha                                                  .
+
+* <BAPI_FIELD>|CMMT_ITEM
+* <SAP_FIELD>|FIPOS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-cmmt_item
+    to imseg-fipos                                                  .
+
+* <BAPI_FIELD>|FUNDS_CTR
+* <SAP_FIELD>|FISTL
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-funds_ctr
+    to imseg-fistl                                                  .
+
+* <BAPI_FIELD>|FUND
+* <SAP_FIELD>|GEBER
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-fund
+    to imseg-geber.
+
+* <BAPI_FIELD>|EARMARKED_NUMBER
+* <SAP_FIELD>|KBLNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-earmarked_number
+    to imseg-kblnr.
+
+* <BAPI_FIELD>|EARMARKED_ITEM
+* <SAP_FIELD>|KBLPOS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-earmarked_item
+    to imseg-kblpos.
+
+* <BAPI_FIELD>|PROD_DATE
+* <SAP_FIELD>|HSDAT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-prod_date
+    to imseg-hsdat                                                  .
+
+* <BAPI_FIELD>|EXPIRYDATE
+* <SAP_FIELD>|VFDAT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-expirydate
+    to imseg-vfdat                                                  .
+
+* <BAPI_FIELD>|XSTOB
+* <SAP_FIELD>|XSTOR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-xstob
+    to imseg-xstob                                                  .
+
+* <BAPI_FIELD>|IND_PROPOSE_QUANX
+* <SAP_FIELD>|XMEVO
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-ind_propose_quanx
+    to imseg-xmevo                                                  .
+
+* <BAPI_FIELD>|GL_ACCOUNT
+* <SAP_FIELD>|KONTO
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-gl_account
+    to imseg-konto                                                  .
+
+* <BAPI_FIELD>|VAL_S_ORD_ITEM
+* <SAP_FIELD>|MAT_KDPOS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-val_s_ord_item
+    to imseg-mat_kdpos                                              .
+
+* <BAPI_FIELD>|VAL_SALES_ORD
+* <SAP_FIELD>|MAT_KDAUF
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-val_sales_ord
+    to imseg-mat_kdauf                                              .
+
+* <BAPI_FIELD>|PROFIT_CTR
+* <SAP_FIELD>|PRCTR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-profit_ctr
+    to imseg-prctr                                                  .
+
+* <BAPI_FIELD>|PROFIT_SEGM_NO
+* <SAP_FIELD>|PAOBJNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-profit_segm_no
+    to imseg-paobjnr                                                .
+
+* <BAPI_FIELD>|COST_OBJ
+* <SAP_FIELD>|KSTRG
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-cost_obj
+    to imseg-kstrg                                                  .
+
+* <BAPI_FIELD>|RL_EST_KEY
+* <SAP_FIELD>|IMKEY
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-rl_est_key
+    to imseg-imkey                                                  .
+
+* <BAPI_FIELD>|REF_DATE                                "note 548459
+* <SAP_FIELD>DABRZ|                                    "note 548459
+  move bapi2017_gm_item_create-ref_date                  "note 548459
+    to imseg-dabrz.                                      "note 548459
+
+* <BAPI_FIELD>|MOVE_REAS
+* <SAP_FIELD>|GRUND
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-move_reas
+    to imseg-grund                                                  .
+
+* <BAPI_FIELD>|REF_DOC_IT
+* <SAP_FIELD>|LFPOS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-ref_doc_it
+    to imseg-lfpos                                                  .
+
+* <BAPI_FIELD>|REF_DOC
+* <SAP_FIELD>|LFBNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-ref_doc
+    to imseg-lfbnr                                                  .
+
+* <BAPI_FIELD>|REF_DOC_YR
+* <SAP_FIELD>|LFBJA
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-ref_doc_yr
+    to imseg-lfbja                                                  .
+
+* <BAPI_FIELD>|PART_ACCT
+* <SAP_FIELD>|VPTNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-part_acct
+    to imseg-vptnr                                                  .
+
+* <BAPI_FIELD>|NETWORK
+* <SAP_FIELD>|NPLNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-network
+    to imseg-nplnr                                                  .
+
+* <BAPI_FIELD>|DELIV_NUMB_TO_SEARCH
+* <SAP_FIELD>|VLIEF_AVIS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-deliv_numb_to_search
+    to imseg-vlief_avis                                             .
+
+* <BAPI_FIELD>|STGE_TYPE_ST
+* <SAP_FIELD>|UMLGT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stge_type_st
+    to imseg-umlgt                                                  .
+
+* <BAPI_FIELD>|GR_NUMBER
+* <SAP_FIELD>|WENUM
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-gr_number
+    to imseg-wenum                                                  .
+
+* <BAPI_FIELD>|NO_PST_CHGNT
+* <SAP_FIELD>|KZKUB
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-no_pst_chgnt
+    to imseg-kzkub                                                  .
+
+* <BAPI_FIELD>|STGE_BIN_PC
+* <SAP_FIELD>|UBLGP
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stge_bin_pc
+    to imseg-ublgp                                                  .
+
+* <BAPI_FIELD>|STGE_TYPE_PC
+* <SAP_FIELD>|UBTYP
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stge_type_pc
+    to imseg-ubtyp                                                  .
+
+* <BAPI_FIELD>|NO_TRANSFER_REQ
+* <SAP_FIELD>|TBPKZ
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-no_transfer_req
+    to imseg-tbpkz                                                  .
+
+* <BAPI_FIELD>|MATYEAR_TR_CANCEL
+* <SAP_FIELD>|TBBJR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-matyear_tr_cancel
+    to imseg-tbbjr                                                  .
+
+* <BAPI_FIELD>|MATITEM_TR_CANCEL
+* <SAP_FIELD>|TBBPO
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-matitem_tr_cancel
+    to imseg-tbbpo                                                  .
+
+* <BAPI_FIELD>|MATDOC_TR_CANCEL
+* <SAP_FIELD>|TBBEL
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-matdoc_tr_cancel
+    to imseg-tbbel                                                  .
+
+* <BAPI_FIELD>|STGE_BIN_ST
+* <SAP_FIELD>|UMLGP
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stge_bin_st
+    to imseg-umlgp                                                  .
+
+* <BAPI_FIELD>|SU_PL_STCK_1
+* <SAP_FIELD>|ANZL1
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-su_pl_stck_1
+    to imseg-anzl1                                                  .
+
+* <BAPI_FIELD>|STGE_BIN
+* <SAP_FIELD>|LGPLA
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stge_bin
+    to imseg-lgpla                                                  .
+
+* <BAPI_FIELD>|STGE_TYPE
+* <SAP_FIELD>|LGTYP
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stge_type
+    to imseg-lgtyp                                                  .
+
+* <BAPI_FIELD>|SERIALNO_AUTO_NUMBERASSIGNMENT
+* <SAP_FIELD>|XSAUT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-serialno_auto_numberassignment
+    to imseg-xsaut                                                  .
+
+* <BAPI_FIELD>|DELIV_ITEM_TO_SEARCH
+* <SAP_FIELD>|VBELP_AVIS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-deliv_item_to_search
+    to imseg-vbelp_avis                                             .
+
+* <BAPI_FIELD>|UNITTYPE_2
+* <SAP_FIELD>|LETY2
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-unittype_2
+    to imseg-lety2                                                  .
+
+* <BAPI_FIELD>|ST_UN_QTYY_2
+* <SAP_FIELD>|LMEN2
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-st_un_qtyy_2
+    to imseg-lmen2                                                  .
+
+* <BAPI_FIELD>|SU_PL_STCK_2
+* <SAP_FIELD>|ANZL2
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-su_pl_stck_2
+    to imseg-anzl2                                                  .
+
+* <BAPI_FIELD>|UNITTYPE_1
+* <SAP_FIELD>|LETY1
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-unittype_1
+    to imseg-lety1                                                  .
+
+* <BAPI_FIELD>|ST_UN_QTYY_1
+* <SAP_FIELD>|LMEN1
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-st_un_qtyy_1
+    to imseg-lmen1                                                  .
+
+* <BAPI_FIELD>|PO_NUMBER
+* <SAP_FIELD>|EBELN
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-po_number
+    to imseg-ebeln                                                  .
+
+* <BAPI_FIELD>|PO_PR_QNT
+* <SAP_FIELD>|BPMNG
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-po_pr_qnt
+    to imseg-bpmng                                                  .
+
+* <BAPI_FIELD>|ENTRY_QNT
+* <SAP_FIELD>|ERFMG
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-entry_qnt
+    to imseg-erfmg                                                  .
+
+* <BAPI_FIELD>|VAL_TYPE
+* <SAP_FIELD>|BWTAR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-val_type
+    to imseg-bwtar                                                  .
+
+* <BAPI_FIELD>|SCHED_LINE
+* <SAP_FIELD>|KDEIN
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-sched_line
+    to imseg-kdein                                                  .
+
+* <BAPI_FIELD>|ITEM_TEXT
+* <SAP_FIELD>|SGTXT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-item_text
+    to imseg-sgtxt                                                  .
+
+* <BAPI_FIELD>|NO_MORE_GR
+* <SAP_FIELD>|ELIKZ
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-no_more_gr
+    to imseg-elikz                                                  .
+
+* <BAPI_FIELD>|COMP_SHIP
+* <SAP_FIELD>|EVERE
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-comp_ship
+    to imseg-evere                                                  .
+
+* <BAPI_FIELD>|SHIPPING
+* <SAP_FIELD>|EVERS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-shipping
+    to imseg-evers                                                  .
+
+* <BAPI_FIELD>|PO_ITEM
+* <SAP_FIELD>|EBELP
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-po_item
+    to imseg-ebelp                                                  .
+
+* <BAPI_FIELD>|S_ORD_ITEM
+* <SAP_FIELD>|KDPOS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-s_ord_item
+    to imseg-kdpos                                                  .
+
+* <BAPI_FIELD>|MOVE_TYPE
+* <SAP_FIELD>|BWART
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-move_type
+    to imseg-bwart                                                  .
+
+* <BAPI_FIELD>|BATCH
+* <SAP_FIELD>|CHARG
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-batch
+    to imseg-charg                                                  .
+
+* <BAPI_FIELD>|STGE_LOC
+* <SAP_FIELD>|LGORT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stge_loc
+    to imseg-lgort                                                  .
+
+* <BAPI_FIELD>|PLANT
+* <SAP_FIELD>|WERKS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-plant
+    to imseg-werks                                                  .
+
+* <BAPI_FIELD>|MATERIAL
+* <SAP_FIELD>|MATNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-material_long
+    to imseg-matnr.
+
+*check if switch is active
+  if cl_ops_switch_check=>sfsw_segmentation( ) eq abap_on.
+* <BAPI_FIELD>|STK_SEGMENT
+* <SAP_FIELD>|SGT_SCAT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+    move bapi2017_gm_item_create-stk_seg_long
+       to imseg-sgt_scat                                              .
+  endif.
+
+  if cl_ops_switch_check=>sfsw_segmentation( ) eq abap_on.
+* <BAPI_FIELD>|MOVE_SEGMENT
+* <SAP_FIELD>|SGT_UMSCAT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+    move bapi2017_gm_item_create-mov_seg_long
+       to imseg-sgt_umscat                                              .
+  endif.
+
+* <BAPI_FIELD>|SALES_ORD
+* <SAP_FIELD>|KDAUF
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-sales_ord
+    to imseg-kdauf                                                  .
+
+* <BAPI_FIELD>|CUSTOMER
+* <SAP_FIELD>|KUNNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-customer
+    to imseg-kunnr                                                  .
+
+* <BAPI_FIELD>|VENDOR
+* <SAP_FIELD>|LIFNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-vendor
+    to imseg-lifnr                                                  .
+
+* <BAPI_FIELD>|SPEC_STOCK
+* <SAP_FIELD>|SOBKZ
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-spec_stock
+    to imseg-sobkz                                                  .
+
+* <BAPI_FIELD>|STCK_TYPE
+* <SAP_FIELD>|INSMK
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-stck_type
+    to imseg-insmk                                                  .
+
+* <BAPI_FIELD>|GR_RCPT
+* <SAP_FIELD>|WEMPF
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-gr_rcpt
+    to imseg-wempf                                                  .
+
+* <BAPI_FIELD>|MOVE_MAT
+* <SAP_FIELD>|UMMAT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-move_mat_long
+    to imseg-ummat                                                  .
+* <BAPI_FIELD>|WITHDRAWN
+* <SAP_FIELD>|KZEAR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-withdrawn
+    to imseg-kzear                                                  .
+
+* <BAPI_FIELD>|RES_TYPE
+* <SAP_FIELD>|RSART
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-res_type
+    to imseg-rsart                                                  .
+
+* <BAPI_FIELD>|RES_ITEM
+* <SAP_FIELD>|RSPOS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-res_item
+    to imseg-rspos                                                  .
+
+* <BAPI_FIELD>|RESERV_NO
+* <SAP_FIELD>|RSNUM
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-reserv_no
+    to imseg-rsnum                                                  .
+
+* <BAPI_FIELD>|MVT_IND
+* <SAP_FIELD>|KZBEW
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-mvt_ind
+    to imseg-kzbew                                                  .
+
+* <BAPI_FIELD>|MOVE_VAL_TYPE
+* <SAP_FIELD>|UMBAR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-move_val_type
+    to imseg-umbar                                                  .
+
+* <BAPI_FIELD>|MOVE_BATCH
+* <SAP_FIELD>|UMCHA
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-move_batch
+    to imseg-umcha                                                  .
+
+* <BAPI_FIELD>|MOVE_STLOC
+* <SAP_FIELD>|UMLGO
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-move_stloc
+    to imseg-umlgo                                                  .
+
+* <BAPI_FIELD>|MOVE_PLANT
+* <SAP_FIELD>|UMWRK
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-move_plant
+    to imseg-umwrk                                                  .
+
+* <BAPI_FIELD>|SUB_NUMBER
+* <SAP_FIELD>|ANLN2
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-sub_number
+    to imseg-anln2                                                  .
+
+* <BAPI_FIELD>|CALC_MOTIVE
+* <SAP_FIELD>|BEMOT
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-calc_motive
+    to imseg-bemot                                                  .
+
+* <BAPI_FIELD>|ORDER_ITNO
+* <SAP_FIELD>|AUFPS
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-order_itno
+    to imseg-aufps                                                  .
+
+* <BAPI_FIELD>|ASSET_NO
+* <SAP_FIELD>|ANLN1
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-asset_no
+    to imseg-anln1                                                  .
+
+* <BAPI_FIELD>|ORDERID
+* <SAP_FIELD>|AUFNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-orderid
+    to imseg-aufnr                                                  .
+
+* <BAPI_FIELD>|COSTCENTER
+* <SAP_FIELD>|KOSTL
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-costcenter
+    to imseg-kostl                                                  .
+
+* <BAPI_FIELD>|UNLOAD_PT
+* <SAP_FIELD>|ABLAD
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-unload_pt
+    to imseg-ablad                                                  .
+
+* <BAPI_FIELD>|CO_BUSPROC
+* <SAP_FIELD>|PRZNR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-co_busproc
+    to imseg-prznr                                                   .
+
+* <BAPI_FIELD>|ACTTYPE
+* <SAP_FIELD>|LSTAR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-acttype
+    to imseg-lstar                                                   .
+
+* <BAPI_FIELD>|SUPPL_VEND
+* <SAP_FIELD>|LLIEF
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-suppl_vend
+    to imseg-llief.
+
+* <BAPI_FIELD>|LINE_ID
+* <SAP_FIELD>|LINE_ID
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-line_id
+    to imseg-line_id.
+
+* Global counter                                              "n1278707
+  move bapi2017_gm_item_create-line_id                      "n1278707
+    to imseg-global_counter.                                "n1278707
+
+* <BAPI_FIELD>|PARENT_ID
+* <SAP_FIELD>|PARENT_ID
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-parent_id
+    to imseg-parent_id.
+
+* <BAPI_FIELD>|LINE_DEPTH
+* <SAP_FIELD>|LINE_DEPTH
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-line_depth
+    to imseg-line_depth.
+
+* <BAPI_FIELD>|QUANTITY
+* <SAP_FIELD>|MENGE
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-quantity
+    to imseg-menge.
+
+*Functional Area
+  move bapi2017_gm_item_create-func_area
+    to imseg-fkber.
+*Trading partner's business area
+  move bapi2017_gm_item_create-tr_part_ba
+    to imseg-pargb.
+*Clearing company code
+  move bapi2017_gm_item_create-par_compco
+    to imseg-parbu.
+*Delivery
+  move bapi2017_gm_item_create-deliv_numb
+    to imseg-vbeln.
+*Delivery item
+  move bapi2017_gm_item_create-deliv_item
+    to imseg-posnr.
+
+  move bapi2017_gm_item_create-unload_ptx
+    to imseg-abladx.
+
+  move bapi2017_gm_item_create-gr_rcptx
+    to imseg-wempfx.
+*Number of GR/GI slips to be printed
+  move bapi2017_gm_item_create-nb_slips
+    to imseg-weanz.
+
+  move bapi2017_gm_item_create-nb_slipsx
+    to imseg-weanzx.
+*                       end of note 356665
+
+* Special movement indicator for warehouse management
+  move bapi2017_gm_item_create-spec_mvmt
+    to imseg-bsskz.
+
+  move bapi2017_gm_item_create-create_delivery              "n_2510426
+    to imseg-xdeliv.
+
+* <BAPI_FIELD>|ORDERPR_UN_ISO
+* <SAP_FIELD>|BPRME
+* <CODE_PART>|ISO_INT_UNIT
+* <ADD_FIELD>|ORDERPR_UN
+  if not bapi2017_gm_item_create-orderpr_un
+  is initial.
+    move bapi2017_gm_item_create-orderpr_un
+      to imseg-bprme                                                  .
+  elseif bapi2017_gm_item_create-orderpr_un_iso
+  is initial.
+    clear imseg-bprme                                                  .
+  else.
+    call function 'UNIT_OF_MEASURE_ISO_TO_SAP'
+      exporting
+        iso_code  = bapi2017_gm_item_create-orderpr_un_iso
+      importing
+        sap_code  = imseg-bprme
+      exceptions
+        not_found = 1
+        others    = 2.
+    if sy-subrc <> 0.
+      message a548(b1) with
+      bapi2017_gm_item_create-orderpr_un_iso
+      'ORDERPR_UN_ISO                '
+      raising error_converting_iso_code.
+    endif.
+  endif.
+
+* <BAPI_FIELD>|ENTRY_UOM_ISO
+* <SAP_FIELD>|ERFME
+* <CODE_PART>|ISO_INT_UNIT
+* <ADD_FIELD>|ENTRY_UOM
+  if not bapi2017_gm_item_create-entry_uom
+  is initial.
+    move bapi2017_gm_item_create-entry_uom
+      to imseg-erfme                                                  .
+  elseif bapi2017_gm_item_create-entry_uom_iso
+  is initial.
+    clear imseg-erfme                                                  .
+  else.
+    call function 'UNIT_OF_MEASURE_ISO_TO_SAP'
+      exporting
+        iso_code  = bapi2017_gm_item_create-entry_uom_iso
+      importing
+        sap_code  = imseg-erfme
+      exceptions
+        not_found = 1
+        others    = 2.
+    if sy-subrc <> 0.
+      message a548(b1) with
+      bapi2017_gm_item_create-entry_uom_iso
+      'ENTRY_UOM_ISO                 '
+      raising error_converting_iso_code.
+    endif.
+  endif.
+
+* <BAPI_FIELD>|ST_UN_QTYY_1_ISO
+* <SAP_FIELD>|MEINS
+* <CODE_PART>|ISO_UNIT
+* <ADD_FIELD>|
+  if not
+  bapi2017_gm_item_create-st_un_qtyy_1_iso
+  is initial.
+    call function 'UNIT_OF_MEASURE_ISO_TO_SAP'
+      exporting
+        iso_code  = bapi2017_gm_item_create-st_un_qtyy_1_iso
+      importing
+        sap_code  = imseg-meins
+      exceptions
+        not_found = 1
+        others    = 2.
+    if sy-subrc <> 0.
+      message a548(b1) with
+      bapi2017_gm_item_create-st_un_qtyy_1_iso
+      'ST_UN_QTYY_1_ISO              '
+      raising error_converting_iso_code.
+    endif.
+  else.
+    clear
+    imseg-meins                                                  .
+  endif.
+
+* <BAPI_FIELD>|ST_UN_QTYY_2_ISO
+* <SAP_FIELD>|MEINS
+* <CODE_PART>|ISO_UNIT
+* <ADD_FIELD>|
+  if not
+  bapi2017_gm_item_create-st_un_qtyy_2_iso
+  is initial.
+    call function 'UNIT_OF_MEASURE_ISO_TO_SAP'
+      exporting
+        iso_code  = bapi2017_gm_item_create-st_un_qtyy_2_iso
+      importing
+        sap_code  = imseg-meins
+      exceptions
+        not_found = 1
+        others    = 2.
+    if sy-subrc <> 0.
+      message a548(b1) with
+      bapi2017_gm_item_create-st_un_qtyy_2_iso
+      'ST_UN_QTYY_2_ISO              '
+      raising error_converting_iso_code.
+    endif.
+  else.
+    clear
+    imseg-meins                                                  .
+  endif.
+
+* <BAPI_FIELD>|BASE_UOM                         "1151057
+* <SAP_FIELD>|MEINS                             "1151057
+* <CODE_PART>|A_MOVE                            "1151057
+* <ADD_FIELD>|                                  "1151057
+  if imseg-meins is initial.                                "1352414
+    move bapi2017_gm_item_create-base_uom                   "1151057
+      to imseg-meins.                                       "1151057
+  endif.                                                    "1352414
+
+* <BAPI_FIELD>|WBS_ELEM
+* <SAP_FIELD>|PS_PSP_PNR
+* <CODE_PART>|PSP_ELEM
+* <ADD_FIELD>|
+
+  if bapi2017_gm_item_create-wbs_elem
+  is initial.
+    clear imseg-ps_psp_pnr                                             .
+  else.
+    call function 'PSPNUM_EXTERN_TO_INTERN_CONV'
+      exporting
+        ext_num   = bapi2017_gm_item_create-wbs_elem
+      importing
+        int_num   = imseg-ps_psp_pnr
+      exceptions
+        not_found = 1
+        others    = 2.
+    if sy-subrc <> 0.
+      move bapi2017_gm_item_create-wbs_elem                 "n1294212
+      to lv_wbs_elem.                                       "n1294212
+      message a551(b1) with
+*   BAPI2017_GM_ITEM_CREATE-WBS_ELEM                          "n1294212
+      lv_wbs_elem                                           "n1294212
+      'WBS_ELEM                      '
+      raising error_converting_keys.
+    endif.
+  endif.
+
+* <BAPI_FIELD>|VAL_WBS_ELEM
+* <SAP_FIELD>|MAT_PSPNR
+* <CODE_PART>|PSP_ELEM
+* <ADD_FIELD>|
+
+  if bapi2017_gm_item_create-val_wbs_elem
+  is initial.
+    clear imseg-mat_pspnr                                              .
+  else.
+    call function 'PSPNUM_EXTERN_TO_INTERN_CONV'
+      exporting
+        ext_num   = bapi2017_gm_item_create-val_wbs_elem
+      importing
+        int_num   = imseg-mat_pspnr
+      exceptions
+        not_found = 1
+        others    = 2.
+    if sy-subrc <> 0.
+      move bapi2017_gm_item_create-val_wbs_elem             "n1294212
+      to lv_wbs_elem.                                       "n1294212
+      message a551(b1) with
+*   BAPI2017_GM_ITEM_CREATE-VAL_WBS_ELEM                      "n1294212
+      lv_wbs_elem                                           "n1294212
+      'VAL_WBS_ELEM                  '
+      raising error_converting_keys.
+    endif.
+  endif.
+
+* <BAPI_FIELD>|AMOUNT_SV
+* <SAP_FIELD>|EXVKW
+* <CODE_PART>|Z_AMOUNT_FIELD
+* <ADD_FIELD>|WAERS
+  if not bapi2017_gm_item_create-amount_sv
+  is initial.
+    if imseg-waers
+    is initial.
+      message e537(b1) with
+      'IMSEG-WAERS                                                  '
+      bapi2017_gm_item_create-amount_sv
+      'AMOUNT_SV                     '
+      raising error_converting_curr_amount.
+    else.
+      call function 'CURRENCY_AMOUNT_BAPI_TO_SAP'
+        exporting
+          currency              = imseg-waers
+          bapi_amount           = bapi2017_gm_item_create-amount_sv
+        importing
+          sap_amount            = tmp_amount
+        exceptions
+          bapi_amount_incorrect = 1
+          others                = 2.
+      if sy-subrc <> 0.
+        message e536(b1) with
+        bapi2017_gm_item_create-amount_sv
+        imseg-waers
+        'AMOUNT_SV                     '
+        raising error_converting_curr_amount.
+      endif.
+      move tmp_amount
+      to imseg-exvkw                                                  .
+    endif.
+  else.
+    clear imseg-exvkw                                                  .
+  endif.
+
+* <BAPI_FIELD>|AMOUNT_LC
+* <SAP_FIELD>|EXBWR
+* <CODE_PART>|Z_AMOUNT_FIELD
+* <ADD_FIELD>|WAERS
+  if not bapi2017_gm_item_create-amount_lc
+  is initial.
+    if imseg-waers
+    is initial.
+      message e537(b1) with
+      'IMSEG-WAERS                                                  '
+      bapi2017_gm_item_create-amount_lc
+      'AMOUNT_LC                     '
+      raising error_converting_curr_amount.
+    else.
+      call function 'CURRENCY_AMOUNT_BAPI_TO_SAP'
+        exporting
+          currency              = imseg-waers
+          bapi_amount           = bapi2017_gm_item_create-amount_lc
+        importing
+          sap_amount            = tmp_amount
+        exceptions
+          bapi_amount_incorrect = 1
+          others                = 2.
+      if sy-subrc <> 0.
+        message e536(b1) with
+        bapi2017_gm_item_create-amount_lc
+        imseg-waers
+        'AMOUNT_LC                     '
+        raising error_converting_curr_amount.
+      endif.
+      move tmp_amount
+      to imseg-exbwr                                                  .
+    endif.
+  else.
+    clear imseg-exbwr                                                  .
+  endif.
+
+  test-seam no_map_perform.
+    perform map2i_b2017_gm_item_to_imseg
+      using
+        bapi2017_gm_item_create
+      changing
+        imseg                         .
+  end-test-seam.
+
+* EWM
+* usage in FM BAPI_REPMANCONF1_CREATE_MTS and BAPI_REPMANCONF1_CREATE_MTO
+  move bapi2017_gm_item_create-warehouse_ewm  to imseg-ewm_lgnum.
+  move bapi2017_gm_item_create-stge_bin_ewm   to imseg-ewm_lgpla.
+  move bapi2017_gm_item_create-ewm_diff_ana   to imseg-ewm_diff_ana.
+  move bapi2017_gm_item_create-target_bin_ewm to imseg-ewm_lgpla_target.
+
+* Service Order Document Type
+  move bapi2017_gm_item_create-service_doc_type
+    to imseg-service_doc_type.
+* Service Order Document ID
+  move bapi2017_gm_item_create-service_doc
+    to imseg-service_doc_id.
+* Service Order Document Item ID
+  move bapi2017_gm_item_create-service_item
+    to imseg-service_doc_item_id.
+* Production supply area
+  move bapi2017_gm_item_create-supplyarea
+    to imseg-prvbe.
+* QM stock UUID for inspection finding
+  move bapi2017_gm_item_create-ewm_inspuuid
+    to imseg-ewm_inspuuid.
+
+* <BAPI_FIELD>|XSTOR
+* <SAP_FIELD>|XSTOR
+* <CODE_PART>|A_MOVE
+* <ADD_FIELD>|
+  move bapi2017_gm_item_create-xstor
+    to imseg-xstor.
+endfunction.
+
+*&---------------------------------------------------------------------*
+*&      Form  MAP2I_B2017_GM_ITEM_TO_IMSEG
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->BAPI2017_GM_ITEM_CREATE  text
+*      -->IMSEG                    text
+*----------------------------------------------------------------------*
+form map2i_b2017_gm_item_to_imseg
+  using
+    bapi2017_gm_item_create
+    structure bapi2017_gm_item_create
+  changing
+    imseg
+    structure imseg                         .
+
+  if not bapi2017_gm_item_create-network is initial and
+     not bapi2017_gm_item_create-activity is initial.
+    call function 'EXT_ACTIVITY_GET_INT_ACTIVITY'
+      exporting
+        i_ext_act_network  = bapi2017_gm_item_create-network
+        i_ext_act_activity = bapi2017_gm_item_create-activity
+      importing
+        e_int_act_aufpl    = imseg-aufpl
+        e_int_act_aplzl    = imseg-aplzl
+      exceptions
+        not_found          = 1
+        others             = 2.
+    if sy-subrc <> 0.
+      message e297(m7) with bapi2017_gm_item_create-network
+                            bapi2017_gm_item_create-activity
+                            raising error_converting_network.
+*   Netzplan &, Aktivität & nicht vorhanden
+    endif.
+  endif.
+
+  if        cl_erp_co_olc_tools=>is_rel_for_order( bapi2017_gm_item_create-orderid ) = abap_true
+    and not bapi2017_gm_item_create-orderid is initial
+    and not bapi2017_gm_item_create-activity is initial.
+
+    call method cl_erp_co_olc_tools=>ext_oper_get_int_oper
+      exporting
+        if_ext_order     = bapi2017_gm_item_create-orderid
+        if_ext_operation = bapi2017_gm_item_create-activity
+      importing
+        ef_int_order     = imseg-aplzl
+        ef_int_operation = imseg-aufpl
+      exceptions
+        not_found        = 1
+        others           = 2.
+
+    if sy-subrc <> 0.
+      message e801(erp_co_olc_e) with bapi2017_gm_item_create-activity
+                                      bapi2017_gm_item_create-orderid
+                                      raising error_converting_operation.
+    endif.
+
+  endif.
+
+*----- Convert Long FM Fields & Grant ---------------------------------*
+  move bapi2017_gm_item_create-grant_nbr to imseg-grant_nbr.
+  call function 'FUNC_AREA_CONVERSION_INBOUND'
+    exporting
+      i_func_area      = bapi2017_gm_item_create-func_area
+      i_func_area_long = bapi2017_gm_item_create-func_area_long
+    importing
+      e_func_area_long = imseg-fkber.
+
+  call function 'CMMT_ITEM_CONVERSION_INBOUND'
+    exporting
+      i_cmmt_item      = bapi2017_gm_item_create-cmmt_item
+      i_cmmt_item_long = bapi2017_gm_item_create-cmmt_item_long
+    importing
+      e_cmmt_item      = imseg-fipos
+    exceptions
+      not_found        = 1
+      others           = 2.
+  if sy-subrc <> 0.
+    message id sy-msgid type sy-msgty number sy-msgno
+            with sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4
+            raising error_converting_keys.
+  endif.
+
+  if imseg-aufpl is initial and
+     imseg-aplzl is initial and
+     bapi2017_gm_item_create-orderid  is not initial and
+     bapi2017_gm_item_create-activity is not initial.
+* Order split by actual costs: map operation reference
+    cl_coos_factory=>service_get( )->map_oper_reference_2_int(
+                                         EXPORTING
+                                           iv_order    = imseg-aufnr
+                                           iv_activity = bapi2017_gm_item_create-activity
+                                         IMPORTING
+                                           ev_aufpl    = imseg-aufpl
+                                           ev_aplzl    = imseg-aplzl                      ).
+  endif.
+
+  data: lv_auart         like aufk-auart,                   "{ ENHO ISAUTO_GENERAL_MB_BUS2017 IS-A AM_GENERAL }
+        lv_vornr_bapi_wb like cflt02-vornr_bapi_wb. "{ ENHO ISAUTO_GENERAL_MB_BUS2017 IS-A AM_GENERAL }
+
+ENHANCEMENT-POINT map2i_b2017_gm_item_to_imseg_2 SPOTS es_saplmb_bus2017 STATIC.
+
+  "{ Begin ENHO ISAUTO_GENERAL_MB_BUS2017 IS-A AM_GENERAL }
+* FLT-SDP RYDER  CAPETILLON
+  if imseg-aufpl is initial and
+     imseg-aplzl is initial and
+     not bapi2017_gm_item_create-orderid is initial and
+     not bapi2017_gm_item_create-activity is initial.
+
+
+* need to determine if the operation should be saved with the order
+* when doing a goods movement
+    select single auart into lv_auart from aufk
+                  where aufnr = bapi2017_gm_item_create-orderid.
+
+    check sy-subrc = 0.
+
+    select single vornr_bapi_wb into lv_vornr_bapi_wb from cflt02
+                  where auart = lv_auart.
+
+    check lv_vornr_bapi_wb = 'X'.
+* we are here...operation and order must be saved together for GM
+    call function 'FLT02_GET_AUFPL_AND_APLZL'
+      exporting
+        iv_aufnr  = bapi2017_gm_item_create-orderid
+        iv_vornr  = bapi2017_gm_item_create-activity
+      importing
+        ev_aufpl  = imseg-aufpl
+        ev_aplzl  = imseg-aplzl
+      exceptions
+        not_found = 1
+        others    = 2.
+
+  endif.
+  "{ End ENHO ISAUTO_GENERAL_MB_BUS2017 IS-A AM_GENERAL }
+
+ENHANCEMENT-POINT map2i_b2017_gm_item_to_imseg_1 SPOTS es_saplmb_bus2017.
+endform.                    "MAP2I_B2017_GM_ITEM_TO_IMSEG

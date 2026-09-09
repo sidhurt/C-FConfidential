@@ -1,0 +1,3 @@
+﻿  method IF_EX_MB_DOCUMENT_BADI~MB_DOCUMENT_UPDATE.
+    BREAK ibmabap21.
+  endmethod.

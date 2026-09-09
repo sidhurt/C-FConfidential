@@ -1,0 +1,203 @@
+SOURCE|system=DS4|client=200|program=SRT_WS_IDP_CUSTOMIZE|term=METHOD SCHEDULE_SWITCH_JOB_AREA.
+HIT|line=884
+000784|      " compare timestamps
+000785|      l_comp = cl_abap_tstmp=>compare( tstmp1 = l_ts
+000786|                                     tstmp2 = l_ts_act ).
+000787|      if l_comp < 0.
+000788|        e_rc = 0.
+000789|      endif.
+000790|    endif.
+000791|
+000792|
+000793|
+000794|    if ( c_switch_d is initial ) or (  e_rc = 0 ).
+000795|      "this is the case only for first time
+000796|      l_per_in_sec = ( i_per_d * 24 + i_per_h ) * 3600 .
+000797|
+000798|
+000799|      if i_last_switch is initial.
+000800|        l_ts = cl_abap_tstmp=>add( tstmp = l_ts_act
+000801|                                  secs = l_per_in_sec ).
+000802|      else.
+000803|        l_ts = cl_abap_tstmp=>add( tstmp = i_last_switch
+000804|                                        secs = l_per_in_sec ).
+000805|
+000806|        " check if calculated date is in the past or in the future
+000807|        l_comp = cl_abap_tstmp=>compare( tstmp1 = l_ts
+000808|                                       tstmp2 = l_ts_act ).
+000809|
+000810|        if l_comp < 0.
+000811|          " when calculated value is in the past, use initial value to calculate the next switch date
+000812|          l_ts = cl_abap_tstmp=>add( tstmp = l_ts_act
+000813|                                    secs = l_per_in_sec ).
+000814|        endif.
+000815|      endif.
+000816|
+000817|      convert time stamp l_ts
+000818|        time zone sy-zonlo
+000819|        into date c_switch_d time c_switch_t.
+000820|    endif.
+000821|
+000822|  endmethod.
+000823|
+000824|
+000825|  method next_switch_date_check_int.
+000826|    data: l_ts_act    type timestamp,
+000827|          l_ts_switch type timestamp,
+000828|          l_comp      type i.
+000829|    data: l_msg        type string.
+000830|
+000831|    e_rc = 1.
+000832|    convert date i_switch_d time i_switch_t
+000833|      into time stamp l_ts_switch
+000834|      time zone sy-zonlo.
+000835|
+000836|    get time stamp field l_ts_act.
+000837|    l_comp = cl_abap_tstmp=>compare( tstmp1 = l_ts_switch
+000838|                                     tstmp2 = l_ts_act ).
+000839|    if l_comp > 0.
+000840|      e_rc = 0.
+000841|    endif.
+000842|
+000843|
+000844|  endmethod.
+000845|
+000846|  method next_switch_date_check.
+000847|    data: l_ts_act    type timestamp,
+000848|          l_ts_switch type timestamp,
+000849|          l_comp      type i.
+000850|    data: l_msg        type string.
+000851|
+000852|    e_rc = 1.
+000853|    if i_period is initial.
+000854|      e_rc = 0.
+000855|    else.
+000856|      next_switch_date_check_int(
+000857|        exporting
+000858|          i_period   = i_period
+000859|          i_switch_d = i_switch_d
+000860|          i_switch_t = i_switch_t
+000861|        importing
+000862|          e_rc       = e_rc
+000863|      ).
+000864|    endif.
+000865|    if e_rc ne 0.
+000866|      message e002(srt_ws_idp) with i_jobname i_switch_d i_switch_t
+000867|         into l_msg.
+000868|    endif.
+000869|
+000870|  endmethod.
+000871|
+000872|
+000873|  method message_handler.
+000874|    check i_rc ne 0.
+000875|    if i_ui eq abap_true.
+000876|      message id sy-msgid type sy-msgty number sy-msgno
+000877|         with sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+000878|    else.
+000879|      message_add( changing ct_msg = et_msg ).
+000880|    endif.
+000881|
+000882|  endmethod.
+000883|
+000884|  method schedule_switch_job_area.
+000885|    data:  l_jobname   type tbtcjob-jobname,
+000886|           l_progname  type progname,
+000887|           ld_jobcount type tbtcjob-jobcount.
+000888|    data   l_rc              type sysubrc.
+000889|
+000890|    define mac_message_handler.
+000891|      message_handler(
+000892|        exporting
+000893|          i_ui   = i_ui
+000894|          i_rc   = l_rc
+000895|        changing
+000896|          et_msg = et_msg
+000897|      ).
+000898|      if i_ui eq abap_true and l_rc ne 0.
+000899|        exit.
+000900|      endif.
+000901|    end-of-definition. "mac_message_handler
+000902|
+000903|    case is_idp_adm-area.
+000904|      when cl_ws_idp_util=>co_area_bd_switch.
+000905|        l_jobname = gc_jobname_bd.
+000906|        l_progname = 'SRT_WS_IDP_SWITCH_BD_CONT'.   "EC NOTEXT
+000907|      when cl_ws_idp_util=>co_area_bdid_switch.
+000908|        l_jobname = gc_jobname_id.
+000909|        l_progname = 'SRT_WS_IDP_SWITCH_BDID_CONT'. "EC NOTEXT
+000910|    endcase.
+000911|
+000912|    next_switch_date_set(
+000913|      exporting
+000914|        i_last_switch = is_idp_adm-last_switch_time
+000915|        i_per_d       = i_day
+000916|        i_per_h       = i_hour
+000917|      changing
+000918|        c_switch_d    = c_switch_d
+000919|        c_switch_t    = c_switch_t
+000920|    ).
+000921|
+000922|    next_switch_date_check(
+000923|      exporting
+000924|        i_jobname  = l_jobname
+000925|        i_period   = is_idp_adm-period
+000926|        i_switch_d = c_switch_d
+000927|        i_switch_t = c_switch_t
+000928|      changing
+000929|        e_rc       = l_rc
+000930|    ).
+000931|    mac_message_handler.
+000932|
+000933|
+000934|    "-1- delete existing job
+000935|    job_delete(
+000936|      exporting
+000937|        i_jobname = l_jobname
+000938|      importing
+000939|        e_rc      = l_rc
+000940|    ).
+000941|    mac_message_handler.
+000942|
+000943|    "-2- create new job
+000944|    job_open(
+000945|      exporting
+000946|        i_jobname  = l_jobname
+000947|      importing
+000948|        e_jobcount = ld_jobcount
+000949|        e_rc       = l_rc
+000950|    ).
+000951|    mac_message_handler.
+000952|
+000953|    "-3- define step
+000954|    submit_via_job(
+000955|      iv_jobname  = l_jobname
+000956|      iv_progname = l_progname
+000957|      iv_jobcount = ld_jobcount
+000958|    ).
+000959|
+000960|    "-4- schedule job
+000961|    job_close(
+000962|      exporting
+000963|        i_jobname   = l_jobname
+000964|        i_jobcount  = ld_jobcount
+000965|        i_sdlstrtdt = c_switch_d
+000966|        i_sdlstrttm = c_switch_t
+000967|        i_prddays   = i_day
+000968|        i_prdhours  = i_hour
+000969|        i_prdmins   = i_min
+000970|      importing
+000971|        e_rc        = l_rc
+000972|    ).
+000973|    mac_message_handler.
+000974|
+000975|    admin_tab_update(
+000976|      i_area = is_idp_adm-area
+000977|      i_per_d = i_day
+000978|      i_per_h = i_hour
+000979|      i_per_m = i_min
+000980|      i_switch_d = c_switch_d
+000981|      i_switch_t = c_switch_t
+000982|    ).
+000983|
+000984|  endmethod.

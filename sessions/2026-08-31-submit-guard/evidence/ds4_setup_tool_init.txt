@@ -1,0 +1,113 @@
+SOURCE|system=DS4|client=200|program=SRT_WS_IDP_CUSTOMIZE|term=METHOD TOOL_INIT.
+HIT|line=987
+000932|
+000933|
+000934|    "-1- delete existing job
+000935|    job_delete(
+000936|      exporting
+000937|        i_jobname = l_jobname
+000938|      importing
+000939|        e_rc      = l_rc
+000940|    ).
+000941|    mac_message_handler.
+000942|
+000943|    "-2- create new job
+000944|    job_open(
+000945|      exporting
+000946|        i_jobname  = l_jobname
+000947|      importing
+000948|        e_jobcount = ld_jobcount
+000949|        e_rc       = l_rc
+000950|    ).
+000951|    mac_message_handler.
+000952|
+000953|    "-3- define step
+000954|    submit_via_job(
+000955|      iv_jobname  = l_jobname
+000956|      iv_progname = l_progname
+000957|      iv_jobcount = ld_jobcount
+000958|    ).
+000959|
+000960|    "-4- schedule job
+000961|    job_close(
+000962|      exporting
+000963|        i_jobname   = l_jobname
+000964|        i_jobcount  = ld_jobcount
+000965|        i_sdlstrtdt = c_switch_d
+000966|        i_sdlstrttm = c_switch_t
+000967|        i_prddays   = i_day
+000968|        i_prdhours  = i_hour
+000969|        i_prdmins   = i_min
+000970|      importing
+000971|        e_rc        = l_rc
+000972|    ).
+000973|    mac_message_handler.
+000974|
+000975|    admin_tab_update(
+000976|      i_area = is_idp_adm-area
+000977|      i_per_d = i_day
+000978|      i_per_h = i_hour
+000979|      i_per_m = i_min
+000980|      i_switch_d = c_switch_d
+000981|      i_switch_t = c_switch_t
+000982|    ).
+000983|
+000984|  endmethod.
+000985|
+000986|
+000987|  method tool_init.
+000988|    data: lcx_failure type ref to cx_soap_idp_failure.
+000989|
+000990|    e_rc = 0.
+000991|    try.
+000992|        cl_ws_idp_util=>get_instance( )->generate_objects( ).
+000993|      catch cx_soap_idp_failure into lcx_failure.
+000994|        e_rc = 1.
+000995|        message lcx_failure type 'I' display like 'E'.
+000996|        if lcx_failure->previous is bound.
+000997|          message lcx_failure->previous type 'I' display like 'E'.
+000998|        endif.
+000999|    endtry.
+001000|
+001001|  endmethod.
+001002|
+001003|
+001004|  method get_bdcdata.
+001005|    data:
+001006|      ls_bdcdata          type bdcdata,
+001007|***    ld_jobname           LIKE tbtcjob-jobname,
+001008|      ld_datum            type sy-datum,
+001009|      ld_selstartdate(10) type c.
+001010|
+001011|    define mac_add_bdcdata.
+001012|      clear ls_bdcdata.
+001013|      ls_bdcdata-fnam = &1.
+001014|      ls_bdcdata-fval = &2.
+001015|      append ls_bdcdata  to ct_bdcdata.
+001016|    end-of-definition. "mac_add_bdcdata
+001017|
+001018|    ld_datum = sy-datum - 1.
+001019|    write ld_datum to ld_selstartdate dd/mm/yyyy.
+001020|
+001021|    refresh ct_bdcdata[].
+001022|    clear ls_bdcdata.
+001023|    ls_bdcdata-program  = 'SAPLBTCH'.
+001024|    ls_bdcdata-dynpro   = '2170'.
+001025|    ls_bdcdata-dynbegin = 'X'.
+001026|    append ls_bdcdata  to ct_bdcdata.
+001027|
+001028|    mac_add_bdcdata: 'BDC_CURSOR'         'BTCH2170-JOBNAME',
+001029|                     'BTCH2170-JOBNAME'   gc_jobname_       ,
+001030|                     'BTCH2170-FROM_DATE' ld_selstartdate   ,
+001031|                     'BTCH2170-TO_DATE'   '31.12.9999'      ,
+001032|                     'BTCH2170-USERNAME'  '*'               ,
+001033|                     'BTCH2170-PRELIM'    'X'               .
+001034|  endmethod.
+001035|
+001036|
+001037|
+001038|  method submit_via_job.
+001039|
+001040|    submit (iv_progname)
+001041|      via job iv_jobname number iv_jobcount
+001042|      and return.                                        "#EC CI_SUBMIT

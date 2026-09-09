@@ -1,0 +1,53 @@
+﻿  METHOD item_batch_checks.
+
+    IF ir_item->plant IS INITIAL OR
+       ir_item->material IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    DATA(lv_is_batch_managed) = cl_vb_batch_factory=>util( )->is_mat_batch_managed_for_plant(
+        iv_material           = ir_item->material
+        iv_plant              = ir_item->plant ).
+    IF lv_is_batch_managed = abap_true.
+      RETURN.
+    ENDIF.
+
+    IF ir_item->batch IS NOT INITIAL.
+      INSERT VALUE #( msgid = gc_message_class
+                      msgno = '012'
+                      msgty = if_nsdm_odata_text_message=>sc_severity-error
+                      msgv1 = ir_item->material
+                      msgv2 = ir_item->plant ) INTO TABLE ct_message.
+      rv_failed = abap_true.
+    ENDIF.
+    IF ir_item->shelflifeexpirationdate IS NOT INITIAL.
+      INSERT VALUE #( msgid = gc_message_class
+                      msgno = '013'
+                      msgty = if_nsdm_odata_text_message=>sc_severity-error
+                      msgv1 = 'ShelfLifeExpirationDate'
+                      msgv2 = ir_item->material
+                      msgv3 = ir_item->plant ) INTO TABLE ct_message.
+      rv_failed = abap_true.
+    ENDIF.
+    IF ir_item->manufacturedate IS NOT INITIAL.
+      INSERT VALUE #( msgid = gc_message_class
+                      msgno = '013'
+                      msgty = if_nsdm_odata_text_message=>sc_severity-error
+                      msgv1 = 'ManufactureDate'
+                      msgv2 = ir_item->material
+                      msgv3 = ir_item->plant ) INTO TABLE ct_message.
+      rv_failed = abap_true.
+    ENDIF.
+
+    IF cl_sgt_switch_check=>segmentation_switch_check( ) EQ abap_on.
+      IF ir_item->stocksegment IS NOT INITIAL.
+        INSERT VALUE #( msgid = gc_message_class
+                        msgno = '012'
+                        msgty = if_nsdm_odata_text_message=>sc_severity-error
+                        msgv1 = ir_item->material
+                        msgv2 = ir_item->plant ) INTO TABLE ct_message.
+        rv_failed = abap_true.
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.

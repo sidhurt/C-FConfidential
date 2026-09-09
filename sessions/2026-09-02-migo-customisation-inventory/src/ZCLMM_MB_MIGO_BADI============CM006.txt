@@ -1,0 +1,6 @@
+﻿method IF_EX_MB_MIGO_BADI~INIT.
+* Regristration of BAdI-Implementation:
+* Append class attribute GF_CLASS_ID (='MIGO_BADI_IMPLEMENTATION1') to
+* regristration table.
+  APPEND gv_class_id TO ct_init.
+endmethod.

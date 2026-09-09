@@ -1,0 +1,76 @@
+﻿CLASS lth_inject_doubles DEFINITION DEFERRED.
+CLASS ltc_create DEFINITION DEFERRED.
+CLASS cl_material_document_api DEFINITION LOCAL FRIENDS lth_inject_doubles ltc_create.
+
+INTERFACE lif_mdoc_maintain.
+
+  TYPES:
+    tt_imseg       TYPE STANDARD TABLE OF imseg WITH DEFAULT KEY,
+    tt_iseri       TYPE STANDARD TABLE OF iseri WITH DEFAULT KEY,
+    tt_emseg       TYPE STANDARD TABLE OF emseg WITH DEFAULT KEY,
+    tt_mseg        TYPE STANDARD TABLE OF mseg WITH DEFAULT KEY,
+    tt_matdoc      TYPE STANDARD TABLE OF matdoc WITH DEFAULT KEY,
+    tt_item_cancel TYPE STANDARD TABLE OF mblpo WITH DEFAULT KEY.
+
+  TYPES tt_goodsmvt_item         TYPE STANDARD TABLE OF bapi2017_gm_item_create.
+  TYPES tt_goodsmvt_serialnumber TYPE STANDARD TABLE OF bapi2017_gm_serialnumber.
+
+  METHODS post_goods_movement
+    EXPORTING
+      es_emkpf TYPE emkpf.
+
+  METHODS create_goods_movement_bapi
+    IMPORTING
+      is_goodsmvt_header       TYPE bapi2017_gm_head_01
+      iv_goodsmvt_code         TYPE bapi2017_gm_code
+      it_goodsmvt_item         TYPE tt_goodsmvt_item
+      is_goodsmvt_print_ctrl   TYPE bapi2017_gm_print
+      it_goodsmvt_serialnumber TYPE tt_goodsmvt_serialnumber
+      it_extensionin           TYPE bapiparextab
+    EXPORTING
+      es_goodsmvt_header       TYPE mkpf
+      et_return                TYPE bapiret2_t.
+
+  METHODS cancel_goods_movement
+    IMPORTING
+      iv_budat    TYPE budat
+      iv_mjahr    TYPE mjahr
+      iv_mblnr    TYPE mblnr
+      it_item_tab TYPE tt_item_cancel OPTIONAL
+    EXPORTING
+      es_mkpf     TYPE mkpf
+      es_emkpf    TYPE emkpf
+      et_emseg    TYPE tt_emseg.
+
+  METHODS get_tcode_4_goodsmovementcode
+    IMPORTING
+              iv_goodsmovementcode TYPE nsdm_goods_movement_code
+    RETURNING VALUE(rv_tcode)      TYPE tcode.
+
+  METHODS get_goodsmovementcode_4_tcode
+    IMPORTING
+              iv_tcode                    TYPE tcode
+    RETURNING VALUE(rv_goodsmovementcode) TYPE nsdm_goods_movement_code.
+
+ENDINTERFACE.
+
+INTERFACE lif_migo_settings.
+
+  CONSTANTS:
+    BEGIN OF sc_requirement_type,
+      mandatory TYPE migo_field_entry VALUE '+',
+      optional  TYPE migo_field_entry VALUE '.',
+    END OF sc_requirement_type.
+
+  METHODS get_customizing_fields
+    IMPORTING
+      iv_goodsmovementtype TYPE bwart
+    EXPORTING
+      et_fields            TYPE tyt_migo_move_fields .
+
+  METHODS is_transfer_movement
+    IMPORTING
+              iv_goodsmovementtype  TYPE bwart
+    RETURNING VALUE(rv_is_transfer) TYPE abap_bool.
+
+ENDINTERFACE.
