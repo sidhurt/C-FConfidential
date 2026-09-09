@@ -1,0 +1,380 @@
+{
+  "info": {
+    "_postman_id": "02940f02-af68-4275-9835-28efbfaaf8bf",
+    "name": "CNF Submit MIGO - delivery referenced, PO-free",
+    "description": "Reviewed 2026-09-01. Direct call to the standard SAP Material Document API for delivery-referenced movement 101. PO Number and PO Item are deliberately omitted. Material, receiving plant, storage location, quantity and unit remain explicit technical inputs until backend derivation exists.\n\nRun only 01 token fetch, then 02 business POST. No MIGO verification GET. A successful POST must directly return MaterialDocument and MaterialDocumentYear.\n\nHistorical evidence: material document 5007138616 / 2026 was created by the earlier PO-plus-delivery request against delivery 9004953150/000010. That delivery has already been received; do not reuse it. The earlier collections remain preserved in the neighboring original folder and in version control. The PO-free request still requires an approved fresh delivery and live proof.\n\nStandard SAP repeatability is requested using RequestID and RepeatabilityCreation HTTP headers. The local guard is NOT server-side protection. DS4/200 setup completed on 2026-08-31; QS4/700 setup and live posting replay/concurrency proof remain pending.\n\nSelect the matching Reviewed environment. Fill an approved test case, use a stable submissionId, and set the confirmation to YES only immediately before a deliberate posting. Never clear local history to resolve an uncertain outcome.\n\nUse trusted HTTPS and keep cookies enabled. Do not share populated passwords, tokens, cookies or local submission history.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{sap-user}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{sap-pass}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base",
+      "value": "{{host}}/sap/opu/odata/sap"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Fetch CSRF token",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.unset('csrf');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.unset('csrf');",
+              "const token = pm.response.headers.get('x-csrf-token');",
+              "const ok = pm.response.code === 200 && typeof token === 'string' && token.trim() !== '' && token.toLowerCase() !== 'required';",
+              "pm.test('Token fetch returned 200 and a token', () => pm.expect(ok).to.eql(true));",
+              "if (ok) pm.environment.set('csrf', token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "x-csrf-token",
+            "value": "Fetch"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/?sap-client={{sap-client}}",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "API_MATERIAL_DOCUMENT_SRV",
+            ""
+          ],
+          "query": [
+            {
+              "key": "sap-client",
+              "value": "{{sap-client}}"
+            }
+          ]
+        },
+        "description": "Fetch a fresh token for this service. The post-response script stores it in csrf. Keep cookie handling enabled."
+      }
+    },
+    {
+      "name": "02 - Submit MIGO against selected delivery",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "try {",
+              "(function beforePost(operation, confirmation) {",
+              "  const stop = message => {",
+              "    pm.environment.set(confirmation, 'NO');",
+              "    pm.environment.set('confirmRepeatSameSubmission', 'NO');",
+              "    console.info('NOT SENT: ' + message);",
+              "    pm.execution.skipRequest();",
+              "    return false;",
+              "  };",
+              "  const canonical = value => {",
+              "    if (Array.isArray(value)) return value.map(canonical);",
+              "    if (value && typeof value === 'object') {",
+              "      return Object.fromEntries(Object.keys(value).sort().map(key => [key, canonical(value[key])]));",
+              "    }",
+              "    return value;",
+              "  };",
+              "  const filled = value => typeof value === 'string' && value.trim() !== '' && !value.includes('{{');",
+              "  const positive = value => /^\\d+(\\.\\d+)?$/.test(String(value)) && Number(value) > 0;",
+              "  const enteredId = String(pm.environment.get('submissionId') || '').trim();",
+              "  if (!/^(?:[a-fA-F0-9]{32}|[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/.test(enteredId)) return stop('Set submissionId to a GUID once for this business submission. Do not generate a new ID on each Send.');",
+              "  const id = enteredId.replace(/-/g, '').toUpperCase();",
+              "  if (/^0+$/.test(id)) return stop('An all-zero submissionId is not allowed.');",
+              "  pm.environment.set('submissionId', id);",
+              "  if (pm.environment.get(confirmation) !== 'YES') return stop('Submission is not armed; confirmation must be YES for a reviewed new submission.');",
+              "",
+              "  if (operation === 'MIGO') {",
+              "    const date = String(pm.environment.get('postingDate') || '');",
+              "    const epoch = Date.parse(date + 'T00:00:00Z');",
+              "    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(date) || !Number.isFinite(epoch) || new Date(epoch).toISOString().slice(0, 10) !== date) {",
+              "      return stop('Set postingDate to a valid YYYY-MM-DD date in the open SAP posting period.');",
+              "    }",
+              "    pm.environment.set('postingDateEpochMs', String(epoch));",
+              "  }",
+              "",
+              "  const bodyText = pm.variables.replaceIn(pm.request.body.raw);",
+              "  const url = pm.variables.replaceIn(pm.request.url.toString());",
+              "  const csrf = pm.variables.replaceIn(pm.request.headers.get('x-csrf-token') || '');",
+              "  if (!filled(csrf)) return stop('Fetch the CSRF token first and retain its cookies.');",
+              "  if (!filled(url) || !url.startsWith('https://') || bodyText.includes('{{')) return stop('Unresolved request variables or non-HTTPS destination.');",
+              "  let body;",
+              "  try { body = JSON.parse(bodyText); } catch { return stop('Request body is not valid JSON.'); }",
+              "  if (!body || typeof body !== 'object' || Array.isArray(body)) return stop('Request body must be a JSON object.');",
+              "  if (operation === 'MIGO') {",
+              "    if (body.GoodsMovementCode !== '01' || !Array.isArray(body.to_MaterialDocumentItem) || !body.to_MaterialDocumentItem.length) {",
+              "      return stop('Expected goods receipt code 01 and at least one material-document item.');",
+              "    }",
+              "    for (const item of body.to_MaterialDocumentItem) {",
+              "      if (!item || typeof item !== 'object') return stop('Each receipt item must be a JSON object.');",
+              "      if (!['Material', 'Plant', 'StorageLocation', 'EntryUnit', 'Delivery', 'DeliveryItem'].every(key => filled(item[key]))) {",
+              "        return stop('Each receipt item must include delivery/item, material, receiving plant, storage location and unit. PO fields must not be sent.');",
+              "      }",
+              "      if (item.GoodsMovementType !== '101' || item.GoodsMovementRefDocType !== 'B' || !positive(item.QuantityInEntryUnit)) {",
+              "        return stop('Use movement 101, reference type B and a positive receipt quantity.');",
+              "      }",
+              "      if (Object.hasOwn(item, 'PurchaseOrder') || Object.hasOwn(item, 'PurchaseOrderItem')) return stop('PO Number and PO Item must be omitted from this delivery-referenced request.');",
+              "      if (!/^\\d{6}$/.test(item.DeliveryItem)) return stop('Delivery item must have 6 digits, for example 000010.');",
+              "    }",
+              "  } else {",
+              "    if (!filled(body.ShippingPoint) || !Array.isArray(body.to_DeliveryDocumentItem) || !body.to_DeliveryDocumentItem.length) return stop('Shipping point and delivery items are required.');",
+              "    for (const item of body.to_DeliveryDocumentItem) {",
+              "      if (!item || typeof item !== 'object') return stop('Each DI item must be a JSON object.');",
+              "      if (!['ReferenceSDDocument', 'ReferenceSDDocumentItem', 'DeliveryQuantityUnit'].every(key => filled(item[key])) || !positive(item.ActualDeliveryQuantity)) {",
+              "        return stop('Each DI item needs its predecessor, predecessor item, positive quantity and unit.');",
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  let ledger;",
+              "  try { ledger = JSON.parse(pm.environment.get('cnfDemoLedger') || '{}'); } catch { return stop('Local submission history is invalid; review it before proceeding.'); }",
+              "  if (!ledger || typeof ledger !== 'object' || Array.isArray(ledger)) return stop('Local submission history is invalid.');",
+              "  const key = operation + ':' + id;",
+              "  if (Object.keys(ledger).some(existing => existing !== key && existing.endsWith(':' + id))) return stop('This GUID belongs to another operation. Each new business submission requires a globally unique GUID.');",
+              "  const snapshot = JSON.stringify(canonical({ url, body }));",
+              "  let creation;",
+              "  let replay = false;",
+              "  if (Object.hasOwn(ledger, key)) {",
+              "    const previous = ledger[key];",
+              "    if (!previous || previous.snapshot !== snapshot) return stop('This submissionId already exists with different inputs. Do not reuse it for edited input.');",
+              "    if (pm.environment.get('confirmRepeatSameSubmission') === 'YES' && previous.state === 'SUCCESS' && previous.repeatabilityResult === 'supported' && previous.repeatabilityCreation) {",
+              "      const windowText = String(pm.environment.get('verifiedReplayWindowSeconds') || '');",
+              "      const ageMs = Date.now() - Date.parse(previous.repeatabilityCreation);",
+              "      if (!/^\\d+$/.test(windowText) || Number(windowText) < 1 || Number(windowText) > 300 || !Number.isFinite(ageMs) || ageMs < 0 || ageMs > Number(windowText) * 1000) {",
+              "        return stop('QA replay requires a Basis-verified retention window: set verifiedReplayWindowSeconds (1-300) and replay inside that window. Never retry an expired ID.');",
+              "      }",
+              "      replay = true;",
+              "      creation = previous.repeatabilityCreation;",
+              "    } else {",
+              "      const result = previous.result ? ' Saved result: ' + JSON.stringify(previous.result) : '';",
+              "      return stop('This submission is already ' + previous.state + '.' + result + ' No additional SAP POST was sent.');",
+              "    }",
+              "  }",
+              "  // A changed ID does not silently re-arm identical inputs within this local pack.",
+              "  if (!replay && Object.values(ledger).some(entry => entry && entry.snapshot === snapshot)) {",
+              "    return stop('Identical inputs were already attempted. Review the prior result; a new ID alone does not authorize another posting.');",
+              "  }",
+              "",
+              "  // Consume the confirmation BEFORE dispatch, even if the request later times out.",
+              "  pm.environment.set(confirmation, 'NO');",
+              "  pm.environment.set('confirmRepeatSameSubmission', 'NO');",
+              "  creation ||= new Date().toISOString();",
+              "  pm.environment.set('repeatabilityCreation', creation);",
+              "  // Resolve these at dispatch; broader-scope variables cannot replace the fixed ID.",
+              "  pm.request.headers.upsert({ key: 'RequestID', value: id });",
+              "  pm.request.headers.upsert({ key: 'RepeatabilityCreation', value: creation });",
+              "  pm.request.body.update(bodyText);",
+              "  ledger[key] = { state: 'IN_FLIGHT', snapshot, startedAt: new Date().toISOString(), repeatabilityCreation: creation,",
+              "    expectedResult: replay ? ledger[key].result : undefined, replay };",
+              "  pm.environment.set('cnfDemoLedger', JSON.stringify(ledger));",
+              "  pm.variables.set('cnfActiveSubmissionKey', key);",
+              "  if (operation === 'MIGO') {",
+              "    pm.environment.unset('materialDocument');",
+              "    pm.environment.unset('materialDocumentYear');",
+              "  } else pm.environment.unset('deliveryDocument');",
+              "})(\"MIGO\", \"confirmSubmitMIGO\");",
+              "} catch (error) {",
+              "  pm.environment.set(\"confirmSubmitMIGO\", 'NO');",
+              "  console.error('NOT SENT: local validation failed; inspect the script error before proceeding.');",
+              "  pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(function afterPost(operation, confirmation) {",
+              "  pm.environment.set(confirmation, 'NO');",
+              "  const key = pm.variables.get('cnfActiveSubmissionKey');",
+              "  const ledger = JSON.parse(pm.environment.get('cnfDemoLedger') || '{}');",
+              "  if (!key || !ledger[key]) throw new Error('Missing local submission record. Inspect this response; do not repost.');",
+              "  let body;",
+              "  try { body = pm.response.json(); } catch { body = {}; }",
+              "  const data = body?.d ?? body;",
+              "  const number = operation === 'MIGO' ? data?.MaterialDocument : data?.DeliveryDocument;",
+              "  const year = data?.MaterialDocumentYear;",
+              "  const hasNumber = typeof number === 'string' && /^\\d+$/.test(number) && !/^0+$/.test(number);",
+              "  const hasYear = typeof year === 'string' && /^[1-9]\\d{3}$/.test(year);",
+              "  const repeatability = String(pm.response.headers.get('RepeatabilityResult') || '').trim().toLowerCase();",
+              "  const result = operation === 'MIGO' ? { MaterialDocument: number, MaterialDocumentYear: year } : { DeliveryDocument: number };",
+              "  const sameResult = !ledger[key].expectedResult || JSON.stringify(result) === JSON.stringify(ledger[key].expectedResult);",
+              "  const posted = pm.response.code === 201 && hasNumber && (operation !== 'MIGO' || hasYear);",
+              "  const success = posted && repeatability === 'supported' && sameResult;",
+              "  pm.test('SAP returned 201 Created', () => pm.expect(pm.response.code).to.eql(201));",
+              "  pm.test('POST returned the created document key', () => pm.expect(hasNumber && (operation !== 'MIGO' || hasYear)).to.eql(true));",
+              "  pm.test('SAP confirms standard repeatability support', () => pm.expect(repeatability).to.eql('supported'));",
+              "  pm.test('A deliberate replay returns the original document key', () => pm.expect(sameResult).to.eql(true));",
+              "  ledger[key].httpStatus = pm.response.code;",
+              "  ledger[key].repeatabilityResult = repeatability || 'missing';",
+              "  ledger[key].state = success ? 'SUCCESS' : 'REVIEW_REQUIRED';",
+              "  ledger[key].finishedAt = new Date().toISOString();",
+              "  // Even a posted-but-unprotected result must be retained. Never hide a real document.",
+              "  if (posted) {",
+              "    ledger[key].result = result;",
+              "    for (const [field, value] of Object.entries(ledger[key].result)) {",
+              "      pm.environment.set(field[0].toLowerCase() + field.slice(1), value);",
+              "    }",
+              "    console.info((success ? 'POST succeeded with repeatability: ' : 'DOCUMENT RETURNED; repeatability verification FAILED: ') + JSON.stringify(result));",
+              "  }",
+              "  if (!success) {",
+              "    ledger[key].message = !sameResult ? 'CRITICAL: replay returned a different document. Stop and investigate both documents.'",
+              "      : posted && repeatability !== 'supported' ? 'Document posted, but SAP did not confirm repeatability. Do not resend.'",
+              "      : body?.error?.message?.value || body?.error?.message || 'Review the SAP response. Outcome may be uncertain; no automatic repost.';",
+              "    console.warn(ledger[key].message);",
+              "  }",
+              "  pm.environment.set('cnfDemoLedger', JSON.stringify(ledger));",
+              "  // No pm.sendRequest, runRequest, or follow-up GET. An empty item array is allowed.",
+              "})(\"MIGO\", \"confirmSubmitMIGO\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "x-csrf-token",
+            "value": "{{csrf}}"
+          },
+          {
+            "key": "RequestID",
+            "value": "{{submissionId}}",
+            "type": "text"
+          },
+          {
+            "key": "RepeatabilityCreation",
+            "value": "{{repeatabilityCreation}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"PostingDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"DocumentDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"GoodsMovementCode\": \"01\",\n  \"MaterialDocumentHeaderText\": \"{{materialDocumentHeaderText}}\",\n  \"to_MaterialDocumentItem\": [\n    {\n      \"Material\": \"{{material}}\",\n      \"Plant\": \"{{receivingPlant}}\",\n      \"StorageLocation\": \"{{storageLocation}}\",\n      \"GoodsMovementType\": \"101\",\n      \"GoodsMovementRefDocType\": \"B\",\n      \"QuantityInEntryUnit\": \"{{quantity}}\",\n      \"EntryUnit\": \"{{unit}}\",\n      \"Delivery\": \"{{delivery}}\",\n      \"DeliveryItem\": \"{{deliveryItem}}\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader?sap-client={{sap-client}}",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "API_MATERIAL_DOCUMENT_SRV",
+            "A_MaterialDocumentHeader"
+          ],
+          "query": [
+            {
+              "key": "sap-client",
+              "value": "{{sap-client}}"
+            }
+          ]
+        },
+        "description": "REAL SAP WRITE. Use only an approved fresh delivery with PGI completed and MIGO pending.\n\nThis request is PO-free: do not send PurchaseOrder or PurchaseOrderItem. Supply delivery/item plus the technical posting values Material, receiving Plant, Storage Location, Quantity and Unit. Use GoodsMovementRefDocType B and movement 101. A successful POST returns MaterialDocument and MaterialDocumentYear; no second GET is required.\n\nSet submissionId to a unique GUID ONCE per business submission, fill all inputs, fetch the token, then set confirmSubmitMIGO=YES. The script consumes YES before dispatch. The GUID is sent as the standard SAP RequestID header, not an entity property.\n\nLocal history skips previously attempted submissions in this environment. Skipping produces no new HTTP response; inspect the Postman Console and saved result.\n\nRequires configured SAP Gateway idempotent services. DS4/200 was initialized on 2026-08-31; QS4/700 setup and live posting replay/concurrency proof remain pending. Never remove the repeatability headers to bypass a 412 or missing-configuration error.\n\nThe local guard is NOT atomic across runtimes. Backend protection depends on SAP configuration and its finite retention window. Only RepeatabilityResult=supported plus a valid POST document result passes verification.\n\nFor deliberate sequential QA replay only: after Basis confirms retention, set verifiedReplayWindowSeconds (1-300). Inside that window after verified success, keep all inputs and submissionId unchanged, set confirmRepeatSameSubmission=YES and confirmSubmitMIGO=YES. Do not use QA replay for uncertain, failed or expired attempts."
+      },
+      "response": [
+        {
+          "name": "HISTORICAL PO-inclusive evidence only — not the current request — 5007138616 / 2026",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "x-csrf-token",
+                "value": "{{csrf}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"PostingDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"DocumentDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"GoodsMovementCode\": \"01\",\n  \"MaterialDocumentHeaderText\": \"{{materialDocumentHeaderText}}\",\n  \"to_MaterialDocumentItem\": [\n    {\n      \"Material\": \"{{material}}\",\n      \"Plant\": \"{{receivingPlant}}\",\n      \"StorageLocation\": \"{{storageLocation}}\",\n      \"GoodsMovementType\": \"101\",\n      \"GoodsMovementRefDocType\": \"B\",\n      \"QuantityInEntryUnit\": \"{{quantity}}\",\n      \"EntryUnit\": \"{{unit}}\",\n      \"PurchaseOrder\": \"{{purchaseOrder}}\",\n      \"PurchaseOrderItem\": \"{{purchaseOrderItem}}\",\n      \"Delivery\": \"{{delivery}}\",\n      \"DeliveryItem\": \"{{deliveryItem}}\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader?sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_MATERIAL_DOCUMENT_SRV",
+                "A_MaterialDocumentHeader"
+              ],
+              "query": [
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "Historical request template from the original evidence pack; not execution of the revised scripts."
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "dataserviceversion",
+              "value": "2.0"
+            },
+            {
+              "key": "location",
+              "value": "https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138616')"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"d\": {\n    \"__metadata\": {\n      \"id\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138616')\",\n      \"uri\": \"https://VHRESQS4CI.SAP.SHREECEMENT.COM:44300/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='2026',MaterialDocument='5007138616')\",\n      \"type\": \"API_MATERIAL_DOCUMENT_SRV.A_MaterialDocumentHeaderType\"\n    },\n    \"MaterialDocumentYear\": \"2026\",\n    \"MaterialDocument\": \"5007138616\",\n    \"InventoryTransactionType\": \"WE\",\n    \"DocumentDate\": \"/Date(1787616000000)/\",\n    \"PostingDate\": \"/Date(1787616000000)/\",\n    \"CreationDate\": \"/Date(1787616000000)/\",\n    \"CreationTime\": \"PT14H28M13S\",\n    \"CreatedByUser\": \"QNOVATE8\",\n    \"MaterialDocumentHeaderText\": \"CNF TEST PO+DLV\",\n    \"ReferenceDocument\": \"\",\n    \"VersionForPrintingSlip\": \"\",\n    \"ManualPrintIsTriggered\": \"\",\n    \"CtrlPostgForExtWhseMgmtSyst\": \"\",\n    \"GoodsMovementCode\": \"01\",\n    \"to_MaterialDocumentItem\": {\n      \"results\": []\n    }\n  }\n}"
+        }
+      ]
+    }
+  ]
+}

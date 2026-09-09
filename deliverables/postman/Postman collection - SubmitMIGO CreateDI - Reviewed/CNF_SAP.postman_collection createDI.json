@@ -1,0 +1,317 @@
+{
+  "info": {
+    "_postman_id": "1a2580d2-e619-4dd4-98bf-7d69a7ab7300",
+    "name": "CNF Create DI - SAP repeatability (setup pending)",
+    "description": "Reviewed 2026-08-31. Run only 01 token fetch, then 02 business POST. No MIGO verification GET.\n\nHistorical evidence: delivery 9004953174 created from STO 5600084209/000010. Use a newly approved eligible case.\n\nOriginal collections and diagnostic evidence are preserved in the neighboring original folder. Revised scripts have offline tests only; no new SAP posting has been run.\n\nStandard SAP repeatability requested using RequestID and RepeatabilityCreation HTTP headers. The local guard is NOT server-side protection. DS4/200 setup completed on 2026-08-31; QS4/700 setup and live posting replay/concurrency proof remain pending. These four files use QS4 environments.\n\nSelect the matching Reviewed environment. Fill an approved test case, use a stable submissionId, and set the confirmation to YES only immediately before a deliberate posting. Never clear local history to resolve an uncertain outcome.\n\nUse trusted HTTPS and keep cookies enabled. Do not share populated passwords, tokens, cookies or local submission history.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{sap-user}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{sap-pass}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base",
+      "value": "{{host}}/sap/opu/odata/sap"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Fetch CSRF token",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.unset('csrf');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.unset('csrf');",
+              "const token = pm.response.headers.get('x-csrf-token');",
+              "const ok = pm.response.code === 200 && typeof token === 'string' && token.trim() !== '' && token.toLowerCase() !== 'required';",
+              "pm.test('Token fetch returned 200 and a token', () => pm.expect(ok).to.eql(true));",
+              "if (ok) pm.environment.set('csrf', token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-csrf-token",
+            "value": "Fetch"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/?sap-client={{sap-client}}",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "API_OUTBOUND_DELIVERY_SRV;v=2",
+            ""
+          ],
+          "query": [
+            {
+              "key": "sap-client",
+              "value": "{{sap-client}}"
+            }
+          ]
+        },
+        "description": "Fetch a fresh token for this service. The post-response script stores it in csrf. Keep cookie handling enabled."
+      }
+    },
+    {
+      "name": "02 - Create DI",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "try {",
+              "(function beforePost(operation, confirmation) {",
+              "  const stop = message => {",
+              "    pm.environment.set(confirmation, 'NO');",
+              "    pm.environment.set('confirmRepeatSameSubmission', 'NO');",
+              "    console.info('NOT SENT: ' + message);",
+              "    pm.execution.skipRequest();",
+              "    return false;",
+              "  };",
+              "  const canonical = value => {",
+              "    if (Array.isArray(value)) return value.map(canonical);",
+              "    if (value && typeof value === 'object') {",
+              "      return Object.fromEntries(Object.keys(value).sort().map(key => [key, canonical(value[key])]));",
+              "    }",
+              "    return value;",
+              "  };",
+              "  const filled = value => typeof value === 'string' && value.trim() !== '' && !value.includes('{{');",
+              "  const positive = value => /^\\d+(\\.\\d+)?$/.test(String(value)) && Number(value) > 0;",
+              "  const enteredId = String(pm.environment.get('submissionId') || '').trim();",
+              "  if (!/^(?:[a-fA-F0-9]{32}|[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/.test(enteredId)) return stop('Set submissionId to a GUID once for this business submission. Do not generate a new ID on each Send.');",
+              "  const id = enteredId.replace(/-/g, '').toUpperCase();",
+              "  if (/^0+$/.test(id)) return stop('An all-zero submissionId is not allowed.');",
+              "  pm.environment.set('submissionId', id);",
+              "  if (pm.environment.get(confirmation) !== 'YES') return stop('Submission is not armed; confirmation must be YES for a reviewed new submission.');",
+              "",
+              "  if (operation === 'MIGO') {",
+              "    const date = String(pm.environment.get('postingDate') || '');",
+              "    const epoch = Date.parse(date + 'T00:00:00Z');",
+              "    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(date) || !Number.isFinite(epoch) || new Date(epoch).toISOString().slice(0, 10) !== date) {",
+              "      return stop('Set postingDate to a valid YYYY-MM-DD date in the open SAP posting period.');",
+              "    }",
+              "    pm.environment.set('postingDateEpochMs', String(epoch));",
+              "  }",
+              "",
+              "  const bodyText = pm.variables.replaceIn(pm.request.body.raw);",
+              "  const url = pm.variables.replaceIn(pm.request.url.toString());",
+              "  const csrf = pm.variables.replaceIn(pm.request.headers.get('x-csrf-token') || '');",
+              "  if (!filled(csrf)) return stop('Fetch the CSRF token first and retain its cookies.');",
+              "  if (!filled(url) || !url.startsWith('https://') || bodyText.includes('{{')) return stop('Unresolved request variables or non-HTTPS destination.');",
+              "  let body;",
+              "  try { body = JSON.parse(bodyText); } catch { return stop('Request body is not valid JSON.'); }",
+              "  if (!body || typeof body !== 'object' || Array.isArray(body)) return stop('Request body must be a JSON object.');",
+              "  if (operation === 'MIGO') {",
+              "    if (body.GoodsMovementCode !== '01' || !Array.isArray(body.to_MaterialDocumentItem) || !body.to_MaterialDocumentItem.length) {",
+              "      return stop('Expected goods receipt code 01 and at least one material-document item.');",
+              "    }",
+              "    for (const item of body.to_MaterialDocumentItem) {",
+              "      if (!item || typeof item !== 'object') return stop('Each receipt item must be a JSON object.');",
+              "      if (!['Material', 'Plant', 'StorageLocation', 'EntryUnit', 'PurchaseOrder', 'PurchaseOrderItem', 'Delivery', 'DeliveryItem'].every(key => filled(item[key]))) {",
+              "        return stop('Each receipt item must include PO/item AND delivery/item, material, plant, storage location and unit.');",
+              "      }",
+              "      if (item.GoodsMovementType !== '101' || item.GoodsMovementRefDocType !== 'B' || !positive(item.QuantityInEntryUnit)) {",
+              "        return stop('Use movement 101, reference type B and a positive receipt quantity.');",
+              "      }",
+              "      if (!/^\\d{5}$/.test(item.PurchaseOrderItem) || !/^\\d{6}$/.test(item.DeliveryItem)) return stop('PO item must have 5 digits; delivery item must have 6 digits.');",
+              "    }",
+              "  } else {",
+              "    if (!filled(body.ShippingPoint) || !Array.isArray(body.to_DeliveryDocumentItem) || !body.to_DeliveryDocumentItem.length) return stop('Shipping point and delivery items are required.');",
+              "    for (const item of body.to_DeliveryDocumentItem) {",
+              "      if (!item || typeof item !== 'object') return stop('Each DI item must be a JSON object.');",
+              "      if (!['ReferenceSDDocument', 'ReferenceSDDocumentItem', 'DeliveryQuantityUnit'].every(key => filled(item[key])) || !positive(item.ActualDeliveryQuantity)) {",
+              "        return stop('Each DI item needs its predecessor, predecessor item, positive quantity and unit.');",
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  let ledger;",
+              "  try { ledger = JSON.parse(pm.environment.get('cnfDemoLedger') || '{}'); } catch { return stop('Local submission history is invalid; review it before proceeding.'); }",
+              "  if (!ledger || typeof ledger !== 'object' || Array.isArray(ledger)) return stop('Local submission history is invalid.');",
+              "  const key = operation + ':' + id;",
+              "  if (Object.keys(ledger).some(existing => existing !== key && existing.endsWith(':' + id))) return stop('This GUID belongs to another operation. Each new business submission requires a globally unique GUID.');",
+              "  const snapshot = JSON.stringify(canonical({ url, body }));",
+              "  let creation;",
+              "  let replay = false;",
+              "  if (Object.hasOwn(ledger, key)) {",
+              "    const previous = ledger[key];",
+              "    if (!previous || previous.snapshot !== snapshot) return stop('This submissionId already exists with different inputs. Do not reuse it for edited input.');",
+              "    if (pm.environment.get('confirmRepeatSameSubmission') === 'YES' && previous.state === 'SUCCESS' && previous.repeatabilityResult === 'supported' && previous.repeatabilityCreation) {",
+              "      const windowText = String(pm.environment.get('verifiedReplayWindowSeconds') || '');",
+              "      const ageMs = Date.now() - Date.parse(previous.repeatabilityCreation);",
+              "      if (!/^\\d+$/.test(windowText) || Number(windowText) < 1 || Number(windowText) > 300 || !Number.isFinite(ageMs) || ageMs < 0 || ageMs > Number(windowText) * 1000) {",
+              "        return stop('QA replay requires a Basis-verified retention window: set verifiedReplayWindowSeconds (1-300) and replay inside that window. Never retry an expired ID.');",
+              "      }",
+              "      replay = true;",
+              "      creation = previous.repeatabilityCreation;",
+              "    } else {",
+              "      const result = previous.result ? ' Saved result: ' + JSON.stringify(previous.result) : '';",
+              "      return stop('This submission is already ' + previous.state + '.' + result + ' No additional SAP POST was sent.');",
+              "    }",
+              "  }",
+              "  // A changed ID does not silently re-arm identical inputs within this local pack.",
+              "  if (!replay && Object.values(ledger).some(entry => entry && entry.snapshot === snapshot)) {",
+              "    return stop('Identical inputs were already attempted. Review the prior result; a new ID alone does not authorize another posting.');",
+              "  }",
+              "",
+              "  // Consume the confirmation BEFORE dispatch, even if the request later times out.",
+              "  pm.environment.set(confirmation, 'NO');",
+              "  pm.environment.set('confirmRepeatSameSubmission', 'NO');",
+              "  creation ||= new Date().toISOString();",
+              "  pm.environment.set('repeatabilityCreation', creation);",
+              "  // Resolve these at dispatch; broader-scope variables cannot replace the fixed ID.",
+              "  pm.request.headers.upsert({ key: 'RequestID', value: id });",
+              "  pm.request.headers.upsert({ key: 'RepeatabilityCreation', value: creation });",
+              "  pm.request.body.update(bodyText);",
+              "  ledger[key] = { state: 'IN_FLIGHT', snapshot, startedAt: new Date().toISOString(), repeatabilityCreation: creation,",
+              "    expectedResult: replay ? ledger[key].result : undefined, replay };",
+              "  pm.environment.set('cnfDemoLedger', JSON.stringify(ledger));",
+              "  pm.variables.set('cnfActiveSubmissionKey', key);",
+              "  if (operation === 'MIGO') {",
+              "    pm.environment.unset('materialDocument');",
+              "    pm.environment.unset('materialDocumentYear');",
+              "  } else pm.environment.unset('deliveryDocument');",
+              "})(\"DI\", \"confirmCreateDI\");",
+              "} catch (error) {",
+              "  pm.environment.set(\"confirmCreateDI\", 'NO');",
+              "  console.error('NOT SENT: local validation failed; inspect the script error before proceeding.');",
+              "  pm.execution.skipRequest();",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(function afterPost(operation, confirmation) {",
+              "  pm.environment.set(confirmation, 'NO');",
+              "  const key = pm.variables.get('cnfActiveSubmissionKey');",
+              "  const ledger = JSON.parse(pm.environment.get('cnfDemoLedger') || '{}');",
+              "  if (!key || !ledger[key]) throw new Error('Missing local submission record. Inspect this response; do not repost.');",
+              "  let body;",
+              "  try { body = pm.response.json(); } catch { body = {}; }",
+              "  const data = body?.d ?? body;",
+              "  const number = operation === 'MIGO' ? data?.MaterialDocument : data?.DeliveryDocument;",
+              "  const year = data?.MaterialDocumentYear;",
+              "  const hasNumber = typeof number === 'string' && /^\\d+$/.test(number) && !/^0+$/.test(number);",
+              "  const hasYear = typeof year === 'string' && /^[1-9]\\d{3}$/.test(year);",
+              "  const repeatability = String(pm.response.headers.get('RepeatabilityResult') || '').trim().toLowerCase();",
+              "  const result = operation === 'MIGO' ? { MaterialDocument: number, MaterialDocumentYear: year } : { DeliveryDocument: number };",
+              "  const sameResult = !ledger[key].expectedResult || JSON.stringify(result) === JSON.stringify(ledger[key].expectedResult);",
+              "  const posted = pm.response.code === 201 && hasNumber && (operation !== 'MIGO' || hasYear);",
+              "  const success = posted && repeatability === 'supported' && sameResult;",
+              "  pm.test('SAP returned 201 Created', () => pm.expect(pm.response.code).to.eql(201));",
+              "  pm.test('POST returned the created document key', () => pm.expect(hasNumber && (operation !== 'MIGO' || hasYear)).to.eql(true));",
+              "  pm.test('SAP confirms standard repeatability support', () => pm.expect(repeatability).to.eql('supported'));",
+              "  pm.test('A deliberate replay returns the original document key', () => pm.expect(sameResult).to.eql(true));",
+              "  ledger[key].httpStatus = pm.response.code;",
+              "  ledger[key].repeatabilityResult = repeatability || 'missing';",
+              "  ledger[key].state = success ? 'SUCCESS' : 'REVIEW_REQUIRED';",
+              "  ledger[key].finishedAt = new Date().toISOString();",
+              "  // Even a posted-but-unprotected result must be retained. Never hide a real document.",
+              "  if (posted) {",
+              "    ledger[key].result = result;",
+              "    for (const [field, value] of Object.entries(ledger[key].result)) {",
+              "      pm.environment.set(field[0].toLowerCase() + field.slice(1), value);",
+              "    }",
+              "    console.info((success ? 'POST succeeded with repeatability: ' : 'DOCUMENT RETURNED; repeatability verification FAILED: ') + JSON.stringify(result));",
+              "  }",
+              "  if (!success) {",
+              "    ledger[key].message = !sameResult ? 'CRITICAL: replay returned a different document. Stop and investigate both documents.'",
+              "      : posted && repeatability !== 'supported' ? 'Document posted, but SAP did not confirm repeatability. Do not resend.'",
+              "      : body?.error?.message?.value || body?.error?.message || 'Review the SAP response. Outcome may be uncertain; no automatic repost.';",
+              "    console.warn(ledger[key].message);",
+              "  }",
+              "  pm.environment.set('cnfDemoLedger', JSON.stringify(ledger));",
+              "  // No pm.sendRequest, runRequest, or follow-up GET. An empty item array is allowed.",
+              "})(\"DI\", \"confirmCreateDI\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "x-csrf-token",
+            "value": "{{csrf}}"
+          },
+          {
+            "key": "RequestID",
+            "value": "{{submissionId}}",
+            "type": "text"
+          },
+          {
+            "key": "RepeatabilityCreation",
+            "value": "{{repeatabilityCreation}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ShippingPoint\": \"{{shippingPoint}}\",\n  \"to_DeliveryDocumentItem\": [\n    {\n      \"ReferenceSDDocument\": \"{{referenceSDDocument}}\",\n      \"ReferenceSDDocumentItem\": \"{{referenceSDDocumentItem}}\",\n      \"ActualDeliveryQuantity\": \"{{actualDeliveryQuantity}}\",\n      \"DeliveryQuantityUnit\": \"{{deliveryQuantityUnit}}\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader?sap-client={{sap-client}}",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "API_OUTBOUND_DELIVERY_SRV;v=2",
+            "A_OutbDeliveryHeader"
+          ],
+          "query": [
+            {
+              "key": "sap-client",
+              "value": "{{sap-client}}"
+            }
+          ]
+        },
+        "description": "REAL SAP WRITE. Use an approved fresh test case; the historical example has already posted.\n\nUse the approved STO predecessor and delivery quantity. POST success returns DeliveryDocument. Trade and Non-trade remain outside this STO proof.\n\nSet submissionId to a unique GUID ONCE per business submission, fill all inputs, fetch the token, then set confirmCreateDI=YES. The script consumes YES before dispatch. The GUID is sent as the standard SAP RequestID HEADER, not an entity property.\n\nLocal history skips previously attempted submissions in this environment. Skipping produces no new HTTP response; inspect the Postman Console and saved result.\n\nRequires configured SAP Gateway idempotent services. On 2026-08-31 DS4/200 was initialized and both switch jobs were released (6h document / 12h request-ID intervals). QS4/700 remains unconfigured; these environments target QS4. Live posting replay/concurrency proof is outstanding. Never remove these headers to bypass a 412 or missing-configuration error.\n\nThe local guard is NOT atomic across runtimes. Backend protection depends on SAP configuration and its finite retention window. Only RepeatabilityResult=supported plus a valid POST document result passes verification.\n\nFor deliberate sequential QA replay only: after Basis confirms retention, set verifiedReplayWindowSeconds (1-300). Inside that window after verified success, keep ALL inputs and submissionId unchanged, set confirmRepeatSameSubmission=YES and confirmCreateDI=YES. This sends the same POST, not a GET, and requires the original document key. Do not use QA replay for uncertain/failed/expired attempts."
+      }
+    }
+  ]
+}
