@@ -1,0 +1,33 @@
+  METHOD if_ex_le_shp_delivery_proc~change_field_attributes.
+
+    "  FIELD-SYMBOLS : <fs_attr> TYPE SHP_SCREEN_ATTRIBUTES.
+    DATA: wa_del  TYPE shp_screen_attributes.
+    DATA: wa_del1  TYPE shp_screen_attributes.
+    DATA: wa_del2  TYPE shp_screen_attributes.
+    DATA: wa_del3  TYPE shp_screen_attributes.
+    IF sy-tcode = 'VL02N' OR sy-tcode = 'VL01N'.
+      IF is_likp-lfart = 'ZNL' OR is_likp-lfart = 'ZNP' OR is_likp-lfart = 'ZLF'.
+        IF is_lips-MFRGR EQ 'A0000001' OR is_lips-MFRGR EQ 'A0000002' OR is_lips-MFRGR EQ 'A0000003' OR is_lips-MFRGR EQ 'A0000022' .
+          wa_del-name = 'LIKP-BTGEW'.
+          wa_del-input = 0.
+          wa_del-invisible = space.
+          APPEND wa_del TO ct_field_attributes.
+          CLEAR:wa_del1.
+          wa_del1-name = 'LIKP-GEWEI'.
+          wa_del1-input = 0.
+          wa_del1-invisible = space.
+          APPEND wa_del1 TO ct_field_attributes.
+          CLEAR:wa_del2.
+          wa_del2-name = 'LIKP-NTGEW'.
+          wa_del2-input = 0.
+          wa_del2-invisible = space.
+          APPEND wa_del2 TO ct_field_attributes.
+          CLEAR:wa_del3.
+          wa_del3-name = 'LIPS-NTGEW'.
+          wa_del3-input = 0.
+          wa_del3-invisible = space.
+          APPEND wa_del3 TO ct_field_attributes.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

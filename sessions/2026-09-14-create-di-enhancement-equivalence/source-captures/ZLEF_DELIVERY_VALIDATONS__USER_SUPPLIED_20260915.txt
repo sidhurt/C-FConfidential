@@ -1,0 +1,114 @@
+FUNCTION zlef_delivery_validatons.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IT_LIPS) TYPE SHP_LIPS_T OPTIONAL
+*"     REFERENCE(IT_LIKP) TYPE SHP_LIKP_T OPTIONAL
+*"     REFERENCE(IV_CALLED_FROM) TYPE CHAR1 OPTIONAL
+*"     REFERENCE(IT_VBPA) TYPE SHP_VBPAVB_T OPTIONAL
+*"  EXPORTING
+*"     REFERENCE(EV_ERROR_OCCURED) TYPE XFELD
+*"----------------------------------------------------------------------
+* IV_CALLED_FROM 'B' BADI, 'C' Check Button
+
+DATA: lv_fieldname TYPE fieldname,
+      lt_tkomv TYPE TABLE OF komv.
+FIELD-SYMBOLS: <lt_tkomv> TYPE any.
+
+DATA(lt_lips) = it_lips.
+DELETE lt_lips WHERE updkz = 'D'.
+CLEAR ev_error_occured.
+TRY.
+    DATA(lv_werks) = lt_lips[ 1 ]-werks.
+    SELECT SINGLE kdkg1 FROM kna1
+      WHERE kunnr = concat( 'P', @lv_werks )
+      INTO @DATA(lv_kdkg1).
+    IF lv_kdkg1 <> 'A2'.
+      RETURN.
+    ENDIF.
+  CATCH cx_sy_itab_line_not_found.
+    RETURN.
+ENDTRY.
+
+* 1) Check if all items have batches assigned
+LOOP AT lt_lips INTO DATA(ls_lips) WHERE uecha IS INITIAL.
+  SELECT SINGLE xchpf FROM mara INTO @DATA(lv_batch_managed)
+    WHERE matnr = @ls_lips-matnr.
+  IF lv_batch_managed = abap_true.
+    READ TABLE lt_lips WITH KEY uecha = ls_lips-posnr TRANSPORTING NO FIELDS.
+    IF sy-subrc <> 0.
+      PERFORM update_log USING ls_lips-vbeln ls_lips-posnr TEXT-e01.
+    ENDIF.
+  ENDIF.
+ENDLOOP.
+CLEAR ls_lips-posnr.
+
+* 2) Check SDABW, TRATY, INCO1 and VSART
+LOOP AT it_likp INTO DATA(ls_likp).
+  IF ls_likp-sdabw IS INITIAL.
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e02.
+  ENDIF.
+  IF ls_likp-vsart IS INITIAL.
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e04.
+  ENDIF.
+  IF ls_likp-traty IS INITIAL.
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e03.
+  ENDIF.
+  IF ls_likp-inco1 IS INITIAL.
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e05.
+  ENDIF.
+  IF ls_likp-vsart <> '03'.
+    IF ls_likp-zzvehicle_no IS INITIAL.
+      PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e06.
+    ENDIF.
+  ENDIF.
+  IF ls_likp-zzlrgrno IS INITIAL.
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e07.
+  ENDIF.
+  IF ls_likp-zzlrgrdate IS INITIAL.
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e11.
+  ENDIF.
+
+  * 3) Check transporter code
+  IF NOT line_exists( it_vbpa[ parvw = 'SP' ] ).
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e08.
+  ENDIF.
+ENDLOOP.
+
+* 4) Check Pricing condition ZFB1
+lv_fieldname = '(SAPMV50A)TKOMV[]'.
+ASSIGN (lv_fieldname) TO <lt_tkomv>.
+IF <lt_tkomv> IS ASSIGNED.
+  lt_tkomv = <lt_tkomv>.
+  READ TABLE lt_tkomv INTO DATA(ls_tkomv) WITH KEY kschl = 'ZFB1'.
+  IF sy-subrc = 0.
+    IF ls_tkomv-kbetr IS INITIAL.
+      PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e10.
+    ENDIF.
+  ELSE.
+    PERFORM update_log USING ls_likp-vbeln ls_lips-posnr TEXT-e09.
+  ENDIF.
+ENDIF.
+
+IF gt_log IS NOT INITIAL.
+  IF iv_called_from <> 'B'.
+    TRY.
+        cl_salv_table=>factory(
+          IMPORTING r_salv_table = DATA(lr_alv)
+          CHANGING t_table = gt_log ).
+      CATCH cx_salv_msg. "#EC NO_HANDLER
+    ENDTRY.
+    DATA(lr_functions) = lr_alv->get_functions( ).
+    lr_functions->set_all( if_salv_c_bool_sap=>true ).
+    DATA(lv_lines) = lines( gt_log ) + 2.
+    lr_alv->set_screen_popup(
+      start_column = 1 end_column = 50
+      start_line = 1 end_line = lv_lines ).
+    lr_alv->display( ).
+  ENDIF.
+  CLEAR gt_log.
+  ev_error_occured = abap_true.
+ENDIF.
+ENDFUNCTION.
+
+Capture note: normalized from source pasted by Siddharth on 2026-09-15. Markdown escaping and accidental language-fence markers were removed. This is not a byte-for-byte SAP export. FORM UPDATE_LOG and text symbols E01-E11 were not included and remain to be captured.

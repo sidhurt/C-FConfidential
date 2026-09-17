@@ -1,0 +1,32 @@
+  METHOD if_ex_le_shp_delivery_proc~change_delivery_header.
+    DATA: lv_zztm_reg TYPE zvehical,
+          lv_zzaufnr  TYPE aufnr.
+
+    IF cs_likpd-updkz = 'D'.
+      RETURN.
+    ENDIF.
+    IF cs_likp-lfart = 'ZRMC'
+      OR cs_likp-lfart = 'ZRM2'.
+      DATA(lt_aufnr) =  VALUE aufnr_t( ).
+      CALL FUNCTION 'ZSDF_FETCH_PROCESS_ORDER'
+        IMPORTING
+          et_aufnr = lt_aufnr.
+      IF lines( lt_aufnr ) = 1.
+        cs_likp-zzaufnr = lt_aufnr[ 1 ]-aufnr.
+      ELSEIF lt_aufnr IS INITIAL.
+        CLEAR:cs_likp-zzaufnr.
+      ENDIF.
+
+      IMPORT  lv_zztm_reg TO lv_zztm_reg FROM MEMORY ID 'ZZDELIVERY_HREG'.
+      IMPORT  lv_zzaufnr TO lv_zzaufnr FROM MEMORY ID 'ZZAUFNR_HDEV'.
+      FREE MEMORY ID :'ZZAUFNR_HDEV','ZZDELIVERY_HREG'.
+      IF lv_zztm_reg IS NOT INITIAL and cs_likp-zzvehicle_no IS INITIAL.
+        cs_likp-zzvehicle_no = lv_zztm_reg.
+      ENDIF.
+      IF lv_zzaufnr IS NOT INITIAL and cs_likp-zzaufnr is INITIAL.
+        cs_likp-zzaufnr = lv_zzaufnr.
+      ENDIF.
+      CLEAR :lv_zztm_reg ,lv_zzaufnr.
+
+    ENDIF.
+  ENDMETHOD.

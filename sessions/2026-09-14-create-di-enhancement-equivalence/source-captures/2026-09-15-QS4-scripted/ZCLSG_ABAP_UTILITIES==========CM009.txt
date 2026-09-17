@@ -1,0 +1,3 @@
+  METHOD check_tvarvc_values.
+    SELECT * FROM tvarvc INTO TABLE rt_tvarvc WHERE name = iv_var_name AND low <> space.
+  ENDMETHOD.

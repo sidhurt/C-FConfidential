@@ -18,7 +18,8 @@ Read `CURRENT_STATE.md` before any older handover, workbook or discovery report.
 
 - Standard reads remain preferred when representative data is proven.
 - Standard writes require runtime persistence plus enhancement-equivalence and replay testing.
-- Submit MIGO uses the standard Material Document service only if the required delivery-led derivation and business rules can be implemented through supported enhancement points and proven end to end.
+- Submit MIGO uses the standard Material Document service only if the required delivery-led derivation and business rules can be implemented in released BAdIs or exits and proven end to end. Explicit or implicit source-code enhancements do not satisfy this.
+- Any proposed custom ABAP states its rung in SAP's extension order (`CURRENT_STATE.md`) and why each higher rung was ruled out, before the technical case. Explicit enhancements, implicit enhancements and modifications are last resort and need architect sign-off before build. Never describe one as "safer" than a BAdI.
 - Create DI is proven for the STO predecessor only. Trade and Non-trade remain separate certification cases.
 - Pre-PGI, STO creation and billing creation require controlled external command boundaries around existing SAP logic.
 - Statutory operations must reuse the installed eDocument/DigiGST route unless tracing proves no supported boundary exists.

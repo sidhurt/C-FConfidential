@@ -1,0 +1,29 @@
+  METHOD if_ex_le_shp_delivery_proc~change_delivery_header.
+    BREAK ibmabap17.
+
+    DATA : lv_zrmc        TYPE likp-lfart VALUE 'ZRMC'.
+    DATA: wa_likp  TYPE likp,
+          lv_route TYPE char1.
+    IMPORT lv_route TO lv_route FROM MEMORY ID  'ZZLGOR_RM'.
+    FREE MEMORY ID 'ZZLGOR_RM'.
+    "Start of code for ZRMC delivery type to populate route field value
+    IF sy-tcode = 'VL01N' OR sy-tcode = 'VL02N' OR sy-tcode = 'ZRMC_COR1' OR lv_route = 'X'.
+      IF cs_likp-route IS INITIAL .
+        READ TABLE it_xlikp INTO wa_likp INDEX 1 .
+        IF  wa_likp-lfart EQ lv_zrmc OR wa_likp-lfart EQ 'ZRM2' " Added by AShutosh for
+           OR sy-tcode = 'ZRMC_COR1'  OR lv_route = 'X'.
+          DATA: var_low TYPE tvarvc-low .
+          CLEAR: var_low .
+
+          SELECT SINGLE low INTO var_low
+                FROM tvarvc WHERE name = 'ZSD_RMC_DICHECK'
+                AND type = 'S'.
+          IF var_low IS NOT INITIAL .
+            cs_likp-route = var_low .
+          ELSE.
+            cs_likp-route = 'RT0001' .
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

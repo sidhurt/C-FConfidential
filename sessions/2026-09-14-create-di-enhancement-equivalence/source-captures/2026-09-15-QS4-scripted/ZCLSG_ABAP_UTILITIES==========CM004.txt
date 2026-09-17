@@ -1,0 +1,93 @@
+  METHOD download_template.
+    DATA: bin_tab TYPE STANDARD TABLE OF tabl1024.
+    DATA: lo_gui TYPE REF TO cl_gui_frontend_services.
+    DATA: path     TYPE string, fullpath TYPE string.
+    DATA: length TYPE i.
+    DATA: filter TYPE string, uact TYPE i, name TYPE string.
+    DATA(lt_data) = REF #( itdata ).
+    DATA r_xstring TYPE xstring.
+
+
+    IF it_fieldcat IS INITIAL.
+      FIELD-SYMBOLS: <tab> TYPE STANDARD TABLE.
+      ASSIGN lt_data->* TO <tab>.
+      TRY.
+          cl_salv_table=>factory(
+          EXPORTING
+            list_display = abap_false
+          IMPORTING
+            r_salv_table = DATA(salv_table)
+          CHANGING
+            t_table      = <tab> ).
+
+          DATA(lt_fcat) = cl_salv_controller_metadata=>get_lvc_fieldcatalog(
+                                   r_columns      = salv_table->get_columns( )
+                                   r_aggregations = salv_table->get_aggregations( ) ).
+        CATCH cx_salv_msg.
+          RETURN.
+      ENDTRY.
+
+    ELSE.
+      lt_fcat = it_fieldcat.
+    ENDIF.
+
+    "* added by PG
+    IF iv_hide_column = abap_true.
+      DELETE lt_fcat WHERE fieldname = 'MANDT' OR fieldname = 'CLIENT'.
+    ENDIF.
+
+    LOOP AT lt_fcat ASSIGNING FIELD-SYMBOL(<fs_fcat>).
+      <fs_fcat>-col_opt = abap_true.
+    ENDLOOP.
+
+    cl_salv_bs_lex=>export_from_result_data_table(
+      EXPORTING
+        is_format            = if_salv_bs_lex_format=>mc_format_xlsx
+        ir_result_data_table =  cl_salv_ex_util=>factory_result_data_table(
+                                                r_data                      = lt_data
+                                                s_layout                    = is_layout
+                                                t_fieldcatalog              = lt_fcat
+                                                t_sort                      = it_sort
+                                                t_filter                    = it_filt
+                                                t_hyperlinks                = it_hyperlinks
+                                               )
+      IMPORTING
+        er_result_file       = r_xstring ).
+
+    CALL FUNCTION 'SCMS_XSTRING_TO_BINARY'
+      EXPORTING
+        buffer        = r_xstring
+      IMPORTING
+        output_length = length
+      TABLES
+        binary_tab    = bin_tab.
+
+    IF iv_specific_filename IS NOT INITIAL.
+      DATA(lv_default_file) = CONV string( iv_specific_filename ).
+    ELSE.
+      lv_default_file = 'download.xlsx'.
+    ENDIF.
+
+    CREATE OBJECT lo_gui.
+    CALL METHOD lo_gui->file_save_dialog
+      EXPORTING
+        default_extension = 'xlsx'
+        default_file_name = lv_default_file    "'download.xlsx'
+        file_filter       = filter
+      CHANGING
+        filename          = name
+        path              = path
+        fullpath          = fullpath
+        user_action       = uact.
+    IF uact = lo_gui->action_cancel.
+      EXIT.
+    ENDIF.
+
+
+    lo_gui->gui_download( EXPORTING
+                            filename = fullpath
+                            filetype = 'BIN'
+                            bin_filesize = length
+                          CHANGING
+                            data_tab = bin_tab ).
+  ENDMETHOD.

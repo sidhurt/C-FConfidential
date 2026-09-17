@@ -1,0 +1,316 @@
+{
+  "info": {
+    "_postman_id": "410a0a29-149f-4b42-a0bd-a2005872396f",
+    "name": "CNF Submit MIGO - Standard SAP Service - PO+Delivery Baseline",
+    "description": "Submit MIGO through the standard API_MATERIAL_DOCUMENT_SRV as last certified on QS4/700: goods receipt movement 101 referencing BOTH the STO item and the outbound delivery item. That request created material document 5007138616/2026 against delivery 9004953150/000010 (decision D-063).\n\nThis is a technical baseline, not the C&F contract. The target contract is delivery-led without caller-supplied PO, and it is not certified. No MIGO BAdI rules, shortage handling, C&F validations or duplicate protection are applied. Gateway RequestID repeatability is not used because SRT_IDP_CONF is empty in QS4/700.\n\nSafety controls in this collection:\n- The POST is blocked unless confirmSubmitMIGO=YES. The switch is reset to NO before the request is sent, so a second click is blocked.\n- The POST is blocked if any payload variable or the CSRF token is empty.\n- materialDocument and materialDocumentYear are cleared before the POST, so a failed POST can never be followed by a readback of an older document.\n- Tests fail on anything other than the expected status, key and movement data.\n\nUsed evidence - do not reuse: PO 5600084239/00010 (material document 5007138597), delivery 9004953150/000010 (material document 5007138616).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{sap-user}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{sap-pass}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base",
+      "value": "{{host}}/sap/opu/odata/sap"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Connectivity",
+      "description": "Read-only metadata check for the standard material document service.",
+      "item": [
+        {
+          "name": "00.1 GET Material document service metadata",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Metadata returned 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Response is EDMX metadata', () => pm.expect(pm.response.text()).to.include('edmx:Edmx'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/$metadata?sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_MATERIAL_DOCUMENT_SRV",
+                "$metadata"
+              ],
+              "query": [
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "HTTP 200 with EDMX metadata confirms authentication and routing."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Submit MIGO - standard material document service",
+      "description": "Run 02.1, set confirmSubmitMIGO=YES, run 02.2 once, then run 02.3. The create response returns an empty item array, so the readback is required before the posting counts as verified.\n\nA valid case needs a posted goods issue (641) on the delivery, stock in transit, and EKET WEMNG < MENGE on the STO item. The MM posting period must be open for the posting date.",
+      "item": [
+        {
+          "name": "02.1 GET CSRF token - Material document service",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const token = pm.response.headers.get('x-csrf-token');",
+                  "pm.test('Token fetch returned 200', () => pm.response.to.have.status(200));",
+                  "pm.test('SAP returned a CSRF token', () => pm.expect(token).to.be.a('string').and.not.eql('Required'));",
+                  "if (token && token !== 'Required') pm.environment.set('csrf', token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-csrf-token",
+                "value": "Fetch"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/?sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_MATERIAL_DOCUMENT_SRV",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "Fetches the CSRF token and the SAP session cookies it is bound to. Keep Postman's cookie jar enabled. Fetch the token from this material document service, not from the delivery service."
+          },
+          "response": []
+        },
+        {
+          "name": "02.2 POST Submit MIGO - GR against STO + delivery - REAL WRITE",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const confirmation = pm.environment.get('confirmSubmitMIGO');",
+                  "pm.environment.set('confirmSubmitMIGO', 'NO');",
+                  "if (confirmation !== 'YES') {",
+                  "  throw new Error('Submit MIGO blocked. Set confirmSubmitMIGO=YES only after confirming goods issue is posted and EKET WEMNG < MENGE. The switch resets to NO on every attempt.');",
+                  "}",
+                  "const required = ['csrf', 'migoMaterial', 'migoPlant', 'migoStorageLocation', 'migoQuantity', 'migoUnit', 'migoPurchaseOrder', 'migoPurchaseOrderItem', 'migoDelivery', 'migoDeliveryItem'];",
+                  "const missing = required.filter((key) => !pm.environment.get(key));",
+                  "if (missing.length) {",
+                  "  throw new Error('Submit MIGO blocked. Missing environment variables: ' + missing.join(', '));",
+                  "}",
+                  "// Posting date: postingDate (YYYY-MM-DD) if set, otherwise today's date in India time.",
+                  "// SAP accepted UTC midnight of the intended date. Using UTC 'today' would post yesterday between 00:00 and 05:30 IST.",
+                  "const override = pm.environment.get('postingDate');",
+                  "let year, month, day;",
+                  "if (override) {",
+                  "  const match = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(override);",
+                  "  if (!match) throw new Error('Submit MIGO blocked. postingDate must be YYYY-MM-DD or empty.');",
+                  "  year = Number(match[1]); month = Number(match[2]) - 1; day = Number(match[3]);",
+                  "} else {",
+                  "  const india = new Date(Date.now() + 330 * 60 * 1000);",
+                  "  year = india.getUTCFullYear(); month = india.getUTCMonth(); day = india.getUTCDate();",
+                  "}",
+                  "pm.environment.set('postingDateEpochMs', String(Date.UTC(year, month, day)));",
+                  "pm.environment.set('materialDocument', '');",
+                  "pm.environment.set('materialDocumentYear', '');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Submit MIGO returned 201 Created', () => pm.response.to.have.status(201));",
+                  "let header = {};",
+                  "try {",
+                  "  header = pm.response.json()?.d ?? {};",
+                  "} catch (error) {",
+                  "  console.warn('Response was not JSON. Review it manually.');",
+                  "}",
+                  "pm.test('SAP returned a material document number', () => pm.expect(header.MaterialDocument).to.match(/^\\d+$/));",
+                  "pm.test('SAP returned the document year', () => pm.expect(header.MaterialDocumentYear).to.match(/^\\d{4}$/));",
+                  "pm.test('Transaction type is goods receipt (WE)', () => pm.expect(header.InventoryTransactionType).to.eql('WE'));",
+                  "if (header.MaterialDocument) pm.environment.set('materialDocument', header.MaterialDocument);",
+                  "if (header.MaterialDocumentYear) pm.environment.set('materialDocumentYear', header.MaterialDocumentYear);",
+                  "if (header.MaterialDocument) console.log('Created material document:', header.MaterialDocument, header.MaterialDocumentYear);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-csrf-token",
+                "value": "{{csrf}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"PostingDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"DocumentDate\": \"/Date({{postingDateEpochMs}})/\",\n  \"GoodsMovementCode\": \"01\",\n  \"MaterialDocumentHeaderText\": \"{{materialDocumentHeaderText}}\",\n  \"to_MaterialDocumentItem\": [\n    {\n      \"Material\": \"{{migoMaterial}}\",\n      \"Plant\": \"{{migoPlant}}\",\n      \"StorageLocation\": \"{{migoStorageLocation}}\",\n      \"GoodsMovementType\": \"101\",\n      \"GoodsMovementRefDocType\": \"B\",\n      \"QuantityInEntryUnit\": \"{{migoQuantity}}\",\n      \"EntryUnit\": \"{{migoUnit}}\",\n      \"PurchaseOrder\": \"{{migoPurchaseOrder}}\",\n      \"PurchaseOrderItem\": \"{{migoPurchaseOrderItem}}\",\n      \"Delivery\": \"{{migoDelivery}}\",\n      \"DeliveryItem\": \"{{migoDeliveryItem}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader?sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_MATERIAL_DOCUMENT_SRV",
+                "A_MaterialDocumentHeader"
+              ],
+              "query": [
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "REAL SAP WRITE. Creates a material document.\n\nGoodsMovementRefDocType = B is the field that makes this work. It is MVT_IND in BAPI_GOODSMVT_CREATE (movement for a purchase order). Without it SAP returns HTTP 400 MM_IM_ODATA_API_MDOC/011 'Property PURCHASEORDER is not supported for GoodsMovementType 101' - the message names the PO fields but the missing field is the reference type.\n\nCtrlPostgForExtWhseMgmtSyst is deliberately omitted; setting it can produce a delivery instead of a material document.\n\nIn the 25 Aug run Material was sent zero-padded to 18 characters and PurchaseOrderItem padded to 5.\n\nQuantityInEntryUnit / EntryUnit: the certified runs used EA, which is also the base unit, so which SAP quantity pair these fill is not established. Use the unit the STO item is ordered in and check the readback.\n\nDo not resend after a timeout or lost response. Search MB51 / PO history first."
+          },
+          "response": []
+        },
+        {
+          "name": "02.3 GET Created material document and items - readback",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('materialDocument') || !pm.environment.get('materialDocumentYear')) {",
+                  "  throw new Error('No materialDocument/materialDocumentYear from the last POST. Nothing to read back.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const unpad = (value) => String(value ?? '').replace(/^0+/, '');",
+                  "pm.test('Readback returned 200', () => pm.response.to.have.status(200));",
+                  "const header = pm.response.json()?.d ?? {};",
+                  "const items = header.to_MaterialDocumentItem?.results ?? [];",
+                  "pm.test('Readback matches the created document', () => pm.expect(header.MaterialDocument).to.eql(pm.environment.get('materialDocument')));",
+                  "pm.test('At least one item is present', () => pm.expect(items.length).to.be.above(0));",
+                  "const item = items[0];",
+                  "if (item) {",
+                  "  pm.test('Movement type is 101', () => pm.expect(item.GoodsMovementType).to.eql('101'));",
+                  "  pm.test('Reference document type is B', () => pm.expect(item.GoodsMovementRefDocType).to.eql('B'));",
+                  "  pm.test('Plant matches', () => pm.expect(item.Plant).to.eql(pm.environment.get('migoPlant')));",
+                  "  pm.test('Storage location matches', () => pm.expect(item.StorageLocation).to.eql(pm.environment.get('migoStorageLocation')));",
+                  "  pm.test('Material matches', () => pm.expect(unpad(item.Material)).to.eql(unpad(pm.environment.get('migoMaterial'))));",
+                  "  pm.test('Purchase order item matches', () => {",
+                  "    pm.expect(item.PurchaseOrder).to.eql(pm.environment.get('migoPurchaseOrder'));",
+                  "    pm.expect(unpad(item.PurchaseOrderItem)).to.eql(unpad(pm.environment.get('migoPurchaseOrderItem')));",
+                  "  });",
+                  "  pm.test('Delivery item matches', () => {",
+                  "    pm.expect(unpad(item.Delivery)).to.eql(unpad(pm.environment.get('migoDelivery')));",
+                  "    pm.expect(unpad(item.DeliveryItem)).to.eql(unpad(pm.environment.get('migoDeliveryItem')));",
+                  "  });",
+                  "  pm.test('Entry quantity matches', () => pm.expect(Number(item.QuantityInEntryUnit)).to.eql(Number(pm.environment.get('migoQuantity'))));",
+                  "  pm.test('Movement is not cancelled', () => pm.expect(item.GoodsMovementIsCancelled).to.eql(false));",
+                  "  console.log('Quantity in base unit:', item.QuantityInBaseUnit, item.MaterialBaseUnit, '| entry:', item.QuantityInEntryUnit, item.EntryUnit);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/API_MATERIAL_DOCUMENT_SRV/A_MaterialDocumentHeader(MaterialDocumentYear='{{materialDocumentYear}}',MaterialDocument='{{materialDocument}}')?$expand=to_MaterialDocumentItem&sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_MATERIAL_DOCUMENT_SRV",
+                "A_MaterialDocumentHeader(MaterialDocumentYear='{{materialDocumentYear}}',MaterialDocument='{{materialDocument}}')"
+              ],
+              "query": [
+                {
+                  "key": "$expand",
+                  "value": "to_MaterialDocumentItem"
+                },
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "Independent readback of the header and items. The key is composite and the year comes first. PurchaseOrderItem is returned unpadded (10) although it is sent padded (00010); the tests compare without leading zeros. The console prints base and entry quantities so the unit question can be checked. Confirm in MB03 and PO history in ME23N."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

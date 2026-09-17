@@ -1,0 +1,12 @@
+  METHOD if_ex_le_shp_delivery_proc~save_document_prepare.
+    IF sy-tcode EQ 'ZSD062' OR sy-tcode EQ 'ZSD070'.
+      DATA: ex_delv TYPE vbeln_vl.
+      IMPORT ex_delv = ex_delv FROM MEMORY ID 'ZSD062_EXP'.
+      FREE MEMORY ID 'ZSD062_EXP'.
+      READ TABLE ct_xlikp ASSIGNING FIELD-SYMBOL(<fs_likp>) INDEX 1.
+      IF sy-subrc IS INITIAL.
+        <fs_likp>-lifex = ex_delv.
+      ENDIF.
+      CLEAR ex_delv.
+    ENDIF.
+  ENDMETHOD.

@@ -1,0 +1,160 @@
+  METHOD upload_template.
+    FIELD-SYMBOLS : <gt_data>  TYPE STANDARD TABLE.
+
+
+    DATA : lv_filename      TYPE string,
+           lt_records       TYPE solix_tab,
+           lv_headerxstring TYPE xstring,
+           lv_filelength    TYPE i.
+
+    DATA: lv_col TYPE int1.
+
+    DATA : lv_numberofcolumns   TYPE i,
+           lv_date_string       TYPE string,
+           lv_target_date_field TYPE datum.
+
+
+    FIELD-SYMBOLS : <ls_data>  TYPE any,
+                    <lv_field> TYPE any.
+
+    DATA: lv_dmbtr TYPE char30.
+
+    lv_filename = path.
+
+    CALL FUNCTION 'GUI_UPLOAD'
+      EXPORTING
+        filename                = lv_filename
+        filetype                = 'BIN'
+      IMPORTING
+        filelength              = lv_filelength
+        header                  = lv_headerxstring
+      TABLES
+        data_tab                = lt_records
+      EXCEPTIONS
+        file_open_error         = 1
+        file_read_error         = 2
+        no_batch                = 3
+        gui_refuse_filetransfer = 4
+        invalid_type            = 5
+        no_authority            = 6
+        unknown_error           = 7
+        bad_data_format         = 8
+        header_not_allowed      = 9
+        separator_not_allowed   = 10
+        header_too_long         = 11
+        unknown_dp_error        = 12
+        access_denied           = 13
+        dp_out_of_memory        = 14
+        disk_full               = 15
+        dp_timeout              = 16
+        OTHERS                  = 17.
+
+    IF lt_records IS INITIAL.
+      RAISE gui_upload_failed.
+    ENDIF.
+
+
+    "convert binary data to xstring
+    "if you are using cl_fdt_xl_spreadsheet in odata then skips this step
+    "as excel file will already be in xstring
+    CALL FUNCTION 'SCMS_BINARY_TO_XSTRING'
+      EXPORTING
+        input_length = lv_filelength
+      IMPORTING
+        buffer       = lv_headerxstring
+      TABLES
+        binary_tab   = lt_records
+      EXCEPTIONS
+        failed       = 1
+        OTHERS       = 2.
+
+    IF sy-subrc <> 0.
+      RAISE binary_to_xstring_failed.
+    ENDIF.
+
+
+
+    DATA : lo_excel_ref TYPE REF TO cl_fdt_xl_spreadsheet .
+    TRY .
+        lo_excel_ref = NEW cl_fdt_xl_spreadsheet(
+        document_name = lv_filename
+        xdocument     = lv_headerxstring
+        ) .
+      CATCH cx_fdt_excel_core.
+        RAISE cl_fdt_xl_spreadsheet_failed.
+    ENDTRY .
+
+
+
+    "Get List of Worksheets
+    lo_excel_ref->if_fdt_doc_spreadsheet~get_worksheet_names(
+    IMPORTING
+    worksheet_names = DATA(lt_worksheets) ).
+
+    IF NOT lt_worksheets IS INITIAL.
+      READ TABLE lt_worksheets INTO DATA(lv_woksheetname) INDEX 1.
+
+      DATA(lo_data_ref) = lo_excel_ref->if_fdt_doc_spreadsheet~get_itab_from_worksheet(
+            lv_woksheetname ).
+      "now you have excel work sheet data in dyanmic internal table
+      ASSIGN lo_data_ref->* TO <gt_data>.
+    ENDIF.
+
+
+
+    "Conversion of data
+    IF heder_line_exist EQ abap_true.
+      DELETE <gt_data> INDEX 1.
+    ENDIF.
+
+    lv_numberofcolumns = ncol.
+
+    LOOP AT <gt_data> ASSIGNING <ls_data>.
+      lv_col = 0.
+      APPEND INITIAL LINE TO et_data ASSIGNING FIELD-SYMBOL(<fs>).
+      "processing columns
+      DO lv_numberofcolumns TIMES.
+        DATA(lv_index) = sy-index.
+        ASSIGN COMPONENT lv_index OF STRUCTURE <ls_data> TO <lv_field>.
+        IF sy-subrc IS INITIAL.
+          lv_col = lv_col + 1.
+          READ TABLE it_col_types INTO DATA(lw_col_type) WITH KEY col = lv_col.
+          IF sy-subrc IS INITIAL.
+            CASE  lw_col_type-datatype.
+              WHEN 'C'. "char
+              WHEN 'A'. "Amount
+                CALL FUNCTION 'HRCM_STRING_TO_AMOUNT_CONVERT'
+                  EXPORTING
+                    string              = <lv_field>
+                    decimal_separator   = '.'
+                    thousands_separator = ','
+                    waers               = 'INR'
+                  IMPORTING
+                    betrg               = lv_dmbtr
+                  EXCEPTIONS
+                    convert_error       = 1
+                    OTHERS              = 2.
+                IF sy-subrc <> 0.
+* Implement suitable error handling here
+                ENDIF.
+                <lv_field> = lv_dmbtr.
+              WHEN 'Q'. "Quantity
+              WHEN 'D'. "Date
+                lv_date_string = <lv_field> .
+                zclsg_abap_utilities=>convert_date_to_internal(
+                 EXPORTING im_date = lv_date_string
+                 CHANGING ch_date =  lv_target_date_field ).
+                <lv_field> = lv_target_date_field.
+              WHEN OTHERS.
+            ENDCASE.
+          ENDIF.
+
+          ASSIGN COMPONENT lv_index OF STRUCTURE <fs> TO FIELD-SYMBOL(<fs_field>).
+          IF sy-subrc IS INITIAL.
+            <fs_field> = <lv_field>.
+          ENDIF.
+        ENDIF.
+      ENDDO .
+    ENDLOOP .
+
+  ENDMETHOD.

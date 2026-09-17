@@ -296,7 +296,7 @@ Only if both come back empty is a narrow custom ABAP endpoint justified. **Do no
 
 **Language discipline — this matters.** Say **"installed and configured route footprint observed."** Do **not** say "the route is live." We have seen objects and destinations; we have captured **no** runtime request or response.
 
-**Known:** `/DIGIGST/OWARD_H-EWBNUMBER` holds the E-Way Bill number. `BADI_EDOCUMENT_IN_EWB` exists — but **a BAdI is an enhancement point, not a callable command.** Don't let anyone specify it as the API.
+**Known:** `/DIGIGST/OWARD_H-EWBNUMBER` holds the E-Way Bill number. `BADI_EDOCUMENT_IN_EWB` exists — but **a BAdI is a hook SAP calls from inside its own processing, not a command anyone can call.** (Also not the same thing as an enhancement point: a BAdI is an interface SAP keeps stable, while an enhancement point is a place in SAP's source where custom code gets inserted. See the extension order in `CURRENT_STATE.md`.) Don't let anyone specify it as the API.
 
 **Business policy, confirmed and firm:** eligible only in the final **eight hours** before expiry; a successful extension adds exactly **24 hours**; the caller never sends a duration. The new validity must come back from the provider — never computed locally.
 

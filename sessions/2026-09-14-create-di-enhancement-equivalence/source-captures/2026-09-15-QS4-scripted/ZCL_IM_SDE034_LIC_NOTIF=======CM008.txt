@@ -1,0 +1,75 @@
+  METHOD if_ex_le_shp_delivery_proc~delivery_final_check.
+
+    TYPES : BEGIN OF ty_s_notif,
+              partner         TYPE bu_partner,
+              type            TYPE bu_id_type,
+              valid_date_from TYPE bu_id_valid_date_from,
+              valid_date_to   TYPE bu_id_valid_date_to,
+            END OF ty_s_notif.
+
+    DATA : ls_notif  TYPE ty_s_notif,
+           lv_paramn TYPE zgbde_param1,
+           lv_paramm TYPE zgbde_param2,
+           lv_month  TYPE t5a4a-dlymo,
+           lv_date   TYPE datum,
+           lv_diff   TYPE char5.
+
+    IF NOT line_exists( it_xlikp[ updkz = 'D' ] ).
+      DATA(ls_likp) = it_xlikp[ 1 ].
+
+      CLEAR lv_paramn.
+      SELECT SINGLE param1
+               FROM zgpt_sd_param
+               INTO lv_paramn
+              WHERE program_name = 'ZUCCSDE034_LIC_NOTIF'
+                AND object_id    = 'SDE034'
+                AND field        = 'TCODE'
+                AND param1       = sy-tcode
+                AND active_flag  = abap_true.
+      IF lv_paramn IS NOT INITIAL.
+        CLEAR : lv_paramn,lv_paramm.
+        SELECT SINGLE param2
+                 FROM zgpt_sd_param
+                 INTO lv_paramm
+                WHERE program_name = 'ZUCCSDE034_LIC_NOTIF'
+                  AND object_id    = 'SDE034'
+                  AND field        = 'LFART'
+                  AND param1       = ls_likp-lfart
+                  AND active_flag  = abap_true.
+        IF lv_paramm IS NOT INITIAL.
+          CLEAR ls_notif.
+          SELECT SINGLE partner
+                        type
+                        valid_date_from
+                        valid_date_to
+                   FROM but0id
+                   INTO ls_notif
+                   WHERE partner = ls_likp-kunnr
+                     AND type    = 'ZTRLIC'.
+          IF ls_notif IS NOT INITIAL.
+            CLEAR : lv_month,lv_date.
+            lv_month = lv_paramm.
+            CALL FUNCTION 'RP_CALC_DATE_IN_INTERVAL'
+              EXPORTING
+                date      = sy-datum
+                days      = '00'
+                months    = lv_month
+                signum    = '+'
+                years     = '00'
+              IMPORTING
+                calc_date = lv_date.
+            IF ls_notif-valid_date_to BETWEEN sy-datum AND lv_date.
+              CLEAR lv_diff.
+              lv_diff = ls_notif-valid_date_to - sy-datum.
+              INSERT VALUE #( vbeln = ls_likp-vbeln
+                              pruefung = '99'
+                              msgty = 'I'
+                              msgid = 'ZUCC_SD'
+                              msgno = '007'
+                              msgv1 = lv_diff ) INTO TABLE ct_finchdel.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

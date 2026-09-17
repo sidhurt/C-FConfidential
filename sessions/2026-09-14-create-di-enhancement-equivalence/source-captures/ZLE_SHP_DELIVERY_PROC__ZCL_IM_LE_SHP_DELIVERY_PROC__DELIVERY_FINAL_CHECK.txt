@@ -1,0 +1,41 @@
+* SOURCE CAPTURE - PARTIAL (first screen only)
+* Object : ZCL_IM_LE_SHP_DELIVERY_PROC==CM001
+* Class  : ZCL_IM_LE_SHP_DELIVERY_PROC
+* BAdI impl / Enh impl : ZLE_SHP_DELIVERY_PROC / ZLE_SHP_DELIVERY_PROC
+* Captured: 2026-09-14, QS4/700, SE38 display of the class-pool include (read-only)
+* NOTE   : lines 1-31 as visible on screen. Right-hand side of long lines is
+*          truncated by the editor viewport (see line 23). Remainder of the
+*          method (from "Validations for Depo Automation" onward) NOT yet captured.
+
+METHOD if_ex_le_shp_delivery_proc~delivery_final_check.
+    DATA:lv_error_occured  TYPE xfeld.
+    DATA:lv_value          TYPE rgsmv-from.
+    CONSTANTS:lc_setname   TYPE char20 VALUE 'ZSD_MFG_SHIPSKIP'.
+
+    IF ( sy-tcode = 'VL01N' OR sy-tcode = 'VL02N' ).
+
+      DATA(lv_check_value) = VALUE rvari_val_255( ).
+      DATA(lt_lips) = it_xlips[].
+      DELETE lt_lips WHERE updkz = 'D'.
+      lt_lips = VALUE #( BASE lt_lips FOR ls_lips IN it_ylips WHERE ( updkz <> 'D' ) ( CORRESPONDING #( ls_lips ) ) ).
+      SORT lt_lips BY posnr.
+      DELETE ADJACENT DUPLICATES FROM lt_lips COMPARING posnr.
+      SORT lt_lips BY matnr.
+      DELETE ADJACENT DUPLICATES FROM lt_lips COMPARING matnr.
+
+      TRY.
+          DATA(lss_lips) = lt_lips[ 1 ].
+          lv_check_value = lss_lips-vtweg && ',' && lss_lips-spart.
+          SELECT COUNT( * ) FROM tvarvc WHERE name = 'ZDEL_SPLIT' AND low = lv_check_value.
+          IF sy-subrc = 0.
+            IF lines( lt_lips ) > 1.
+              INSERT VALUE #( vbeln = lss_lips-vbeln pruefung = '99' msgty = 'E' msgid = 'ZSD' msgno = '002' msgv1 = TEXT-e01 ) IN... [TRUNCATED]
+            ENDIF.
+          ENDIF.
+        CATCH cx_sy_itab_line_not_found.
+      ENDTRY.
+
+*************************************************************
+**            Validations for Depo Automation
+*************************************************************
+* [REMAINDER NOT CAPTURED - scroll required]

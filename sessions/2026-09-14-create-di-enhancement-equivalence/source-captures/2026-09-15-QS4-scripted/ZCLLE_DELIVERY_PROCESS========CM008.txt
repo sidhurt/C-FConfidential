@@ -1,0 +1,307 @@
+  METHOD if_ex_le_shp_delivery_proc~delivery_final_check.
+    DATA: ls_finchdel TYPE finchdel.
+*quantity change check. If delivery is assigned to a token in ZLE012,
+*then prevent quantity change
+    IF sy-tcode = 'VL02N' OR sy-tcode = 'VL03N'.
+      LOOP AT it_xlips INTO DATA(ls_xlips)." WHERE uecha IS INITIAL.
+        READ TABLE it_ylips INTO DATA(ls_ylips) WITH KEY posnr = ls_xlips-posnr.
+        IF sy-subrc = 0.
+          IF ls_xlips-lfimg <> ls_ylips-lfimg.
+            SELECT SINGLE token FROM zletilmsdelivery INTO @DATA(lv_token_linked)      "#EC CI_NOFIELD
+              WHERE vbeln = @ls_xlips-vbeln AND posnr = @ls_xlips-posnr AND del = @space.
+            IF lv_token_linked IS NOT INITIAL.
+              ls_finchdel-vbeln = ls_xlips-vbeln.
+              ls_finchdel-msgid = 'ZLE'.
+              ls_finchdel-msgty = 'E'.
+              ls_finchdel-msgno = '100'.
+              ls_finchdel-msgv1 = lv_token_linked.
+              ls_finchdel-pruefung = '100'.
+              IF ct_finchdel IS INITIAL.
+                INSERT ls_finchdel INTO TABLE ct_finchdel.
+              ENDIF.
+            ENDIF.
+          ENDIF.
+          IF ls_xlips-updkz = 'D'.
+            SELECT SINGLE token FROM zletilmsdelivery INTO @lv_token_linked   "#EC CI_NOFIELD
+              WHERE vbeln = @ls_xlips-vbeln AND posnr = @ls_xlips-posnr AND del = @space.
+            IF sy-subrc = 0.
+              ls_finchdel-vbeln = ls_xlips-vbeln.
+              ls_finchdel-msgid = 'ZLE'.
+              ls_finchdel-msgty = 'E'.
+              ls_finchdel-msgno = '99'.
+              ls_finchdel-msgv1 = lv_token_linked.
+              IF ct_finchdel IS INITIAL.
+                INSERT ls_finchdel INTO TABLE ct_finchdel.
+              ENDIF.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+*prevent deletion of delivery if it is assigned to a token
+    READ TABLE it_xlikp INTO DATA(ls_likp) INDEX 1.
+    IF ls_likp-updkz = 'D'."D = deletion
+      SELECT SINGLE token FROM zletilmsdelivery "#EC CI_NOFIELD
+        INTO @lv_token_linked
+        WHERE vbeln = @ls_likp-vbeln AND del = @space.
+      IF lv_token_linked IS NOT INITIAL.
+        ls_finchdel-vbeln = ls_likp-vbeln.
+        ls_finchdel-msgid = 'ZLE'.
+        ls_finchdel-msgty = 'E'.
+        ls_finchdel-msgno = '099'.
+        ls_finchdel-msgv1 = lv_token_linked.
+        IF ct_finchdel IS INITIAL.
+          INSERT ls_finchdel INTO TABLE ct_finchdel.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+*allowed SPI types based on storage location
+    DATA(lt_values) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_PREREQ_DEL' ).
+    TRY.
+        DATA(lv_value) = lt_values[ 1 ]-low.
+        SPLIT lv_value AT ',' INTO TABLE DATA(lt_value).
+        DATA(lt_lfart) = VALUE lfart_ran_itab( FOR ls_values IN lt_value ( sign = 'I' option  = 'EQ' low = ls_values ) ).
+      CATCH cx_sy_itab_line_not_found.
+    ENDTRY.
+    LOOP AT it_xlips INTO ls_xlips.
+      SELECT SINGLE kdkg1 FROM kna1
+        WHERE kunnr = concat( 'P', @ls_xlips-werks )
+        INTO @DATA(lv_kdkg1).
+      IF lv_kdkg1 = 'A2'.
+        IF ls_xlips-lgort IS NOT INITIAL.
+          READ TABLE it_xlikp INTO ls_likp INDEX 1.
+          IF sy-subrc = 0.
+            IF lt_lfart IS NOT INITIAL AND ls_likp-lfart IN lt_lfart.
+              DATA(lv_bypass_for_shortage_entry) = abap_true.
+            ENDIF.
+            IF lv_bypass_for_shortage_entry =  abap_false.
+              SELECT SINGLE @abap_true FROM zletspimap
+                INTO @DATA(lv_allowed_spi)
+                WHERE lgort = @ls_xlips-lgort AND sdabw = @ls_likp-sdabw.
+              IF lv_allowed_spi = abap_false.
+                ls_finchdel-vbeln = ls_xlips-vbeln.
+                ls_finchdel-msgid = 'ZLE'.
+                ls_finchdel-msgty = 'E'.
+                ls_finchdel-msgno = '104'.
+                IF ct_finchdel IS INITIAL.
+                  INSERT ls_finchdel INTO TABLE ct_finchdel.
+                ENDIF.
+              ENDIF.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+
+*Begin of Change by Ashutosh Prakash for ME37513 on 13-AUG-2025
+
+    IF ( if_trtyp = 'B' OR
+       if_trtyp = 'H' OR
+       if_trtyp = 'V'  ).
+*       if_trtyp = 'V'  )  AND sy-ucomm = 'SICH_T'.
+
+      SELECT name,low FROM  tvarvc INTO TABLE @DATA(lt_self) WHERE name IN ( 'ZLE_HIRING_TRANS_DATE' ,'ZLE_SELF_TRANSPORTER' ).
+      IF lt_self IS NOT INITIAL.
+        LOOP AT it_xlips INTO DATA(ls_lips_tmp) WHERE updkz NE 'D'.
+          SELECT SINGLE kdkg1 FROM kna1
+                 WHERE kunnr = concat( 'P', @ls_lips_tmp-werks )
+                 INTO @DATA(lv_kdkg11).
+          IF lv_kdkg11 = 'A2'.
+            READ TABLE it_xlikp INTO ls_likp INDEX 1.
+            IF sy-subrc = 0 AND ls_likp-inco1 = 'FTB' AND ls_likp-updkz NE 'D'.
+              READ TABLE it_xvbpa INTO DATA(ls_xvbpa) WITH KEY parvw = 'SP'.
+              IF sy-subrc = 0 AND ls_xvbpa-updkz NE 'D' AND ls_xvbpa-lifnr IS NOT INITIAL.
+                IF lt_self IS NOT INITIAL.
+                  READ TABLE lt_self INTO DATA(ls_self_date) WITH KEY name = 'ZLE_HIRING_TRANS_DATE'.
+                  IF sy-subrc = 0 AND ls_likp-erdat GE ls_self_date-low.
+                    READ TABLE lt_self INTO DATA(ls_self) WITH KEY name = 'ZLE_SELF_TRANSPORTER' low = ls_xvbpa-lifnr.
+                    IF sy-subrc = 0.
+                      ls_finchdel-vbeln = ls_likp-vbeln.
+                      ls_finchdel-msgid = 'ZLE'.
+                      ls_finchdel-msgty = 'E'.
+                      ls_finchdel-msgno = '205'.
+                      ls_finchdel-msgv1 = ls_xvbpa-lifnr.
+                      ls_finchdel-msgv2 = ls_likp-inco1.
+                      IF ct_finchdel IS INITIAL.
+                        INSERT ls_finchdel INTO TABLE ct_finchdel.
+                      ENDIF.
+                    ENDIF.
+                  ENDIF.
+                ENDIF.
+              ENDIF.
+            ENDIF.
+          ENDIF.
+        ENDLOOP.
+      ENDIF.
+*Begin of Change by Ashutosh Prakash for ME62080 on 07-APR-2026
+      DATA:lv_lfimg    TYPE menge_d,
+           lv_so_qty   TYPE menge_d,
+           lv_lfimg_c  TYPE char30,
+           lv_so_qty_c TYPE char30.
+
+      LOOP AT it_xlikp INTO ls_likp WHERE zzvbeln IS NOT INITIAL.
+        CLEAR:lv_lfimg,
+              lv_so_qty.
+*Begin of Change by Ashutosh Prakash for ME62254 on 09-APR-2026
+        IF ls_likp-zzvbeln IS NOT INITIAL.
+          SELECT SINGLE cmgst,
+                        lifsk,
+                        faksk
+            FROM vbak
+            INTO @DATA(ls_vbak)
+            WHERE vbeln = @ls_likp-zzvbeln.
+          IF sy-subrc EQ 0 AND
+            ( ls_vbak-cmgst = 'B' OR ls_vbak-lifsk IS NOT INITIAL
+            OR ls_vbak-faksk IS NOT INITIAL ).
+            ls_finchdel-vbeln = ls_likp-vbeln.
+            ls_finchdel-msgid = 'ZLE'.
+            ls_finchdel-msgty = 'E'.
+            ls_finchdel-msgno = '088'.
+            ls_finchdel-msgv1 = ls_likp-zzvbeln.
+            IF ct_finchdel IS INITIAL.
+              INSERT ls_finchdel INTO TABLE ct_finchdel.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+
+*End of Change by Ashutosh Prakash for ME62254 on 09-APR-2026
+        SELECT vbeln
+          FROM likp
+          INTO TABLE @DATA(lt_likp)
+          WHERE zzvbeln = @ls_likp-zzvbeln.
+        IF sy-subrc EQ 0.
+          IF ( if_trtyp = 'B' OR
+               if_trtyp = 'V'  ).
+            DELETE lt_likp WHERE vbeln = ls_likp-vbeln.
+          ENDIF.
+
+          IF lt_likp IS NOT INITIAL.
+            SELECT  vbeln,
+                    posnr,
+                    lfimg
+              FROM lips
+              INTO TABLE @DATA(lt_lips)
+              FOR ALL ENTRIES IN @lt_likp
+              WHERE vbeln = @lt_likp-vbeln.
+            IF sy-subrc EQ 0.
+              LOOP AT lt_lips INTO DATA(ls_lips).
+                lv_lfimg = lv_lfimg + ls_lips-lfimg.
+              ENDLOOP.
+
+              LOOP AT it_xlips INTO ls_lips_tmp WHERE updkz NE 'D'.
+                lv_lfimg = lv_lfimg + ls_lips_tmp-lfimg.
+              ENDLOOP.
+
+              SELECT SUM( kwmeng )
+                  FROM vbap
+                  INTO lv_so_qty
+                  WHERE vbeln = ls_likp-zzvbeln.
+
+              IF lv_lfimg GT lv_so_qty.
+                ls_finchdel-vbeln = ls_likp-vbeln.
+                ls_finchdel-msgid = 'ZLE'.
+                ls_finchdel-msgty = 'E'.
+                ls_finchdel-msgno = '087'.
+                ls_finchdel-msgv1 = lv_lfimg.
+                ls_finchdel-msgv2 = ls_likp-zzvbeln.
+                ls_finchdel-msgv3 = lv_so_qty.
+                IF ct_finchdel IS INITIAL.
+                  INSERT ls_finchdel INTO TABLE ct_finchdel.
+                ENDIF.
+              ENDIF.
+            ENDIF.
+          ELSE.
+            LOOP AT it_xlips INTO ls_lips_tmp WHERE updkz NE 'D'.
+              lv_lfimg = lv_lfimg + ls_lips_tmp-lfimg.
+            ENDLOOP.
+
+            SELECT SUM( kwmeng )
+                FROM vbap
+                INTO lv_so_qty
+                WHERE vbeln = ls_likp-zzvbeln.
+
+            IF lv_lfimg GT lv_so_qty.
+              lv_lfimg_c = lv_lfimg.
+              lv_so_qty_c = lv_so_qty.
+              CONDENSE:lv_lfimg_c,
+                       lv_so_qty_c.
+              ls_finchdel-vbeln = ls_likp-vbeln.
+              ls_finchdel-msgid = 'ZLE'.
+              ls_finchdel-msgty = 'E'.
+              ls_finchdel-msgno = '087'.
+              ls_finchdel-msgv1 = lv_lfimg_c.
+              ls_finchdel-msgv2 = ls_likp-zzvbeln.
+              ls_finchdel-msgv3 = lv_so_qty_c.
+              IF ct_finchdel IS INITIAL.
+                INSERT ls_finchdel INTO TABLE ct_finchdel.
+              ENDIF.
+            ENDIF.
+          ENDIF.
+        ELSE.
+          LOOP AT it_xlips INTO ls_lips_tmp WHERE updkz NE 'D'.
+            lv_lfimg = lv_lfimg + ls_lips_tmp-lfimg.
+          ENDLOOP.
+
+          SELECT SUM( kwmeng )
+              FROM vbap
+              INTO lv_so_qty
+              WHERE vbeln = ls_likp-zzvbeln.
+
+          IF lv_lfimg GT lv_so_qty.
+            ls_finchdel-vbeln = ls_likp-vbeln.
+            ls_finchdel-msgid = 'ZLE'.
+            ls_finchdel-msgty = 'E'.
+            ls_finchdel-msgno = '087'.
+            ls_finchdel-msgv1 = lv_lfimg.
+            ls_finchdel-msgv2 = ls_likp-zzvbeln.
+            ls_finchdel-msgv3 = lv_so_qty.
+            IF ct_finchdel IS INITIAL.
+              INSERT ls_finchdel INTO TABLE ct_finchdel.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+*End of Change by Ashutosh Prakash for ME62080 on 07-APR-2026
+    ENDIF.
+*End of Change by Ashutosh Prakash for ME37513 on 13-AUG-2025
+*Begin of Change by Jeby Mathew for EN46977  Transporter & Plant Validation on 14-OCT-2025
+    IF ( if_trtyp = 'B' OR
+       if_trtyp = 'H' OR
+       if_trtyp = 'V'  ).
+      SELECT SINGLE name,low FROM  tvarvc INTO  @DATA(lv_erdate) WHERE name IN ( 'ZLE_DEPOT_TRANSPORTER' ).
+      IF sy-subrc = 0.
+        LOOP AT it_xlips INTO ls_lips_tmp WHERE updkz NE 'D'.
+          READ TABLE it_xlikp INTO ls_likp INDEX 1.
+          IF sy-subrc = 0 AND ls_likp-erdat GE lv_erdate-low.
+            READ TABLE it_xvbpa INTO ls_xvbpa WITH KEY parvw = 'SP'.
+            IF sy-subrc = 0 AND ls_xvbpa-lifnr IS NOT INITIAL AND ls_xvbpa-updkz NE 'D'.
+              SELECT SINGLE kdkg1 FROM kna1
+                WHERE kunnr = concat( 'P', @ls_likp-vstel )
+                INTO @DATA(lv_kdkg12).
+              IF lv_kdkg12 = 'A2'.
+                SELECT * FROM zm_kreda_cds
+                       WHERE kunnr = concat( 'P', @ls_likp-vstel )
+                 INTO TABLE @DATA(lt_zm_kreda_cds).
+                IF sy-subrc = 0.
+                  READ TABLE lt_zm_kreda_cds INTO DATA(ls_zm_kreda_cds) WITH KEY lifnr = ls_xvbpa-lifnr.
+                  IF sy-subrc NE 0.
+                    ls_finchdel-vbeln = ls_likp-vbeln.
+                    ls_finchdel-msgid = 'ZLE'.
+                    ls_finchdel-msgty = 'E'.
+                    ls_finchdel-msgno = '207'.
+                    ls_finchdel-msgv1 = ls_xvbpa-lifnr.
+                    ls_finchdel-msgv2 = ls_likp-vstel.
+                    IF ct_finchdel IS INITIAL.
+                      INSERT ls_finchdel INTO TABLE ct_finchdel.
+                    ENDIF.
+                  ENDIF.
+                ENDIF.
+              ENDIF.
+            ENDIF.
+          ENDIF.
+        ENDLOOP.
+      ENDIF.
+    ENDIF.
+
+*End of Change by Jeby Mathew for EN46977  Transporter & Plant Validation on 14-OCT-2025
+  ENDMETHOD.

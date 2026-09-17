@@ -1,0 +1,110 @@
+  METHOD if_ex_le_shp_delivery_proc~save_document_prepare.
+
+*    "***************************************************************************************
+*    "*     Ensure follow on Shipment document's should be deleted before PGI Reversal
+*    "***************************************************************************************
+*    IF sy-ucomm = 'YES' AND sy-tcode = 'VL09'.  "* P G I Reversal
+*      BREAK ibmabap31.
+*      TRY.
+*          DATA(lt_so_type) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_SHP_NOCHK' ).
+*          DATA(lt_shp_type) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_SHP_COST_NOCHK' ).
+** Begin of Change by Ashutosh for 26092
+*          DATA(lt_so_type_vl09) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_SHP_NOCHK_VL09' ).
+*          DATA(lt_shp_type_vl09) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_SHP_COST_NOCHK_VL09' ).
+*          DATA:lv_skip      TYPE flag,
+*               lv_skip_ship TYPE flag.
+** End of Change by Ashutosh for 26092
+*          DATA(ls_likp) = ct_xlikp[ 1 ].
+*          TRY.
+*              DATA(lv_so) = ct_xvbfa[ vbtyp_v = 'C' ]-vbelv.
+*              SELECT SINGLE auart FROM vbak INTO @DATA(lv_auart) WHERE vbeln = @lv_so.
+*            CATCH cx_sy_itab_line_not_found. "* STO
+*              SELECT SINGLE a~bsart INTO @lv_auart FROM ekko AS a INNER JOIN ekbe AS b ON b~ebeln = a~ebeln
+*                                                   WHERE b~belnr = @ls_likp-vbeln AND
+*                                                         b~bewtp = 'L'.
+*          ENDTRY.
+** Begin of Change by Ashutosh for 26092
+*          CLEAR:lv_skip,
+*                lv_skip_ship.
+*
+*          READ TABLE lt_so_type_vl09 TRANSPORTING NO FIELDS WITH KEY low = lv_auart.
+*          IF sy-subrc EQ 0.
+*            lv_skip = abap_true.
+*          ENDIF.
+** End of Change by Ashutosh for 26092
+*
+*          IF lv_auart IS NOT INITIAL AND lt_so_type IS NOT INITIAL AND NOT line_exists( lt_so_type[ low = lv_auart ] )
+*            AND lv_skip IS INITIAL. " Added by Ashutosh for 26092
+*
+*            IF line_exists( ct_xvbfa[ vbtyp_n = '8' ] ).  "* Shipment Document found , Throw Error
+*              INSERT VALUE #( vbeln    = ls_likp-vbeln
+*                              msgty    = 'E'
+*                              msgid    = '00'
+*                              msgno    = '368'
+*                              msgv1    = TEXT-e08
+*                              msgv2    = TEXT-e09 ) INTO TABLE ct_log.
+*
+*              TRY.
+*                  DATA(lv_tknum) = ct_xvbfa[ vbtyp_n = '8' ]-vbeln.
+*                  SELECT SINGLE shtyp FROM vttk INTO @DATA(lv_shtyp) WHERE tknum = @lv_tknum.
+** Begin of Change by Ashutosh for 26092
+*                  READ TABLE lt_shp_type_vl09 TRANSPORTING NO FIELDS WITH KEY low = lv_shtyp.
+*                  IF sy-subrc EQ 0.
+*                    lv_skip_ship = abap_true.
+*                  ENDIF.
+** End of Change by Ashutosh for 26092
+*
+*                  IF NOT line_exists( lt_shp_type[ low = lv_shtyp ] ) AND lv_skip_ship IS INITIAL.
+**                    SELECT SINGLE @abap_true FROM vfkp INTO @DATA(lv_cost_found) WHERE rebel = @lv_tknum.
+*                    DATA(lv_cost_found) = abap_false.
+*                    SELECT SINGLE rebel,netwr FROM vfkp INTO @DATA(ls_vfkp) WHERE rebel = @lv_tknum.
+*                    IF sy-subrc = 0.
+*                      lv_cost_found = abap_true.
+*                    ENDIF.
+*
+*                    IF lv_cost_found = abap_true.  "* Shipment Cost Document found , Throw Error
+*                      INSERT VALUE #( vbeln = ls_likp-vbeln
+*                                      msgty = 'E'
+*                                      msgid = '00'
+*                                      msgno = '368'
+*                                      msgv1 = TEXT-e08
+*                                      msgv2 = TEXT-e10 ) INTO TABLE ct_log.
+*                    ENDIF.
+*                  ENDIF.
+*                CATCH cx_sy_itab_line_not_found.
+*              ENDTRY.
+*            ENDIF.
+*
+***          IF ls_likp-lfart = 'ZNL'.
+******Get the shipment Number
+***            DATA(lv_ship) = ct_xvbfa[ vbtyp_n = '8' ]-vbeln.
+***            DATA(lv_Delivery)  = ls_likp-vbeln.
+***            ""If shipment is exist, then call the FM to delete shipment and shipment cost document
+***            CALL FUNCTION 'ZOTC_SHIPMENT_SCD_DELETE'
+***              EXPORTING
+***                im_shipment = lv_ship
+***                im_vbeln    = lv_Delivery. "LS_LIKP-VBELN.
+*          ENDIF.
+*        CATCH cx_sy_itab_line_not_found.
+*
+*      ENDTRY.
+*
+**********      CALL FUNCTION 'ZSD_DELIVERY_STATUS_UPD' " IN UPDATE TASK
+**********        EXPORTING
+**********          im_vbeln = lv_Delivery.
+*
+*
+*
+**        IF sy-uname EQ 'IBMABAP11' OR sy-uname EQ 'IBMSD03'.
+**          IF ct_xlikp IS NOT INITIAL.
+**            READ TABLE ct_xlikp INTO DATA(ls_likp_temp) INDEX 1.
+**            IF sy-subrc = 0.
+**              CALL FUNCTION 'ZSD_UPDATE_DELIVERY' IN UPDATE TASK
+**                EXPORTING
+**                  im_vbeln = ls_likp_temp-vbeln
+**                  im_lifex = ls_likp_temp-lifex.
+**            ENDIF.
+**          ENDIF.
+**        ENDIF.
+*    ENDIF.
+  ENDMETHOD.

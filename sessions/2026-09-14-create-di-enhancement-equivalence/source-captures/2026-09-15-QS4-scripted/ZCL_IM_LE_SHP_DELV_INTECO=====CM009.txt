@@ -1,0 +1,76 @@
+  METHOD if_ex_le_shp_delivery_proc~delivery_final_check.
+***" Validation to check empty Process Order, RMC
+    IF NOT line_exists( it_xlikp[ updkz = 'D' ] ).
+      TRY.
+          DATA(ls_likp) = it_xlikp[ 1 ].
+          IF ls_likp-lfart = 'ZRMC'
+             OR ls_likp-lfart = 'ZRM2'.
+            IF ls_likp-zzaufnr IS INITIAL.
+              INSERT VALUE #( vbeln = ls_likp-vbeln
+                              pruefung = '99'
+                              msgty = 'E'
+                              msgid = 'ZSD'
+                              msgno = '023'  ) INTO TABLE ct_finchdel.
+            ELSE.
+              IF if_trtyp = 'H' OR if_trtyp = 'V'.
+                SELECT SINGLE vbeln FROM likp INTO @DATA(lv_delivery) WHERE zzaufnr = @ls_likp-zzaufnr.
+                IF sy-subrc = 0.
+                  IF ls_likp-vbeln <> lv_delivery.
+                    INSERT VALUE #( vbeln = ls_likp-vbeln
+                                    pruefung = '99'
+                                    msgty = 'E'
+                                    msgid = 'ZSD'
+                                    msgno = '024'
+                                    msgv1 = ls_likp-zzaufnr
+                                    msgv2 = lv_delivery ) INTO TABLE ct_finchdel.
+                  ENDIF.
+                ENDIF.
+              ENDIF.
+            ENDIF.
+            IF ls_likp-zzvehicle_no IS INITIAL.
+              INSERT VALUE #( vbeln = ls_likp-vbeln
+                              pruefung = '99'
+                              msgty = 'E'
+                              msgid = 'ZSD'
+                              msgno = '111'
+                              msgv1 = 'Vehicle number cannot be blank'  ) INTO TABLE ct_finchdel.
+            ENDIF.
+          ENDIF.
+        CATCH cx_sy_itab_line_not_found.
+      ENDTRY.
+
+* Begin of Change by Ashutosh for 33715
+      DATA(lt_lips) = it_xlips[].
+      SORT lt_lips BY vgbel vgpos.
+      DELETE ADJACENT DUPLICATES FROM lt_lips COMPARING vgbel vgpos.
+      IF lt_lips IS NOT INITIAL AND ls_likp-lfart = 'EL'.
+        SELECT low
+          UP TO 1 ROWS
+          FROM tvarvc
+          INTO @DATA(lv_etens_count)
+          WHERE name = 'ZMM_IBD_PO_COUNT'.
+        ENDSELECT.
+        LOOP AT lt_lips INTO DATA(ls_lips).
+          SELECT etens
+            UP TO 1 ROWS
+            FROM ekes
+            INTO @DATA(lv_etens)
+            WHERE ebeln = @ls_lips-vgbel
+              AND ebelp = @ls_lips-vgpos
+              ORDER BY etens DESCENDING.
+          ENDSELECT.
+          DATA:lv_etens_c TYPE etens.
+          lv_etens_c = lv_etens_count.
+          IF lv_etens GE lv_etens_c."'9000'.
+            INSERT VALUE #( vbeln = ls_likp-vbeln
+                              pruefung = '99'
+                              msgty = 'E'
+                              msgid = 'ZMM'
+                              msgno = '110'
+                              msgv1 = ls_lips-vgbel  ) INTO TABLE ct_finchdel.
+          ENDIF.
+        ENDLOOP.
+      ENDIF.
+* End of Change by Ashutosh for 33715
+    ENDIF.
+  ENDMETHOD.

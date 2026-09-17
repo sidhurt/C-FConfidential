@@ -1,0 +1,267 @@
+  METHOD if_ex_le_shp_delivery_proc~save_document_prepare.
+    TYPES : BEGIN OF ty_s_notif,
+              partner         TYPE bu_partner,
+              type            TYPE bu_id_type,
+              valid_date_from TYPE bu_id_valid_date_from,
+              valid_date_to   TYPE bu_id_valid_date_to,
+            END OF ty_s_notif.
+
+    DATA : ls_notif  TYPE ty_s_notif,
+           lv_paramn TYPE zgbde_param1,
+           lv_paramm TYPE zgbde_param2,
+           lv_month  TYPE t5a4a-dlymo,
+           lv_date   TYPE datum,
+           lv_lifex  TYPE lifex,
+           lv_sdabw  TYPE likp-sdabw,
+           lv_diff   TYPE char5,
+           lv_days   TYPE i.
+
+    IF NOT line_exists( ct_xlikp[ updkz = 'D' ] ).
+      DATA(ls_likp) = ct_xlikp[ 1 ].
+
+*******Delivery Block If Trade Lic Is EXP*************
+
+      CLEAR lv_paramn.
+      SELECT SINGLE param1
+               FROM zgpt_sd_param
+               INTO lv_paramn
+              WHERE program_name = 'ZUCCSDE005_TRADE_LICENSE'
+                AND object_id    = 'SDE005'
+                AND field        = 'TCODE'
+                AND param1       = sy-tcode
+                AND active_flag  = abap_true.
+      IF lv_paramn IS NOT INITIAL.
+        CLEAR : lv_paramn,lv_paramm.
+        SELECT SINGLE param2
+                 FROM zgpt_sd_param
+                 INTO lv_paramm
+                WHERE program_name = 'ZUCCSDE005_TRADE_LICENSE'
+                  AND object_id    = 'SDE005'
+                  AND field        = 'LFART'
+                  AND param1       = ls_likp-lfart
+                  AND active_flag  = abap_true.
+        IF lv_paramm IS NOT INITIAL.
+          CLEAR ls_notif.
+          SELECT SINGLE partner
+                        type
+                        valid_date_from
+                        valid_date_to
+                   FROM but0id
+                   INTO ls_notif
+                   WHERE partner = ls_likp-kunag
+                     AND type    = 'ZTRLIC'.
+          IF ls_notif IS NOT INITIAL.
+            CLEAR ls_notif.
+            SELECT SINGLE partner
+                        type
+                        valid_date_from
+                        valid_date_to
+                   FROM but0id
+                   INTO ls_notif
+                   WHERE partner = ls_likp-kunag
+                     AND type    = 'ZTRLIC'
+                     AND valid_date_from LE sy-datum.
+*                     AND valid_date_to GE sy-datum.
+            IF ls_notif IS NOT INITIAL.
+              IF ls_notif-valid_date_to IS NOT INITIAL.
+                CALL FUNCTION 'C14B_DIFF_BT_2_DATES'
+                  EXPORTING
+                    i_date_from               = ls_notif-valid_date_to
+                    i_date_to                 = sy-datum
+                  IMPORTING
+                    e_days                    = lv_days
+                  EXCEPTIONS
+                    plausibility_check_failed = 1
+                    OTHERS                    = 2.
+                IF sy-subrc EQ 0.
+                  IF lv_days GT 30.
+                    DATA(lv_flag) = abap_true.
+                  ENDIF.
+                ENDIF.
+              ENDIF.
+
+              IF lv_flag IS NOT INITIAL.
+                LOOP AT ct_xlikp INTO ls_likp.
+                  IF ls_likp-updkz EQ 'I'.
+                    ls_likp-lifsk = lv_paramm.
+                    MODIFY ct_xlikp FROM ls_likp TRANSPORTING lifsk.
+                  ENDIF.
+                ENDLOOP.
+              ENDIF.
+              CLEAR lv_flag.
+
+              INSERT VALUE #( vbeln = ls_likp-vbeln
+                              msgty = 'I'
+                              msgid = 'ZUCC_SD'
+                              msgno = '002'
+                              msgv1 = ls_likp-kunnr ) INTO TABLE ct_log.
+
+            ENDIF.
+          ELSE.
+            LOOP AT ct_xlikp INTO ls_likp.
+              ls_likp-lifsk = lv_paramm.
+              MODIFY ct_xlikp FROM ls_likp TRANSPORTING lifsk.
+            ENDLOOP.
+            INSERT VALUE #( vbeln = ls_likp-vbeln
+                            msgty = 'I'
+                            msgid = 'ZUCC_SD'
+                            msgno = '001'
+                            msgv1 = ls_likp-kunnr ) INTO TABLE ct_log.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+      READ TABLE ct_xlikp ASSIGNING FIELD-SYMBOL(<fs_likp>) INDEX 1.
+      IF sy-subrc IS INITIAL.
+        CLEAR lv_paramn.
+        SELECT SINGLE param2
+                 FROM zgpt_sd_param
+                 INTO lv_paramn
+                WHERE program_name = 'ZDACE_ORD_EXC'
+                  AND object_id    = 'ZDACE'
+                  AND field        = 'LFART'
+                  AND param1       = <fs_likp>-lfart
+                  AND active_flag  = abap_true.
+        IF lv_paramn IS NOT INITIAL AND
+           <fs_likp>-vsart IS INITIAL.
+          <fs_likp>-vsart = lv_paramn.
+        ENDIF.
+        CLEAR lv_lifex.
+        IMPORT lv_lifex TO lv_lifex FROM MEMORY ID 'LV_LIFEX'.
+        IF lv_lifex IS NOT INITIAL.
+          <fs_likp>-lifex = lv_lifex.
+        ENDIF.
+        FREE MEMORY ID 'LV_LIFEX'.
+
+        CLEAR lv_sdabw.
+        IMPORT lv_sdabw TO lv_sdabw FROM MEMORY ID 'LV_SDABW'.
+        IF lv_sdabw IS NOT INITIAL.
+          <fs_likp>-sdabw = lv_sdabw.
+        ENDIF.
+        FREE MEMORY ID 'LV_SDABW'.
+
+      ENDIF.
+
+      IF ls_likp-lfart EQ 'ZUST' OR
+         ls_likp-lfart EQ 'ZUCC'.
+        IF line_exists( ct_xlips[ 1 ] ).
+          DATA(ls_lips) = ct_xlips[ 1 ].
+          IF ls_lips-vgbel IS NOT INITIAL.
+            SELECT *
+              FROM wb2_v_ekko_ekpo2
+              INTO TABLE @DATA(lt_ekko)
+              WHERE ebeln = @ls_lips-vgbel.
+            IF sy-subrc EQ 0.
+              DATA(ls_ekko) = lt_ekko[ 1 ].
+
+********************************SOC - 08.09.2025**********************************
+
+              " Case 1- Route determination based on Receiving location
+
+*              SELECT SINGLE route FROM zsdt_route_det
+*                WHERE reswk = @ls_ekko-reswk
+*                AND reslo IS INITIAL
+*                AND werks = @ls_ekko-werks_i
+*                AND lgort = @ls_ekko-lgort_i
+*                INTO @DATA(lv_route).
+
+*              IF lv_route IS INITIAL.
+*
+*                " Case 2- Route determination based on Issuing location
+*
+*                SELECT SINGLE route FROM zsdt_route_det
+*                  WHERE reswk = @ls_ekko-reswk
+*                  AND reslo  = @ls_lips-lgort
+*                  AND werks = @ls_ekko-werks_i
+*                  AND lgort IS INITIAL
+*                  INTO @lv_route.
+*
+*                IF lv_route IS INITIAL.
+*
+*                  " Case 3- Route determination based on Issuing and Receiving location
+*                  SELECT SINGLE route FROM zsdt_route_det
+*                  WHERE reswk = @ls_ekko-reswk
+*                  AND reslo  = @ls_lips-lgort
+*                  AND werks = @ls_ekko-werks_i
+*                  AND lgort = @ls_ekko-lgort_i
+*                  INTO @lv_route.
+*
+*                ENDIF.
+*              ENDIF.
+              SELECT * FROM zsdt_route_det INTO TABLE @DATA(lt_route)
+                WHERE reswk = @ls_ekko-reswk
+                AND werks = @ls_ekko-werks_i.
+
+              IF lt_route IS NOT INITIAL.
+                LOOP AT ct_xlikp ASSIGNING FIELD-SYMBOL(<lfs_likp>).
+                  READ TABLE lt_route INTO DATA(lv_route) WITH KEY lgort = ls_ekko-lgort_i reslo = ' '.
+                  IF lv_route IS INITIAL.
+                    READ TABLE lt_route INTO lv_route WITH KEY reslo = ls_lips-lgort lgort = ' '.
+                    IF lv_route IS INITIAL.
+                      READ TABLE lt_route INTO lv_route WITH KEY reslo = ls_lips-lgort lgort = ls_ekko-lgort_i.
+                    ENDIF.
+                  ENDIF.
+                  IF lv_route IS NOT INITIAL.
+                    <lfs_likp>-route = lv_route-route.
+                  ENDIF.
+                ENDLOOP.
+              ENDIF.
+******************************EOC 08.09.2025******************************************
+
+**              IF ls_ekko-reswk EQ '8040'.
+**                IF ls_ekko-werks_i EQ '8041' AND
+**                   ( ls_ekko-lgort_i EQ 'YD01' OR
+**                     ls_ekko-lgort_i EQ 'PYD1' ).
+***                  LOOP AT ct_xlikp ASSIGNING FIELD-SYMBOL(<lfs_likp>).
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '100011'.
+**                  ENDLOOP.
+**                ELSEIF ls_ekko-werks_i EQ '8040' AND
+**                       ls_ekko-lgort_i EQ 'PRT1'. "Jabel Ali Port"
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '500005'.
+**                  ENDLOOP.
+**                ELSEIF ls_ekko-werks_i EQ '8040' AND
+**                       ls_ekko-lgort_i EQ 'RMDU'. "Jabel Ali Port"
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '500005'.
+**                  ENDLOOP.
+**                ELSEIF ls_ekko-werks_i EQ '8040' AND
+**                       ls_ekko-lgort_i EQ 'PRT2'. "Fujairah Port"
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '700003'.
+**                  ENDLOOP.
+**                ENDIF.
+**              ELSEIF ls_ekko-reswk EQ '8041'.
+**                IF ls_ekko-werks_i EQ '8041' AND
+**                   ls_ekko-lgort_i EQ 'POYD'.
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '100014'.
+**                  ENDLOOP.
+**                ENDIF.
+**                IF ls_ekko-werks_i EQ '8041' AND
+**                   ( ls_ekko-lgort_i EQ 'YD01' OR
+**                   ls_ekko-lgort_i EQ 'PYD1' ).
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '100013'.
+**                  ENDLOOP.
+**                ENDIF.
+**                IF ls_ekko-werks_i EQ '8040' AND
+**                   ( ls_lips-lgort EQ 'YD01' OR
+**                   ls_lips-lgort EQ 'PYD1' ).
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '100015'.
+**                  ENDLOOP.
+**                ELSEIF ls_ekko-werks_i EQ '8040' AND
+**                   ls_lips-lgort EQ 'POYD'.
+**                  LOOP AT ct_xlikp ASSIGNING <lfs_likp>.
+**                    <lfs_likp>-route = '100012'.
+**                  ENDLOOP.
+**                ENDIF.
+**              ENDIF.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+    ENDIF.
+  ENDMETHOD.

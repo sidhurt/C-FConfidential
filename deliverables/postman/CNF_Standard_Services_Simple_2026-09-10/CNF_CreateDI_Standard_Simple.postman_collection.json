@@ -1,0 +1,351 @@
+{
+  "info": {
+    "_postman_id": "5a65c83c-a07e-49c2-85aa-a08699e71f69",
+    "name": "CNF Create DI - Standard SAP Service - STO Baseline",
+    "description": "Create DI through the standard API_OUTBOUND_DELIVERY_SRV;v=2 deep insert, exactly as certified on QS4/700 (delivery 9004953174 from STO 5600084209/000010, 1 TO, HTTP 201, OData readback and LIKP/LIPS persistence confirmed). SAP runs BAPI_OUTB_DELIVERY_CREATE_STO underneath.\n\nScope: STO predecessor only. Trade and Non-trade predecessors are not certified. No C&F business rules or duplicate protection are applied.\n\nSafety controls in this collection:\n- The POST is blocked unless confirmCreateDI=YES. The switch is reset to NO before the request is sent, so a second click is blocked.\n- The POST is blocked if any payload variable or the CSRF token is empty.\n- deliveryDocument is cleared before the POST, so a failed POST can never be followed by a readback of an older delivery.\n- Tests fail on anything other than the expected status and document key.\n\nUsed evidence - do not reuse: STO 5600084209/000010 and delivery 9004953174.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{sap-user}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{sap-pass}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base",
+      "value": "{{host}}/sap/opu/odata/sap"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Connectivity",
+      "description": "Read-only metadata check for the standard delivery service.",
+      "item": [
+        {
+          "name": "00.1 GET Delivery service metadata",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Metadata returned 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Response is EDMX metadata', () => pm.expect(pm.response.text()).to.include('edmx:Edmx'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/$metadata?sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_OUTBOUND_DELIVERY_SRV;v=2",
+                "$metadata"
+              ],
+              "query": [
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "HTTP 200 with EDMX metadata confirms authentication and routing. The ;v=2 suffix is mandatory; without it the request reaches a different service version."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01 - Create DI - standard outbound delivery service",
+      "description": "Run 01.1, set confirmCreateDI=YES, run 01.2 once, then run 01.3 and 01.4. A 201 response can carry an empty expanded item array, so both readbacks are required before the call counts as verified.",
+      "item": [
+        {
+          "name": "01.1 GET CSRF token - Delivery service",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const token = pm.response.headers.get('x-csrf-token');",
+                  "pm.test('Token fetch returned 200', () => pm.response.to.have.status(200));",
+                  "pm.test('SAP returned a CSRF token', () => pm.expect(token).to.be.a('string').and.not.eql('Required'));",
+                  "if (token && token !== 'Required') pm.environment.set('csrf', token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-csrf-token",
+                "value": "Fetch"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/?sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_OUTBOUND_DELIVERY_SRV;v=2",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "Fetches the CSRF token and the SAP session cookies it is bound to. Keep Postman's cookie jar enabled. Fetch the token from this delivery service, not from the material document service."
+          },
+          "response": []
+        },
+        {
+          "name": "01.2 POST Create DI - STO deep insert - REAL WRITE",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const confirmation = pm.environment.get('confirmCreateDI');",
+                  "pm.environment.set('confirmCreateDI', 'NO');",
+                  "if (confirmation !== 'YES') {",
+                  "  throw new Error('Create DI blocked. Set confirmCreateDI=YES only after validating a fresh open STO item. The switch resets to NO on every attempt.');",
+                  "}",
+                  "const required = ['csrf', 'shippingPoint', 'referenceSDDocument', 'referenceSDDocumentItem', 'actualDeliveryQuantity', 'deliveryQuantityUnit'];",
+                  "const missing = required.filter((key) => !pm.environment.get(key));",
+                  "if (missing.length) {",
+                  "  throw new Error('Create DI blocked. Missing environment variables: ' + missing.join(', '));",
+                  "}",
+                  "pm.environment.set('deliveryDocument', '');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Create DI returned 201 Created', () => pm.response.to.have.status(201));",
+                  "let delivery;",
+                  "try {",
+                  "  const payload = pm.response.json();",
+                  "  delivery = payload?.d?.DeliveryDocument ?? payload?.DeliveryDocument;",
+                  "} catch (error) {",
+                  "  console.warn('Response was not JSON. Review it manually.');",
+                  "}",
+                  "pm.test('SAP returned a delivery document number', () => pm.expect(delivery).to.match(/^\\d+$/));",
+                  "if (delivery) {",
+                  "  pm.environment.set('deliveryDocument', delivery);",
+                  "  console.log('Created delivery:', delivery);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-csrf-token",
+                "value": "{{csrf}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ShippingPoint\": \"{{shippingPoint}}\",\n  \"to_DeliveryDocumentItem\": [\n    {\n      \"ReferenceSDDocument\": \"{{referenceSDDocument}}\",\n      \"ReferenceSDDocumentItem\": \"{{referenceSDDocumentItem}}\",\n      \"ActualDeliveryQuantity\": \"{{actualDeliveryQuantity}}\",\n      \"DeliveryQuantityUnit\": \"{{deliveryQuantityUnit}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader?sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_OUTBOUND_DELIVERY_SRV;v=2",
+                "A_OutbDeliveryHeader"
+              ],
+              "query": [
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "REAL SAP WRITE. Creates an outbound delivery.\n\nPayload is exactly the certified five fields. SAP derives delivery type, plants, route, customer and movement type from the STO.\n\nDo not add ReferenceSDDocumentCategory: live QS4 metadata marks it sap:creatable=false.\n\nDo not resend after a timeout or lost response. Search VL06O / LIPS by STO item first."
+          },
+          "response": []
+        },
+        {
+          "name": "01.3 GET Created DI header - readback",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('deliveryDocument')) {",
+                  "  throw new Error('No deliveryDocument from the last POST. Nothing to read back.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Delivery header readback returned 200', () => pm.response.to.have.status(200));",
+                  "const payload = pm.response.json();",
+                  "const header = payload?.d ?? payload;",
+                  "pm.test('Readback matches the created delivery', () => pm.expect(header.DeliveryDocument).to.eql(pm.environment.get('deliveryDocument')));",
+                  "pm.test('Shipping point matches the request', () => pm.expect(header.ShippingPoint).to.eql(pm.environment.get('shippingPoint')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader('{{deliveryDocument}}')?$format=json&sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_OUTBOUND_DELIVERY_SRV;v=2",
+                "A_OutbDeliveryHeader('{{deliveryDocument}}')"
+              ],
+              "query": [
+                {
+                  "key": "$format",
+                  "value": "json"
+                },
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "Independent readback of the created delivery header. Confirm in VL03N as well."
+          },
+          "response": []
+        },
+        {
+          "name": "01.4 GET Created DI items - readback",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('deliveryDocument')) {",
+                  "  throw new Error('No deliveryDocument from the last POST. Nothing to read back.');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const unpad = (value) => String(value ?? '').replace(/^0+/, '');",
+                  "pm.test('Delivery item readback returned 200', () => pm.response.to.have.status(200));",
+                  "const items = pm.response.json()?.d?.results ?? [];",
+                  "pm.test('Created delivery has at least one item', () => pm.expect(items.length).to.be.above(0));",
+                  "const item = items.find((row) => unpad(row.ReferenceSDDocument) === unpad(pm.environment.get('referenceSDDocument')) && unpad(row.ReferenceSDDocumentItem) === unpad(pm.environment.get('referenceSDDocumentItem')));",
+                  "pm.test('An item references the requested STO item', () => pm.expect(item).to.not.be.undefined);",
+                  "if (item) {",
+                  "  pm.test('Delivered quantity matches the request', () => pm.expect(Number(item.ActualDeliveryQuantity)).to.eql(Number(pm.environment.get('actualDeliveryQuantity'))));",
+                  "  pm.test('Delivery unit matches the request', () => pm.expect(item.DeliveryQuantityUnit).to.eql(pm.environment.get('deliveryQuantityUnit')));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryItem?$filter=DeliveryDocument%20eq%20'{{deliveryDocument}}'&$format=json&sap-client={{sap-client}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "API_OUTBOUND_DELIVERY_SRV;v=2",
+                "A_OutbDeliveryItem"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "DeliveryDocument%20eq%20'{{deliveryDocument}}'"
+                },
+                {
+                  "key": "$format",
+                  "value": "json"
+                },
+                {
+                  "key": "sap-client",
+                  "value": "{{sap-client}}"
+                }
+              ]
+            },
+            "description": "Reads only the items of the delivery just created, then checks that one of them references the requested STO item with the requested quantity and unit. Filtering by the STO item alone would also return earlier partial deliveries. Confirm the document flow in ME23N."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+  METHOD check_set_value.
+    DATA: lv_setid TYPE sethier-setid.
+    DATA: lt_setvalues TYPE STANDARD TABLE OF rgsmv.
+
+    CALL FUNCTION 'G_SET_GET_ID_FROM_NAME'
+      EXPORTING
+        shortname = iv_shortname "Set Name
+      IMPORTING
+        new_setid = lv_setid
+      EXCEPTIONS
+        OTHERS    = 10.
+    IF lv_setid IS NOT INITIAL.
+      CALL FUNCTION 'G_SET_SEARCH_FOR_INTERVAL'
+        EXPORTING
+          set              = lv_setid
+          from             = iv_from
+          to               = iv_to
+        TABLES
+          vallist          = lt_setvalues
+        EXCEPTIONS
+          value_not_found  = 1
+          set_not_found    = 2
+          conversion_error = 3
+          wrong_settype    = 4
+          wrong_interval   = 5
+          OTHERS           = 10.
+      IF sy-subrc <> 0.
+        ev_values_exists = abap_false.
+      ELSEIF sy-subrc = 0 AND lt_setvalues IS NOT INITIAL.
+        ev_values_exists = abap_true.
+        et_setvalues = lt_setvalues.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

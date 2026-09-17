@@ -1,0 +1,43 @@
+  METHOD if_ex_le_shp_delivery_proc~change_delivery_item.
+    DATA: lv_zztm_reg      TYPE zvehical,
+          lv_zzaufnr       TYPE aufnr,
+          lv_zzdriver_name TYPE bu_nameor1,
+          lv_zzdrivermob   TYPE telef.
+
+    IF cs_likpd-updkz = 'D'.
+      RETURN.
+    ENDIF.
+    IF cs_likp-lfart = 'ZRMC'
+      OR cs_likp-lfart = 'ZRM2'.
+      DATA(lt_aufnr) =  VALUE aufnr_t( ).
+      CALL FUNCTION 'ZSDF_FETCH_PROCESS_ORDER'
+        IMPORTING
+          et_aufnr = lt_aufnr.
+      IF lines( lt_aufnr ) = 1.
+        cs_likp-zzaufnr = lt_aufnr[ 1 ]-aufnr.
+      ELSEIF lt_aufnr IS INITIAL.
+        CLEAR:cs_likp-zzaufnr.
+      ENDIF.
+
+      IMPORT  lv_zztm_reg TO lv_zztm_reg FROM MEMORY ID 'ZZDELIVERY_REG'.
+      IMPORT  lv_zzaufnr TO lv_zzaufnr FROM MEMORY ID 'ZZAUFNR_DEV'.
+      IMPORT  lv_zzdriver_name TO lv_zzdriver_name FROM MEMORY ID 'ZZDRIVER_NAME'.
+      IMPORT  lv_zzdrivermob TO lv_zzdrivermob FROM MEMORY ID 'ZZDRIVERMOB'.
+
+*      FREE MEMORY ID :'ZZAUFNR_DEV','ZZDELIVERY_REG'.
+      IF lv_zztm_reg IS NOT INITIAL.
+        cs_likp-zzvehicle_no = lv_zztm_reg.
+      ENDIF.
+      IF lv_zzaufnr IS NOT INITIAL.
+        cs_likp-zzaufnr = lv_zzaufnr.
+      ENDIF.
+      IF lv_zzdriver_name is NOT INITIAL.
+        cs_likp-zzdriver_name = lv_zzdriver_name.
+      ENDIF.
+      IF lv_zzdrivermob is NOT INITIAL.
+        cs_likp-zzdrivermob = lv_zzdrivermob.
+      ENDIF.
+      CLEAR :lv_zztm_reg ,lv_zzaufnr,lv_zzdriver_name,lv_zzdrivermob.
+
+    ENDIF.
+  ENDMETHOD.

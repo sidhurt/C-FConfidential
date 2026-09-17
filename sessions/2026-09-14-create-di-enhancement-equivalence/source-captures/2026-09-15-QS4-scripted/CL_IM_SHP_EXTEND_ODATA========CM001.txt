@@ -1,0 +1,85 @@
+  METHOD if_ex_le_shp_delivery_proc~save_document_prepare.
+
+    DATA: ls_ext_likp      TYPE likpvb,
+          ls_ext_lips      TYPE lipsvb,
+          lv_changed_field TYPE fieldname,
+          ls_changed_item  TYPE leidw_item_fieldname.
+
+    FIELD-SYMBOLS:
+      <ls_xlikp> TYPE likpvb,
+      <ls_xlips> TYPE lipsvb.
+
+    TEST-SEAM get_extension_fields.
+      CALL METHOD /spe/cl_inb_action_info=>get_extension_fields
+        IMPORTING
+          et_likp          = DATA(lt_xlikp)
+          et_lips          = DATA(lt_xlips)
+          et_changed_field = DATA(lt_changed_field)
+          et_changed_item  = DATA(lt_changed_item).
+    END-TEST-SEAM.
+
+    "SOA Extensibility: Header
+    IF lt_changed_field IS NOT INITIAL AND lt_xlikp IS NOT INITIAL.
+      READ TABLE lt_xlikp INTO ls_ext_likp INDEX 1.
+      LOOP AT ct_xlikp ASSIGNING <ls_xlikp>.
+        LOOP AT lt_changed_field INTO lv_changed_field.
+          ASSIGN COMPONENT lv_changed_field OF STRUCTURE ls_ext_likp TO FIELD-SYMBOL(<lv_new_value_header>).
+          IF sy-subrc <> 0.
+            MESSAGE e014(le_shp_odata_api_od) WITH lv_changed_field INTO DATA(lv_msg).
+            _add_message ls_ext_likp-vbeln space ct_log.
+            RETURN.
+          ENDIF.
+
+          ASSIGN COMPONENT lv_changed_field OF STRUCTURE <ls_xlikp> TO FIELD-SYMBOL(<lv_old_value_header>).
+          IF <lv_new_value_header> IS ASSIGNED.
+            <lv_old_value_header> = <lv_new_value_header>.
+            UNASSIGN <lv_new_value_header>.
+          ENDIF.
+        ENDLOOP.
+      ENDLOOP.
+      IF sy-subrc <> 0.
+        MESSAGE e013(le_shp_odata_api_od) WITH ls_ext_likp-vbeln INTO lv_msg ##NEEDED.
+        _add_message ls_ext_likp-vbeln space ct_log.
+        RETURN.
+      ENDIF.
+    ENDIF.
+
+    "SOA Extensibility: Item
+    IF lt_changed_item IS NOT INITIAL AND lt_xlips IS NOT INITIAL.
+      LOOP AT lt_changed_item INTO ls_changed_item.
+        READ TABLE lt_xlips INTO ls_ext_lips WITH KEY vbeln = ls_changed_item-delivery_document posnr = ls_changed_item-delivery_document_item.
+        IF sy-subrc <> 0.
+          MESSAGE e016(le_shp_odata_api_od) WITH ls_ext_likp-vbeln  ls_changed_item-delivery_document_item  INTO lv_msg.
+          _add_message ls_ext_likp-vbeln ls_changed_item-delivery_document_item ct_log.
+          RETURN.
+        ENDIF.
+
+        READ TABLE ct_xlips ASSIGNING <ls_xlips> WITH KEY vbeln = ls_changed_item-delivery_document posnr = ls_changed_item-delivery_document_item.
+        IF sy-subrc <> 0.
+          MESSAGE e016(le_shp_odata_api_od) WITH ls_ext_likp-vbeln  ls_changed_item-delivery_document_item  INTO lv_msg.
+          _add_message ls_ext_likp-vbeln ls_changed_item-delivery_document_item ct_log.
+          RETURN.
+        ENDIF.
+
+        ASSIGN COMPONENT ls_changed_item-fieldname OF STRUCTURE ls_ext_lips TO FIELD-SYMBOL(<lv_new_value_item>).
+        IF sy-subrc <> 0.
+          MESSAGE e015(le_shp_odata_api_od) WITH ls_changed_item-fieldname  INTO lv_msg.
+          _add_message ls_ext_likp-vbeln ls_changed_item-delivery_document_item ct_log.
+          RETURN.
+        ENDIF.
+
+        ASSIGN COMPONENT ls_changed_item-fieldname OF STRUCTURE <ls_xlips> TO FIELD-SYMBOL(<lv_old_value_item>).
+        IF sy-subrc <> 0.
+          MESSAGE e015(le_shp_odata_api_od) WITH ls_changed_item-fieldname  INTO lv_msg.
+          _add_message ls_ext_likp-vbeln ls_changed_item-delivery_document_item ct_log.
+          RETURN.
+        ENDIF.
+
+        IF <lv_new_value_item> IS ASSIGNED.
+          <lv_old_value_item> = <lv_new_value_item>.
+          UNASSIGN <lv_new_value_item>.
+        ENDIF.
+        CLEAR ls_ext_lips.
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.
