@@ -9,6 +9,20 @@ goods-movement objects.
 
 ---
 
+> **Update 2026-09-18, after the SAP GUI sweep. See `FINDINGS.md`.** The evidence supersedes
+> three statements below:
+>
+> - **Layer 4 reachability is now answered for the save exits.** The OData Create DI ran
+>   `SAPMV50A` `USEREXIT_SAVE_DOCUMENT`. Proof: process order `003004365654` was created by
+>   the unguarded `ZEI_LE_UPDATE_DELIVERY_HEAD` hook with `ABLAD 9004953174`.
+> - **`ZSD_SHIP_CHECK` is not a shipment check.** It is a GSTIN-inactive check gated to
+>   VL01N/VL02N. The name-based suggestion of a shipment prerequisite is Contradicted.
+> - **"`ZEI_LE_UPDATE_DELIVERY_CUSTOM1` fired" is withdrawn as a strong inference.** It acts
+>   only on `EXTENSION_IN`, which the OData call never supplies, so it cannot have had an
+>   effect.
+>
+> The text below is kept as written for traceability.
+
 ## Headline
 
 **24 distinct active Z-enhancements touch the delivery and goods-issue path.**

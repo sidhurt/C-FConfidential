@@ -1,0 +1,24 @@
+﻿  METHOD write_navigation_annotations.
+    "Copy paste this method without changing anything
+    DATA: lt_nav TYPE tt_navigation_anno,
+          ls_nav LIKE LINE OF lt_nav.
+
+    DATA(lt_nav_anno) = it_navigation_anno.
+
+    "Navigation annotations are grouped as per entity sets
+    "Multiple associations to same entity sets are created a child records
+    SORT lt_nav_anno BY entity_set ASCENDING.
+
+    LOOP AT lt_nav_anno INTO DATA(ls_nav_anno).
+
+      ls_nav = ls_nav_anno.
+      APPEND ls_nav TO lt_nav.
+
+      AT END OF entity_set.
+        me->write_nav_anno_entityset( it_nav = lt_nav ).
+        CLEAR lt_nav.
+      ENDAT.
+
+    ENDLOOP.
+
+  ENDMETHOD.

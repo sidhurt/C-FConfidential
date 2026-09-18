@@ -1,0 +1,101 @@
+﻿*----------------------------------------------------------------------*
+*   INCLUDE MV50AF0P_PREISFINDUNG_GESAMT                               *
+*----------------------------------------------------------------------*
+*----------------------------------------------------------------------*
+*          FORM PREISFINDUNG_GESAMT                                    *
+*----------------------------------------------------------------------*
+* Es wird der gesamte Beleg bewertet                                   *
+*----------------------------------------------------------------------*
+
+form preisfindung_gesamt using preisfindungsart_kopf.
+
+  CHECK LIKP-KALSP NE SPACE.
+* Tabelle TKOMP aufbauen
+  refresh tkomp.
+* keine gelöschten Positionen oder Textpositionen
+  LOOP AT XLIPS WHERE UPDKZ NE UPDKZ_DELETE AND POSAR NE CHARB
+                  AND VBELN EQ LIKP-VBELN.
+    slips-tabix = sy-tabix.
+    perform lips_bearbeiten_vorbereiten(sapfv50p).
+    if not xlips-vgtyp is initial.                            "v_2941379
+      cvbap-posnr = xlips-vgpos.
+    endif.                                                    "^_2941379
+    perform p_komk_komp_fuellen(sapfv50p) using charp.
+    CHECK NOT TKOMP-PRSFD IS INITIAL.
+    tkomp-ix_vbap = slips-tabix.
+    append tkomp.
+  endloop.
+
+* Preisfindung aufrufen
+  call function 'PRICING_COMPLETE'
+       exporting
+            calculation_type = preisfindungsart_kopf
+*           preliminary      = da_prelim
+       tables
+            tkomv            = tkomv
+            tkomk            = tkomk
+            tkomp            = tkomp.
+
+* Ergebnis der Preisfindung an XLIPS zurueckgeben
+  if t180-trtyp ne chara.
+    CLEAR LIKP-NETWR.
+    loop at tkomp.
+*   die zugehörige TKOMK lesen
+      read table tkomk index tkomp-ix_komk.
+      if tkomp-fxmsg ne space.
+        r185d-dataloss = charx.
+*       konv_geaendert = charx.
+      endif.
+      perform kompax_fill_from_komp(saplv61a)
+        using    tkomp
+                 0
+        changing kompax.
+      read table xlips index tkomp-ix_vbap.
+      SLIPS-TABIX = TKOMP-IX_VBAP.
+      PERFORM LIPS_BEARBEITEN_VORBEREITEN(SAPFV50P).
+      MOVE-CORRESPONDING KOMPAX TO LIPS.
+      PERFORM XLIPS_AENDERN(SAPFV50P).
+
+* Werte statistisch - Position in Kopfsummen übernehmen
+      if lips-kowrr = space and
+         tkomp-kowrr is initial.                             "n_671498
+*        and hvap-grpos = 0.
+        likp-netwr = likp-netwr + lips-netwr.
+      endif.
+    endloop.
+
+* Wenn sich likp-netwr geändert hat: Änderungsdatum fortschreiben
+    IF T180-TRTYP NE CHARH AND
+       LIKP-NETWR NE *LIKP-NETWR.
+        likp-aedat = sy-datum.
+        likp-aenam = sy-uname.                              "46A
+      endif.
+  endif.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(1) Form PREISFINDUNG_GESAMT, End                                                                                                                     A
+*$*$-Start: (1)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 2  ZEI_SD_CHANGE_CALC_TPE.    "active version
+* Preisfindung aufrufen
+  call function 'PRICING_COMPLETE'
+       exporting
+            calculation_type = 'C'
+*           preliminary      = da_prelim
+       tables
+            tkomv            = tkomv
+            tkomk            = tkomk
+            tkomp            = tkomp.
+ENDENHANCEMENT.
+*$*$-End:   (1)---------------------------------------------------------------------------------$*$*
+endform.
+
+FORM SET_PRICING_TYPE_SAVE USING                            "470
+                           IF_VBELN TYPE LIKP-VBELN.
+  READ TABLE GT_PRICING_TYPE_SAVE
+             WITH KEY VBELN = IF_VBELN
+             BINARY SEARCH.
+  IF SY-SUBRC NE 0.
+    GT_PRICING_TYPE_SAVE-VBELN        = IF_VBELN.
+    GT_PRICING_TYPE_SAVE-PRICING_TYPE = CHARC.
+    INSERT GT_PRICING_TYPE_SAVE INDEX SY-TABIX.
+  ENDIF.
+ENDFORM.

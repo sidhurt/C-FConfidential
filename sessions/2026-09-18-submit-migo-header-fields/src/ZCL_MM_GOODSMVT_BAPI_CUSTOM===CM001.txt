@@ -1,0 +1,77 @@
+﻿METHOD if_ex_mb_bapi_goodsmvt_create~extensionin_to_matdoc.
+*this implementation can be used to fill other fieds of MKPF and MSEG as well
+  LOOP AT extension_in INTO DATA(ls_extension).
+    CASE ls_extension-structure.
+      WHEN 'MSEG'.
+        CASE ls_extension-valuepart1.
+          WHEN 'LSMNG'.
+            READ TABLE ct_imseg WITH KEY line_id = ls_extension-valuepart1
+            ASSIGNING FIELD-SYMBOL(<ls_mseg>).
+            IF <ls_mseg> IS ASSIGNED.
+              <ls_mseg>-lsmng = ls_extension-valuepart3.
+            ENDIF.
+          WHEN ''.
+          WHEN OTHERS.
+        ENDCASE.
+      WHEN 'MKPF'.
+      WHEN OTHERS.
+    ENDCASE.
+  ENDLOOP.
+
+* Start of changes
+
+  DATA: ls_header TYPE zcl_mm_migo_validation_facade=>ty_header,
+        ls_item   TYPE zcl_mm_migo_validation_facade=>ty_item.
+
+  DATA: lt_item   TYPE zcl_mm_migo_validation_facade=>tt_item,
+        lt_return TYPE bapiret2_t.
+
+  IF ct_imseg[] IS NOT INITIAL.
+
+*   Fill missing information
+*   Get PO details from Delivery for API call
+    SELECT vbeln, posnr, vgbel, vgpos
+      FROM lips
+      INTO TABLE @DATA(lt_po_details)
+      FOR ALL ENTRIES IN @ct_imseg
+      WHERE vbeln = @ct_imseg-vbeln
+      AND posnr   = @ct_imseg-posnr.
+    IF sy-subrc EQ 0.
+      SORT lt_po_details BY vbeln posnr.
+    ENDIF.
+
+    LOOP AT ct_imseg ASSIGNING FIELD-SYMBOL(<lfs_imseg>).
+*     Incase PO details are not provided the fill details
+      IF <lfs_imseg>-ebeln IS INITIAL.
+        READ TABLE lt_po_details INTO DATA(ls_po_details)
+        WITH KEY vbeln = <lfs_imseg>-vbeln
+                 posnr = <lfs_imseg>-posnr BINARY SEARCH.
+        IF sy-subrc EQ 0.
+          <lfs_imseg>-ebeln = ls_po_details-vgbel.
+          <lfs_imseg>-ebelp = ls_po_details-vgpos.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+
+    ls_header = CORRESPONDING #( cs_imkpf ).
+    lt_item   = CORRESPONDING #( ct_imseg ).
+
+    CALL METHOD zcl_mm_migo_validation_facade=>validate
+      EXPORTING
+        is_header = ls_header
+        it_item   = lt_item
+*       is_afr_manifest =
+      RECEIVING
+        et_return = lt_return.
+    IF lt_return IS NOT INITIAL.
+      ASSIGN lt_return[ 1 ] TO FIELD-SYMBOL(<ls_line>).
+      IF <ls_line> IS ASSIGNED.
+      ct_return =  CORRESPONDING #( <ls_line> ).
+      ENDIF.
+    ENDIF.
+
+  ENDIF.
+
+* End of changes
+
+ENDMETHOD.

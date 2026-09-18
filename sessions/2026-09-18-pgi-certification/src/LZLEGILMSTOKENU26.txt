@@ -1,0 +1,86 @@
+﻿FUNCTION zlef_ilms_create_procord.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  TABLES
+*"      IT_XLIPS STRUCTURE  LIPSVB
+*"      ET_RETURN STRUCTURE  BAPIRET2
+*"----------------------------------------------------------------------
+  DATA: ls_bapi_return       TYPE bapiret2,
+        ls_xlips             TYPE lipsvb,
+        ls_xlikp             TYPE likpvb,
+        ls_bapi_order_header TYPE bapi_pi_order_create,
+        ls_bapi_orderrelease TYPE bapi_order_key,
+        ls_return            TYPE bapiret2.
+  DATA: lv_ordernumber TYPE bapi_order_key-order_number.
+  DATA: lt_bapi_orderrelease   TYPE STANDARD TABLE OF bapi_order_key,
+        lt_bapi_relreasereturn TYPE STANDARD TABLE OF bapi_order_return.
+
+  DATA : lv_werks TYPE werks_d.
+  DATA: lv_param TYPE zgbde_param2.
+
+*--Begin of Insert by Abhishek.P(01.07.2025)
+  CLEAR : lv_param.
+  READ TABLE it_xlips INTO ls_xlips INDEX 1.
+  IF sy-subrc EQ 0.
+    lv_werks = ls_xlips-werks.
+  ENDIF.
+
+  SELECT SINGLE param1
+              FROM zgpt_sd_param
+              INTO lv_param
+             WHERE program_name = 'ZLEF_ILMS_CREATE_PROCORD'
+*              AND object_id    = 'SDE036'
+               AND field        = 'WERKS'
+               AND param1       = lv_werks
+               AND active_flag  = abap_true.
+*--End of Insert by Abhishek.P(01.07.2025) -------------------------*
+  IF lv_param IS INITIAL.
+    LOOP AT it_xlips INTO ls_xlips.
+      IF ls_xlips-mfrgr = 'A0000001' OR ls_xlips-mfrgr = 'A0000022'.
+        SELECT SINGLE ablad FROM afpo INTO @DATA(lv_order_exists)
+          WHERE ablad = @ls_xlips-vbeln.
+        IF lv_order_exists IS INITIAL.
+          ls_bapi_order_header-material = ls_xlips-matnr.
+          ls_bapi_order_header-plant = ls_xlips-werks.
+          ls_bapi_order_header-order_type = 'ZPFG'.
+          ls_bapi_order_header-basic_start_date = sy-datum.
+          ls_bapi_order_header-basic_end_date = sy-datum.
+          ls_bapi_order_header-quantity = ls_xlips-lfimg.
+          ls_bapi_order_header-prod_version = 'FG01'.
+          ls_bapi_order_header-basic_scheduling_type = '3'.
+          ls_bapi_order_header-unloading_point = ls_xlips-vbeln.
+          SET UPDATE TASK LOCAL.
+          CALL FUNCTION 'BAPI_PROCORD_CREATE'
+            EXPORTING
+              orderdata    = ls_bapi_order_header
+            IMPORTING
+              return       = ls_bapi_return
+              order_number = lv_ordernumber.
+          IF lv_ordernumber IS NOT INITIAL.
+*          CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+*            EXPORTING
+*              wait = abap_true.
+            ls_bapi_orderrelease-order_number = lv_ordernumber.
+            APPEND ls_bapi_orderrelease TO lt_bapi_orderrelease.
+            CALL FUNCTION 'BAPI_PROCORD_RELEASE'
+              TABLES
+                orders        = lt_bapi_orderrelease
+                detail_return = lt_bapi_relreasereturn.
+            READ TABLE lt_bapi_relreasereturn WITH KEY type = zclsg_abap_utilities=>gc_error
+                       TRANSPORTING NO FIELDS.
+            IF sy-subrc <> 0.
+*            CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+*              EXPORTING
+*                wait = abap_true.
+            ELSE.
+              et_return[] = CORRESPONDING #( lt_bapi_relreasereturn ).
+            ENDIF.
+          ELSE.
+            APPEND ls_bapi_return TO et_return[].
+          ENDIF.
+        ENDIF.
+      ENDIF.
+      CLEAR: ls_bapi_return,ls_bapi_order_header,lv_ordernumber.
+    ENDLOOP.
+  ENDIF.
+ENDFUNCTION.

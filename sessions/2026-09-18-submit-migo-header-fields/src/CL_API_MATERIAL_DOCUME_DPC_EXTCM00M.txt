@@ -1,0 +1,50 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~execute_action.
+
+    DATA ls_item_parameter TYPE odata_mm_im_act_mdoc_cancl_itm.
+
+    DATA(lo_api) = cl_mdoc_api_factory=>get_api( ).
+    DATA(lo_msg_container) = mo_context->get_message_container( ).
+
+    CASE io_tech_request_context->get_function_import_name( ).
+      WHEN cl_api_material_docume_mpc_ext=>gc_action_cancel.
+        cancel_header(
+          EXPORTING
+            io_api                  = lo_api
+            io_msg_container        = lo_msg_container
+            io_tech_request_context = io_tech_request_context
+            iv_is_changeset         = abap_false
+          IMPORTING
+            er_data                 = er_data ).
+
+      WHEN cl_api_material_docume_mpc_ext=>gc_action_cancel_item.
+        io_tech_request_context->get_converted_parameters(
+          IMPORTING
+            es_parameter_values = ls_item_parameter ).
+
+        adapt_cold_store_access( iv_search_year = ls_item_parameter-materialdocumentyear ).
+
+        cancel_item(
+          EXPORTING
+            io_api                  = lo_api
+            io_msg_container        = lo_msg_container
+            io_tech_request_context = io_tech_request_context
+            iv_is_changeset         = abap_false
+            iv_postingdate          = ls_item_parameter-postingdate
+            iv_materialdocument     = ls_item_parameter-materialdocument
+            iv_materialdocumentyear = ls_item_parameter-materialdocumentyear
+            it_materialdocumentitem = VALUE #( ( ls_item_parameter-materialdocumentitem ) )
+          IMPORTING
+            et_item                 = DATA(lt_item) ).
+        IF lt_item IS NOT INITIAL.
+          copy_data_to_ref(
+            EXPORTING
+              is_data = lt_item[ 1 ]
+            CHANGING
+              cr_data = er_data ).
+        ENDIF.
+
+      WHEN OTHERS.
+        RETURN.
+    ENDCASE.
+
+  ENDMETHOD.

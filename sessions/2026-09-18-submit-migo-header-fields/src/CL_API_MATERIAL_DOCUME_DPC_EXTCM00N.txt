@@ -1,0 +1,38 @@
+﻿  METHOD cancel_header.
+
+    DATA ls_parameter TYPE odata_mm_im_act_mdoc_cancel.
+
+    io_tech_request_context->get_converted_parameters(
+      IMPORTING
+        es_parameter_values = ls_parameter ).
+
+    " Add missing 0 at the beginning of the key
+    CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+      EXPORTING
+        input  = ls_parameter-materialdocument
+      IMPORTING
+        output = ls_parameter-materialdocument.
+
+    adapt_cold_store_access( iv_search_year = ls_parameter-materialdocumentyear ).
+
+    io_api->cancel_material_document(
+      EXPORTING
+        iv_posting_date           = ls_parameter-postingdate
+        iv_material_document      = ls_parameter-materialdocument
+        iv_material_document_year = ls_parameter-materialdocumentyear
+      IMPORTING
+        es_header                 = DATA(ls_header)
+        et_message                = DATA(lt_message) ).
+
+    handle_errors(
+      iv_is_changeset  = iv_is_changeset
+      it_error         = lt_message
+      io_msg_container = io_msg_container ).
+
+    copy_data_to_ref(
+      EXPORTING
+        is_data = ls_header
+      CHANGING
+        cr_data = er_data ).
+
+  ENDMETHOD.

@@ -1,0 +1,34 @@
+﻿  METHOD write_cud_annotations.
+    DATA: lv_term TYPE string.
+
+    "Looping the table and creating operation documentation for CUD operations
+    LOOP AT it_cud_anno INTO DATA(ls_cud_anno).
+
+      "Please just change the Schema Namespace and Entity Container Name as per your API in the code line below.
+      DATA(lv_target) = 'API_MATERIAL_DOCUMENT_SRV.' && 'API_MATERIAL_DOCUMENT_SRV_Entities/' && ls_cud_anno-entity_set.
+
+      DATA(lo_target) = vocab_anno_model->create_annotations_target(
+                          iv_target = lv_target  ).
+
+      CASE ls_cud_anno-operation_type.
+        WHEN 'POST'.
+          lv_term = 'Capabilities.InsertRestrictions'.
+        WHEN 'PATCH'.
+          lv_term = 'Capabilities.UpdateRestrictions'.
+        WHEN 'DELETE'.
+          lv_term = 'Capabilities.DeleteRestrictions'.
+      ENDCASE.
+
+      DATA(lo_record) = lo_target->create_annotation(
+          iv_term       = lv_term
+          )->create_record(  ).
+
+      lo_record->create_property( iv_property_name = 'Description'
+              )->create_simple_value( )->set_string( ls_cud_anno-description ).
+
+      lo_record->create_property( iv_property_name = 'LongDescription'
+              )->create_simple_value( )->set_string( ls_cud_anno-long_description ).
+
+    ENDLOOP.
+
+  ENDMETHOD.

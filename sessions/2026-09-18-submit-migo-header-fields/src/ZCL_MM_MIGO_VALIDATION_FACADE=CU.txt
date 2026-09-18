@@ -1,0 +1,106 @@
+﻿CLASS zcl_mm_migo_validation_facade DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+*   Facade that orchestrates the shared validation classes ported
+*   from MB_MIGO_BADI, so a single call runs every rule ported so
+*   far. Currently wraps:
+*     - ZCL_MM_GOODSMVT_VALIDATIONS   (dates, duplicate invoice,
+*       GSTIN, STO/rail rules, reservation approval, AFR manifest)
+*     - ZCL_MM_DELNOTE_VALIDATIONS    (delivery-note-mandatory
+*       Rules A & B, reservation date, WEBRE/GR-based-IV, QM
+*       inspection)
+*     - ZCL_MM_PACKMATRIX_VALIDATIONS (Cement SILO / packing
+*       matrix check)
+*     - ZCL_MM_BATCH_GRN_VALIDATIONS  (batch-vs-delivery-note
+*       consistency for semi-finished-goods GRs, ported from
+*       ZCL_IM_MM_SEND_MAIL's CHECK_HEADER "Block A" - exposed as
+*       VALIDATE_ITEMS since the check is genuinely item-scoped)
+*
+*   NOT yet wrapped, per explicit instruction to defer them:
+*   Gate Entry validations (blocked on the GE_NO/GEYEAR input
+*   source decision) and any remaining out-of-scope rules.
+*
+*   IS_HEADER / IT_ITEM is the union of the fields each wrapped
+*   class needs, in the same shared shape those classes already
+*   read (see each class's own header comment for the mapping
+*   notes carried over from MB_MIGO_BADI - in particular,
+*   ACTION/REFDOC replace MIGO's dynamic ASSIGN to GODYNPRO and
+*   must be supplied by the caller as the caller's equivalent
+*   classification). Wiring this facade into
+*   CL_API_MATERIAL_DOCUME_DPC_EXT's CREATE_DOCUMENT still requires
+*   mapping these fields from the live API_MATERIAL_DOCUMENT
+*   deep-entity payload, and inserting the hook call itself - both
+*   are separate, still-pending steps.
+
+*    TYPES:
+*      BEGIN OF ty_header,
+*        budat      TYPE budat,
+*        bldat      TYPE bldat,
+*        lifnr      TYPE lifnr,
+*        lfsnr      TYPE lfsnr,
+*        xblnr      TYPE xblnr1,
+*        bukrs      TYPE bukrs,
+*        bwart_dflt TYPE bwart,
+*        action     TYPE godynpro-action,
+*        refdoc     TYPE godynpro-refdoc,
+*      END OF ty_header .
+
+    TYPES:
+      BEGIN OF ty_header.
+        INCLUDE TYPE gohead.
+*        budat      TYPE budat,           "Posting date
+*        bldat      TYPE bldat,           "Document date
+*        lifnr      TYPE lifnr,           "Vendor
+*        lfsnr      TYPE lfsnr,           "Vendor delivery note / invoice ref. no. (header) - used by CHECK_DUPLICATE_INVOICE
+*        xblnr      TYPE xblnr1,          "Header reference document number - used by the R05 XBLNR/VBELN consistency check
+*        bukrs      TYPE bukrs,           "Company code - used by VALIDATE_AFR_MANIFEST
+    TYPES: bwart_dflt TYPE bwart,           "Header-default movement type (MIGO: GODEFAULT_TV-BWART); caller supplies the equivalent, e.g. the movement type of the items being posted
+        action     TYPE godynpro-action, "MIGO transaction-variant equivalent, e.g. 'A01', 'A07' - caller-supplied
+        refdoc     TYPE godynpro-refdoc. "MIGO reference-type equivalent, e.g. 'R01', 'R05', 'R09' - caller-supplied
+    TYPES:   END OF ty_header .
+
+    TYPES: ty_item TYPE goitem.
+*    TYPES:
+*      BEGIN OF ty_item,
+*        zeile   TYPE mblpo,
+*        bwart   TYPE bwart,
+*        matnr   TYPE matnr,
+*        werks   TYPE werks_d,
+*        lgort   TYPE lgort_d,
+*        ebeln   TYPE ebeln,
+*        ebelp   TYPE ebelp,
+*        vbeln   TYPE vbeln_vl,
+*        posnr   TYPE posnr_vl,
+*        erfmg   TYPE erfmg,
+*        rsnum   TYPE rsnum,
+*        rspos   TYPE rspos,
+*        aufnr   TYPE aufnr,
+*        charg   TYPE charg_d,
+*        licha   TYPE lichn,
+*        webre   TYPE xfeld,
+*        pstyp   TYPE epstp,
+*        matkl   TYPE matkl,
+*        ummat   TYPE ummat,
+*        umwrk   TYPE umwrk,
+*        umlgo   TYPE umlgo,
+*        ummatkl TYPE ummatkl,
+*      END OF ty_item .
+    TYPES tt_item TYPE STANDARD TABLE OF ty_item WITH EMPTY KEY .
+
+    TYPES:
+      BEGIN OF ty_afr_manifest,
+        afrno TYPE char16,
+        afrdt TYPE datum,
+        lovct TYPE zlovct,
+      END OF ty_afr_manifest .
+
+    CLASS-METHODS validate
+      IMPORTING
+        !is_header       TYPE ty_header
+        !it_item         TYPE tt_item
+        !is_afr_manifest TYPE ty_afr_manifest OPTIONAL
+      RETURNING
+        VALUE(et_return) TYPE bapiret2_t .

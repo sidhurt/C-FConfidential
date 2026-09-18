@@ -1,0 +1,24 @@
+﻿  METHOD adapt_cold_store_access.
+
+    DATA(lv_cold_store_relevant) = mo_nsdm_matdoc_aging_helper->is_cold_store_relevant( iv_date = iv_search_date
+                                                                                        iv_year = iv_search_year ).
+
+    TRY.
+        IF lv_cold_store_relevant = abap_true.
+          IF iv_search_date IS NOT INITIAL.
+            DATA(lv_minimum_date) = iv_search_date.
+          ELSEIF iv_search_year IS NOT INITIAL.
+            lv_minimum_date = CONV data_temperature( iv_search_year && '0101' ).
+          ELSE.
+            lv_minimum_date = if_data_temperature=>co_cold.
+          ENDIF.
+
+          set_data_aging_temperature( lv_minimum_date ).
+
+        ELSEIF mv_data_aging_enabled = abap_true.
+          set_data_aging_hot( ).
+        ENDIF.
+
+      CATCH cx_abap_session_temperature cx_parameter_invalid_range  ##NO_HANDLER.
+    ENDTRY.
+  ENDMETHOD.

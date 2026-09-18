@@ -1,0 +1,79 @@
+﻿*---------------------------------------------------------------------*
+*       FORM - Routine for data transfer of Business Data             *
+*---------------------------------------------------------------------*
+
+*---------------------------------------------------------------------*
+*       FORM DATEN_KOPIEREN_002                                       *
+*---------------------------------------------------------------------*
+*                                                                     *
+*       Business Data                                                 *
+*                                                                     *
+*       The following work areas are available:                       *
+*                                                                     *
+*        LIKP - Header of the delivery                                *
+*       CVBKD - Business data of the reference document               *
+*                                                                     *
+*---------------------------------------------------------------------*
+
+FORM daten_kopieren_002.
+
+  likp-kzazu = cvbkd-kzazu.
+*Incoterms 2010
+* Handle INCO2_L and INCO2 in a backward compatible way, see note   v_n_3026041
+  IF NOT CVBKD-INCO2_L IS INITIAL.
+    PERFORM ASSIGN_STRUC_INCO2L_TO_INCO2 CHANGING CVBKD.
+  ELSE.
+    PERFORM ASSIGN_STRUC_INCO2_TO_INCO2L CHANGING CVBKD.
+  ENDIF.
+  likp-incov   = cvbkd-incov.
+  LIKP-INCO1   = CVBKD-INCO1.
+  LIKP-INCO2   = CVBKD-INCO2.                                     " ^_n_3026041
+  likp-inco2_l = cvbkd-inco2_l.
+  likp-inco3_l = cvbkd-inco3_l.
+
+  likp-inco2_key = cvbkd-inco2_key.
+  likp-inco3_key = cvbkd-inco3_key.
+  likp-inco4_key = cvbkd-inco4_key.
+
+  likp-kdgrp = cvbkd-kdgrp.
+  likp-perfk = cvbkd-perfk.
+* LIKP-BZIRK = CVBKD-BZIRK.
+
+* Risk management / Financial document
+  likp-abssc = cvbkd-abssc.
+  likp-lcnum = cvbkd-lcnum.
+  likp-akwae = cvbkd-akwae.
+  likp-akkur = cvbkd-akkur.
+  likp-akprz = cvbkd-akprz.
+
+* Shipment info
+  likp-traty  = cvbkd-traty.
+  likp-trmtyp = cvbkd-trmtyp.
+  likp-vsart  = cvbkd-vsart.
+  likp-sdabw  = cvbkd-sdabw.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(1) Form DATEN_KOPIEREN_002, End                                                                                                                      A
+*$*$-Start: (1) Program: SAPFV50C include bound-------------------------------------------------$*$*
+ENHANCEMENT 1  ZSDENH_CLEAR_SHIPPING_DATA.    "active version
+*IF ( sy-tcode = 'VL01N' OR sy-tcode = 'VL10B' OR sy-tcode = 'ZLE020' ) AND ( likp-lfart = 'ZLF' OR likp-lfart = 'ZNP').
+  DATA:lv_delivery_create TYPE flag.
+  IMPORT lv_delivery_create = lv_delivery_create FROM MEMORY ID 'ZTOKEN'.
+  IF ( sy-tcode = 'VL01N' OR sy-tcode = 'VL10B' OR sy-tcode = 'ZLE020' OR sy-tcode EQ 'ZSD062' OR sy-tcode EQ 'ZSD070'
+    OR lv_delivery_create IS NOT INITIAL )  " Added by AShutosh for 36028
+     AND ( likp-lfart = 'ZLF' OR likp-lfart = 'ZNP'). "added by IBMABAP02 for Purulia
+    TRY.
+        DATA(lv_werks) = 'P' && cvbap[ 1 ]-werks.
+        SELECT SINGLE @abap_true FROM kna1 INTO @DATA(lv_plant) WHERE kunnr = @lv_werks AND kdkg1 = 'A1'.
+        IF lv_plant = abap_true.
+          CLEAR:likp-sdabw.
+        ENDIF.
+        IF likp-vsart = '03'.
+          CLEAR likp-traty.
+        ENDIF.
+      CATCH cx_sy_itab_line_not_found.
+    ENDTRY.
+  ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   (1) Program: SAPFV50C include bound-------------------------------------------------$*$*
+ENDFORM.
+*eject

@@ -1,0 +1,253 @@
+﻿  METHOD define.
+    TEST-SEAM fake_super_call.
+      super->define( ).
+*    END-TEST-SEAM.
+
+*     API Versioning
+      me->model->set_service_schema_version(
+        EXPORTING
+          iv_service_schema_version = '1'
+          iv_service_minor_version  = '2'
+          iv_service_patch_version  = '0'
+      ).
+
+      vocab_anno_model->create_vocabulary_reference( iv_vocab_id      = '/IWBEP/VOC_CAPABILITIES'
+                                                     iv_vocab_version = '0001' )->create_include( iv_namespace = 'Org.OData.Capabilities.V1'
+                                                                                                  iv_alias     = 'Capabilities' ).
+
+*-- annotations for entity A_MaterialDocumentHeader
+      DATA(lo_target) = vocab_anno_model->create_annotations_target( iv_target = 'API_MATERIAL_DOCUMENT_SRV.API_MATERIAL_DOCUMENT_SRV_Entities/A_MaterialDocumentHeader' ). "#EC NOTEXT
+
+*   GET
+      DATA(lo_record) = lo_target->create_annotation( iv_term = 'Capabilities.ReadRestrictions' )->create_record(  ).
+      lo_record->create_property( iv_property_name = 'Description' )->create_simple_value( )->set_string( 'Reads information on material document header level' ).
+      lo_record->create_property( iv_property_name = 'LongDescription' )->create_simple_value( )->set_string( 'Reads material document header information to get an overview of the material document postings.' ).
+
+      DATA(lo_rec2) = lo_record->create_property( iv_property_name = 'ReadByKeyRestrictions' )->create_record( ).
+      lo_rec2->create_property( iv_property_name = 'Description' )->create_simple_value( )->set_string( 'Reads information for a specific material document header' ).
+      lo_rec2->create_property( iv_property_name = 'LongDescription' )->create_simple_value( )->set_string( 'Reads material document header information for a specific material document to get an overview of the material document posting.' ).
+
+*   Associations
+      DATA(lo_collection) = lo_target->create_annotation( iv_term = 'Capabilities.NavigationRestrictions' )->create_record( )->create_property( iv_property_name = 'RestrictedProperties' )->create_collection( ).
+      lo_record = lo_collection->create_record( ).
+
+      lo_record->create_property( iv_property_name = 'NavigationProperty')->create_simple_value( )->set_nav_property_path( 'to_MaterialDocumentItem' ).
+      DATA(lo_property) = lo_record->create_property( iv_property_name = 'ReadRestrictions').
+      DATA(lo_record_inner) = lo_property->create_record( ).
+      lo_record_inner->create_property( iv_property_name = 'Description')->create_simple_value( )->set_string( 'Reads information for a specific material document header and material document items' ).
+      lo_record_inner->create_property( iv_property_name = 'LongDescription')->create_simple_value( )->set_string(
+         'Reads material document header and material documents items information for a specific material document to get an overview of the material document posting.' ).
+
+
+*   CREATE/POST
+      lo_record = lo_target->create_annotation( iv_term = 'Capabilities.InsertRestrictions' )->create_record(  ). "#EC NOTEXT
+      lo_record->create_property( iv_property_name = 'Description' )->create_simple_value( )->set_string( 'Creates a material document' ). "#EC NOTEXT
+      lo_record->create_property( iv_property_name = 'LongDescription' )->create_simple_value( )->set_string( 'Creates a material document compost by header and item for a specific business process.' ). "#EC NOTEXT
+
+*-- annotations for entity A_MaterialDocumentHeader CANCEL
+      lo_target = vocab_anno_model->create_annotations_target( iv_target = 'API_MATERIAL_DOCUMENT_SRV.API_MATERIAL_DOCUMENT_SRV_Entities/Cancel' ). "#EC NOTEXT
+      lo_target->create_annotation( iv_term = 'Core.Description' )->create_simple_value( )->set_string( 'Cancels a material document').
+      lo_target->create_annotation( iv_term = 'Core.LongDescription' )->create_simple_value( )->set_string( 'Cancels a complete material document that you specify by the material document number and year.').
+
+
+*-- annotations for entity A_MaterialDocumentHeaderItem
+      lo_target = vocab_anno_model->create_annotations_target( iv_target = 'API_MATERIAL_DOCUMENT_SRV.API_MATERIAL_DOCUMENT_SRV_Entities/A_MaterialDocumentItem' ). "#EC NOTEXT
+
+*   GET
+      lo_record = lo_target->create_annotation( iv_term = 'Capabilities.ReadRestrictions' )->create_record(  ).
+      lo_record->create_property( iv_property_name = 'Description' )->create_simple_value( )->set_string( 'Reads information on material document items level' ).
+      lo_record->create_property( iv_property_name = 'LongDescription' )->create_simple_value( )->set_string( 'Reads material document items information to get an overview of the material document postings.' ).
+
+      lo_rec2 = lo_record->create_property( iv_property_name = 'ReadByKeyRestrictions' )->create_record( ).
+      lo_rec2->create_property( iv_property_name = 'Description' )->create_simple_value( )->set_string( 'Reads information on material document items level for a specific material document' ).
+      lo_rec2->create_property( iv_property_name = 'LongDescription' )->create_simple_value( )->set_string( 'Reads material document items information for a specific material document and year to get an overview of the material document postings.' ).
+
+**   Associations
+*      lo_collection = lo_target->create_annotation( iv_term = 'Capabilities.NavigationRestrictions' )->create_record( )->create_property( iv_property_name = 'RestrictedProperties' )->create_collection( ).
+*      lo_record = lo_collection->create_record( ).
+*
+**   to_MaterialDocumentHeader
+*      lo_record->create_property( iv_property_name = 'NavigationProperty')->create_simple_value( )->set_nav_property_path( 'to_MaterialDocumentHeader' ).
+*      lo_property = lo_record->create_property( iv_property_name = 'ReadRestrictions').
+*      lo_record_inner = lo_property->create_record( ).
+*      lo_record_inner->create_property( iv_property_name = 'Description')->create_simple_value( )->set_string( 'Reads information on material document item and header level for a specific material document item' ).
+*      lo_record_inner->create_property( iv_property_name = 'LongDescription')->create_simple_value( )->set_string(
+*         'Reads material document item and header information for a specific material document, year and item to get an overview of the material document posting.' ).
+*
+**   to_SerialNumbers
+*      lo_record->create_property( iv_property_name = 'NavigationProperty')->create_simple_value( )->set_nav_property_path( 'to_SerialNumbers' ).
+*      lo_property = lo_record->create_property( iv_property_name = 'ReadRestrictions').
+*      lo_record_inner = lo_property->create_record( ).
+*      lo_record_inner->create_property( iv_property_name = 'Description')->create_simple_value( )->set_string( 'Reads information on serial numbers for a specific material document item' ).
+*      lo_record_inner->create_property( iv_property_name = 'LongDescription')->create_simple_value( )->set_string(
+*         'Reads information on serial numbers for a specific material document item to get an overview of the posted serial numbers.' ).
+
+      DATA: lt_navigation_anno TYPE tt_navigation_anno.
+      lt_navigation_anno = VALUE #(
+                    ( entity_set = 'A_MaterialDocumentItem'
+                      nav_property = 'to_MaterialDocumentHeader'
+                      operation_type = 'GET'
+                      description = 'Reads information on material document item and header level for a specific material document item'
+                      long_description = 'Reads material document item and header information for a specific material document, year and item to get an overview of the material document posting.'
+                    )
+                    ( entity_set = 'A_MaterialDocumentItem'
+                      nav_property = 'to_SerialNumbers'
+                      operation_type = 'GET'
+                      description = 'Reads information on serial numbers for a specific material document item'
+                      long_description = 'Reads information on serial numbers for a specific material document item to get an overview of the posted serial numbers.' )
+                     ).
+
+      " Call the wrapper for CUD operations
+      me->write_navigation_annotations( it_navigation_anno = lt_navigation_anno ).
+
+
+*-- annotations for entity A_MaterialDocumentItem CANCELITEM
+      lo_target = vocab_anno_model->create_annotations_target( iv_target = 'API_MATERIAL_DOCUMENT_SRV.API_MATERIAL_DOCUMENT_SRV_Entities/CancelItem' ). "#EC NOTEXT
+      lo_target->create_annotation( iv_term = 'Core.Description' )->create_simple_value( )->set_string( 'Cancels a material document item').
+      lo_target->create_annotation( iv_term = 'Core.LongDescription' )->create_simple_value( )->set_string( 'Cancels a material document item that you specify by the material document number, year and item number.').
+
+*-- annotations for entity A_SerialNumberMaterialDocument
+      lo_target = vocab_anno_model->create_annotations_target( iv_target = 'API_MATERIAL_DOCUMENT_SRV.API_MATERIAL_DOCUMENT_SRV_Entities/A_SerialNumberMaterialDocument' ). "#EC NOTEXT
+
+*   GET
+      lo_record = lo_target->create_annotation( iv_term = 'Capabilities.ReadRestrictions' )->create_record(  ).
+      lo_record->create_property( iv_property_name = 'Description' )->create_simple_value( )->set_string( 'Reads information of serial numbers on material document items level' ).
+      lo_record->create_property( iv_property_name = 'LongDescription' )->create_simple_value( )->set_string( 'Reads information of serial numbers of material document items to get an overview of the posted serial numbers.' ).
+
+      lo_rec2 = lo_record->create_property( iv_property_name = 'ReadByKeyRestrictions' )->create_record( ).
+      lo_rec2->create_property( iv_property_name = 'Description' )->create_simple_value( )->set_string( 'Reads information of serial number on material document item level for a specific material document, item, year and material' ).
+      lo_rec2->create_property( iv_property_name = 'LongDescription' )->create_simple_value( )->set_string(
+         'Reads information of serial number of a specific material document, item, year and material to get an overview of the posted serial numbers.' ).
+
+    END-TEST-SEAM.
+
+
+    cl_s4hana_odata_util=>set_alpha_default_numc_conv( model ).
+
+    action_cancel( ).
+    action_cancel_item( ).
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(1) Class CL_API_MATERIAL_DOCUME_MPC_EXT, Method DEFINE, End                                                                                          A
+*$*$-Start: (1)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 1  ZSD_ENH_API_MATDOC_DEFINE_MPC.    "active version
+********************************************************************
+*  CHAR type fields
+********************************************************************
+* LIFNR
+DATA(lo_property_cust) = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_LIFNR' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 10 ).
+
+* TNAME
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_TNAME' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 35 ).
+
+* MODEL
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_MODEL' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 2 ).
+
+* VHCLE
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_VHCLE' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 20 ).
+
+* ODCDL
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_ODCDL' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 40 ).
+
+* REFNO
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_REFNO' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 16 ).
+
+* POST1
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_POST1' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 40 ).
+
+* EBILL
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_EBILL' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 12 ).
+
+* CHLNO
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_CHLNO' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 16 ).
+
+* AFRNO
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_AFRNO' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 16 ).
+
+* LOVCT
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_LOVCT' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 5 ).
+
+* GTPAS
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_GTPAS' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 1 ).
+
+* LFSNR
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_LFSNR' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 16 ).
+
+* ZFLAG
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_ZFLAG' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_string ).
+lo_property_cust->set_maxlength( 1 ).
+
+********************************************************************
+*  DATS type fields
+********************************************************************
+* EDATE
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_EDATE' ).
+lo_property_cust->set_type_edm_datetime( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_date ).
+
+* CHLDT
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_CHLDT' ).
+lo_property_cust->set_type_edm_datetime( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_date ).
+
+* AFRDT
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_AFRDT' ).
+lo_property_cust->set_type_edm_datetime( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_date ).
+
+* LRDAT
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_LRDAT' ).
+lo_property_cust->set_type_edm_datetime( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_date ).
+
+********************************************************************
+*  NUMC type fields
+********************************************************************
+* TOKEN
+lo_property_cust = model->get_entity_type( iv_entity_name = 'A_MaterialDocumentHeaderType' )->create_property( iv_property_name = 'ZZ_TOKEN' ).
+lo_property_cust->set_type_edm_string( ).
+lo_property_cust->set_internal_type( cl_abap_typedescr=>typekind_num ).
+lo_property_cust->set_maxlength( 10 ).
+
+ENDENHANCEMENT.
+*$*$-End:   (1)---------------------------------------------------------------------------------$*$*
+  ENDMETHOD.

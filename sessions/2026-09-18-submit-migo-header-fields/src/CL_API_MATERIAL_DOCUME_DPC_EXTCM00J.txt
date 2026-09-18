@@ -1,0 +1,9 @@
+﻿  METHOD filter_date_adapt_cold_store.
+
+    DATA(lt_filters) = io_tech_request_context->get_filter( )->get_filter_select_options( ).
+
+    DATA(lv_minimum_date) = get_filter_min_posting_date( lt_filters ).
+
+    adapt_cold_store_access( lv_minimum_date ).
+
+  ENDMETHOD.

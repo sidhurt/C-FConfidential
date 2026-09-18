@@ -1,0 +1,6 @@
+SESSION|QS4/700 located at connection[0] session[0]|user=QNOVATE8
+SELFIELD|txtI1-LOW=ZSD_RESTRICT_GRN
+TABLE|ENHINCINX
+TITLE|Data Browser: Table ENHINCINX: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

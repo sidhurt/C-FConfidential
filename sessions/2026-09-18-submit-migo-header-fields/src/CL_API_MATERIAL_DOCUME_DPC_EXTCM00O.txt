@@ -1,0 +1,18 @@
+﻿  METHOD cancel_item.
+
+    io_api->cancel_material_document_item(
+      EXPORTING
+        iv_posting_date           = iv_postingdate
+        iv_material_document      = iv_materialdocument
+        iv_material_document_year = iv_materialdocumentyear
+        it_material_document_item = it_materialdocumentitem
+      IMPORTING
+        et_item                   = et_item
+        et_message                = DATA(lt_message) ).
+
+    handle_errors(
+      iv_is_changeset  = iv_is_changeset
+      it_error         = lt_message
+      io_msg_container = io_msg_container ).
+
+  ENDMETHOD.

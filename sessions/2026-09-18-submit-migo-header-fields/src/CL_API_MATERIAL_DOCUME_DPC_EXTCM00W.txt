@@ -1,0 +1,122 @@
+﻿  METHOD check_forbidden_item_fields.
+
+    CHECK is_item IS NOT INITIAL.
+    DATA(lv_message_count) = lines( io_msg_container->get_messages( ) ).
+
+    item_error_if_not_initial(
+      iv_field         = is_item-materialdocument
+      iv_field_name    = 'MaterialDocument'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-materialdocumentyear
+      iv_field_name    = 'MaterialDocumentYear'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-materialdocumentitem
+      iv_field_name    = 'MaterialDocumentItem'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-inventorystocktype
+      iv_field_name    = 'InventoryStockType'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-controllingarea
+      iv_field_name    = 'ControllingArea'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+*    item_error_if_not_initial(
+*      iv_field         = is_item-glaccount
+*      iv_field_name    = 'GLAccount'
+*      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-fiscalyear
+      iv_field_name    = 'FiscalYear'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-fiscalyearperiod
+      iv_field_name    = 'FiscalYearPeriod'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-fiscalyearvariant
+      iv_field_name    = 'FiscalYearVariant'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-issuingorreceivingstocktype
+      iv_field_name    = 'IssuingOrReceivingStockType'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-issgorrcvgspclstockind
+      iv_field_name    = 'IssgOrRcvgSpclStockInd'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-goodsmovementiscancelled
+      iv_field_name    = 'GoodsMovementIsCancelled'
+      io_msg_container = io_msg_container ) ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-quantityinbaseunit
+      iv_field_name    = 'QuantityInBaseUnit'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-materialbaseunit
+      iv_field_name    = 'MaterialBaseUnit'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-companycodecurrency
+      iv_field_name    = 'CompanyCodeCurrency'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+***    item_error_if_not_initial(                                       "˅ER9K8ABZPN
+***      iv_field         = is_item-specialstockidfgsalesorder
+***      iv_field_name    = 'SpecialStockIdfgSalesOrder'
+***      io_msg_container = io_msg_container )  ##NO_TEXT.
+***    item_error_if_not_initial(
+***      iv_field         = is_item-specialstockidfgsalesorderitem
+***      iv_field_name    = 'SpecialStockIdfgSalesOrderItem'
+***      io_msg_container = io_msg_container )  ##NO_TEXT.              "˄ER9K8ABZPN
+    item_error_if_not_initial(
+      iv_field         = is_item-isautomaticallycreated
+      iv_field_name    = 'IsAutomaticallyCreated'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-reversedmaterialdocumentyear
+      iv_field_name    = 'ReversedMaterialDocumentYear'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-reversedmaterialdocument
+      iv_field_name    = 'ReversedMaterialDocument'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-reversedmaterialdocumentitem
+      iv_field_name    = 'ReversedMaterialDocumentItem'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-slsprcamtinclvatincocodecrcy
+      iv_field_name    = 'SlsPrcAmtInclVATInCoCodeCrcy'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-specialstockidfgwbselement
+      iv_field_name    = 'SpecialStockIdfgWBSElement'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-accountassignmentcategory
+      iv_field_name    = 'AccountAssignmentCategory'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    item_error_if_not_initial(
+      iv_field         = is_item-functionalarea
+      iv_field_name    = 'FunctionalArea'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+***    item_error_if_not_initial(                                       "˅ER9K8AARZ6
+***      iv_field         = is_item-materialdocumentline
+***      iv_field_name    = 'MaterialDocumentLine'
+***      io_msg_container = io_msg_container )  ##NO_TEXT.
+***    item_error_if_not_initial(
+***      iv_field         = is_item-materialdocumentparentline
+***      iv_field_name    = 'MaterialDocumentParentLine'
+***      io_msg_container = io_msg_container )  ##NO_TEXT.              "˄ER9K8AARZ6
+    item_error_if_not_initial(
+      iv_field         = is_item-hierarchynodelevel
+      iv_field_name    = 'HierarchyNodeLevel'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+
+    lv_message_count = lines( io_msg_container->get_messages( ) ) - lv_message_count.
+    ASSERT lv_message_count > 0. "check for a field is missing
+
+  ENDMETHOD.

@@ -1,0 +1,36 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~changeset_begin.
+
+    SET UPDATE TASK LOCAL.
+
+    cv_defer_mode = abap_true.
+    mv_changeset_type = sc_changeset_type-undefined.
+    DATA(lo_msg_container) = mo_context->get_message_container( ).
+    "check allowed combinations of operations
+    LOOP AT it_operation_info INTO DATA(ls_operation_info).
+      CASE ls_operation_info-operation_type.
+        WHEN /iwbep/if_mgw_appl_types=>gcs_operation_type-create_deep_entity.
+          IF mv_changeset_type <> sc_changeset_type-undefined.
+            " the MB_CREATE Fuba does not support multiple calls without COMMIT WORK in between -> only one create at a time in the OData Service
+            illegal_operation_combination( lo_msg_container ).
+          ENDIF.
+          mv_changeset_type = sc_changeset_type-create.
+        WHEN /iwbep/if_mgw_appl_types=>gcs_operation_type-execute_action.
+          CASE ls_operation_info-action_name.
+            WHEN cl_api_material_docume_mpc_ext=>gc_action_cancel.
+              IF mv_changeset_type <> sc_changeset_type-undefined.
+                illegal_operation_combination( lo_msg_container ).
+              ENDIF.
+              mv_changeset_type = sc_changeset_type-cancel.
+            WHEN cl_api_material_docume_mpc_ext=>gc_action_cancel_item.
+              IF mv_changeset_type <> sc_changeset_type-undefined AND
+                 mv_changeset_type <> sc_changeset_type-cancel_item.
+                illegal_operation_combination( lo_msg_container ).
+              ENDIF.
+              mv_changeset_type = sc_changeset_type-cancel_item.
+          ENDCASE.
+        WHEN OTHERS. "GET etc. are currently not supported in change set
+          illegal_operation_combination( lo_msg_container ).
+      ENDCASE.
+    ENDLOOP.
+
+  ENDMETHOD.

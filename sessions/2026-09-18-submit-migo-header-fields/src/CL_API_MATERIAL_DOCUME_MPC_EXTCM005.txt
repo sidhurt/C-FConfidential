@@ -1,0 +1,22 @@
+﻿  METHOD write_function_annotations.
+
+    "Looping the table for creating Function Imports documentations
+    LOOP AT it_function_anno INTO DATA(ls_function_anno).
+      "Please just change the Schema Namespace and Entity Container Name as per your API in the code line below.
+      DATA(lv_target) = 'API_MATERIAL_DOCUMENT_SRV.' && 'API_MATERIAL_DOCUMENT_SRV_Entities/'
+                        && ls_function_anno-function_import.
+
+      DATA(lo_target) = vocab_anno_model->create_annotations_target(
+                          iv_target = lv_target  ).
+
+      lo_target->create_annotation(
+          iv_term = 'Core.Description'
+      )->create_simple_value( )->set_string( ls_function_anno-description ).
+
+      lo_target->create_annotation(
+          iv_term = 'Core.LongDescription'
+      )->create_simple_value( )->set_string( ls_function_anno-long_description ).
+
+    ENDLOOP.
+
+  ENDMETHOD.

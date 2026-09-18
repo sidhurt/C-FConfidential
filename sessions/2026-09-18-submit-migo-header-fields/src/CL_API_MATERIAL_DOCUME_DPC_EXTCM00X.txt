@@ -1,0 +1,11 @@
+﻿  METHOD illegal_operation_combination.
+
+    io_msg_container->add_message(  iv_msg_id     = gc_message_class
+                                    iv_msg_type   = if_nsdm_odata_text_message=>sc_severity-error
+                                    iv_msg_number = '003' )."The combination of changes is not allowed in a change set.
+    RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+      EXPORTING
+        textid            = /iwbep/cx_mgw_busi_exception=>business_error
+        message_container = io_msg_container.
+
+  ENDMETHOD.
