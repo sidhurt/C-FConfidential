@@ -27,20 +27,49 @@ needs the same treatment before PGI can be called standard.
 The enhancements do not sit in one place. Where they sit decides whether an external caller
 reaches them. Four layers, in descending likelihood of being reached by OData:
 
-### Layer 1 — Posting core: `MB_GOODSMOVEMENT` (2 implementations)
+### Layer 1 — Posting core: `MB_GOODSMOVEMENT` (2 implementations) — SOURCE READ, CLEARED
 
 | Implementation | Interface | Class |
 |---|---|---|
 | `ZEI_MM_GOODSMVT_BAPI_CUSTOM` | `IF_EX_MB_BAPI_GOODSMVT_CREATE` | `ZCL_MM_GOODSMVT_BAPI_CUSTOM` |
 | `ZMB_DOCUMENT_BADI` | `IF_EX_MB_DOCUMENT_BADI` | `ZCL_IM_ZEMPL_MB_DOC` |
 
-**PGI creates a material document.** The September findings already established that
-`MB_GOODSMOVEMENT` is the posting layer and that `BAPI_GOODSMVT_CREATE` traverses it. A
-delivery goods issue reaches the same posting core.
+**Source read 2026-09-18 from `sessions/2026-09-02-migo-customisation-inventory/src/`.
+Neither implementation affects a delivery goods issue.** An earlier draft of this document
+inferred that both would fire on PGI. That inference was wrong and is retracted.
 
-**Strong inference:** these two fire on PGI. Both are already extracted in
-`sessions/2026-09-02-migo-customisation-inventory/src/` — the source is on disk and unread
-for this purpose.
+**`ZCL_MM_GOODSMVT_BAPI_CUSTOM`** implements one method,
+`if_ex_mb_bapi_goodsmvt_create~extensionin_to_matdoc`. That BAdI is specific to
+`BAPI_GOODSMVT_CREATE` and fires only when a caller supplies `EXTENSIONIN`. **A delivery PGI
+does not call that BAPI** — it posts through the delivery update path — so the method is not
+reached.
+
+Two further observations, relevant to how much weight this code can bear:
+
+- Its only populated branch maps `EXTENSIONIN` structure `MSEG`, field `LSMNG`.
+- That branch looks **defective**. Having matched `ls_extension-valuepart1 = 'LSMNG'`, it then
+  reads `ct_imseg` with `line_id = ls_extension-valuepart1` — i.e. searching for a line whose
+  id is the literal `'LSMNG'`. That will not match a real line id. *Hypothesis: dead code.*
+  Worth confirming before anyone cites this BAdI as precedent for the CNF extension pattern,
+  since Submit MIGO's proposed direction is a sibling of this exact BAdI.
+
+**`ZCL_IM_ZEMPL_MB_DOC`** implements the generic material-document BAdI — the one that *does*
+fire on any material document creation, including PGI. Both its methods are effectively inert
+for us:
+
+- `MB_DOCUMENT_BEFORE_UPDATE` is wrapped entirely in `IF sy-tcode = 'IFCU'`. An external OData
+  call does not run under that transaction code, so the body cannot execute. Inside the guard
+  it overwrites `MSEG-KOSTL` from parameter id `ZCOST` via a field-symbol assignment to
+  `(SAPMM07M)XMSEG[]`.
+- `MB_DOCUMENT_UPDATE` contains **nothing but a `BREAK` statement.**
+
+Both methods also carry a hardcoded `BREAK ibmabap21` — a developer break-point for a named
+user left in an active enhancement. Harmless in background and RFC contexts, but it is
+leftover debug code sitting on the material-document posting path and should be raised.
+
+**Consequence:** the posting layer is clear for PGI. This *strengthens* the case that PGI is
+close to standard — but it says nothing about Layers 2–4, which is where delivery-specific
+logic would live and where nothing has been read.
 
 ### Layer 2 — Delivery processing BAdI: `LE_SHP_DELIVERY_PROC` (6 implementations)
 
@@ -128,14 +157,17 @@ document flow. Relevant to what PGI writes into `VBFA`.
 **Verified:** 24 active Z-enhancements exist on delivery and goods-movement objects in
 QS4/700, distributed across five layers as above. Registry evidence, read 2026-09-02.
 
-**Strong inference:** the two `MB_GOODSMOVEMENT` implementations fire on PGI, because PGI
-posts a material document through the same posting core that the September findings
-established for `BAPI_GOODSMVT_CREATE`.
+**Verified (source read 2026-09-18):** neither `MB_GOODSMOVEMENT` implementation affects a
+delivery goods issue. One is `BAPI_GOODSMVT_CREATE`-specific and unreachable from PGI; the
+other is gated on `sy-tcode = 'IFCU'` in one method and empty in the other. **The posting
+layer is clear.** This retracts the earlier inference that both would fire.
 
 **Strong inference:** `ZEI_LE_UPDATE_DELIVERY_CUSTOM1` fired during Create DI on
 `9004953174`, because it implements the STO creation extension on the BAPI that path uses.
 
-**Unknown:** what any of them actually do. No source has been read for this purpose.
+**Unknown:** what the other 22 do. Only the two posting-layer classes have been read. No
+`LE_SHP_DELIVERY_PROC`, `ES_SAPLV50I_BADI` or `MV50AFZ1` source has been captured — the
+September extraction covered the MIGO family only.
 
 **Unknown:** which of the 13 transaction-layer plug-ins, if any, are reachable from outside
 the dialog.
