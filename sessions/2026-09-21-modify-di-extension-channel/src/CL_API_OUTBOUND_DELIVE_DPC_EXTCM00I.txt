@@ -1,0 +1,46 @@
+﻿  METHOD check_delivery_version_etag.
+    DATA ls_outbounddeliveryheader TYPE a_outbdeliveryheader_1.
+
+    IF im_conditions IS INITIAL AND iv_etag_optional = abap_false.
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          textid           = /iwbep/cx_mgw_busi_exception=>precondition_required
+          http_status_code = /iwbep/cx_mgw_busi_exception=>gcs_http_status_codes-precondition_required
+          entity_type      = 'A_OutbDeliveryHeaderType'.
+    ELSEIF im_conditions IS INITIAL AND iv_etag_optional = abap_true.
+      RETURN.
+    ENDIF.
+
+    READ TABLE mt_outbounddeliveryheader WITH KEY deliverydocument = im_deliverydocument INTO ls_outbounddeliveryheader.
+    IF sy-subrc <> 0.
+      SELECT SINGLE
+        FROM a_outbdeliveryheader_1
+        FIELDS a_outbdeliveryheader_1~*
+        WHERE deliverydocument  = @im_deliverydocument
+        INTO @ls_outbounddeliveryheader.
+      APPEND ls_outbounddeliveryheader TO mt_outbounddeliveryheader.
+    ENDIF.
+
+    IF sy-subrc EQ 0.
+      LOOP AT im_conditions-if_match INTO DATA(ls_etag).
+        READ TABLE ls_etag-tag_values TRANSPORTING NO FIELDS
+          WITH KEY name = 'DELIVERYVERSION' value = ls_outbounddeliveryheader-deliveryversion.
+        IF sy-subrc EQ 0 OR ls_etag-any_value IS NOT INITIAL.
+          DATA(lv_matched) = abap_true.
+          EXIT.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    IF lv_matched EQ abap_false.
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          http_status_code = /iwbep/cx_mgw_busi_exception=>gcs_http_status_codes-precondition_failed
+          textid           = /iwbep/cx_mgw_busi_exception=>precondition_failed.
+    ELSE.
+      lock_delivery(
+        EXPORTING
+          im_deliverydocument = im_deliverydocument    " Sales and Distribution Document Number
+      ).
+    ENDIF.
+  ENDMETHOD.

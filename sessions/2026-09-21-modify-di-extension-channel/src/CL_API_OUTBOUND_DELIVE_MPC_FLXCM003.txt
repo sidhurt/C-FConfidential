@@ -1,0 +1,10 @@
+﻿  method GET_LAST_MODIFIED.
+    " ----------------   !! GENERATED CODE !! --------------------
+    " !!  DO NOT CHANGE, WILL BE OVERWRITTEN AT NEXT GENERATION !!
+
+    flx_load_metadata_api( ).
+
+    rv_last_modified = super->get_last_modified( ).
+    mo_flx_metadata_api->get_last_modified( CHANGING cv_last_modified = rv_last_modified ).
+
+  endmethod.

@@ -1,0 +1,304 @@
+﻿*----------------------------------------------------------------------*
+*   INCLUDE MV50AF0F_FCODE_BEARBEITEN                                  *
+*----------------------------------------------------------------------*
+*---------------------------------------------------------------------*
+*       FORM FCODE_BEARBEITEN                                         *
+*---------------------------------------------------------------------*
+*       Aufruf des Funktionsbausteins 'FOLGEBILD'                     *
+*       Standardroutine zur Funktionscodebehandlung                   *
+*       Der Fcode wird mit dem Folgefcode besetzt                     *
+*---------------------------------------------------------------------*
+
+FORM fcode_bearbeiten.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(1) Form FCODE_BEARBEITEN, Start                                                                                                                      A
+*$*$-Start: (1)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 1  ZEI_LE_ADD_CHECK_BUTTON_PAI.    "active version
+IF fcode = 'CHECK' AND sy-tcode = 'VL02N'.
+  DATA:lv_error_occured TYPE xfeld.
+  DATA(lt_likp) = VALUE shp_likp_t( ( CORRESPONDING #( likp ) ) ).
+  CALL FUNCTION 'ZLEF_DELIVERY_VALIDATONS'
+    EXPORTING
+      it_lips          = xlips[]
+      it_likp          = lt_likp
+      iv_called_from   = 'C'
+      it_vbpa          = xvbpa[]
+    IMPORTING
+      ev_error_occured = lv_error_occured.
+  IF lv_error_occured <> abap_true.
+    MESSAGE 'All Pre-requisites found' TYPE 'S'.
+  ENDIF.
+  CLEAR fcode.
+ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   (1)---------------------------------------------------------------------------------$*$*
+
+  DATA: fb_fcode LIKE fcode.
+
+  "{ Begin ENHO ISAUTO_JIT_SAPMV50A IS-A-JIT AM_JIT_INB }
+* Extension for JIT Calls - IBU Automotive
+  DATA: changed_lv TYPE c.
+  DATA: posnr_range_lt TYPE jit_posnr_vl_range_tt,
+        posnr_range_ls TYPE jit_posnr_vl_range.
+  "{ End ENHO ISAUTO_JIT_SAPMV50A IS-A-JIT AM_JIT_INB }
+
+ENHANCEMENT-POINT SAPMV50A_12 SPOTS ES_SAPMV50A STATIC.
+  CLEAR: flag-no.
+  fb_fcode = fcode.
+  old_fcode = fcode.
+
+
+  "{ Begin ENHO AD_SUB_01_MV50AF0F_FCODE_BE_01 IS-AD-SUC AD_SUB_SFWS_01 }
+* EHP604 ADSUB DT071210
+* Do not allow GR posting for inbound deliveries if AD relevant
+  IF fcode      = 'WABU_T' AND
+*   XFO 27.10.2006 use TRVOG to identify inbound delivery
+    t180-trvog = cl_adsub_constants=>trvog_shpnotif AND
+*   SDIMP Change begin I069729
+*   likp-vbtyp = cl_adsub_constants=>vbtyp_dlshpnotif.
+    likp-vbtyp = if_sd_doc_category=>delivery_shipping_notif.
+*   SDIMP Change end I069729
+
+    CALL FUNCTION 'ADSUB_LOOP_AT_DELIVERY'
+      EXPORTING
+        iv_called_by = 'BEARBEITUNG'
+      TABLES
+        it_xlips     = xlips.
+
+  ENDIF.
+  "{ End ENHO AD_SUB_01_MV50AF0F_FCODE_BE_01 IS-AD-SUC AD_SUB_SFWS_01 }
+
+
+  "{ Begin ENHO ISAUTO_JIT_SAPMV50A IS-A-JIT AM_JIT_INB }
+* Extension for JIT Calls - IBU Automotive
+  IF fcode EQ 'SJCL_T'.
+    posnr_range_ls-sign   = 'I'.
+    posnr_range_ls-option = 'EQ'.
+    LOOP AT ilips WHERE NOT selkz IS INITIAL.
+      posnr_range_ls-low = ilips-posnr.
+      APPEND posnr_range_ls TO posnr_range_lt.
+    ENDLOOP.
+*  Check if New JIT solution is enabled. Read Data from NJIT Tables & show for new solution
+    IF cl_njit_general=>get_instance( )->check_feature_toggle( iv_btd_id = CONV #( xlikp-vbeln ) iv_btd_type = CONV #( if_sd_doc_category=>delivery ) ) EQ abap_true.
+      CALL FUNCTION 'JIT08_SHOW_NJITCALLS_FOR_DELIV'
+        EXPORTING
+          vbeln_iv          = xlikp-vbeln
+          trtyp_iv          = t180-trtyp
+          posnr_vl_range_it = posnr_range_lt
+        IMPORTING
+          changed_ev        = changed_lv
+        TABLES
+          lipsvb_it         = xlips
+        EXCEPTIONS
+          no_jit_delivery   = 1
+          general_error     = 2
+          OTHERS            = 3.
+      IF sy-subrc <> 0.
+*     Implement suitable error handling here
+        MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+                    WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+      ENDIF.
+      IF changed_lv EQ 'X'.
+        fcode = 'BACK_T'.
+      ELSE.
+        CLEAR fcode.
+      ENDIF.
+
+    ELSE.
+      CALL FUNCTION 'JIT08_SHOW_JITCALLS_FOR_DELIV'
+        EXPORTING
+          vbeln_iv          = xlikp-vbeln
+          trtyp_iv          = t180-trtyp
+          posnr_vl_range_it = posnr_range_lt
+        IMPORTING
+          changed_ev        = changed_lv
+        TABLES
+          lipsvb_it         = xlips
+        EXCEPTIONS
+          no_jit_delivery   = 1
+          general_error     = 2
+          OTHERS            = 3.
+      IF sy-subrc <> 0.
+        MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+                WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+      ENDIF.
+      IF changed_lv EQ 'X'.
+        fcode = 'BACK_T'.
+      ELSE.
+        CLEAR fcode.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+  "{ End ENHO ISAUTO_JIT_SAPMV50A IS-A-JIT AM_JIT_INB }
+
+ENHANCEMENT-POINT SAPMV50A_11 SPOTS ES_SAPMV50A .
+
+
+"{ Begin ENHO ISAUTO_SUE_SAPMV50A IS-A-ESD AM_DLV_GRP }
+IF fcode EQ 'DG_SHOW'.
+* Aufruf DELGRP03_DETAILS
+  IF NOT likp-borgr_grp IS INITIAL.
+    CALL FUNCTION 'DELGRP03_DETAILS'
+      EXPORTING
+        iv_dg_number  = likp-borgr_grp
+      EXCEPTIONS
+        general_error = 1
+        OTHERS        = 2.
+*
+    IF sy-subrc <> 0.
+      MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+              WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+    ENDIF.
+  ENDIF.
+  CLEAR: fcode.
+ENDIF.
+"{ End ENHO ISAUTO_SUE_SAPMV50A IS-A-ESD AM_DLV_GRP }
+
+ENHANCEMENT-POINT MV50AF0F_FCODE_BEARBEITEN_01 SPOTS ES_SAPMV50A.
+
+* Routines for transforming function codes
+  IF    t180-bldgr EQ gc_new_dialog_outb
+     OR t180-bldgr EQ gc_new_dialog_inb.
+    PERFORM transform_doubleclick         CHANGING fcode.
+    PERFORM taxi_filter_and_convert_fcode CHANGING fcode.
+    PERFORM transform_view_fcode          CHANGING fcode.
+    PERFORM transform_tc_fcode            CHANGING fcode
+                                                   gf_pushbutton_line.
+  ENDIF.
+
+*... Wurde bereits erfolgreich im MM gebucht?
+  IF wa_zaehl > 0          AND         "WA-Zaehler noch Null?
+     fcode(4) <> 'SIC1'    AND         "und FCODE nicht 'Sichern'!!!
+     fcode(4) <> 'LT06'.               "und FCODE nicht 'LT06'
+    MESSAGE a621.                      "wenn nein, Abbruch!!!
+  ENDIF.
+
+* Blaettern auf Textbildern
+  IF ( sy-dynnr = '0330' OR
+       sy-dynnr = '0530' )
+     AND
+     ( fcode = 'P+  ' OR
+       fcode = 'P++ ' OR
+       fcode = 'P-  ' OR
+       fcode = 'P-- ' ).
+    EXPORT fcode TO MEMORY ID 'TEXTFCODE'.
+  ENDIF.
+
+  IF fcode(4) EQ fcode_beleg_loeschen  "46A BEY
+     AND sy-binpt EQ charx.
+    PERFORM funktion_ausfuehren.
+  ENDIF.
+
+  IF fcode = space.
+    fcode = fcode_gleiche_seite.
+  ENDIF.
+
+  "Prevent safety dialog box in display mode
+  IF t180-trtyp EQ chara.                                   "v_n_1374189
+    CLEAR r185d-dataloss.
+  ENDIF.                                                    "^_n_1374189
+
+* Even user opens distributed deliveries in VL32N,          "v_n_1881044
+* it will be switched to display mode automatically due to the
+* logic implemented in MV50AF0B_BELEG_LESEN_SIMPLE.
+* However it should still be possible to trigger outputs for
+* distributed  deliveries.
+  DATA: lv_typ TYPE t185f-trtyp.
+  IF fcode = 'KPRT_T' AND
+     sy-tcode = 'VL32N' AND
+     t180-trtyp EQ chara AND
+     likp-vbtyp CA  if_sd_doc_category=>delivery_shipping_notif AND
+     ( likp-vlstk EQ charb OR likp-vlstk EQ charc ).
+    lv_typ = 'V'.
+  ENDIF.                                                    "^_n_1881044
+ENHANCEMENT-POINT FCODE_BEARBEITEN_01 SPOTS ES_SAPMV50A.
+*$*$-Start: FCODE_BEARBEITEN_01-----------------------------------------------------------------$*$*
+ENHANCEMENT 3  OIA_SAPMV50A.    "active version
+* Exchange Loading - check the assignment of purchase
+* call offs to delivery note items.
+* If necessary display error log
+  IF FCODE = 'SICH' OR
+     FCODE = 'WABU'.
+   PERFORM OIA_CHECK_EXG_ASSIGNMENTS(SAPMV50A)
+                              USING ' '
+                                    ' '
+                                    G_CHECKS_STATUS
+                                    G_OIK_TAS.
+  ENDIF.
+
+  IF FCODE = 'WABI'.
+    PERFORM OIA_CHECK_EXG_ASSIGNMENTS(SAPMV50A)
+                               USING 'X'
+                                     ' '
+                                     G_CHECKS_STATUS
+                                     ' '.
+    IF FCODE = FCODE_GLEICHE_SEITE.
+      PERFORM OIA_DISPLAY_ERROR_LOG(SAPMV50A).
+      FCODE = 'ABBB'.
+    ENDIF.
+  ENDIF.
+ENDENHANCEMENT.
+ENHANCEMENT 6  OIK_SAPMV50A.    "active version
+  IF FCODE = 'SICH' OR
+     FCODE = 'WABU'.
+     CLEAR G_OIK_TAS.
+     IF G_OIKIMPORT-APPLIC = C_APPLIC_TAS OR
+        G_OIKIMPORT-APPLIC = C_APPLIC_TSW_TIC.
+        G_OIK_TAS = C_CHARX.
+     ENDIF.
+  endif.
+ENDENHANCEMENT.
+*$*$-End:   FCODE_BEARBEITEN_01-----------------------------------------------------------------$*$*
+  CALL FUNCTION 'SCREEN_SEQUENCE_CONTROL'
+    EXPORTING
+      programm        = 'SAPMV50A'
+      kopfgruppe      = tvlk-kopgr
+      positionsgruppe = tvlp-posgr
+      funktion        = fcode
+      typ             = lv_typ                          "n_1881044
+    IMPORTING
+      aktyp           = t185f-aktyp
+      cua_status      = t185v-status
+      cua_titel       = t185v-ctitel
+      cua_para1       = t185v-para1
+      cua_para2       = t185v-para2
+      cua_para3       = t185v-para3
+      cua_para4       = t185v-para4
+      folgefunktion   = fcode
+      dunkel          = t185-dunkel
+      leave           = flag-leave
+      panel           = t185v-panel
+      dynprobaustein1 = taxi_header_subscreen  "46A BEY
+      dynprobaustein2 = taxi_body_subscreen.
+ENHANCEMENT-SECTION     FCODE_BEARBEITEN_02 SPOTS ES_SAPMV50A.
+  IF flag-leave NE space.
+    t185f-fcode = fcode.
+*   Text memory has to be refreshed if in CALL TRANSACTION mode
+    IF sy-calld NE space.
+      PERFORM text_memory_init.
+    ENDIF.
+    LEAVE.
+  ENDIF.
+END-ENHANCEMENT-SECTION.
+*$*$-Start: FCODE_BEARBEITEN_02-----------------------------------------------------------------$*$*
+ENHANCEMENT 7  OIK_SAPMV50A.    "active version
+  IF G_OIKIMPORT-APPLIC = C_APPLIC_TAS OR
+    G_OIKIMPORT-APPLIC = C_APPLIC_TPI OR
+    G_OIKIMPORT-APPLIC = C_APPLIC_TSW_TIC OR
+    G_OIKIMPORT-APPLIC = C_APPLIC_TSW_REV.
+  ELSE.
+  if flag-leave ne space.
+    t185f-fcode = fcode.
+*   Text memory has to be refreshed if in CALL TRANSACTION mode
+    if sy-calld ne space.
+      perform text_memory_init.
+    endif.
+    leave.
+  endif.
+  endif.
+ENDENHANCEMENT.
+*$*$-End:   FCODE_BEARBEITEN_02-----------------------------------------------------------------$*$*
+  IF uc_process NE space.
+    PERFORM uncompleteness_protocol(sapfv50u).
+  ENDIF.
+
+ENDFORM.

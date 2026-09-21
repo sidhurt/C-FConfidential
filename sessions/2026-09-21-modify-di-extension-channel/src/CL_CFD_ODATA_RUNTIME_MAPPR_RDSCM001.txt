@@ -1,0 +1,13 @@
+﻿  METHOD complete_missing_components.
+
+    rt_completed_components = it_existing_components.
+
+    " determine missing transient fields (Description & FieldControl) of the entity
+    LOOP AT get_transient_field_components( ) REFERENCE INTO DATA(lr_transient_field_component).
+      IF NOT line_exists( it_existing_components[ field_name = lr_transient_field_component->field_name ] ).
+        " might happen, as transient fields are missing in response structure in case SADL does not use MPC data type
+        INSERT lr_transient_field_component->* INTO TABLE rt_completed_components.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.

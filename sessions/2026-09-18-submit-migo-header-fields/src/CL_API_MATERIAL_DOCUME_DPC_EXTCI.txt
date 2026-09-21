@@ -1,0 +1,156 @@
+﻿  PRIVATE SECTION.
+
+    CONSTANTS:
+      gc_message_class TYPE msgid VALUE 'MM_IM_ODATA_API_MDOC'.
+    CONSTANTS gc_filter_property_post_date TYPE string VALUE 'POSTINGDATE' ##NO_TEXT.
+    CONSTANTS gc_filter_property_matdoc_year TYPE string VALUE 'MATERIALDOCUMENTYEAR' ##NO_TEXT.
+    CONSTANTS:
+      BEGIN OF sc_changeset_type,
+        undefined   TYPE i VALUE 0,
+        create      TYPE i VALUE 1,
+        cancel      TYPE i VALUE 2,
+        cancel_item TYPE i VALUE 3,
+      END OF sc_changeset_type.
+    CONSTANTS gc_feature_toggle_id TYPE sftgl_ft_id VALUE 'MM_IM_MATDOC_API'.
+    DATA mv_changeset_type TYPE i.
+*    DATA mo_bftr TYPE REF TO if_sbr_feature_state_value .
+
+    METHODS adapt_cold_store_access IMPORTING iv_search_date TYPE dats  OPTIONAL
+                                              iv_search_year TYPE gjahr OPTIONAL
+                                                PREFERRED PARAMETER iv_search_date.
+
+    METHODS get_filter_min_posting_date
+      IMPORTING it_filter_options  TYPE /iwbep/t_mgw_select_option
+      RETURNING VALUE(ev_min_date) TYPE data_temperature.
+
+    METHODS matdoc_item_ent_adpt_cld_store
+      IMPORTING
+        io_tech_request_context TYPE REF TO /iwbep/if_mgw_req_entity.
+
+    METHODS matdoc_hdr_ent_adapt_cld_store
+      IMPORTING
+        io_tech_request_context TYPE REF TO /iwbep/if_mgw_req_entity.
+
+    METHODS matdoc_item_entityset_adapt_cs
+      IMPORTING
+        io_tech_request_context TYPE REF TO /iwbep/if_mgw_req_entityset.
+
+    METHODS filter_date_adapt_cold_store
+      IMPORTING
+        io_tech_request_context TYPE REF TO /iwbep/if_mgw_req_entityset.
+
+    METHODS create_document
+      IMPORTING
+        !io_api           TYPE REF TO if_material_document_api
+        !io_data_provider TYPE REF TO /iwbep/if_mgw_entry_provider
+        !io_msg_container TYPE REF TO /iwbep/if_message_container
+        !iv_is_changeset  TYPE abap_bool
+      EXPORTING
+        !er_deep_entity   TYPE REF TO data
+      RAISING
+        /iwbep/cx_mgw_busi_exception
+        /iwbep/cx_mgw_tech_exception .
+
+    METHODS check_forbidden_header_fields
+      IMPORTING
+        !is_header        TYPE a_materialdocumentheader
+        !io_msg_container TYPE REF TO /iwbep/if_message_container .
+
+    METHODS check_forbidden_item_fields
+      IMPORTING
+        !is_item          TYPE a_materialdocumentitem
+        !io_msg_container TYPE REF TO /iwbep/if_message_container .
+
+    METHODS check_forbidden_sernr_fields
+      IMPORTING
+        !is_sernr         TYPE A_SerialNumberMaterialDocument
+        !io_msg_container TYPE REF TO /iwbep/if_message_container .
+
+    METHODS header_error_if_not_initial
+      IMPORTING
+        !iv_field         TYPE any
+        !iv_field_name    TYPE symsgv
+        !io_msg_container TYPE REF TO /iwbep/if_message_container .
+
+    METHODS item_error_if_not_initial
+      IMPORTING
+        !iv_field         TYPE any
+        !iv_field_name    TYPE symsgv
+        !io_msg_container TYPE REF TO /iwbep/if_message_container .
+
+    METHODS sernr_error_if_not_initial
+      IMPORTING
+        !iv_field         TYPE any
+        !iv_field_name    TYPE symsgv
+        !io_msg_container TYPE REF TO /iwbep/if_message_container .
+
+    METHODS handle_errors
+      IMPORTING
+        !it_error         TYPE if_nsdm_odata_text_message=>tt_message
+        !io_msg_container TYPE REF TO /iwbep/if_message_container
+        !iv_is_changeset  TYPE abap_bool
+      RAISING
+        /iwbep/cx_mgw_busi_exception .
+
+    METHODS cancel_header
+      IMPORTING
+        !io_api                  TYPE REF TO if_material_document_api
+        !io_msg_container        TYPE REF TO /iwbep/if_message_container
+        !io_tech_request_context TYPE REF TO /iwbep/if_mgw_req_func_import
+        !iv_is_changeset         TYPE abap_bool
+      EXPORTING
+        !er_data                 TYPE REF TO data
+      RAISING
+        /iwbep/cx_mgw_busi_exception .
+
+    METHODS cancel_item
+      IMPORTING
+        !io_api                  TYPE REF TO if_material_document_api
+        !io_msg_container        TYPE REF TO /iwbep/if_message_container
+        !io_tech_request_context TYPE REF TO /iwbep/if_mgw_req_func_import
+        !iv_is_changeset         TYPE abap_bool
+        !iv_postingdate          TYPE odata_mm_im_act_mdoc_cancl_itm-postingdate
+        !iv_materialdocument     TYPE odata_mm_im_act_mdoc_cancl_itm-materialdocument
+        !iv_materialdocumentyear TYPE odata_mm_im_act_mdoc_cancl_itm-materialdocumentyear
+        !it_materialdocumentitem TYPE if_material_document_api=>tt_item_cancel
+      EXPORTING
+        !et_item                 TYPE if_material_document_api=>tt_item_output
+      RAISING
+        /iwbep/cx_mgw_busi_exception .
+
+    METHODS illegal_operation_combination
+      IMPORTING
+        !io_msg_container TYPE REF TO /iwbep/if_message_container
+      RAISING
+        /iwbep/cx_mgw_busi_exception .
+
+    METHODS changeset_process_create
+      IMPORTING
+        !it_changeset_request  TYPE /iwbep/if_mgw_appl_types=>ty_t_changeset_request
+      CHANGING
+        !ct_changeset_response TYPE /iwbep/if_mgw_appl_types=>ty_t_changeset_response
+      RAISING
+        /iwbep/cx_mgw_busi_exception
+        /iwbep/cx_mgw_tech_exception .
+
+    METHODS changeset_process_cancel
+      IMPORTING
+        !it_changeset_request  TYPE /iwbep/if_mgw_appl_types=>ty_t_changeset_request
+      CHANGING
+        !ct_changeset_response TYPE /iwbep/if_mgw_appl_types=>ty_t_changeset_response
+      RAISING
+        /iwbep/cx_mgw_busi_exception
+        /iwbep/cx_mgw_tech_exception .
+
+    METHODS changeset_process_cancel_item
+      IMPORTING
+        !it_changeset_request  TYPE /iwbep/if_mgw_appl_types=>ty_t_changeset_request
+      CHANGING
+        !ct_changeset_response TYPE /iwbep/if_mgw_appl_types=>ty_t_changeset_response
+      RAISING
+        /iwbep/cx_mgw_busi_exception
+        /iwbep/cx_mgw_tech_exception .
+
+    CLASS-DATA mo_daag_session_control TYPE REF TO cl_abap_session_temperature.
+    CLASS-DATA mv_data_aging_enabled TYPE abap_bool.
+    CLASS-DATA mo_nsdm_matdoc_aging_helper TYPE REF TO if_nsdm_matdoc_aging_helper.

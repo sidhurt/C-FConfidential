@@ -1,0 +1,8 @@
+﻿  METHOD create_instance.
+
+    ro_instance = NEW cl_cfd_odata_sadl_intgrtn_data(
+      io_odata_buffer            = io_odata_buffer
+      it_mds_entity_set_type_map = it_mds_entity_set_type_map
+    ).
+
+  ENDMETHOD.

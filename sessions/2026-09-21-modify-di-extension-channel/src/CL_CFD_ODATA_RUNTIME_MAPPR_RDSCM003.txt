@@ -1,0 +1,11 @@
+﻿  METHOD get_transient_field_components.
+
+    LOOP AT mo_extended_entity->get_properties( ) REFERENCE INTO DATA(lr_property)
+      WHERE is_transient EQ abap_true.
+      INSERT VALUE #(
+        field_name        = lr_property->abap_name
+        data_element_path = lr_property->data_element_name
+      ) INTO TABLE rt_transient_components.
+    ENDLOOP.
+
+  ENDMETHOD.

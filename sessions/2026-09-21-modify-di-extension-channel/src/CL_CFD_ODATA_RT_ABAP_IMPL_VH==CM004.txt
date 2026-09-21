@@ -1,0 +1,25 @@
+﻿  METHOD get_complex_conditions_keys.
+
+* see cl_sadl_gw_key_converter=>get_key_from_entity_request
+    DATA(lt_keys) = io_tech_request_context->get_keys( ).
+
+    IF lt_keys IS NOT INITIAL.   " (key is initial for navigation with target cardinality [1])
+      DATA(lr_entity) = mo_query_runtime->create_structure_container( ).
+      ASSIGN lr_entity->* TO FIELD-SYMBOL(<ls_entity>).
+      io_tech_request_context->get_conv_keys_with_exc( IMPORTING es_key_values = <ls_entity> ).
+
+      LOOP AT lt_keys ASSIGNING FIELD-SYMBOL(<ls_key>).
+        ASSIGN COMPONENT <ls_key>-name OF STRUCTURE <ls_entity> TO FIELD-SYMBOL(<lv_value>).
+        IF sy-subrc = 0. " Key fields are not always exposed
+          <ls_key>-value = <lv_value>.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    cl_sadl_condition_util=>add_condition_for_keys(
+      EXPORTING
+        it_keys      = CORRESPONDING #( lt_keys )
+      CHANGING
+        ct_condition = rt_complex_conditions ).
+
+  ENDMETHOD.

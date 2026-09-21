@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~get_entity_type_name.
+    rv_entity_type = mv_entity_type.
+  ENDMETHOD.

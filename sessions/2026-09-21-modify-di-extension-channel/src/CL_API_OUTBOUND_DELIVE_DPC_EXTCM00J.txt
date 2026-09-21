@@ -1,0 +1,43 @@
+﻿  METHOD check_document_type.
+    SELECT SINGLE
+        vbeln
+    FROM
+        vbak
+    WHERE
+        vbeln = @im_sddocument
+    INTO
+        @DATA(ls_sales_document_header). "Create SLS
+
+    IF sy-subrc NE 0.
+      SELECT SINGLE
+          ebeln
+      FROM
+          ekko
+      WHERE
+          ebeln = @im_sddocument
+      INTO
+          @DATA(ls_purchasing_document_header). "Create STO
+
+      IF sy-subrc NE 0.
+        mo_context->get_message_container( )->add_message(
+        EXPORTING
+          iv_msg_type               = 'E'    " Message Type
+          iv_msg_id                 = 'VL'    " Message Class
+          iv_msg_number             = 002    " Message Number
+          iv_msg_v1                 = |{ im_sddocument ALPHA = OUT }|
+      ).
+        RAISE EXCEPTION TYPE /iwbep/cx_mgw_tech_exception
+          EXPORTING
+            textid            = /iwbep/cx_mgw_tech_exception=>internal_error
+            message_container = mo_context->get_message_container( ).
+      ENDIF.
+
+      " Call BAPI BAPI_OUTB_DELIVERY_CREATE_STO
+      ex_bapi_type = 'STO'.
+
+    ELSE. "Create SLS
+      " Call BAPI BAPI_OUTB_DELIVERY_CREATE_SLS
+      ex_bapi_type = 'SLS'.
+    ENDIF.
+
+  ENDMETHOD.

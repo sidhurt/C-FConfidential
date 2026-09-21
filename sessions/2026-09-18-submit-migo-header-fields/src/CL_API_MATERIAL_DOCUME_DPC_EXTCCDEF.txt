@@ -1,0 +1,13 @@
+﻿*"* use this source file for any type of declarations (class
+*"* definitions, interfaces or type declarations) you need for
+*"* components in the private section
+TYPES: BEGIN OF ty_s_item.
+         INCLUDE TYPE cl_api_material_docume_mpc=>ts_a_materialdocumentitemtype AS item.
+TYPES:   to_serialnumbers TYPE STANDARD TABLE OF cl_api_material_docume_mpc=>ts_a_serialnumbermaterialdocum WITH DEFAULT KEY,
+       END OF ty_s_item.
+
+
+TYPES: BEGIN OF ty_deep_entity.
+         INCLUDE TYPE cl_api_material_docume_mpc=>ts_a_materialdocumentheadertyp AS header.
+TYPES:   to_materialdocumentitem TYPE STANDARD TABLE OF ty_s_item WITH DEFAULT KEY,
+       END OF ty_deep_entity.

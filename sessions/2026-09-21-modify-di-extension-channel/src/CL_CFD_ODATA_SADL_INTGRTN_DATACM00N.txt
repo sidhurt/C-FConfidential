@@ -1,0 +1,17 @@
+﻿  METHOD enrich_sadl_data.
+
+    IF it_mds_entity_set_type_map IS NOT INITIAL.
+      LOOP AT ms_model_data-sadl_data-mds_entities REFERENCE INTO DATA(lr_mds_entity).
+        READ TABLE it_mds_entity_set_type_map REFERENCE INTO DATA(lr_entity_map) WITH TABLE KEY set = lr_mds_entity->entity_set_name.
+        IF sy-subrc EQ 0.
+          lr_mds_entity->entity_type_name = lr_entity_map->type.
+        ELSE.
+          RAISE EXCEPTION NEW cx_cfd_odata_runtime(
+            textid          = cx_cfd_odata_runtime=>entity_set_not_found
+            entity_set_name = lr_mds_entity->entity_set_name
+          ).
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+  ENDMETHOD.

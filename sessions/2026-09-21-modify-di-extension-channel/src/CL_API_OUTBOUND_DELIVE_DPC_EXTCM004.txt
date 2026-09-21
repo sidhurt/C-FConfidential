@@ -1,0 +1,472 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~execute_action.
+    DATA: lv_action_name             TYPE /iwbep/mgw_tech_name,
+          lt_protocol                TYPE ty_t_protocol,
+          ls_error_log               TYPE ty_s_vbfs,
+          lt_return                  TYPE bapiret2_t,
+          ls_delivery_item           TYPE a_outbdeliveryitem_1,
+          lo_exception               TYPE REF TO cx_od_api_exception,
+          ls_conditions              TYPE /iwbep/if_mgw_appl_types=>ty_s_conditions,
+          ls_fi_params               TYPE cl_shp_api2_input_conversion=>ty_fi_params,
+          lt_unconverted_parameters  TYPE /iwbep/t_mgw_name_value_pair,
+          lv_warnings_only           TYPE abap_bool,
+          lo_api_exception_processor TYPE REF TO lcl_api_exception_processor,
+          ls_ylikp                   TYPE likp.
+
+    lv_action_name = io_tech_request_context->get_function_import_name( ).
+    DATA(lo_od_iref) = cl_outbound_delivery_factory=>get_instance( ).
+
+    lt_unconverted_parameters = io_tech_request_context->get_parameters( ).
+
+    TRY.
+        ls_fi_params = cl_shp_api2_input_conversion=>get_fi_params( lt_unconverted_parameters ).
+        IF lv_action_name <> 'ReverseGoodsIssue'.
+          mo_dlv_read_fi->read_delivery_for_action(
+            EXPORTING
+              iv_vbeln = ls_fi_params-deliverydocument
+            IMPORTING
+              es_ylikp = ls_ylikp ).
+        ENDIF.
+      CATCH cx_shp_api2_exception INTO DATA(lo_shp_exception).
+        DATA: ls_msg_main TYPE symsg.
+        MESSAGE e026(le_shp_odata_api_od) WITH |{ ls_fi_params-deliverydocument ALPHA = OUT }| INTO DATA(lv_msg).
+        MOVE-CORRESPONDING sy TO ls_msg_main.
+        lo_shp_exception->set_leading_message( ls_msg_main ).
+        cl_shp_api2_helper=>get( )->raise_business_exception(
+          EXPORTING
+            io_exception = lo_shp_exception
+            io_context   = mo_context ).
+    ENDTRY.
+
+    io_tech_request_context->get_conditional_info(
+      IMPORTING
+        es_conditions = ls_conditions ).
+    cl_le_shp_odata_api_helper=>check_precondition(
+      EXPORTING
+        iv_dlv_version    = ls_ylikp-dlv_version
+        iv_vbtyp          = ls_ylikp-vbtyp
+        is_conditions     = ls_conditions
+        iv_etag_relevance = get_etag_relevance( lv_action_name ) ).
+
+    CASE lv_action_name.
+      WHEN 'PostGoodsIssue'.
+        TRY .
+            lo_od_iref->post_goods_issue(
+              EXPORTING
+                im_deliverydocument = ls_fi_params-deliverydocument    " Outbound delivery document
+              IMPORTING
+                ex_error_log        = ls_error_log
+                ex_protocol         = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'ReverseGoodsIssue'. "Reverse goods issue
+        TRY .
+            lo_od_iref->reverse_goods_issue(
+              EXPORTING
+                im_deliverydocument        = ls_fi_params-deliverydocument     " Outbound delivery document number
+                im_actualgoodsmovementdate = ls_fi_params-actualgoodsmovementdate    " Actual goods movement date
+              IMPORTING
+                ex_return                  = lt_return
+                ex_error_log               = ls_error_log
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            IF lo_exception->system_fields-subrc IS NOT INITIAL.
+              mo_context->get_message_container( )->add_message(
+                          EXPORTING
+                            iv_msg_type               = lo_exception->system_fields-msgty    " Message Type
+                            iv_msg_id                 = lo_exception->system_fields-msgid    " Message Class
+                            iv_msg_number             = lo_exception->system_fields-msgno    " Message Number
+                            iv_msg_v1                 = lo_exception->system_fields-msgv1    " Message Variable
+                            iv_msg_v2                 = lo_exception->system_fields-msgv2    " Message Variable
+                            iv_msg_v3                 = lo_exception->system_fields-msgv3    " Message Variable
+                            iv_msg_v4                 = lo_exception->system_fields-msgv4    " Message Variable
+              ).
+              RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+                EXPORTING
+                  textid            = /iwbep/cx_mgw_busi_exception=>business_error
+                  message_container = mo_context->get_message_container( ).
+            ELSE.
+              LOOP AT lo_exception->return_bapi TRANSPORTING NO FIELDS
+                              WHERE type CA 'AEX'.
+                EXIT.
+              ENDLOOP.
+
+              IF sy-subrc EQ 0.
+                mo_context->get_message_container( )->add_messages_from_bapi(
+                  EXPORTING
+                    it_bapi_messages          = lo_exception->return_bapi    " Return parameter table
+
+                ).
+
+                RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+                  EXPORTING
+                    textid            = /iwbep/cx_mgw_busi_exception=>business_error
+                    message_container = mo_context->get_message_container( ).
+              ENDIF.
+            ENDIF.
+        ENDTRY.
+        copy_data_to_ref(
+          EXPORTING
+            is_data = lt_return
+          CHANGING
+            cr_data = er_data
+        ).
+      WHEN 'PickOneItem'.
+        TRY .
+            lo_od_iref->pick_one_item(
+              EXPORTING
+                im_deliverydocument     = ls_fi_params-deliverydocument    " Sales and Distribution Document Number
+                im_deliverydocumentitem = ls_fi_params-deliverydocumentitem    " Item number of the SD document
+              IMPORTING
+                ex_error_log            = ls_error_log
+                ex_protocol             = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+
+      WHEN 'PickOneItemWithSalesQuantity'.
+        lt_protocol = pick_sales_quantity( io_tech_request_context = io_tech_request_context ).
+
+        copy_data_to_ref(
+          EXPORTING
+            is_data = lt_protocol
+          CHANGING
+            cr_data = er_data
+        ).
+
+      WHEN 'SetPickingQuantityWithBaseQuantity'.
+        lt_protocol = set_picking_base_quantity( io_tech_request_context = io_tech_request_context ).
+
+        copy_data_to_ref(
+          EXPORTING
+            is_data = lt_protocol
+          CHANGING
+            cr_data = er_data
+        ).
+
+      WHEN 'PickOneItemWithBaseQuantity'.
+        lt_protocol = pick_base_quantity( io_tech_request_context = io_tech_request_context ).
+
+        copy_data_to_ref(
+          EXPORTING
+            is_data = lt_protocol
+          CHANGING
+            cr_data = er_data
+        ).
+
+      WHEN 'PickAndBatchSplitOneItem'.
+        TRY .
+            lo_od_iref->pick_and_batch_split(
+              EXPORTING
+                im_deliverydocument     = ls_fi_params-deliverydocument    " Sales and Distribution Document Number
+                im_deliverydocumentitem = ls_fi_params-deliverydocumentitem    " Item number of the SD document
+                im_batch                = ls_fi_params-batch
+                im_splitquantity        = ls_fi_params-splitquantity
+                im_splitquantityunit    = ls_fi_params-splitquantityunit
+              IMPORTING
+                ex_error_log            = ls_error_log
+                ex_protocol             = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'CreateBatchSplitItem'.
+        TRY .
+            DATA: lv_update_picking_quantity TYPE abap_bool VALUE abap_false,
+                  ls_created_item            TYPE cl_api_outbound_delive_mpc=>createddeliveryitem.
+
+            READ TABLE lt_unconverted_parameters WITH KEY name = 'PICKQUANTITYINSALESUOM' TRANSPORTING NO FIELDS.
+            IF sy-subrc = 0.
+              lv_update_picking_quantity = abap_true.
+            ENDIF.
+
+            lo_od_iref->batch_split(
+              EXPORTING
+                im_deliverydocument         = ls_fi_params-deliverydocument    " Sales and Distribution Document Number
+                im_deliverydocumentitem     = ls_fi_params-deliverydocumentitem    " Item number of the SD document
+                im_batch                    = ls_fi_params-batch
+                im_actualdeliveryquantity   = ls_fi_params-actualdeliveryquantity
+                im_deliveryquantityunit     = ls_fi_params-deliveryquantityunit
+                im_pickingquantitysalesunit = ls_fi_params-pickquantityinsalesuom
+                im_update_picking_quantity  = lv_update_picking_quantity
+              IMPORTING
+                ex_error_log                = ls_error_log
+                ex_protocol                 = lt_protocol
+                es_delivery_item            = ls_delivery_item
+            ).
+
+            CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+              EXPORTING
+                input  = ls_delivery_item-deliverydocument
+              IMPORTING
+                output = ls_created_item-vbeln_vl.
+
+            CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+              EXPORTING
+                input  = ls_delivery_item-deliverydocumentitem
+              IMPORTING
+                output = ls_created_item-posnr_vl.
+
+            copy_data_to_ref(
+              EXPORTING
+                is_data = ls_created_item
+              CHANGING
+                cr_data = er_data
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+        ENDTRY.
+      WHEN 'PickAllItems'.
+        TRY .
+            lo_od_iref->pick_all_items(
+              EXPORTING
+                im_deliverydocument = ls_fi_params-deliverydocument    " Sales and Distribution Document Number
+              IMPORTING
+                ex_error_log        = ls_error_log
+                ex_protocol         = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'ConfirmPickingOneItem'.
+        TRY .
+            lo_od_iref->confirm_picking_one_item(
+              EXPORTING
+                im_deliverydocument     = ls_fi_params-deliverydocument    " Sales and Distribution Document Number
+                im_deliverydocumentitem = ls_fi_params-deliverydocumentitem    " Item number of the SD document
+              IMPORTING
+                ex_error_log            = ls_error_log
+                ex_protocol             = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'ConfirmPickingAllItems'.
+        TRY .
+            lo_od_iref->confirm_picking_all_items(
+              EXPORTING
+                im_deliverydocument = ls_fi_params-deliverydocument    " Sales and Distribution Document Number
+              IMPORTING
+                ex_error_log        = ls_error_log
+                ex_protocol         = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'AddSerialNumberToDeliveryItem'.
+        TRY.
+            lo_od_iref->add_serial_number(
+              EXPORTING
+                im_deliverydocument     = ls_fi_params-deliverydocument
+                im_deliverydocumentitem = ls_fi_params-deliverydocumentitem
+                im_serial_number        = ls_fi_params-serialnumber
+              IMPORTING
+                ex_error_log            = ls_error_log
+                ex_protocol             = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'DeleteSerialNumberFromDeliveryItem'.
+        TRY.
+            lo_od_iref->delete_serial_number(
+              EXPORTING
+                im_deliverydocument     = ls_fi_params-deliverydocument
+                im_deliverydocumentitem = ls_fi_params-deliverydocumentitem
+                im_serial_number        = ls_fi_params-serialnumber
+              IMPORTING
+                ex_error_log            = ls_error_log
+                ex_protocol             = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'DeleteAllSerialNumbersFromDeliveryItem'.
+        TRY.
+            lo_od_iref->delete_all_serial_numbers(
+              EXPORTING
+                im_deliverydocument     = ls_fi_params-deliverydocument
+                im_deliverydocumentitem = ls_fi_params-deliverydocumentitem
+              IMPORTING
+                ex_error_log            = ls_error_log
+                ex_protocol             = lt_protocol
+            ).
+          CATCH cx_od_api_exception INTO lo_exception.
+            lo_api_exception_processor = NEW lcl_api_exception_processor(
+              io_exception = lo_exception
+              io_context   = mo_context
+            ).
+            lo_api_exception_processor->process_exceptions(
+              IMPORTING
+                ev_warnings_only = lv_warnings_only
+            ).
+            IF lv_warnings_only = abap_true.
+              "TODO: CHECK Return value
+              "READ TABLE LT_PROTOCOL INTO LS_PROT INDEX 1.
+              copy_data_to_ref(
+                EXPORTING
+                  is_data = lt_protocol
+                CHANGING
+                  cr_data = er_data
+              ).
+            ENDIF.
+        ENDTRY.
+      WHEN 'DeleteAllHandlingUnitsFromDelivery'.
+        "Delete all HUs from delivery document
+        DATA(lo_collector) = cl_api_le_dlv_upd_coll_factory=>get_instance( ).
+
+        mo_api_hu->delete_all_handling_units(
+          EXPORTING
+            io_collector        = lo_collector
+            iv_deliverydocument = ls_fi_params-deliverydocument
+            io_context          = mo_context
+        ).
+
+    ENDCASE.
+
+  ENDMETHOD.

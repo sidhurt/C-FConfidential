@@ -1,0 +1,76 @@
+﻿  METHOD changeset_process_cancel_item.
+
+    DATA:
+      ls_changeset_response     TYPE /iwbep/if_mgw_appl_types=>ty_s_changeset_response,
+      ls_item_parameter         TYPE odata_mm_im_act_mdoc_cancl_itm,
+      lv_materialdocumentnumber TYPE a_materialdocumentheader-materialdocument, "amatdochead-materialdocument,         "18.02.2021 ER9K8APIRW Remove SQL-View usage for Reference Data Source Services
+      lv_materialdocumentyear   TYPE a_materialdocumentheader-materialdocumentyear, "amatdochead-materialdocumentyear, "18.02.2021 ER9K8APIRW Remove SQL-View usage for Reference Data Source Services
+      lv_postingdate            TYPE a_materialdocumentheader-postingdate, "amatdochead-postingdate,                   "18.02.2021 ER9K8APIRW Remove SQL-View usage for Reference Data Source Services
+      lt_item_cancel            TYPE if_material_document_api=>tt_item_cancel,
+      lt_item_output            TYPE if_material_document_api=>tt_item_output.
+
+    DATA(lo_api) = cl_mdoc_api_factory=>get_api( ).
+
+    LOOP AT it_changeset_request INTO DATA(ls_changeset_request).
+      DATA(lo_tech_request_context_fi) = CAST /iwbep/if_mgw_req_func_import(  ls_changeset_request-request_context ).
+
+      lo_tech_request_context_fi->get_converted_parameters(
+        IMPORTING
+          es_parameter_values = ls_item_parameter ).
+      " Add missing 0 at the beginning of the key
+      CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+        EXPORTING
+          input  = ls_item_parameter-materialdocument
+        IMPORTING
+          output = ls_item_parameter-materialdocument.
+      IF lv_materialdocumentnumber IS INITIAL.
+        lv_materialdocumentnumber = ls_item_parameter-materialdocument.
+        lv_materialdocumentyear   = ls_item_parameter-materialdocumentyear.
+        lv_postingdate            = ls_item_parameter-postingdate.
+      ENDIF.
+      IF lv_materialdocumentnumber <> ls_item_parameter-materialdocument OR
+         lv_materialdocumentyear <> ls_item_parameter-materialdocumentyear OR
+         lv_postingdate <> ls_item_parameter-postingdate.
+        DATA(lo_msg_container) = mo_context->get_message_container( ).
+        illegal_operation_combination( lo_msg_container ).
+      ENDIF.
+
+      INSERT ls_item_parameter-materialdocumentitem INTO TABLE lt_item_cancel.
+    ENDLOOP.
+
+    adapt_cold_store_access( iv_search_year = lv_materialdocumentyear ).
+
+    cancel_item(
+      EXPORTING
+        io_api                       = lo_api
+        io_msg_container             = ls_changeset_request-msg_container
+        io_tech_request_context      = lo_tech_request_context_fi
+        iv_is_changeset              = abap_true
+        iv_postingdate               = lv_postingdate
+        iv_materialdocument          = lv_materialdocumentnumber
+        iv_materialdocumentyear      = lv_materialdocumentyear
+        it_materialdocumentitem      = lt_item_cancel
+      IMPORTING
+        et_item                      = lt_item_output ).
+
+    SORT lt_item_output BY reversedmaterialdocumentitem.
+    LOOP AT it_changeset_request INTO ls_changeset_request.
+      ls_changeset_response-operation_no = ls_changeset_request-operation_no.
+
+      lo_tech_request_context_fi = CAST /iwbep/if_mgw_req_func_import(  ls_changeset_request-request_context ).
+      lo_tech_request_context_fi->get_converted_parameters(
+        IMPORTING
+          es_parameter_values = ls_item_parameter ).
+
+      READ TABLE lt_item_output INTO DATA(ls_item_output) WITH KEY reversedmaterialdocumentitem = ls_item_parameter-materialdocumentitem BINARY SEARCH.
+      CHECK sy-subrc = 0.
+      copy_data_to_ref(
+        EXPORTING
+          is_data = ls_item_output
+        CHANGING
+          cr_data = ls_changeset_response-entity_data ).
+      INSERT ls_changeset_response INTO TABLE ct_changeset_response.
+
+    ENDLOOP.
+
+  ENDMETHOD.

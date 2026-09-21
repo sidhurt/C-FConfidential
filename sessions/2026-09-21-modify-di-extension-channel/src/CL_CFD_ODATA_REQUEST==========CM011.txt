@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~is_crp_cached_request.
+    RETURN ##NEEDED.
+  ENDMETHOD.

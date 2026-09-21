@@ -1,0 +1,25 @@
+﻿  METHOD raise_etag_error.
+    DATA:
+      lv_entity_type TYPE string.
+
+    IF iv_etag_result = precondition_required.
+      IF iv_vbtyp = 'J'.
+        lv_entity_type = entity_type-header_outbound.
+      ELSEIF iv_vbtyp = '7'.
+        lv_entity_type = entity_type-header_inbound.
+      ELSE.
+        lv_entity_type = entity_type-header_returns.
+      ENDIF.
+
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          textid           = /iwbep/cx_mgw_busi_exception=>precondition_required
+          http_status_code = /iwbep/cx_mgw_busi_exception=>gcs_http_status_codes-precondition_required
+          entity_type      = lv_entity_type.
+    ELSE.
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          textid           = /iwbep/cx_mgw_busi_exception=>precondition_failed
+          http_status_code = /iwbep/cx_mgw_busi_exception=>gcs_http_status_codes-precondition_failed.
+    ENDIF.
+  ENDMETHOD.

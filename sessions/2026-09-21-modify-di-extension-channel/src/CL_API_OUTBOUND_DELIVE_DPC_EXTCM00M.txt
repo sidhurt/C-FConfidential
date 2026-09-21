@@ -1,0 +1,52 @@
+﻿  METHOD lock_delivery.
+    CALL FUNCTION 'ENQUEUE_EDLV'
+      EXPORTING
+        vbeln          = im_deliverydocument
+      EXCEPTIONS
+        foreign_lock   = 1
+        system_failure = 2
+        OTHERS         = 3.
+
+    IF sy-subrc <> 0.
+      CASE sy-subrc.
+        WHEN 1.
+          mo_context->get_message_container( )->add_message(
+            EXPORTING
+              iv_msg_type               = 'E'    " Message Type
+              iv_msg_id                 = 'LE_SHP_ODATA_API_OD'    " Message Class
+              iv_msg_number             = 003    " Message Number
+*              IV_MSG_TEXT               =     " Message Text
+              iv_msg_v1                 = sy-msgv1    " Message Variable
+              iv_msg_v2                 = sy-msgv2    " Message Variable
+              iv_msg_v3                 = sy-msgv3    " Message Variable
+              iv_msg_v4                 = sy-msgv4    " Message Variable
+          ).
+          RAISE EXCEPTION TYPE /iwbep/cx_mgw_tech_exception
+            EXPORTING
+              textid            = /iwbep/cx_mgw_tech_exception=>internal_error
+              message_container = mo_context->get_message_container( ).
+        WHEN 2.
+          mo_context->get_message_container( )->add_message(
+            EXPORTING
+              iv_msg_type               = 'E'    " Message Type
+              iv_msg_id                 = 'LE_SHP_ODATA_API_OD'    " Message Class
+              iv_msg_number             = 004    " Message Number
+          ).
+          RAISE EXCEPTION TYPE /iwbep/cx_mgw_tech_exception
+            EXPORTING
+              textid            = /iwbep/cx_mgw_tech_exception=>internal_error
+              message_container = mo_context->get_message_container( ).
+        WHEN OTHERS.
+          mo_context->get_message_container( )->add_message(
+            EXPORTING
+              iv_msg_type               = sy-msgty    " Message Type
+              iv_msg_id                 = sy-msgid    " Message Class
+              iv_msg_number             = sy-msgno    " Message Number
+          ).
+          RAISE EXCEPTION TYPE /iwbep/cx_mgw_tech_exception
+            EXPORTING
+              textid            = /iwbep/cx_mgw_tech_exception=>internal_error
+              message_container = mo_context->get_message_container( ).
+      ENDCASE.
+    ENDIF.
+  ENDMETHOD.

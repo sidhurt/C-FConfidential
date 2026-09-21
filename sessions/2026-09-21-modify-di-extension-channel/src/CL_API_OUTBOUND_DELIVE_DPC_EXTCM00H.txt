@@ -1,0 +1,39 @@
+﻿  METHOD a_outbdeliverydo_update_entity.
+    DATA: ls_entity    TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliverydocflowtype,
+          ls_error_log TYPE ty_s_vbfs,
+          lt_protocol  TYPE TABLE OF prott,
+          lv_exception TYPE REF TO cx_od_api_exception.
+
+    io_tech_request_context->get_converted_keys(
+      IMPORTING
+        es_key_values = ls_entity    " Entity Key Values - converted
+    ).
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = er_entity
+    ).
+
+    lock_delivery( im_deliverydocument = ls_entity-precedingdocument ).
+
+    TRY .
+        DATA(lo_od_iref) = cl_outbound_delivery_factory=>get_instance( ).
+        lo_od_iref->update_picking_quantity(
+          EXPORTING
+            im_deliverydocument     = ls_entity-precedingdocument    " Sales and Distribution Document Number
+            im_deliverydocumentitem = ls_entity-precedingdocumentitem    " Item number of the SD document
+            im_quantity             = er_entity-quantityinbaseunit    " Pick/stock quantity in sales units
+          IMPORTING
+            ex_error_log            = ls_error_log
+            ex_protocol             = lt_protocol
+        ).
+      CATCH cx_od_api_exception INTO lv_exception.
+        DATA(lo_exception_processor) = NEW lcl_exception_processor( ).
+        lo_exception_processor->process_update_exceptions(
+          EXPORTING
+            io_exception   = lv_exception
+          CHANGING
+            io_api_context = mo_context
+        ).
+    ENDTRY.
+  ENDMETHOD.

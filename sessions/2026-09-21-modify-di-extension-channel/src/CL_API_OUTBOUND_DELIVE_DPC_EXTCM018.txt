@@ -1,0 +1,8 @@
+﻿  METHOD constructor.
+    super->constructor( ).
+    mo_partn_addr = NEW cl_shp_api2_partn_addr_helper( ).
+    mo_api_text = NEW cl_shp_api2_text_process( ).
+    mo_api_hu = NEW cl_lo_hu_delivery_api_hu( ).
+    mo_header_process = NEW cl_shp_api2_header_process( ).
+    mo_dlv_read_fi = NEW cl_shp_api2_dlv_read_fi( vbtyp_j ).
+  ENDMETHOD.

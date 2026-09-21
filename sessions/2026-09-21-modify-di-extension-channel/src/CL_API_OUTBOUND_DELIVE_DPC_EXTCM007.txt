@@ -1,0 +1,26 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~get_is_condi_imple_for_action.
+
+    IF   iv_action_name = 'PostGoodsIssue'
+      OR iv_action_name = 'PickOneItem'
+      OR iv_action_name = 'PickOneItemWithSalesQuantity'
+      OR iv_action_name = 'PickOneItemWithBaseQuantity'
+      OR iv_action_name = 'PickAndBatchSplitOneItem'
+      OR iv_action_name = 'CreateBatchSplitItem'
+      OR iv_action_name = 'PickAllItems'
+      OR iv_action_name = 'SetPickingQuantityWithBaseQuantity'
+      OR iv_action_name = 'AddSerialNumberToDeliveryItem'
+      OR iv_action_name = 'DeleteAllSerialNumbersFromDeliveryItem'
+      OR iv_action_name = 'DeleteSerialNumberFromDeliveryItem'
+      OR iv_action_name = 'ConfirmPickingOneItem'
+      OR iv_action_name = 'ConfirmPickingAllItems'
+      OR iv_action_name = 'DeleteAllHandlingUnitsFromDelivery'.
+
+      rv_conditional_active = abap_true.
+    ELSE.
+      rv_conditional_active = abap_false.
+    ENDIF.
+
+*    Important to note:
+*    The framework does not do a generic conditional handling (requests with http header if-match)
+*    for function imports / actions.
+  ENDMETHOD.

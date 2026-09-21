@@ -1,0 +1,53 @@
+﻿  METHOD write_nav_anno_entityset.
+
+    DATA: lv_term TYPE string.
+
+    READ TABLE it_nav INTO DATA(ls_nav) INDEX 1.
+
+    "Please just change the Schema Namespace and Entity Container Name as per your API in the code line below.
+    DATA(lv_target) = 'API_MATERIAL_DOCUMENT_SRV.' && 'API_MATERIAL_DOCUMENT_SRV_Entities/'
+                   && ls_nav-entity_set.
+
+    DATA(lo_target) = vocab_anno_model->create_annotations_target(
+                        iv_target = lv_target  ).
+
+
+    DATA(lo_collection) = lo_target->create_annotation(
+    iv_term = 'Capabilities.NavigationRestrictions'
+              )->create_record( )->create_property( iv_property_name = 'RestrictedProperties'
+              )->create_collection( ).
+
+
+    LOOP AT it_nav INTO ls_nav.
+      "Every Association to entity set creates a record
+      DATA(lo_record) = lo_collection->create_record( ).
+
+      lo_record->create_property( iv_property_name = 'NavigationProperty'
+              )->create_simple_value(
+              )->set_nav_property_path( ls_nav-nav_property ).
+
+      CASE ls_nav-operation_type.
+        WHEN 'GET'.
+          lv_term = 'ReadRestrictions'.
+        WHEN 'POST'.
+          lv_term = 'InsertRestrictions'.
+        WHEN 'PATCH'.
+          lv_term = 'UpdateRestrictions'.
+        WHEN 'DELETE'.
+          lv_term = 'DeleteRestrictions'.
+      ENDCASE.
+
+      DATA(lo_property) = lo_record->create_property( iv_property_name = lv_term ).
+
+      DATA(lo_record_inner) = lo_property->create_record( ).
+
+      lo_record_inner->create_property( iv_property_name = 'Description'
+                    )->create_simple_value( )->set_string( ls_nav-description ).
+
+      lo_record_inner->create_property( iv_property_name = 'LongDescription'
+                    )->create_simple_value( )->set_string( ls_nav-long_description ).
+
+
+    ENDLOOP.
+
+  ENDMETHOD.

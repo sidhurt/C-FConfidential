@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~get_filter_expression_tree.
+    RETURN ##NEEDED.
+  ENDMETHOD.

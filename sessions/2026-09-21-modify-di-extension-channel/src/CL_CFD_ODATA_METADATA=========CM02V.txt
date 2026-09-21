@@ -1,0 +1,24 @@
+﻿  METHOD handle_disabled_cds_elements.
+
+    DATA(lt_rds_extended_entities) = mo_odata_buffer->get_rds_extended_entities( ).
+    IF lt_rds_extended_entities IS NOT INITIAL.
+      DATA(lt_disabled_cds_elements) = mo_sadl_integration->get_disabled_cds_elements(
+        VALUE #( FOR ls_rds_entity IN lt_rds_extended_entities ( ls_rds_entity-cds_view_name ) )
+      ).
+
+      LOOP AT lt_disabled_cds_elements REFERENCE INTO DATA(lr_disabled_cds_elements).
+        DATA(lr_rds_extended_entity) = REF #( lt_rds_extended_entities[ cds_view_name = lr_disabled_cds_elements->cds_view_name ] ).
+        DATA(lo_entity_type) = ms_model_context-model->get_entity_type( lr_rds_extended_entity->entity_type_name ).
+        DATA(lo_property_exposure) = cl_cfd_odata_property_exposure=>create_instance(
+          is_model_context = ms_model_context
+          io_entity_type   = lo_entity_type
+        ).
+        LOOP AT lr_disabled_cds_elements->elements INTO DATA(lv_element).
+          IF lo_property_exposure->exists_property( lv_element ).
+            lo_property_exposure->get_property( iv_abap_name = lv_element )->set_disabled( ).
+          ENDIF.
+        ENDLOOP.
+      ENDLOOP.
+    ENDIF.
+
+  ENDMETHOD.

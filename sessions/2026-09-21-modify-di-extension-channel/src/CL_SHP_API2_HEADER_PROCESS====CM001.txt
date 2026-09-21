@@ -1,0 +1,40 @@
+﻿  METHOD if_shp_api2_header_process~delete_entity.
+    DATA:
+      ls_entity_key TYPE i_deliverydocument,
+      ls_vbkok      TYPE vbkok,
+      lo_api_helper TYPE REF TO if_shp_api2_helper.
+
+    io_tech_request_context->get_converted_keys(
+      IMPORTING
+        es_key_values = ls_entity_key ).
+
+    TRY.
+        lo_api_helper = NEW cl_shp_api2_helper( ).
+        lo_api_helper->lock_delivery( ls_entity_key-deliverydocument ).
+
+        ls_vbkok = VALUE #( vbeln = ls_entity_key-deliverydocument likp_del = 'X' ).
+
+        io_collector->update(
+          EXPORTING
+            is_vbkok = ls_vbkok ).
+
+      CATCH cx_shp_api2_exception INTO DATA(lo_shp_exception).
+      CATCH cx_od_api_exception INTO DATA(lo_exception).
+        lo_shp_exception = cl_shp_api2_helper=>get( )->get_shp_exception( lo_exception ).
+    ENDTRY.
+
+    IF lo_shp_exception IS BOUND.
+      MESSAGE e026(le_shp_odata_api_od) INTO DATA(ls_msg).
+      lo_shp_exception->set_leading_message(
+        EXPORTING
+          is_message = VALUE #(
+            msgid = sy-msgid
+            msgno = sy-msgno
+            msgty = sy-msgty
+            msgv1 = |{ ls_entity_key-deliverydocument ALPHA = OUT }| ) ).
+      mo_api_helper->raise_business_exception(
+        EXPORTING
+          io_exception = lo_shp_exception
+          io_context   = io_context ).
+    ENDIF.
+  ENDMETHOD.

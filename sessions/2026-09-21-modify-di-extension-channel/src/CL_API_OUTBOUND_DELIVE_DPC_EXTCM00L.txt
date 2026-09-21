@@ -1,0 +1,23 @@
+﻿  METHOD get_patched_fields.
+    DATA: lo_type_descr_1   TYPE REF TO cl_abap_typedescr,
+          lo_struct_descr_1 TYPE REF TO cl_abap_structdescr.
+    FIELD-SYMBOLS: <fs_value_1> TYPE any,
+                   <fs_value_2> TYPE any.
+    ev_is_any_change = abap_false.
+    lo_type_descr_1 ?= cl_abap_typedescr=>describe_by_data( p_data = im_struct_1 ).
+
+    IF lo_type_descr_1->type_kind EQ cl_abap_typedescr=>typekind_struct2 OR
+       lo_type_descr_1->type_kind EQ cl_abap_typedescr=>typekind_struct1.
+      lo_struct_descr_1 ?= cl_abap_structdescr=>describe_by_data( p_data = im_struct_1 ).
+      LOOP AT lo_struct_descr_1->components ASSIGNING FIELD-SYMBOL(<fs_comp_1>).
+        ASSIGN COMPONENT sy-tabix OF STRUCTURE im_struct_1 TO <fs_value_1>.
+        ASSIGN COMPONENT sy-tabix OF STRUCTURE im_struct_2 TO <fs_value_2>.
+
+        IF <fs_value_1> NE <fs_value_2>.
+          ASSIGN COMPONENT <fs_comp_1>-name OF STRUCTURE ex_struct TO FIELD-SYMBOL(<fs_target_value>).
+          <fs_target_value> = <fs_value_1>.
+          ev_is_any_change = abap_true.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.

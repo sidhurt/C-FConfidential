@@ -1,0 +1,12 @@
+﻿  METHOD if_cfd_odata_runtime_vh_facade~execute_value_help_request.
+
+    mo_vh_provider_cfd->set_value_help_request( io_value_help_request ).
+    mo_vh_provider_cfd->get_entityset(
+      EXPORTING
+        io_tech_request_context = io_value_help_request
+      IMPORTING
+        er_entityset            = er_entityset
+    ).
+    mo_vh_provider_cfd->reset_value_help_request( ).
+
+  ENDMETHOD.

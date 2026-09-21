@@ -1,0 +1,51 @@
+﻿  METHOD if_cfd_odata_runtime_context~get_application_dpc.
+
+    DATA lv_dpc_ext_class_name  TYPE seoclname.
+    DATA lv_namespace           TYPE string.
+    DATA lv_service_name        TYPE string.
+    DATA lv_service_version     TYPE numc4.
+
+    " for compatibility reasons, we have to create our own DPC instance (if not provided)
+    IF mo_application_dpc IS INITIAL.
+      IF mo_gw_context IS NOT INITIAL.
+        mo_gw_context->get_parameter(
+          EXPORTING
+            iv_name  = /iwbep/if_mgw_context=>gc_param_dpc
+          IMPORTING
+            ev_value = lv_dpc_ext_class_name ).
+
+        mo_gw_context->get_parameter(
+          EXPORTING
+            iv_name  = /iwbep/if_mgw_context=>gc_param_isn
+          IMPORTING
+            ev_value = lv_service_name ).
+
+        mo_gw_context->get_parameter(
+          EXPORTING
+            iv_name  = /iwbep/if_mgw_context=>gc_param_isv
+          IMPORTING
+            ev_value = lv_service_version ).
+
+        mo_gw_context->get_parameter(
+          EXPORTING
+            iv_name  = /iwbep/if_mgw_context=>gc_param_service_namespace
+          IMPORTING
+            ev_value = lv_namespace ).
+
+        IF lv_dpc_ext_class_name IS NOT INITIAL.
+          CREATE OBJECT mo_application_dpc TYPE (lv_dpc_ext_class_name).
+          mo_application_dpc->init(
+            iv_service_document_name = lv_service_name
+            iv_namespace             = lv_namespace
+            iv_version               = lv_service_version
+            io_context               = mo_gw_context ).
+
+        ENDIF.
+
+      ENDIF.
+
+    ENDIF.
+
+    ro_dpc = mo_application_dpc.
+
+  ENDMETHOD.

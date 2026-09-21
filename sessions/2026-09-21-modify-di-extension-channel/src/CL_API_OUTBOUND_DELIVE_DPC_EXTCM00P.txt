@@ -1,0 +1,388 @@
+﻿  METHOD map_expanded_header_to_odata.
+    DATA:
+      dat         TYPE d,
+      tim         TYPE t,
+      tz          TYPE ttzz-tzone,
+      timestamp_c TYPE c LENGTH 14,
+      head        TYPE likpvb,
+      item        TYPE leshp_delivery_item_t,
+      doc_flow    TYPE leshp_delivery_document_flow_t,
+      ls_item     TYPE ty_s_items,
+      ls_header   TYPE ty_s_headers,
+      ls_docflow  TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliverydocflowtype.
+
+    FIELD-SYMBOLS:
+      <fs_item>    TYPE lipsvb,
+      <fs_docflow> TYPE vbfavb.
+
+    head = im_delivery-head.
+    item     = im_delivery-item.
+    doc_flow  = im_delivery-doc_flow.
+
+    ls_header-actualdeliveryroute = head-routa.
+    ls_header-shippinglocationtimezone  = head-tzonis.
+    ls_header-actualgoodsmovementdate  = head-wadat_ist .
+    ls_header-receivinglocationtimezone  = head-tzonrc.
+    ls_header-actualgoodsmovementtime = head-spe_wauhr_ist.
+    ls_header-billingdocumentdate = head-fkdat.
+    ls_header-billoflading = head-bolnr.
+    ls_header-completedeliveryisdefined = head-autlf.
+    ls_header-confirmationtime = head-potim.
+    ls_header-createdbyuser = head-ernam.
+    ls_header-creationdate = head-erdat.
+    ls_header-creationtime = head-erzet .
+    ls_header-customergroup = head-kdgrp.
+    ls_header-deliveryblockreason = head-lifsk.
+    ls_header-deliverydate = head-lfdat.
+    ls_header-deliverydocument = head-vbeln.
+    ls_header-deliverydocumentbysupplier = head-lifex.
+    ls_header-deliverydocumenttype = head-lfart.
+    ls_header-deliveryisinplant = head-imwrk.
+    ls_header-deliverypriority = head-lprio.
+    ls_header-deliverytime = head-lfuhr.
+    ls_header-deliveryversion = head-dlv_version.
+    ls_header-depreciationpercentage = head-akprz.
+    ls_header-distrstatusbydecentralizedwrhs = head-vlstk.
+    ls_header-documentdate = head-bldat.
+    ls_header-externalidentificationtype = head-spe_lifex_type.
+    ls_header-externaltransportsystem = head-tpsid.
+    ls_header-factorycalendarbycustomer = head-knfak.
+    ls_header-goodsissueorreceiptslipnumber = head-xabln.
+    ls_header-goodsissuetime = head-wauhr.
+    ls_header-handlingunitinstock = head-vestk.
+    ls_header-hdrgeneralincompletionstatus = head-uvall.
+    ls_header-hdrgoodsmvtincompletionstatus = head-uvwak.
+    ls_header-headerbillgincompletionstatus = head-uvfak.
+    ls_header-headerbillingblockreason = head-faksk.
+    ls_header-headerdelivincompletionstatus = head-uvvlk.
+    ls_header-headergrossweight = head-btgew.
+    ls_header-headernetweight = head-ntgew .
+    ls_header-headerpackingincompletionsts = head-uvpak.
+    ls_header-headerpickgincompletionstatus = head-uvpik.
+    ls_header-headervolume = head-volum.
+    ls_header-headervolumeunit = head-voleh.
+    ls_header-headerweightunit = head-gewei.
+    ls_header-incotermsclassification = head-inco1.
+    ls_header-incotermstransferlocation = head-inco2.
+    ls_header-intercompanybillingdate = head-fkdiv.
+    ls_header-internalfinancialdocument = head-lcnum.
+    ls_header-isdeliveryforsinglewarehouse = head-lispl.
+    ls_header-isexportdelivery = head-expkz.
+    ls_header-lastchangedate = head-aedat.
+    ls_header-lastchangedbyuser = head-aenam .
+    ls_header-loadingdate = head-lddat.
+    ls_header-loadingpoint = head-lstel.
+    ls_header-loadingtime = head-lduhr.
+    ls_header-meansoftransport = head-traid.
+    ls_header-meansoftransportrefmaterial = head-trmtyp.
+    ls_header-meansoftransporttype = head-traty.
+    ls_header-ordercombinationisallowed = head-kzazu.
+    ls_header-orderid = head-ternr.
+    ls_header-overalldelivconfstatus = head-bestk.
+    ls_header-overalldelivreltdbillgstatus = head-fkstk.
+    ls_header-overallgoodsmovementstatus = head-wbstk.
+    ls_header-overallintcobillingstatus = head-fkivk.
+    ls_header-overallpackingstatus = head-pkstk.
+    ls_header-overallpickingconfstatus = head-koquk.
+    ls_header-overallpickingstatus = head-kostk.
+    ls_header-overallproofofdeliverystatus = head-pdstk.
+    ls_header-overallsdprocessstatus = head-gbstk.
+    ls_header-overallwarehouseactivitystatus = head-lvstk.
+    ls_header-ovrlitmdelivincompletionsts = head-uvvls.
+    ls_header-ovrlitmgdsmvtincompletionsts = head-uvwas.
+    ls_header-ovrlitmgeneralincompletionsts = head-uvals.
+    ls_header-ovrlitmpackingincompletionsts = head-uvpas.
+    ls_header-ovrlitmpickingincompletionsts = head-uvpis.
+    ls_header-paymentguaranteeprocedure = head-abssc.
+    ls_header-pickeditemslocation = head-berot.
+    ls_header-pickingdate = head-kodat.
+    ls_header-pickingtime = head-kouhr.
+    ls_header-plannedgoodsissuedate = head-wadat.
+    ls_header-proofofdeliverydate = head-podat.
+    ls_header-proposeddeliveryroute = head-route.
+    ls_header-receivingplant = head-werks.
+    ls_header-routeschedule = head-aulwe.
+    ls_header-salesdistrict = head-bzirk.
+    ls_header-salesoffice = head-vkbur.
+    ls_header-salesorganization = head-vkorg.
+    ls_header-sddocumentcategory = head-vbtyp.
+    ls_header-shipmentblockreason = head-trspg.
+    ls_header-shippingcondition = head-vsbed.
+    ls_header-shippingpoint = head-vstel.
+    ls_header-shippingtype = head-vsart.
+    ls_header-shiptoparty = head-kunnr.
+    ls_header-soldtoparty = head-kunag.
+    ls_header-specialprocessingcode = head-sdabw.
+    ls_header-statisticscurrency = head-stwae.
+    ls_header-supplier = head-lifnr.
+    ls_header-totalblockstatus = head-spstg.
+    ls_header-totalcreditcheckstatus = head-cmgst.
+    ls_header-totalnumberofpackage = head-anzpk.
+    ls_header-transactioncurrency = head-waerk .
+    ls_header-transportationgroup = head-tragr.
+    ls_header-transportationplanningdate = head-tddat.
+    ls_header-transportationplanningstatus = head-trsta .
+    ls_header-transportationplanningtime = head-tduhr.
+    ls_header-unloadingpointname = head-ablad .
+    ls_header-warehouse = head-lgnum.
+    ls_header-warehousegate = head-lgtor.
+    ls_header-warehousestagingarea = head-lgbzo.
+    MOVE-CORRESPONDING head-ext TO ls_header-ext.
+
+
+    IF ls_header-creationtime IS NOT INITIAL AND
+       ls_header-creationdate IS NOT INITIAL.
+      tz  = ls_header-shippinglocationtimezone.
+      tim = ls_header-creationtime.
+      dat = ls_header-creationdate.
+      CONVERT DATE dat TIME tim
+              INTO TIME STAMP DATA(time_stamp) TIME ZONE tz.
+      timestamp_c = time_stamp.
+      ls_header-creationtime = timestamp_c+8(6).
+      ls_header-creationdate = timestamp_c(8).
+    ENDIF.
+
+    IF ls_header-pickingtime IS NOT INITIAL AND
+       ls_header-pickingdate IS NOT INITIAL.
+      tz  = ls_header-shippinglocationtimezone.
+      tim = ls_header-pickingtime.
+      dat = ls_header-pickingdate.
+      CONVERT DATE dat TIME tim
+              INTO TIME STAMP time_stamp TIME ZONE tz.
+      timestamp_c = time_stamp.
+      ls_header-pickingtime = timestamp_c+8(6).
+      ls_header-pickingdate = timestamp_c(8).
+    ENDIF.
+
+    IF ls_header-goodsissuetime IS NOT INITIAL AND
+       ls_header-plannedgoodsissuedate IS NOT INITIAL.
+      tz  = ls_header-shippinglocationtimezone.
+      tim = ls_header-goodsissuetime.
+      dat = ls_header-plannedgoodsissuedate.
+      CONVERT DATE dat TIME tim
+              INTO TIME STAMP time_stamp TIME ZONE tz.
+      timestamp_c = time_stamp.
+      ls_header-goodsissuetime = timestamp_c+8(6).
+      ls_header-plannedgoodsissuedate = timestamp_c(8).
+    ENDIF.
+
+    IF ls_header-deliverytime IS NOT INITIAL AND
+       ls_header-deliverydate IS NOT INITIAL.
+      tz  = ls_header-receivinglocationtimezone.
+      tim = ls_header-deliverytime.
+      dat = ls_header-deliverydate.
+      CONVERT DATE dat TIME tim
+              INTO TIME STAMP time_stamp TIME ZONE tz.
+      timestamp_c = time_stamp.
+      ls_header-deliverytime = timestamp_c+8(6).
+      ls_header-deliverydate = timestamp_c(8).
+    ENDIF.
+
+    IF ls_header-transportationplanningtime IS NOT INITIAL AND
+       ls_header-transportationplanningdate IS NOT INITIAL.
+      tz  = ls_header-shippinglocationtimezone.
+      tim = ls_header-transportationplanningtime.
+      dat = ls_header-transportationplanningdate.
+      CONVERT DATE dat TIME tim
+              INTO TIME STAMP time_stamp TIME ZONE tz.
+      timestamp_c = time_stamp.
+      ls_header-transportationplanningtime = timestamp_c+8(6).
+      ls_header-transportationplanningdate = timestamp_c(8).
+    ENDIF.
+
+    IF ls_header-loadingtime IS NOT INITIAL AND
+       ls_header-loadingdate IS NOT INITIAL.
+      tz  = ls_header-shippinglocationtimezone.
+      tim = ls_header-loadingtime.
+      dat = ls_header-loadingdate.
+      CONVERT DATE dat TIME tim
+              INTO TIME STAMP time_stamp TIME ZONE tz.
+      timestamp_c = time_stamp.
+      ls_header-loadingtime = timestamp_c+8(6).
+      ls_header-loadingdate = timestamp_c(8).
+    ENDIF.
+
+    LOOP AT item ASSIGNING <fs_item>.
+      CLEAR ls_item.
+      ls_item-actualdeliveredqtyinbaseunit = <fs_item>-lgmng.
+      ls_item-deliveryversion = head-dlv_version.
+      ls_item-actualdeliveryquantity = <fs_item>-lfimg.
+      ls_item-additionalcustomergroup1 = <fs_item>-kvgr1.
+      ls_item-additionalcustomergroup2 = <fs_item>-kvgr2.
+      ls_item-additionalcustomergroup3 = <fs_item>-kvgr3.
+      ls_item-additionalcustomergroup4 = <fs_item>-kvgr4.
+      ls_item-additionalcustomergroup5 = <fs_item>-kvgr5.
+      ls_item-additionalmaterialgroup1 = <fs_item>-mvgr1.
+      ls_item-additionalmaterialgroup2 = <fs_item>-mvgr2.
+      ls_item-additionalmaterialgroup3 = <fs_item>-mvgr3.
+      ls_item-additionalmaterialgroup4 = <fs_item>-mvgr4.
+      ls_item-additionalmaterialgroup5 = <fs_item>-mvgr5.
+      ls_item-alternateproductnumber = <fs_item>-spe_alternate.
+      ls_item-baseunit = <fs_item>-meins.
+      ls_item-batch = <fs_item>-charg.
+      ls_item-batchbysupplier = <fs_item>-lichn.
+      ls_item-batchclassification = <fs_item>-cuobj_ch.
+      ls_item-bomexplosion = <fs_item>-sernr.
+      ls_item-businessarea = <fs_item>-gsber.
+      ls_item-consumptionposting = <fs_item>-kzvbr.
+      ls_item-controllingarea = <fs_item>-kokrs.
+      ls_item-costcenter = <fs_item>-kostl.
+      ls_item-createdbyuser = <fs_item>-ernam.
+      ls_item-creationdate = <fs_item>-erdat.
+      ls_item-creationtime = <fs_item>-erzet.
+      ls_item-custengineeringchgstatus = <fs_item>-aeskd.
+      ls_item-deliverydocument = <fs_item>-vbeln.
+      ls_item-deliverydocumentitem = <fs_item>-posnr.
+      ls_item-deliverydocumentitemcategory = <fs_item>-pstyv.
+      ls_item-deliverydocumentitemtext = <fs_item>-arktx.
+      ls_item-deliverygroup = <fs_item>-grkor.
+      ls_item-deliveryquantityunit = <fs_item>-vrkme.
+      ls_item-deliveryrelatedbillingstatus = <fs_item>-fksta.
+      ls_item-deliverytobasequantitydnmntr = <fs_item>-umvkn.
+      ls_item-deliverytobasequantitynmrtr = <fs_item>-umvkz.
+      ls_item-departmentclassificationbycust = <fs_item>-abtnr.
+      ls_item-distributionchannel = <fs_item>-vtweg.
+      ls_item-division = <fs_item>-spart.
+      ls_item-fixedshipgprocgdurationindays = <fs_item>-vbeaf.
+      ls_item-glaccount = <fs_item>-konto.
+      ls_item-goodsmovementreasoncode = <fs_item>-grund.
+      ls_item-goodsmovementstatus = <fs_item>-wbsta.
+      ls_item-goodsmovementtype = <fs_item>-bwart.
+      ls_item-higherlvlitmofbatspltitm = <fs_item>-uecha.
+      ls_item-higherlevelitem = <fs_item>-uepos.
+      ls_item-inspectionlot = <fs_item>-qplos.
+      ls_item-inspectionpartiallot = <fs_item>-qtlos.
+      ls_item-intercompanybillingstatus = <fs_item>-fkivp.
+      ls_item-internationalarticlenumber = <fs_item>-ean11.
+      ls_item-inventoryspecialstocktype = <fs_item>-sobkz.
+      ls_item-inventoryvaluationtype = <fs_item>-bwtar.
+      ls_item-iscompletelydelivered = <fs_item>-spe_gen_elikz.
+      ls_item-isnotgoodsmovementsrelevant = <fs_item>-nowab.
+      ls_item-isseparatevaluation = <fs_item>-bwtex.
+      ls_item-issgorrcvgbatch = <fs_item>-umcha.
+      ls_item-issgorrcvgmaterial = <fs_item>-ummat.
+      ls_item-issgorrcvgspclstockind = <fs_item>-umsok.
+      ls_item-issgorrcvgstockcategory = <fs_item>-umbsq.
+      ls_item-issgorrcvgvaluationtype = <fs_item>-umbar.
+      ls_item-issuingorreceivingplant = <fs_item>-umwrk.
+      ls_item-issuingorreceivingstorageloc = <fs_item>-umlgo.
+      ls_item-itembillingblockreason = <fs_item>-faksp.
+      ls_item-itembillingincompletionstatus = <fs_item>-uvfak.
+      ls_item-itemdeliveryincompletionstatus = <fs_item>-uvvlk.
+      ls_item-itemgdsmvtincompletionsts = <fs_item>-uvwak.
+      ls_item-itemgeneralincompletionstatus = <fs_item>-uvall.
+      ls_item-itemgrossweight = <fs_item>-brgew.
+      ls_item-itemisbillingrelevant = <fs_item>-fkrel.
+      ls_item-itemnetweight = <fs_item>-ntgew.
+      ls_item-itempackingincompletionstatus = <fs_item>-uvpak.
+      ls_item-itempickingincompletionstatus = <fs_item>-uvpik.
+      ls_item-itemvolume = <fs_item>-volum.
+      ls_item-itemvolumeunit = <fs_item>-voleh.
+      ls_item-itemweightunit = <fs_item>-gewei.
+      ls_item-lastchangedate = <fs_item>-aedat.
+      ls_item-loadinggroup = <fs_item>-ladgr.
+      ls_item-manufacturedate = <fs_item>-hsdat.
+      ls_item-material = <fs_item>-matnr.
+      ls_item-materialbycustomer = <fs_item>-kdmat.
+      ls_item-materialfreightgroup = <fs_item>-mfrgr.
+      ls_item-materialgroup = <fs_item>-matkl.
+      ls_item-materialisbatchmanaged = <fs_item>-xchpf.
+      ls_item-materialisintbatchmanaged = <fs_item>-xchar.
+      ls_item-numberofserialnumbers = <fs_item>-anzsn.
+      ls_item-orderid = <fs_item>-aufnr.
+      ls_item-orderitem = <fs_item>-posnr_pp.
+      ls_item-originaldeliveryquantity = <fs_item>-ormng.
+      ls_item-originallyrequestedmaterial = <fs_item>-matwa.
+      ls_item-overdelivtolrtdlmtratioinpct = <fs_item>-uebto.
+      ls_item-packingstatus = <fs_item>-pksta.
+      ls_item-partialdeliveryisallowed = <fs_item>-kztlf.
+      ls_item-paymentguaranteeform = <fs_item>-abfor.
+      ls_item-pickingconfirmationstatus = <fs_item>-koqua.
+      ls_item-pickingcontrol = <fs_item>-komkz.
+      ls_item-pickingstatus = <fs_item>-kosta.
+      ls_item-plant = <fs_item>-werks.
+      ls_item-primarypostingswitch = <fs_item>-shkzg_um.
+      ls_item-productavailabilitydate = <fs_item>-mbdat.
+      ls_item-productavailabilitytime = <fs_item>-mbuhr.
+      ls_item-productconfiguration = <fs_item>-cuobj.
+      ls_item-producthierarchynode = <fs_item>-prodh.
+      ls_item-profitabilitysegment = <fs_item>-paobjnr.
+      ls_item-profitcenter = <fs_item>-prctr.
+      ls_item-proofofdeliveryrelevancecode = <fs_item>-podrel.
+      ls_item-proofofdeliverystatus = <fs_item>-pdsta.
+      ls_item-quantityisfixed = <fs_item>-fmeng.
+      ls_item-receivingpoint = <fs_item>-empst.
+      ls_item-referencedocumentlogicalsystem = <fs_item>-vgsys.
+      ls_item-referencesddocument = <fs_item>-vgbel.
+      ls_item-referencesddocumentcategory = <fs_item>-vgtyp.
+      ls_item-referencesddocumentitem = <fs_item>-vgpos.
+      ls_item-retailpromotion = <fs_item>-aktnr.
+      ls_item-salesdocumentitemtype = <fs_item>-posar.
+      ls_item-salesgroup = <fs_item>-vkgrp.
+      ls_item-salesoffice = <fs_item>-vkbur.
+      ls_item-sddocumentcategory = head-vbtyp.
+      ls_item-sdprocessstatus = <fs_item>-gbsta.
+      ls_item-shelflifeexpirationdate = <fs_item>-vfdat.
+      ls_item-statisticsdate = <fs_item>-stadat.
+      ls_item-stocktype = <fs_item>-insmk.
+      ls_item-storagebin = <fs_item>-lgpla.
+      ls_item-storagelocation = <fs_item>-lgort.
+      ls_item-storagetype = <fs_item>-lgtyp.
+      ls_item-subsequentmovementtype = <fs_item>-fobwa.
+      ls_item-transportationgroup = <fs_item>-tragr.
+      ls_item-underdelivtolrtdlmtratioinpct = <fs_item>-untto.
+      ls_item-unlimitedoverdeliveryisallowed = <fs_item>-uebtk.
+      ls_item-varblshipgprocgdurationindays = <fs_item>-vbeav.
+      ls_item-warehouse = <fs_item>-lgnum.
+      ls_item-warehouseactivitystatus = <fs_item>-lvsta.
+      ls_item-warehousestagingarea = <fs_item>-lgbzo.
+      ls_item-warehousestockcategory = <fs_item>-bestq.
+      ls_item-warehousestoragebin = <fs_item>-lgpbe.
+      MOVE-CORRESPONDING <fs_item>-ext TO ls_item-ext.
+
+      IF ls_item-creationtime IS NOT INITIAL AND
+         ls_item-creationdate IS NOT INITIAL.
+        tz  = ls_header-shippinglocationtimezone.
+        tim = ls_item-creationtime.
+        dat = ls_item-creationdate.
+        CONVERT DATE dat TIME tim
+                INTO TIME STAMP time_stamp TIME ZONE tz.
+        timestamp_c = time_stamp.
+        ls_item-creationtime = timestamp_c+8(6).
+        ls_item-creationdate = timestamp_c(8).
+      ENDIF.
+
+      IF ls_item-productavailabilitytime IS NOT INITIAL AND
+         ls_item-productavailabilitydate IS NOT INITIAL.
+        tz  = ls_header-shippinglocationtimezone.
+        tim = ls_item-productavailabilitytime.
+        dat = ls_item-productavailabilitydate.
+        CONVERT DATE dat TIME tim
+                INTO TIME STAMP time_stamp TIME ZONE tz.
+        timestamp_c = time_stamp.
+        ls_item-productavailabilitytime = timestamp_c+8(6).
+        ls_item-productavailabilitydate = timestamp_c(8).
+      ENDIF.
+
+      LOOP AT doc_flow ASSIGNING <fs_docflow> WHERE vbelv = <fs_item>-vbeln AND posnv = <fs_item>-posnr.
+        CLEAR ls_docflow.
+        ls_docflow-deliveryversion = head-dlv_version.
+        ls_docflow-precedingdocument  = <fs_docflow>-vbelv .
+        ls_docflow-precedingdocumentcategory  = <fs_docflow>-vbtyp_v.
+        ls_docflow-precedingdocumentitem  = <fs_docflow>-posnv.
+        ls_docflow-subsequentdocument = <fs_docflow>-vbeln.
+        ls_docflow-quantityinbaseunit = <fs_docflow>-rfmng.
+        ls_docflow-subsequentdocumentitem  = <fs_docflow>-posnn.
+        ls_docflow-sdfulfillmentcalculationrule = <fs_docflow>-plmin.
+        ls_docflow-subsequentdocumentcategory = <fs_docflow>-vbtyp_n.
+        ls_docflow-transferorderinwrhsmgmtisconfd = <fs_docflow>-taqui.
+
+        APPEND ls_docflow TO ls_item-to_documentflow.
+      ENDLOOP.
+
+      APPEND ls_item TO ls_header-to_deliverydocumentitem.
+    ENDLOOP.
+
+    em_delivery = ls_header.
+
+  ENDMETHOD.

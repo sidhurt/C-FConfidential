@@ -1,0 +1,14 @@
+﻿  METHOD create_value_help_mapping_key.
+
+    LOOP AT mo_value_help->get_key_property_names( ) INTO DATA(lv_property_name).
+      ASSIGN COMPONENT lv_property_name OF STRUCTURE is_entity TO FIELD-SYMBOL(<lv_key_component>).
+      CHECK sy-subrc EQ 0.
+
+      IF rv_value_help_mapping_key IS NOT INITIAL.
+        rv_value_help_mapping_key = |{ rv_value_help_mapping_key },|.
+      ENDIF.
+
+      rv_value_help_mapping_key = |{ rv_value_help_mapping_key }{ lv_property_name }='{ <lv_key_component> }'|.
+    ENDLOOP.
+
+  ENDMETHOD.

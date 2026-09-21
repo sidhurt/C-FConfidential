@@ -1,0 +1,995 @@
+﻿FUNCTION ws_delivery_update_2.
+*"----------------------------------------------------------------------
+*"*"Global Interface:
+*"  IMPORTING
+*"     VALUE(VBKOK_WA) LIKE  VBKOK STRUCTURE  VBKOK
+*"     VALUE(SYNCHRON) LIKE  RVSEL-XFELD DEFAULT ' '
+*"     VALUE(NO_MESSAGES_UPDATE_1) LIKE  RVSEL-XFELD DEFAULT SPACE
+*"     VALUE(COMMIT) LIKE  RVSEL-XFELD DEFAULT SPACE
+*"     VALUE(DELIVERY) LIKE  LIKP-VBELN
+*"     VALUE(UPDATE_PICKING) LIKE  RVSEL-XFELD DEFAULT SPACE
+*"     VALUE(NICHT_SPERREN_1) LIKE  RVSEL-NO_SP DEFAULT ' '
+*"     VALUE(IF_CONFIRM_CENTRAL) LIKE  RVSEL-XFELD DEFAULT SPACE
+*"     VALUE(IF_WMPP) LIKE  RVSEL-XFELD DEFAULT SPACE
+*"     VALUE(IF_GET_DELIVERY_BUFFERED) LIKE  RVSEL-XFELD DEFAULT SPACE
+*"     VALUE(IF_NO_GENERIC_SYSTEM_SERVICE) LIKE  RVSEL-XFELD DEFAULT
+*"       SPACE
+*"     VALUE(IF_DATABASE_UPDATE_1) TYPE  LESHP_DATABASE_UPDATE DEFAULT
+*"       '1'
+*"     VALUE(IF_NO_INIT_1) TYPE  XFELD DEFAULT SPACE
+*"     VALUE(IF_NO_READ_1) TYPE  XFELD DEFAULT SPACE
+*"     VALUE(IF_ERROR_MESSAGES_SEND) TYPE  XFELD DEFAULT 'X'
+*"     VALUE(IF_NO_BUFFER_REFRESH) TYPE  V50AGL_NO_BUFFER_REFRESH
+*"       DEFAULT SPACE
+*"     VALUE(IT_PARTNER_UPDATE) TYPE  SHP_PARTNER_UPDATE_T OPTIONAL
+*"     VALUE(IT_SERNR_UPDATE) TYPE  SHP_SERNR_UPDATE_T OPTIONAL
+*"     VALUE(IF_NO_REMOTE_CHG_1) LIKE  RVSEL-XFELD DEFAULT SPACE
+*"     VALUE(IF_NO_MES_UPD_PACK) TYPE  V50AGL_NO_MES_UPD_PACK DEFAULT
+*"       SPACE
+*"     VALUE(IF_LATE_DELIVERY_UPD) TYPE  XFELD DEFAULT SPACE
+*"     VALUE(IF_TXT_REINITIALIZE) TYPE  XFELD OPTIONAL
+*"     VALUE(IF_BOR_INIT) TYPE  XFELD DEFAULT SPACE
+*"     VALUE(SPE_MES_NO_SEND_NODIAL) TYPE  XFELD OPTIONAL
+*"     VALUE(IT_LECOMP_1) TYPE  LECOMP_CONSUMPTION_T OPTIONAL
+*"     VALUE(IF_DPP_CHECK_BLOCKED_PAR) TYPE
+*"        LESHP_DPP_CHECK_BLOCKED_PARTNE DEFAULT SPACE
+*"     VALUE(IF_SIMULATE) TYPE  VZ_SIMU_DELIVERY_UPDATE DEFAULT SPACE
+*"     VALUE(IF_NO_BOPF_SAVE) TYPE  SHP_NO_BOPF_SAVE OPTIONAL
+*"     VALUE(IF_REPLACE_HUS) TYPE  XFELD DEFAULT SPACE
+*"     VALUE(IF_HU_NO_UPDATE) TYPE  XFELD DEFAULT SPACE
+*"     VALUE(IF_CHANGE_DECENTRAL) TYPE  DE_V50AGL_CHANGE_DECENTRAL
+*"       DEFAULT SPACE
+*"     VALUE(IF_PRIVILEGED_MODE) TYPE  SHP_PRIVILEGED_MODE OPTIONAL
+*"  EXPORTING
+*"     VALUE(EF_ERROR_ANY) TYPE  XFELD
+*"     VALUE(EF_ERROR_IN_ITEM_DELETION) TYPE  XFELD
+*"     VALUE(EF_ERROR_IN_POD_UPDATE) TYPE  XFELD
+*"     VALUE(EF_ERROR_IN_INTERFACE) TYPE  XFELD
+*"     VALUE(EF_ERROR_IN_GOODS_ISSUE) TYPE  XFELD
+*"     VALUE(EF_ERROR_IN_FINAL_CHECK) TYPE  XFELD
+*"     VALUE(EF_ERROR_PARTNER_UPDATE) TYPE  XFELD
+*"     VALUE(EF_ERROR_SERNR_UPDATE) TYPE  XFELD
+*"  TABLES
+*"      VBPOK_TAB STRUCTURE  VBPOK OPTIONAL
+*"      PROT STRUCTURE  PROTT OPTIONAL
+*"      VERKO_TAB STRUCTURE  VERKO OPTIONAL
+*"      VERPO_TAB STRUCTURE  VERPO OPTIONAL
+*"      VBSUPCON_TAB_1 STRUCTURE  VBSUPCON OPTIONAL
+*"      IT_VERPO_SERNR STRUCTURE  HUM_VERPO_SERNR OPTIONAL
+*"      IT_PACKING STRUCTURE  REPACK_HU_WM OPTIONAL
+*"      IT_PACKING_SERNR STRUCTURE  HUM_REP_SERNR OPTIONAL
+*"      IT_REPACK STRUCTURE  HUM_REPACK OPTIONAL
+*"      IT_HANDLING_UNITS_1 STRUCTURE  HUM_REHANG_HU OPTIONAL
+*"      IT_OBJECTS STRUCTURE  PGR_OBJECTS OPTIONAL
+*"      ET_CREATED_HUS STRUCTURE  VEKPVB OPTIONAL
+*"      TVPOD_TAB STRUCTURE  TVPODVB OPTIONAL
+*"      IT_TEXTH STRUCTURE  TEXTH_GN OPTIONAL
+*"      IT_TEXTL STRUCTURE  TEXTL_GN OPTIONAL
+*"      IT_TMSTMP TYPE  /SPE/TIMESTAMP_T OPTIONAL
+*"      IT_OBJ_QUAN_CHG TYPE  /SPE/INB_OBJ_QUAN_CHG_T OPTIONAL
+*"      IT_VBPOK_SPLIT TYPE  BORGR_VBPOK_SPLIT_T OPTIONAL
+*"      IT_BAPIADDR1 STRUCTURE  BAPIADDR1 OPTIONAL
+*"      IT_HU_HEADER_EPC STRUCTURE  /SPE/HU_HEADER_EPC OPTIONAL
+*"      IT_HU_ITEMS_EPC STRUCTURE  /SPE/HU_ITEMS_EPC OPTIONAL
+*"      IT_AAC_ITEM_BLOCK TYPE  /SPE/BAPIDLVCOBLITEM_T OPTIONAL
+*"----------------------------------------------------------------------
+  CONSTANTS:
+    c_simu_none       TYPE vz_simu_delivery_update VALUE space,
+    c_simu_without_gi TYPE vz_simu_delivery_update VALUE 'X' ##NEEDED,
+    c_simu_with_gi    TYPE vz_simu_delivery_update VALUE 'Y',
+    c_simu_conf_qty   TYPE vz_simu_delivery_update VALUE 'W',
+    c_simu_order_qty  TYPE vz_simu_delivery_update VALUE 'Z'.
+
+  DATA:
+    lf_gewvol
+  , lf_kzvfdat
+  , lf_subrc    TYPE sysubrc
+  , lf_ix       TYPE  i
+  , wa_sernr    TYPE  shp_sernr_update_s
+  , lf_statu    TYPE estak                                  "n_1345503
+  , lf_save_msgty_set_for_vbfs TYPE v50agl-msgty_set_for_vbfs "n_1448110
+  , lf_no_packing_update                                    "n_1682837
+  .
+
+  FIELD-SYMBOLS:
+    <hu_sernr>  TYPE  hum_verpo_sernr.
+
+  BREAK-POINT ID /spe/serial_no.    " Serial Number handling
+
+  PERFORM call_badi_ws_import.      " EhP4
+
+ENHANCEMENT-POINT ehp603_ws_delivery_update_2_01 SPOTS es_saplv50s.
+*$*$-Start: EHP603_WS_DELIVERY_UPDATE_2_01------------------------------------------------------$*$*
+ENHANCEMENT 1  VZ_SFWS_LV50SU16_WS_DEL_UPD_2.    "active version
+
+* note 2754549: code from note 1265963 moved down and adjusted
+
+ENDENHANCEMENT.
+*$*$-End:   EHP603_WS_DELIVERY_UPDATE_2_01------------------------------------------------------$*$*
+
+
+
+ENHANCEMENT-POINT ws_delivery_update_2_02 SPOTS es_saplv50s STATIC.
+*$*$-Start: WS_DELIVERY_UPDATE_2_02-------------------------------------------------------------$*$*
+ENHANCEMENT 1  ISOIL_OIG_SAPLV50S_I_1.    "active version
+aufrufer = G_SHPMT_AUFRUFER.                    "n 1424550
+ENDENHANCEMENT.
+*$*$-End:   WS_DELIVERY_UPDATE_2_02-------------------------------------------------------------$*$*
+
+* Initialisierung
+  pickingupdate = update_picking.
+
+* Suppress BOPF save sequence if calling application triggers BOPF save sequence
+  IF if_no_bopf_save IS INITIAL.
+    cl_shp_bopf_save=>set_enabled( abap_true ).             "n_2555880
+  ELSE.
+    cl_shp_bopf_save=>set_enabled( abap_false ).
+  ENDIF.
+
+* Set privileged_mode for authorization check
+  IF if_privileged_mode IS INITIAL.
+    cl_shp_privileged_mode=>get_instance( )->set_privileged_mode( abap_false ).
+  ELSE.
+    cl_shp_privileged_mode=>get_instance( )->set_privileged_mode( abap_true ).
+  ENDIF.
+
+* SPE INB ST
+* Workaround needed for extra initialisation in BORGR when adding items
+  IF NOT if_bor_init IS INITIAL.
+*   Set t180-trtyp = 'V' and t180-tcode = 'VL32N'.
+    PERFORM t180_interpretieren(sapmv50a) USING 'VL32N'.
+    CLEAR v50agl-sammelgang.
+    CLEAR v50agl-mult.
+    REFRESH: p.
+  ENDIF.
+  CLEAR:   cvbfs.
+  REFRESH: cvbfs.
+
+  PERFORM consolidate_delivery_keys   CHANGING delivery
+                                               vbkok_wa-vbeln
+                                               likp-vbeln.
+
+  PERFORM init USING if_no_init_1
+                     if_no_buffer_refresh
+                     if_no_mes_upd_pack
+                     if_wmpp.
+
+
+  "{ Begin ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+* auto3.0 Mengendifferenzen
+  IF NOT it_ormng_table[] IS INITIAL.
+    ormng_table[] = it_ormng_table[].
+  ENDIF.
+  IF NOT if_bor_init IS INITIAL.
+    v50agl-pab_del_check_mode = 'B'.
+  ENDIF.
+  "{ End ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+
+
+ENHANCEMENT-POINT ws_delivery_update_2_07 SPOTS es_saplv50s.
+
+* The FM is called from ID Handling class
+  v50agl-spe_inb_dlv = vbkok_wa-spe_inb_dlv.
+  IF NOT v50agl-spe_inb_dlv IS INITIAL.
+    v50agl-no_message_read  = 'X'. "Any time when WSDU2 and ID Handling
+    IF if_no_init_1 = 'X' AND if_confirm_central IS INITIAL. "N: 916124
+*     In a case PIKMG + HU the HU informations should be selected.
+      v50agl-huactive = 'X'.
+    ENDIF.
+  ENDIF.
+* Set the distribution process code
+  v50agl-spe_dist_proc_code = vbkok_wa-spe_dist_proc_code.
+* Automatic GR posting
+  v50agl-spe_auto_gr        = vbkok_wa-spe_auto_gr.
+
+* Take over stock determination from dec. WMS and sort       "v_n_967038
+  vbsupcon_tab[] = vbsupcon_tab_1[].                        "n_811932
+  SORT vbsupcon_tab BY vbeln_vl posnr_vl.                   "^_n_967038
+
+  likp-vbeln = delivery.
+
+  v50agl-late_delivery_upd = if_late_delivery_upd.          "n_1589850
+  v50agl-wabuc             = vbkok_wa-wabuc.                "n_1619203
+  v50agl-kzebu             = vbkok_wa-kzebu.                "n_1619203
+
+* Lieferung Lesen
+  IF if_error_messages_send NE charx.                       "v_n_1448110
+    lf_save_msgty_set_for_vbfs = v50agl-msgty_set_for_vbfs.
+    v50agl-msgty_set_for_vbfs = chare.
+  ENDIF.                                                    "^_n_1448110
+  PERFORM delivery_read USING if_no_read_1
+                              if_dpp_check_blocked_par.     "n_1965005
+  READ TABLE cvbfs WITH KEY msgty = chare.                  "v_n_1448110
+  IF sy-subrc EQ 0.
+    LOOP AT cvbfs WHERE msgty = chare.
+*   Move Cvbfs entries to prot
+      CLEAR: sy-msgv1, sy-msgv2, sy-msgv3, sy-msgv4.
+      sy-msgid = cvbfs-msgid.
+      sy-msgty = cvbfs-msgty.
+      sy-msgno = cvbfs-msgno.
+      sy-msgv1 = cvbfs-msgv1.
+      sy-msgv2 = cvbfs-msgv2.
+      sy-msgv3 = cvbfs-msgv3.
+      sy-msgv4 = cvbfs-msgv4.
+      PERFORM protokoll_add_item_default TABLES prot.
+      PERFORM message_send_check_do USING if_error_messages_send.
+    ENDLOOP.
+    ef_error_any          = charx.
+    EXIT.
+  ELSEIF if_error_messages_send NE charx.
+    v50agl-msgty_set_for_vbfs = lf_save_msgty_set_for_vbfs.
+  ENDIF.                                                    "^_n_1448110
+
+* Check if call came from TM and if WES is blocked for ASR Cust Returns Delivry.
+  IF  likp-tm_adv_ship_recv = if_le_shp_tm_adv_ship_recv=>tm_adv_shp_recv-adv_ship_recv
+      AND likp-vbtyp = if_sd_doc_category=>returns_delivery_for_order
+      AND likp-tm_whse_exec = if_le_shp_tm_adv_ship_recv=>tm_whse_exec-blocked
+      AND NOT VBKOK_WA-LE_UPDATE_CALLER = if_le_shp_upd_caller=>caller-tm
+     .
+      sy-msgty = 'E'.
+      sy-msgid = 'LESHP_TM_INT'.
+      sy-msgno = '091'.
+      CLEAR: sy-msgv1, sy-msgv2, sy-msgv3, sy-msgv4.
+      PERFORM protokoll_add_item_default TABLES prot.
+      MESSAGE e091(LESHP_TM_INT) INTO DATA(message) ##NEEDED.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any          = 'X'.
+      EXIT.
+  ENDIF.
+
+  IF vbkok_wa-kzpod EQ 'D' OR "called from VLPODQ/L
+     vbkok_wa-kzpod EQ 'B'. "called from IDOC
+    TRY.
+        IF abap_true EQ cl_le_shp_ico_factory=>get( )->get_delivery_instance( )->is_delivery_ic_relevant( EXPORTING is_delivery_header = likp ).
+          "POD to be done for VCM-managed delivery. In this case VCM takes care for goods-movements.
+          "->No goods-movements must be done here.
+          CLEAR vbkok_wa-wabuc.
+        ENDIF.
+      CATCH cx_le_shp_ico_dlvry_not_exists.
+        "can be ignored as likp is handed over
+    ENDTRY.
+  ENDIF.
+
+* SPE100
+* store parameter SPE_MES_NO_SEND_QUANT0 in V50AGL
+* only for Outbound deliveries
+  IF likp-vbtyp = if_sd_doc_category=>delivery.
+    IF NOT spe_mes_no_send_nodial IS INITIAL.
+      v50agl-no_lfimg_check_mng0p    = 'X'.
+      v50agl-no_grkor_check          = 'X'.
+      v50agl-mes_no_send_nodial      = 'X'.
+    ENDIF.
+* TPOP consolidation - Set indicators for MM
+    IF likp-spe_le_scenario EQ 'C' AND   "CRM Order as Predecessor for Unchecked Delivery
+       NOT vbkok_wa-wabuc   IS INITIAL.
+      LOOP AT xlips WHERE vgtyp EQ if_sd_doc_category=>order AND  "Sales order
+                          sobkz NE space.
+        CALL FUNCTION '/SPE/TPOP_CONS_INDICATOR_SET'
+          EXPORTING
+            iv_vbeln_so     = xlips-vgbel
+            iv_posnr_so     = xlips-vgpos
+            iv_sobkz        = xlips-sobkz
+            iv_kzbws        = xlips-kzbws
+            iv_kzvbr        = xlips-kzvbr
+            iv_plant        = xlips-werks                  "v_n_1350878
+            iv_gsber        = xlips-gsber
+            iv_posting_date = vbkok_wa-wadat_ist.          "^_n_1350878
+      ENDLOOP.
+    ENDIF.
+  ENDIF.
+
+* TPOP consolidation - Set indicators for MM                "v_n_1345503
+  IF likp-vbtyp = if_sd_doc_category=>delivery_shipping_notif.
+    IF likp-spe_le_scenario EQ 'E' AND   "Inbound Delivery
+       NOT vbkok_wa-wabuc   IS INITIAL.
+      LOOP AT xlips WHERE vgtyp EQ if_sd_doc_category=>purchase_order AND  "Purchase Order
+                          sobkz NE space AND
+                          NOT vbelv IS INITIAL AND
+                          NOT posnv IS INITIAL.
+
+
+        SELECT statu INTO lf_statu FROM ekko WHERE ebeln = xlips-vgbel.
+        ENDSELECT.
+        IF sy-subrc = 0 AND lf_statu = '2'.
+          CALL FUNCTION '/SPE/TPOP_CONS_INDICATOR_SET'
+            EXPORTING
+              iv_vbeln_so     = xlips-vbelv
+              iv_posnr_so     = xlips-posnv
+              iv_sobkz        = xlips-sobkz
+              iv_kzbws        = xlips-kzbws
+              iv_kzvbr        = xlips-kzvbr
+              iv_plant        = xlips-werks                "v_n_1350878
+              iv_gsber        = xlips-gsber
+              iv_posting_date = vbkok_wa-wadat_ist.        "^_n_1350878
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+*   Take over external ID from EWM for inbound deliveries only
+    IF NOT vbkok_wa-lifex IS INITIAL.                       "v_n_1595044
+      likp-lifex = vbkok_wa-lifex.
+    ENDIF.                                                  "^_n_1595044
+  ENDIF.                                                    "^_n_1345503
+
+
+  "{ Begin ENHO AD_SUB_01_WS_DELIVERY_UPDATE_2 IS-AD-SUC AD_SUB_SFWS_01 }
+* EHP604 ADSUB DT071128
+*-- Do not allow GR posting for inbound deliveries if AD relevant
+  "SDMIP DL I077072
+*  IF likp-vbtyp EQ cl_adsub_constants=>vbtyp_dlshpnotif.
+  IF likp-vbtyp EQ if_sd_doc_category=>delivery_shipping_notif.
+
+    CALL FUNCTION 'ADSUB_LOOP_AT_DELIVERY'
+      EXPORTING
+        iv_called_by = 'BEARBEITUNG'
+      TABLES
+        it_xlips     = xlips.
+
+  ENDIF.
+  "{ End ENHO AD_SUB_01_WS_DELIVERY_UPDATE_2 IS-AD-SUC AD_SUB_SFWS_01 }
+
+
+  "{ Begin ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+*MW START Änderung
+* Tracking-Daten ändern. Dies muß wg. Historie vor der Kopfänderung
+* passieren.
+  IF  vbkok_wa-likp_del EQ space
+  AND vbkok_wa-kztrx    NE space.
+    PERFORM delivery_update_tracking USING vbkok_wa.
+  ENDIF.
+*MW ENDE Änderung
+* Set reinitialize flag and delete all subsequent entries:
+* texts, HUs, sernos...
+  IF if_txt_reinitialize = 'X'.
+    PERFORM borgr_reinitialize.
+  ENDIF.
+  "{ End ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+
+
+ENHANCEMENT-POINT ws_delivery_update_2_03 SPOTS es_saplv50s.
+
+* Check remote changes of distributed delivery in dec. WMS
+  IF NOT likp-verursys IS INITIAL AND
+     NOT if_no_remote_chg_1 IS INITIAL AND
+     likp-vlstk CA 'EF'.
+    CASE likp-vlstk.
+      WHEN 'E'.
+        sy-msgno = '493'.
+      WHEN 'F'.
+        sy-msgno = '492'.
+    ENDCASE.
+    sy-msgty = 'E'.
+    sy-msgid = 'VL'.
+    CLEAR: sy-msgv1, sy-msgv2, sy-msgv3, sy-msgv4.
+    PERFORM protokoll_add_item_default TABLES prot.
+    PERFORM message_send_check_do USING if_error_messages_send.
+    ef_error_any          = 'X'.
+    ef_error_in_interface = 'X'.
+    EXIT.
+  ENDIF.
+
+* Include for customer and IS-specific changes
+  INCLUDE lv50sfz1.
+
+* Change partners of the delivery (if delivery is not to be deleted)
+  IF vbkok_wa-likp_del EQ space.                            "AWI
+    PERFORM delivery_update_partners TABLES it_bapiaddr1    "n_1031533
+                                   CHANGING lf_subrc.
+    IF lf_subrc NE 0.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any            = 'X'.
+      ef_error_partner_update = 'X'.
+      EXIT.
+    ENDIF.
+  ENDIF.
+
+* Update cross-docking data of delivery
+  IF vbkok_wa-spe_cd_plantf NE space.
+    PERFORM /spe/confirm_cd_delivery USING    vbkok_wa
+                                     CHANGING lf_subrc.
+    IF lf_subrc NE 0.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any            = 'X'.
+      ef_error_partner_update = 'X'.
+      EXIT.
+    ENDIF.
+  ENDIF.
+
+* SPE Kit to Order: Check for GR/GI posting for kit header in
+* case of cross docking.
+  IF vbkok_wa-spe_cd_plant <> space.
+    PERFORM spe_kit_cd_delivery_check USING    likp
+                                               vbkok_wa
+                                      CHANGING lf_subrc.
+    IF lf_subrc <> 0.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any = 'X'.
+      EXIT.
+    ENDIF.
+  ENDIF.
+
+* Prepare returns deliveries or inbound deliveries WMS        "v_XAN-SPM
+*  IF VBKOK_WA-VBTYP_VL = VBTYP_LIRE or    "v_n_1116622
+*  IF VBKOK_WA-VBTYP_VL = VBTYP_LIRE and   "^_n_1116622      v_n_1173074
+  IF vbkok_wa-vbtyp_vl = if_sd_doc_category=>returns_delivery_for_order OR                     "^_n_1173074
+    ( vbkok_wa-spe_gen_process = 'GRPD' OR
+      vbkok_wa-spe_gen_process = 'GRCC' ).
+    PERFORM /spe/ret_prepare_header.
+  ELSEIF likp-vbtyp = if_sd_doc_category=>delivery_shipping_notif.
+    PERFORM /spe/inb_prepare_header.
+  ENDIF.                                                      "^_XAN-SPM
+
+* SPE
+  IF likp-vbtyp = if_sd_doc_category=>delivery_shipping_notif OR likp-vbtyp = if_sd_doc_category=>returns_delivery_for_order.
+* Check, if HUS exist, which should be deleted
+    PERFORM /spe/prepare_for_hus.
+  ENDIF.
+
+* SPM Prepare Goods movement data transfer via buffer         "v_XAN-SPM
+  PERFORM prepare_gm_hdr USING vbkok_wa.                      "^_XAN-SPM
+
+* Set the InYard Indicator
+  PERFORM set_imwrk.
+
+* Lieferungskopfbearbeitung vorbereiten und
+* allgemeine Kopffelder ändern, die für Positionsbearbeitung
+* relevant sein können
+  PERFORM delivery_update_header USING vbkok_wa
+                                       charx         "API: real update
+                                 CHANGING lf_subrc.
+ENHANCEMENT-POINT ehp603_ws_delivery_update_2_03 SPOTS es_saplv50s.
+*$*$-Start: EHP603_WS_DELIVERY_UPDATE_2_03------------------------------------------------------$*$*
+ENHANCEMENT 2  VZ_SFWS_LV50SU16_WS_DEL_UPD_2.    "active version
+  IF lf_subrc <> 0.
+    PERFORM message_send_check_do USING if_error_messages_send.
+    ef_error_any = gc_true.
+    RETURN.
+  ENDIF.
+
+* note 2754549: code from note 1265963 moved down here,                            v_n_2754549
+* additional check for EWM scenario
+
+IF /spe/cl_ctrl=>is_ewm( i_lgnum = xlikp-lgnum ) EQ gc_true.
+
+* Item Serial Numbers                                      "v previous n_1265963
+  IF lines( it_sernr_update ) > 1.
+    SORT it_sernr_update[].
+    DELETE ADJACENT DUPLICATES FROM it_sernr_update[].
+  ENDIF.
+
+* HU Serial Numbers
+  IF lines( it_verpo_sernr ) > 1.
+    SORT it_verpo_sernr[].
+    DELETE ADJACENT DUPLICATES FROM it_verpo_sernr[].
+  ENDIF.
+
+  IF it_verpo_sernr[] IS NOT INITIAL.
+    " Copy the given HU SerNo to the Item SerNo table:
+    LOOP AT it_verpo_sernr[] ASSIGNING <hu_sernr>.
+      READ TABLE it_sernr_update WITH KEY rfbel = <hu_sernr>-belnr
+                                          rfpos = <hu_sernr>-posnr
+                                          sernr = <hu_sernr>-sernr
+                                 TRANSPORTING NO FIELDS
+                                 BINARY SEARCH.
+      IF sy-subrc <> 0.
+        lf_ix = sy-tabix.
+        wa_sernr-rfbel = <hu_sernr>-belnr.
+        wa_sernr-rfpos = <hu_sernr>-posnr.
+        wa_sernr-sernr = <hu_sernr>-sernr.
+        wa_sernr-uii   = <hu_sernr>-uii.    "EHP4-IUID
+        INSERT wa_sernr INTO it_sernr_update INDEX lf_ix.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.                                                   "^ previous n_1265963
+*                                                                                  ^_n_2754549
+
+ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   EHP603_WS_DELIVERY_UPDATE_2_03------------------------------------------------------$*$*
+* bei dezentraler Rückmeldung erstmal Verpackung löschen.     "v_XAN-SPM
+  IF ( NOT ( v50agl-confirm_central IS INITIAL    AND
+             v50agl-change_decentral IS INITIAL ) AND       "packing changes for distributed deliveries to be handled same as for confirmation
+          ( xvbuk-wbstk CA 'AB '                  OR           "n_1302585
+            vbkok_wa-spe_ret_hu_update_request = charb ) )  "n_1001757
+     AND if_hu_no_update = space.
+* do not call with POD exception quantity diff. posting     "v_n_2077866
+* and pure setting of EWM closing indicator
+    PERFORM check_spe_gen_elikz_1 CHANGING lf_no_packing_update.
+* do not call in case of qunatity difference posting          "n_2215795
+    PERFORM check_mdiff_post CHANGING lf_no_packing_update. "n_2215795
+    IF lf_no_packing_update IS INITIAL.                     "^_n_2077866
+      PERFORM hu_confirm_central USING xlikp.
+    ENDIF.                                                  "n_2077866
+  ENDIF.
+ENHANCEMENT-POINT ehp_ws_delivery_update_2_01 SPOTS es_saplv50s.
+
+* Replace HU as general functionality (Advanced shipping and receiving with TM.
+  IF NOT if_replace_hus IS INITIAL.
+    PERFORM delete_handling_units TABLES xlips
+                                   USING xlikp
+                                CHANGING lf_subrc.
+    IF lf_subrc <> 0.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any           = 'X'.
+      EXIT.
+    ENDIF.
+  ENDIF.
+
+* Status korrekt bei POD-Rückmeldung ?
+  PERFORM pod_time_check              CHANGING lf_subrc.
+  IF lf_subrc <> 0.
+    PERFORM message_send_check_do USING if_error_messages_send.
+    ef_error_any           = 'X'.
+    ef_error_in_pod_update = 'X'.
+    EXIT.
+  ENDIF.
+
+* Lieferung löschen
+  IF vbkok_wa-likp_del NE space.
+    PERFORM beleg_loeschen(sapmv50a).
+  ELSE.
+
+    IF xlikp-vbtyp = if_sd_doc_category=>delivery_shipping_notif AND v50agl-spe_del_hu = gc_true.
+      PERFORM /spe/inb_del_dlvry_hus TABLES verko_tab
+                                      USING xlikp .
+    ENDIF.
+
+*   Löschen Positionen
+    PERFORM delivery_items_delete     CHANGING lf_subrc.
+    IF lf_subrc <> 0.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any              = 'X'.
+      ef_error_in_item_deletion = 'X'.
+      EXIT.
+    ENDIF.
+
+*   Update POD (Proof of delivery)
+    PERFORM delivery_pod_update       CHANGING lf_subrc.
+    IF lf_subrc <> 0.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any           = 'X'.
+      ef_error_in_pod_update = 'X'.
+      EXIT.
+    ENDIF.
+
+*   Include for customer and IS-specific changes
+    INCLUDE lv50sfz2.
+
+*   Konsistenz-Prüfungen und vervollständigen der Schnittstelle
+    PERFORM vbpok_interface_check     CHANGING lf_gewvol
+                                               lf_kzvfdat
+                                               lf_subrc.
+ENHANCEMENT-SECTION enhs_saplv50s SPOTS es_saplv50s .
+    IF lf_subrc <> 0.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any          = 'X'.
+      ef_error_in_interface = 'X'.
+      EXIT.
+    ENDIF.
+END-ENHANCEMENT-SECTION.
+*$*$-Start: ENHS_SAPLV50S-----------------------------------------------------------------------$*$*
+ENHANCEMENT 2  OIJ02_SAPLV50S.    "active version
+
+    DATA LS_YLIPS TYPE LIPSVB.
+
+    IF LF_SUBRC = 99.
+      LOOP AT XLIPS WHERE OIFINAL = 'X'.
+        READ TABLE YLIPS INTO LS_YLIPS WITH KEY VBELN = XLIPS-VBELN
+                                             POSNR = XLIPS-POSNR.
+        IF SY-SUBRC = 0.
+          IF LS_YLIPS-OIFINAL <> XLIPS-OIFINAL.
+            LF_SUBRC = 0.
+            REFRESH PROT[].
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    IF LF_SUBRC <> 0.
+      PERFORM MESSAGE_SEND_CHECK_DO USING IF_ERROR_MESSAGES_SEND.
+      EF_ERROR_ANY          = 'X'.
+      EF_ERROR_IN_INTERFACE = 'X'.
+      EXIT.
+    ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   ENHS_SAPLV50S-----------------------------------------------------------------------$*$*
+
+*   Include for customer and IS-specific changes
+    INCLUDE lv50sfz3.
+
+*   Update for serial numbers of delivery items must be done after
+*   picking update (batch split!)
+
+    IF if_error_messages_send NE charx.                       "v_n_2114540
+      lf_save_msgty_set_for_vbfs = v50agl-msgty_set_for_vbfs.
+      v50agl-msgty_set_for_vbfs = chare.
+    ENDIF.                                                    "^_n_2114540
+
+*   Positionsupdate direkt positionsweise oder über Kommissionierflüsse
+
+    IF pickingupdate = space.
+*     ohne Kommissionierfluß
+      PERFORM delivery_update_item     TABLES   it_aac_item_block   " Account Assignments
+                                       USING    lf_gewvol
+                                                lf_kzvfdat
+                                       CHANGING lf_subrc.
+
+    ELSE.
+*     über Kommissionierfluß
+      PERFORM delivery_update_picking  USING    lf_gewvol
+                                                lf_kzvfdat
+                                       CHANGING lf_subrc.
+    ENDIF.
+    READ TABLE cvbfs WITH KEY msgty = chare.                  "v_n_2114540
+    IF sy-subrc EQ 0.
+      LOOP AT cvbfs WHERE msgty = chare.
+*   Move Cvbfs entries to prot
+        CLEAR: sy-msgv1, sy-msgv2, sy-msgv3, sy-msgv4.
+        sy-msgid = cvbfs-msgid.
+        sy-msgty = cvbfs-msgty.
+        sy-msgno = cvbfs-msgno.
+        sy-msgv1 = cvbfs-msgv1.
+        sy-msgv2 = cvbfs-msgv2.
+        sy-msgv3 = cvbfs-msgv3.
+        sy-msgv4 = cvbfs-msgv4.
+        PERFORM protokoll_add_item_default TABLES prot.
+        PERFORM message_send_check_do USING if_error_messages_send.
+      ENDLOOP.
+      ef_error_any          = charx.
+      EXIT.
+    ELSEIF if_error_messages_send NE charx.
+      v50agl-msgty_set_for_vbfs = lf_save_msgty_set_for_vbfs.
+    ENDIF.                                                    "^_n_2114540
+    INCLUDE /cwm/_lv50su16.
+
+ENHANCEMENT-POINT ehp_ws_delivery_update_2_02 SPOTS es_saplv50s.
+*$*$-Start: EHP_WS_DELIVERY_UPDATE_2_02---------------------------------------------------------$*$*
+ENHANCEMENT 2  VL_SFWS_SC1_LV50SU16.    "active version
+* SE OutboundDeliveryERPChange: Additional error handling for new routines only
+    IF LF_SUBRC GE 20052.
+      PERFORM MESSAGE_SEND_CHECK_DO USING IF_ERROR_MESSAGES_SEND.
+      EF_ERROR_ANY              = 'X'.
+      EXIT.
+    ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   EHP_WS_DELIVERY_UPDATE_2_02---------------------------------------------------------$*$*
+
+
+    "{ Begin ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+*MW START Änderung       Note AP752230
+    PERFORM serial_numbers_assign TABLES sernr_tab
+                                          prot
+                                          vbpok_tab
+                                   USING  vbkok_wa
+                                   CHANGING lf_subrc.
+    IF lf_subrc <> 0.
+      ef_error_any            = 'X'.
+      ef_error_in_final_check = 'X'.
+      EXIT.
+    ENDIF.
+    "{ End ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+
+ENHANCEMENT-POINT ws_delivery_update_2_04 SPOTS es_saplv50s.
+
+*   Langtext verarbeiten  (c5050605)
+    PERFORM texts_maintain TABLES   it_texth
+                                    it_textl
+                                    vbpok_tab
+                                    prot
+                           USING    vbkok_wa
+                                    if_txt_reinitialize
+                           CHANGING lf_subrc.
+    IF lf_subrc <> 0.
+      ef_error_any            = 'X'.
+      ef_error_in_final_check = 'X'.
+      EXIT.
+
+
+    ENDIF.
+
+    "{ Begin ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+*   Kanban TA Quittierung (c5025075)
+    IF likp-kbnkz = 'Z' AND NOT vbup-lvsta IS INITIAL.
+      IF NOT ef_error_any IS INITIAL.
+        EXIT.
+      ENDIF.
+    ENDIF.
+    "{ End ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+
+ENHANCEMENT-POINT ws_delivery_update_2_08 SPOTS es_saplv50s.
+
+*   Serial number update successfully performed?
+    IF lf_subrc EQ '88'.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any          = 'X'.
+      ef_error_sernr_update = 'X'.
+      EXIT.
+    ENDIF.
+*   Negative PIKMG caused by LT0G TA confirmation
+    IF lf_subrc EQ '77'.
+      PERFORM message_send_check_do USING if_error_messages_send.
+      ef_error_any          = 'X'.
+      EXIT.
+    ENDIF.
+
+*   quantity checks for batch split main items              "v_n_1055622
+    IF v50agl-confirm_central IS INITIAL.
+      PERFORM check_batch_split_main_items.
+    ENDIF.                                                  "^_n_1055622
+
+* Teil-WE: Mengen in XLIPS füllen
+    IF NOT vbkok_wa-kzebu IS INITIAL.
+      PERFORM set_all_part_gr_data.
+*     TWE-MDIFF Materialbelegsplit                           "v_XAN-SPM
+      PERFORM ximseg_set_vbpok_split.                        "^_XAN-SPM
+    ENDIF.
+
+*   Gewicht und Volumen ändern - only update from WMS
+    IF NOT v50agl-confirm_central IS INITIAL.
+      PERFORM delivery_update_header_weight.
+    ENDIF.
+
+*   Teil-WE: Objektkatalog setzen  "N:932432
+    IF NOT vbkok_wa-kzebu IS INITIAL.
+      CALL FUNCTION 'LE_SET_PGR_OBJECTS'
+        EXPORTING                                             "v_XAN-SPM
+          it_quan_chg = it_obj_quan_chg[]                     "^_XAN-SPM
+        TABLES
+          it_objects  = it_objects.
+    ENDIF.
+
+*   Prüfen, ob nur das Endlieferkennzeichen aus dem EWM      v_n_1682837
+*   rückgemeldet wird
+*   LF_NO_PACKING_UPDATE = 'X' -> nur ELIKZ, Verpackungsrückmeldung
+*   nicht aufrufen
+    PERFORM check_spe_gen_elikz CHANGING lf_no_packing_update.
+* do not call in case of qunatity difference posting          "n_2215795
+    PERFORM check_mdiff_post CHANGING lf_no_packing_update.   "n_2215795 "n_2896866 -> "n_3213355
+    IF lf_no_packing_update IS INITIAL.                   "^_n_1682837
+      IF NOT it_verpo_sernr[] IS INITIAL AND              "v_n_1964929
+        vbkok_wa-wabuc NE space AND
+        /spe/cl_ctrl=>is_ewm( i_lgnum = likp-lgnum ) = gc_true AND
+        cl_ops_switch_check=>le_sfws_sc3( ) = gc_true.
+        DATA: lf_serno_hu TYPE xfeld VALUE charx.
+        EXPORT lf_serno_hu TO MEMORY ID 'HU_SERNO_COPY'.
+      ENDIF.
+      IF if_error_messages_send NE charx.                 "v_n_2843435
+        lf_save_msgty_set_for_vbfs = v50agl-msgty_set_for_vbfs.
+        v50agl-msgty_set_for_vbfs = chare.
+      ENDIF.                                              "^_n_2843435                                                     "^_n_1964929
+*   Verpackungsrückmeldung
+      PERFORM delivery_update_packing
+          TABLES   et_created_hus
+          CHANGING it_hu_header_epc[]                       "n_1419577
+                   it_hu_items_epc[].                       "n_1419577
+      READ TABLE cvbfs WITH KEY msgty = chare.            "v_n_2843435
+      IF sy-subrc EQ 0.
+        LOOP AT cvbfs WHERE msgty = chare.
+*            Move Cvbfs entries to prot
+          CLEAR: sy-msgv1, sy-msgv2, sy-msgv3, sy-msgv4.
+          sy-msgid = cvbfs-msgid.
+          sy-msgty = cvbfs-msgty.
+          sy-msgno = cvbfs-msgno.
+          sy-msgv1 = cvbfs-msgv1.
+          sy-msgv2 = cvbfs-msgv2.
+          sy-msgv3 = cvbfs-msgv3.
+          sy-msgv4 = cvbfs-msgv4.
+          PERFORM protokoll_add_item_default TABLES prot.
+          PERFORM message_send_check_do USING if_error_messages_send.
+        ENDLOOP.
+        ef_error_any          = charx.
+        EXIT.
+      ELSEIF if_error_messages_send NE charx.
+        v50agl-msgty_set_for_vbfs = lf_save_msgty_set_for_vbfs.
+      ENDIF.                                              "^_n_2843435
+      FREE MEMORY ID 'HU_SERNO_COPY'.                       "n_1964929
+    ENDIF.                                                  "n_1682837
+
+*   Gewicht und Volumen ändern - only for integrated scenario
+    IF v50agl-confirm_central IS INITIAL.
+      PERFORM delivery_update_header_weight.
+    ENDIF.
+
+    "{ Begin ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+**   C5024641 Teil-WE prüfungen + Letzte Teil-WE
+    IF vbkok_wa-kzebu = 'X'.
+*     Pakstatus und KANBA soll wehrend teil-WE nicht prüfen
+      partial_gr_kz-kzebu = 'X'.
+      partial_gr_kz-check_pksta = space.
+      partial_gr_kz-check_kanba = space.
+*      if VBKOK_WA-MDIFF_BUCH is initial.
+*        perform check_last_part_gr using partial_gr.
+*      endif.
+    ENDIF.
+    "{ End ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+
+ENHANCEMENT-POINT ws_delivery_update_2_09 SPOTS es_saplv50s.
+
+*   Teil-WE: Objektkatalog setzen
+    IF NOT vbkok_wa-kzebu IS INITIAL.
+
+
+      "{ Begin ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+*     C5024641 Teil-WE zu MABs
+      CALL FUNCTION 'BORWE_SET_PGR_KZ'
+        EXPORTING
+          is_pgr_kz = partial_gr_kz.
+      "{ End ENHO AUTO_BOR_WS_DELIVERY_UPDATE_2 IS-A-GR AM_GR }
+
+ENHANCEMENT-POINT ws_delivery_update_2_05 SPOTS es_saplv50s.
+    ENDIF.
+
+*   SPE INB RG 09.12.2004 Timestamps for the delivery
+    IF NOT it_tmstmp[] IS INITIAL.
+      BREAK-POINT ID /spe/inb_tmstmp.
+      PERFORM fill_time_stamps USING 'X'.
+    ENDIF.
+
+*   Include for customer and IS-specific changes
+    INCLUDE lv50sfz4.
+
+    LOOP AT xvbpa ASSIGNING FIELD-SYMBOL(<ls_xvbpa>) WHERE vbeln = likp-vbeln.
+      cl_le_shp_bp_factory=>vbadr( )->check_address_validity(
+        EXPORTING
+          iv_shipping_date        = likp-lfdat
+          iv_customer             = <ls_xvbpa>-kunnr
+          iv_assigned_bp          = <ls_xvbpa>-assigned_bp
+          iv_partner_function     = <ls_xvbpa>-parvw
+          is_addr_data            = cl_le_shp_map_addr_data=>get_addr_data_from_vbpavb( <ls_xvbpa> )
+          iv_sd_document_category = likp-vbtyp
+          iv_operation            = <ls_xvbpa>-addr_operation
+        EXCEPTIONS
+          error                   = 1
+          invalid_address_date    = 2
+          OTHERS                  = 3
+      ).
+      IF sy-subrc <> 0.
+        INSERT VALUE #( vbeln = likp-vbeln msgty = 'W' msgid = sy-msgid msgno = sy-msgno
+                        msgv1 = sy-msgv1 msgv2 = sy-msgv2 msgv3 = sy-msgv3 msgv4 = sy-msgv4 ) INTO TABLE prot.
+      ENDIF.
+    ENDLOOP.
+
+******************************************************
+*... Simulation Stop Point                               S/4
+******************************************************
+    IF if_simulate = c_simu_none OR if_simulate = c_simu_with_gi
+    OR if_simulate = c_simu_conf_qty OR if_simulate = c_simu_order_qty.
+
+*   Post Goods Issue
+      PERFORM post_goods_issue CHANGING lf_subrc.
+      IF lf_subrc NE 0.
+*     If the return code is not 0 an error during the final check of the
+*     delivery occured
+        PERFORM message_send_check_do USING if_error_messages_send.
+        ef_error_any            = 'X'.
+        ef_error_in_final_check = 'X'.
+        EXIT.
+      ENDIF.
+
+      IF if_simulate = c_simu_none.
+
+ENHANCEMENT-POINT ehp603_ws_delivery_update_2_02 SPOTS es_saplv50s.
+*$*$-Start: EHP603_WS_DELIVERY_UPDATE_2_02------------------------------------------------------$*$*
+ENHANCEMENT 3  VZ_SFWS_LV50SU16_WS_DEL_UPD_2.    "active version
+* In case of a correction posting or a pick denial the serial numbers have to be corrected
+* For correction postings this can only be done after posting the goods movements
+    IF ( vbkok_wa-mdiff_buch   IS NOT INITIAL AND
+         vbkok_wa-mdiff_storno IS NOT INITIAL    ) OR
+       vbkok_wa-spe_initiator_process = gc_initiator_process-pickdenial.
+      PERFORM spe_delivery_delete_sernr.
+    endif.
+
+ENDENHANCEMENT.
+*$*$-End:   EHP603_WS_DELIVERY_UPDATE_2_02------------------------------------------------------$*$*
+
+*   Final delivery header update                              "v_XAN-SPM
+        IF NOT vbkok_wa-spe_gen_process IS INITIAL.
+          PERFORM spe_likp_update_final_det USING vbkok_wa.
+        ENDIF.                                                    "^_XAN-SPM
+
+
+*   Include for customer and IS-specific changes
+        INCLUDE lv50sfz5.
+
+*   Teil-WE: bei dezentralen Lieferungen Kz. für Change Management
+*   zurücknehmen
+*   IF likp-kzwab = 'D' AND NOT likpd-kzebu IS INITIAL.       "YG_PGR
+*     CLEAR likpd-kzebu.                                      "YG_PGR
+*   ENDIF.                                                    "YG_PGR
+
+
+* Production staging and consumption deliveries: Update reservation or
+* create entries for failed goods movements
+* Creation of AFFW entries
+        IF cl_ewm_switch_check=>le_sfws_sc_ewm_man( ) = gc_true.
+          CASE likp-spe_le_scenario.
+            WHEN gc_le_scenario-prdsup.
+* Supply delivery -> Update of reservations
+              CALL METHOD /spe/cl_ewm_staging_intf=>resb_update
+                EXPORTING
+                  is_likp  = likp                                "n_1397074
+                  iv_guid  = vbkok_wa-bop_guid                   "n_1552857
+                  it_xlips = xlips[]
+                  it_ylips = ylips[].
+            WHEN gc_le_scenario-consum.
+* Consumption delivery -> Update/create AFWD, AFFW and AFWI after GI in EWM
+              CALL METHOD /spe/cl_ewm_consumption_intf=>afxx_update_gi
+                EXPORTING
+                  it_xlikp = xlikp[]
+                  it_xlips = xlips[]
+                  it_ylips = ylips[]
+                  it_xvbfa = xvbfa[]
+                  it_xvbup = xvbup[]
+                  it_yvbup = yvbup[].
+            WHEN space OR gc_le_scenario-prdgr.             "n_1770756
+* GR for Production/Process Order from EWM
+              IF likp-vbtyp = if_sd_doc_category=>delivery_shipping_notif AND
+                 /spe/cl_ctrl=>is_ewm( i_lgnum = likp-lgnum ) = gc_true.
+                CALL METHOD /spe/cl_ewm_consumption_intf=>afxx_update_gr
+                  EXPORTING
+                    it_xlikp = xlikp[]
+                    it_xlips = xlips[]
+                    it_ylips = ylips[]
+                    it_xvbfa = xvbfa[]
+                    it_xvbup = xvbup[]
+                    it_yvbup = yvbup[].
+              ENDIF.
+          ENDCASE.
+        ENDIF.
+
+*   Lieferung sichern
+*   Teil-WE: bei Fehlermeldung keine Verbuchung
+        IF wat_prot[] IS INITIAL OR likpd-kzebu IS INITIAL.
+          PERFORM delivery_save USING    if_database_update_1 space
+                                CHANGING lf_subrc.
+          IF lf_subrc <> 0.
+            PERFORM message_send_check_do USING if_error_messages_send.
+            ef_error_any            = 'X'.
+            ef_error_in_final_check = 'X'.
+*     Rollback, if Commit-Handling is asked from calling process
+            IF commit = 'X'. ROLLBACK WORK. ENDIF.
+            EXIT.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+******************************************************
+*... Simulation End Point                                S/4
+******************************************************
+    ENDIF.
+  ENDIF.                                                    "n_2412978
+
+* Protokoll aufbereiten
+  PERFORM protokoll_goods_issue_add.
+  IF NOT wat_prot[] IS INITIAL.
+    ef_error_any            = 'X'.
+*Teil-WE: einzelne Fehler auswerten
+    IF likpd-kzebu IS INITIAL.
+      ef_error_in_goods_issue = 'X'.
+    ELSE.
+      ef_error_in_goods_issue = ' '.
+    ENDIF.
+* Commit Work, to save delivery-updates, if Commit-Handling is asked
+* from calling process
+    IF commit = 'X'. COMMIT WORK. ENDIF.
+    EXIT.
+  ENDIF.
+
+*Commit nur, wenn der Aufrufer dies explizit mitgibt
+  IF commit = 'X'.
+    COMMIT WORK.
+
+    IF NOT v50agl-warenausgang IS INITIAL.                  "v_n_1055048
+      LOOP AT xlips WHERE NOT eprio IS INITIAL AND
+                          NOT rules IS INITIAL.
+        EXIT.
+      ENDLOOP.
+      IF sy-subrc IS INITIAL.
+*     Refresh lock table of stock determination
+        CALL FUNCTION 'BF_RESET_LOC_ENQ_TAB'.
+      ENDIF.
+    ENDIF.                                                  "^_n_1055048
+  ENDIF.
+ENHANCEMENT-POINT ws_delivery_update_2_01 SPOTS es_saplv50s.
+
+  " lines deleted n_2412978
+
+ENDFUNCTION.

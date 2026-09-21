@@ -1,0 +1,7 @@
+﻿  method FLX_GET_MODEL_VERSION.
+    " -------------- !! GENERATED CODE !! ----------------
+    " !!  ONLY REDEFINITION IN YOUR EXT SUBCLASS ALLOWED!!
+
+    rv_version = get_model_version( ).
+
+  endmethod.

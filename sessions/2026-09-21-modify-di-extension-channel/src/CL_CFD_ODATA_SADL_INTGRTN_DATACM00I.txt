@@ -1,0 +1,20 @@
+﻿  METHOD if_cfd_odata_sadl_intgrtn_data~add_element_restrictions.
+
+    DATA(lr_element_restrictions) = REF #( mt_element_restrictions[ cds_view_name = is_element_restrictions-cds_view_name ] OPTIONAL ).
+    IF lr_element_restrictions IS INITIAL.
+      INSERT VALUE #( cds_view_name = is_element_restrictions-cds_view_name ) INTO TABLE mt_element_restrictions REFERENCE INTO lr_element_restrictions.
+    ENDIF.
+
+    LOOP AT is_element_restrictions-non_filterable_elements INTO DATA(lv_non_filterable_element).
+      INSERT lv_non_filterable_element INTO TABLE lr_element_restrictions->non_filterable_elements.
+    ENDLOOP.
+
+    LOOP AT is_element_restrictions-non_searchable_elements INTO DATA(lv_non_searchable_element).
+      INSERT lv_non_searchable_element INTO TABLE lr_element_restrictions->non_searchable_elements.
+    ENDLOOP.
+
+    LOOP AT is_element_restrictions-non_sortable_elements INTO DATA(lv_non_sortable_element).
+      INSERT lv_non_sortable_element INTO TABLE lr_element_restrictions->non_sortable_elements.
+    ENDLOOP.
+
+  ENDMETHOD.

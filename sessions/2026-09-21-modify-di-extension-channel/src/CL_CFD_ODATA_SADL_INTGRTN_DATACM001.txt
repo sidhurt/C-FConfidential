@@ -1,0 +1,6 @@
+﻿  METHOD constructor.
+
+    ms_model_data = io_odata_buffer->ms_model_data.
+    enrich_sadl_data( it_mds_entity_set_type_map ).
+
+  ENDMETHOD.

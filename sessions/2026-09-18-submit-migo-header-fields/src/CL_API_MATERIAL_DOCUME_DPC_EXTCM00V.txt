@@ -1,0 +1,12 @@
+﻿  METHOD header_error_if_not_initial.
+
+    IF iv_field IS NOT INITIAL.
+      io_msg_container->add_message(
+        iv_msg_type               =    /iwbep/if_message_container=>gcs_message_type-error
+        iv_msg_id                 =    gc_message_class
+        iv_msg_number             =    '001' "Invalid Header Field
+        iv_msg_v1                 =    iv_field_name
+        iv_is_leading_message     =    abap_true ).
+    ENDIF.
+
+  ENDMETHOD.

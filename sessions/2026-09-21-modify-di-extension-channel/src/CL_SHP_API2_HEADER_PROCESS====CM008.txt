@@ -1,0 +1,6 @@
+﻿  METHOD get_sd_delivery_data.
+    IF mo_sd_delivery_data IS NOT BOUND.
+      mo_sd_delivery_data = cl_sd_delivery_data=>get_current_delivery( ms_header_std_y-deliverydocument ).
+    ENDIF.
+    ro_instance = mo_sd_delivery_data.
+  ENDMETHOD.

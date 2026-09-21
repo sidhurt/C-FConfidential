@@ -1,0 +1,26 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~changeset_process.
+
+    CASE mv_changeset_type.
+      WHEN sc_changeset_type-create.
+        changeset_process_create(
+          EXPORTING
+            it_changeset_request         = it_changeset_request
+          CHANGING
+            ct_changeset_response        = ct_changeset_response   ).
+
+      WHEN sc_changeset_type-cancel.
+        changeset_process_cancel(
+          EXPORTING
+            it_changeset_request         = it_changeset_request
+          CHANGING
+            ct_changeset_response        = ct_changeset_response   ).
+
+      WHEN sc_changeset_type-cancel_item.
+        changeset_process_cancel_item(
+          EXPORTING
+            it_changeset_request         = it_changeset_request
+          CHANGING
+            ct_changeset_response        = ct_changeset_response   ).
+    ENDCASE.
+
+  ENDMETHOD.

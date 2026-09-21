@@ -1,0 +1,3 @@
+﻿  METHOD get_external_nav_property_name.
+    rv_navigation_property_name = |to{ get_external_field_name( iv_association_name ) }|.
+  ENDMETHOD.

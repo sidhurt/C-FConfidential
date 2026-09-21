@@ -1,0 +1,19 @@
+﻿  METHOD if_cfd_odata_rt_abap_impl_vh~get_entity.
+
+    FIELD-SYMBOLS <lt_entityset> TYPE INDEX TABLE.
+
+    CLEAR er_entity.
+
+    DATA(lr_entityset) = mo_query_runtime->create_table_container( ).
+    ASSIGN lr_entityset->* TO <lt_entityset>.
+
+    mo_query_runtime->execute(
+      EXPORTING
+        is_query_options = get_query_options_entity( io_tech_request_context )
+      IMPORTING
+        et_result        = <lt_entityset>
+    ).
+
+    er_entity = extract_entity_result( <lt_entityset> ).
+
+  ENDMETHOD.

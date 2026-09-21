@@ -1,0 +1,38 @@
+﻿  METHOD check_forbidden_header_fields.
+
+    CHECK is_header IS NOT INITIAL.
+    DATA(lv_message_count) = lines( io_msg_container->get_messages( ) ).
+
+    header_error_if_not_initial(
+      iv_field         = is_header-createdbyuser
+      iv_field_name    = 'CreatedByUser'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    header_error_if_not_initial(
+      iv_field         = is_header-creationdate
+      iv_field_name    = 'CreationDate'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    header_error_if_not_initial(
+      iv_field         = is_header-creationtime
+      iv_field_name    = 'CreationTime'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    header_error_if_not_initial(
+      iv_field         = is_header-materialdocument
+      iv_field_name    = 'MaterialDocument'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    header_error_if_not_initial(
+      iv_field         = is_header-materialdocumentyear
+      iv_field_name    = 'MaterialDocumentYear'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+*    header_error_if_not_initial(
+*      iv_field         = is_header-referencedocument
+*      iv_field_name    = 'ReferenceDocument'
+*      io_msg_container = io_msg_container )  ##NO_TEXT.
+    header_error_if_not_initial(
+      iv_field         = is_header-inventorytransactiontype
+      iv_field_name    = 'InventoryTransactionType'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+
+    lv_message_count = lines( io_msg_container->get_messages( ) ) - lv_message_count.
+    ASSERT lv_message_count > 0. "check for a field is missing
+
+  ENDMETHOD.

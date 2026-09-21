@@ -1,0 +1,28 @@
+﻿  METHOD execute_le_delivery_update.
+    " Increase buffer size for SD tables.
+    CALL FUNCTION 'SD_BUFFER_SET_MAX_LINES'
+      EXPORTING
+        i_vbak_max_lines = 1000000
+        i_vbap_max_lines = 1000000
+        i_vbep_max_lines = 1000000
+        i_vbfa_max_lines = 1000000
+        i_vbkd_max_lines = 1000000
+        i_vbpa_max_lines = 1000000
+        i_vbuk_max_lines = 1000000
+        i_vbup_max_lines = 1000000
+        i_vbuv_max_lines = 1000000.
+
+    CALL FUNCTION 'LE_DELIVERY_UPDATE'
+      EXPORTING
+        vbkok_wa       = is_vbkok
+        delivery       = is_vbkok-vbeln_vl
+      IMPORTING
+        ef_error_any_0 = ev_error_any_0
+      TABLES
+        vbpok_tab      = ct_vbpok
+        prot           = ct_prot
+      EXCEPTIONS
+        error_message  = 1
+        OTHERS         = 2.
+    ev_subrc = sy-subrc.
+  ENDMETHOD.

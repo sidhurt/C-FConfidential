@@ -1,0 +1,24 @@
+﻿  METHOD map_to_odata_property.
+
+    rs_odata_property = VALUE #(
+      abap_name                 = is_extension_property-abap_name
+      odata_name                = is_extension_property-external_odata_name
+      odata_ref_name            = is_extension_property-reference_property-external_odata_name
+      odata_field_control_name  = is_extension_property-field_control_property-external_odata_name
+      is_search_relevant        = is_extension_property-include_in_basic_search
+      is_read_only              = is_extension_property-is_read_only
+      is_hidden                 = is_extension_property-is_hidden
+      description_property_path = is_extension_property-description_property_path
+      data_element_path         = is_extension_property-data_element_name
+      text_key                  = is_extension_property-text_key
+      conversion_exit_name      = is_extension_property-conversion_exit_name
+      display_format            = is_extension_property-display_format
+      aggregation               = is_extension_property-aggregation_role
+      semantic                  = is_extension_property-semantic
+      is_nullable               = is_extension_property-is_nullable
+      is_filterable             = is_extension_property-include_in_filter
+      deviating_edm_type        = is_extension_property-edm_data_type
+      is_extension_field        = abap_true
+    ).
+
+  ENDMETHOD.

@@ -1,0 +1,26 @@
+﻿  METHOD check_forbidden_sernr_fields.
+
+    CHECK is_sernr IS NOT INITIAL.
+    DATA(lv_message_count) = lines( io_msg_container->get_messages( ) ).
+
+    sernr_error_if_not_initial(
+      iv_field         = is_sernr-Material
+      iv_field_name    = 'Material'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    sernr_error_if_not_initial(
+      iv_field         = is_sernr-MaterialDocument
+      iv_field_name    = 'MaterialDocument'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    sernr_error_if_not_initial(
+      iv_field         = is_sernr-MaterialDocumentItem
+      iv_field_name    = 'MaterialDocumentItem'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+    sernr_error_if_not_initial(
+      iv_field         = is_sernr-MaterialDocumentYear
+      iv_field_name    = 'MaterialDocumentYear'
+      io_msg_container = io_msg_container )  ##NO_TEXT.
+
+    lv_message_count = lines( io_msg_container->get_messages( ) ) - lv_message_count.
+    ASSERT lv_message_count > 0. "check for a field is missing
+
+  ENDMETHOD.

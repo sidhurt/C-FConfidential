@@ -1,0 +1,4 @@
+﻿  METHOD are_dates_exposed_in_utc.
+    "The customer returns delivery A2X service exposes dates in the local timezone.
+    rv_bool = xsdbool( iv_vbtyp <> if_sd_doc_category=>returns_delivery_for_order ).
+  ENDMETHOD.

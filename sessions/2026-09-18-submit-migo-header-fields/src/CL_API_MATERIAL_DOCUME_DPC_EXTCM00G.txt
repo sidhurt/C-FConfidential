@@ -1,0 +1,15 @@
+﻿  METHOD matdoc_item_entityset_adapt_cs.
+
+    DATA ls_keys TYPE cl_api_material_docume_mpc=>ts_a_materialdocumentheadertyp.
+
+    IF io_tech_request_context->get_source_entity_type_name( ) = cl_api_material_docume_mpc=>gc_a_materialdocumentheadertyp.
+      io_tech_request_context->get_converted_source_keys( IMPORTING es_key_values = ls_keys ).
+*     called for navigation Header /to_MaterialDocumentItem
+
+*     check if cold store access has to be enabled
+      IF ls_keys-materialdocumentyear IS NOT INITIAL.
+        adapt_cold_store_access( iv_search_year = ls_keys-materialdocumentyear ).
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.

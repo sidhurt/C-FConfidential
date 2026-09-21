@@ -1,0 +1,10 @@
+﻿  METHOD a_outbdelivery05_delete_entity. " Delete header text
+    DATA(lo_collector) = cl_api_le_dlv_upd_coll_factory=>get_instance( ).
+
+    mo_api_text->delete_entity(
+      EXPORTING
+        iv_service   = if_shp_api2_text_process=>outbound
+        io_collector = lo_collector
+        it_key       = it_key_tab
+        io_context   = mo_context ).
+  ENDMETHOD.

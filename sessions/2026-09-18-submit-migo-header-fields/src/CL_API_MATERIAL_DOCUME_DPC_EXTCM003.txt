@@ -1,0 +1,44 @@
+﻿  METHOD get_filter_min_posting_date.
+
+    DATA lt_date_range TYPE if_nsdm_matdoc_aging_helper=>ty_date_range.
+    DATA lt_year_range TYPE if_nsdm_matdoc_aging_helper=>ty_year_range.
+    DATA lv_overall_min_date TYPE dats VALUE '99991231'.
+
+    CLEAR ev_min_date.
+
+    CHECK it_filter_options IS NOT INITIAL.
+
+    LOOP AT it_filter_options REFERENCE INTO DATA(lr_filter).
+      IF lr_filter->property = gc_filter_property_post_date. "'POSTINGDATE'
+
+        CLEAR lt_date_range.
+        MOVE-CORRESPONDING lr_filter->select_options TO lt_date_range.
+
+        DATA(lv_min_date) = mo_nsdm_matdoc_aging_helper->determine_min_date( lt_date_range ).
+
+        IF lv_min_date < lv_overall_min_date.
+          lv_overall_min_date = lv_min_date.
+          DATA(lv_has_post_date) = abap_true.
+        ENDIF.
+      ELSEIF lr_filter->property = gc_filter_property_matdoc_year. "'MATERIALDOCUMENTYEAR'.
+
+        CLEAR lt_year_range.
+        MOVE-CORRESPONDING lr_filter->select_options TO lt_year_range.
+
+        DATA(lv_min_year) = mo_nsdm_matdoc_aging_helper->determine_min_year( lt_year_range ).
+        IF lv_min_year IS NOT INITIAL.
+          lv_min_date = lv_min_year && '0101'.
+
+          IF lv_min_date < lv_overall_min_date.
+            lv_overall_min_date = lv_min_date.
+            lv_has_post_date = abap_true.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+
+    IF lv_has_post_date = abap_true.
+      ev_min_date = lv_overall_min_date.
+    ENDIF.
+
+  ENDMETHOD.

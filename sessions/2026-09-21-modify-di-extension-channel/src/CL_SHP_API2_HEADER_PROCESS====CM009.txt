@@ -1,0 +1,3 @@
+﻿  METHOD constructor.
+    mo_api_helper = NEW cl_shp_api2_helper( ).
+  ENDMETHOD.

@@ -1,0 +1,12 @@
+﻿  METHOD a_outbdelivery01_get_entity. "Delivery header
+    DATA(lo_sadl_gw_dpc) = if_sadl_gw_dpc_util~get_dpc( ).
+    DATA(lv_operation_type) = io_tech_request_context->get_conditional_operation_for( ).
+
+    mo_header_process->get_entity(
+      EXPORTING
+        io_sadl_gw_dpc          = lo_sadl_gw_dpc
+        io_tech_request_context = io_tech_request_context
+        iv_operation_type       = lv_operation_type
+      CHANGING
+        cs_entity               = er_entity ).
+  ENDMETHOD.

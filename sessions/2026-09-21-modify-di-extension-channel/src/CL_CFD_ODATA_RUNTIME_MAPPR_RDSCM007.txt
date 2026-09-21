@@ -1,0 +1,3 @@
+﻿  METHOD handle_mapping_exception.
+    RETURN. " might happen, as transient fields are missing in response structure in case SADL does not use MPC data type
+  ENDMETHOD.

@@ -1,0 +1,14 @@
+﻿  METHOD if_cfd_odata_runtime_vh_facade~get_value_help_provider.
+
+    IF mo_vh_provider_cfd->supports_entity_set( iv_entity_set_name ).
+      ro_vh_provider = mo_vh_provider_cfd.
+    ELSEIF mo_vh_provider_de->supports_entity_set( iv_entity_set_name ).
+      ro_vh_provider = mo_vh_provider_de.
+    ELSE.
+      RAISE EXCEPTION NEW cx_cfd_odata_runtime(
+        textid          = cx_cfd_odata_runtime=>entity_set_not_found
+        entity_set_name = iv_entity_set_name
+      ).
+    ENDIF.
+
+  ENDMETHOD.

@@ -1,0 +1,36 @@
+﻿  METHOD a_outbdelivery08_update_entity.
+    DATA:
+      ls_i_entity          TYPE i_deliverypartneraddress,
+      ls_i_entity_db       TYPE i_deliverypartneraddress,
+      ls_a_entity          TYPE a_outbdeliveryaddress_2,
+      ls_a_entity_with_key TYPE a_outbdeliveryaddress_2.
+
+    " Get patch data excluding keys.
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = ls_a_entity
+    ).
+    MOVE-CORRESPONDING ls_a_entity TO ls_i_entity.
+
+    " Get keys.
+    io_tech_request_context->get_converted_keys(
+      IMPORTING
+        es_key_values = ls_a_entity_with_key
+    ).
+    ls_i_entity-deliverydocument = ls_a_entity_with_key-deliverydocument.
+    ls_i_entity-partnerfunction = ls_a_entity_with_key-partnerfunction.
+
+    " Get image from db.
+    READ TABLE mt_partn_addr
+      WITH KEY deliverydocument = ls_i_entity-deliverydocument
+               partnerfunction = ls_i_entity-partnerfunction
+      INTO DATA(ls_a_entity_db).
+    MOVE-CORRESPONDING ls_a_entity_db TO ls_i_entity_db.
+
+    mo_partn_addr->update(
+      EXPORTING
+        is_entity_db    = ls_i_entity_db
+        is_entity_patch = ls_i_entity
+        io_context      = mo_context
+    ).
+  ENDMETHOD.

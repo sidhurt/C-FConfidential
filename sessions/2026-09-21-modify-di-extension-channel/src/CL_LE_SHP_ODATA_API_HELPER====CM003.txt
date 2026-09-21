@@ -1,0 +1,16 @@
+﻿  METHOD get_ext_include_for_update.
+    DATA: lo_ext_before TYPE REF TO cl_abap_structdescr.
+    FIELD-SYMBOLS: <fs_value_1> TYPE any,
+                   <fs_value_2> TYPE any.
+    MOVE-CORRESPONDING is_ext_db TO cs_ext_patch.
+    lo_ext_before ?= cl_abap_structdescr=>describe_by_data( p_data = is_ext_before_patch ).
+    LOOP AT lo_ext_before->components ASSIGNING FIELD-SYMBOL(<fs_comp_1>).
+      ASSIGN COMPONENT sy-tabix OF STRUCTURE is_ext_before_patch TO <fs_value_1>.
+      ASSIGN COMPONENT sy-tabix OF STRUCTURE is_ext_after_patch TO <fs_value_2>.
+
+      IF <fs_value_1> NE <fs_value_2>.
+        ASSIGN COMPONENT <fs_comp_1>-name OF STRUCTURE cs_ext_patch TO FIELD-SYMBOL(<fs_target_value>).
+        <fs_target_value> = <fs_value_2>.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.

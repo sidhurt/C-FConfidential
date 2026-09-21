@@ -1,0 +1,3 @@
+﻿  METHOD set_data_aging_temperature.
+    mo_daag_session_control->set_temperature( iv_data_temperature ).
+  ENDMETHOD.

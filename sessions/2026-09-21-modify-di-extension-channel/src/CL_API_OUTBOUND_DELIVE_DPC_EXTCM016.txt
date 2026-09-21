@@ -1,0 +1,18 @@
+﻿  METHOD a_outbdelivery08_get_entity.
+    DATA:
+      ls_entity TYPE i_deliverypartneraddress.
+
+    if_sadl_gw_dpc_util~get_dpc( )->get_entity( EXPORTING io_tech_request_context = io_tech_request_context
+                                                IMPORTING es_data                 = er_entity ).
+
+    DATA(lv_operation) = io_tech_request_context->get_conditional_operation_for( ).
+    IF lv_operation IS NOT INITIAL.
+      READ TABLE mt_partn_addr
+        WITH KEY deliverydocument = er_entity-deliverydocument
+                 partnerfunction  = er_entity-partnerfunction
+        TRANSPORTING NO FIELDS.
+      IF sy-subrc <> 0.
+        INSERT er_entity INTO TABLE mt_partn_addr.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

@@ -1,0 +1,15 @@
+﻿  METHOD map_rds_to_odata_property.
+
+    rs_odata_property = VALUE #(
+      abap_name                 = is_extension_property-abap_name
+      odata_name                = is_extension_property-external_odata_name
+      odata_field_control_name  = is_extension_property-field_control_property-external_odata_name
+      is_read_only              = is_extension_property-is_read_only
+      description_property_path = is_extension_property-description_property_path
+      conversion_exit_name      = is_extension_property-conversion_exit_name
+      is_filterable             = is_extension_property-include_in_filter
+      deviating_edm_type        = is_extension_property-edm_data_type
+      is_extension_field        = abap_true
+    ).
+
+  ENDMETHOD.

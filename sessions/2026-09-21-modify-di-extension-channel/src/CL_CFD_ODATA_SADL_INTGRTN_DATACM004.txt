@@ -1,0 +1,12 @@
+﻿  METHOD if_cfd_odata_sadl_intgrtn_data~add_mds_entity_extension.
+
+    IF line_exists( ms_model_data-sadl_data-mds_entities[ entity_set_name = is_mds_entity_extension-entity_set_name ] ).
+      add_mds_entity_extension( is_mds_entity_extension ).
+    ELSE.
+      RAISE EXCEPTION NEW cx_cfd_odata_runtime(
+        textid      = cx_cfd_odata_runtime=>entity_set_not_found
+        entity_name = is_mds_entity_extension-entity_set_name
+      ).
+    ENDIF.
+
+  ENDMETHOD.

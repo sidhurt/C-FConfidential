@@ -1,0 +1,31 @@
+﻿  METHOD /iwbep/if_mgw_core_srv_runtime~update_entity.
+    IF is_request_details-http_method EQ /iwcor/if_rest_request=>gc_method_put.
+      DATA: lv_dummy TYPE string.
+
+*     enable where used list for this message
+      MESSAGE e012(le_shp_odata_api_od)
+       INTO lv_dummy WITH /iwcor/if_rest_request=>gc_method_put.
+
+      mo_context->get_message_container( )->add_message(
+        EXPORTING
+          iv_msg_type               = /iwbep/if_message_container=>gcs_message_type-error    " Message Type
+          iv_msg_id                 = 'LE_SHP_ODATA_API_OD'    " Message Class
+          iv_msg_number             = 012    " Message Number
+          iv_msg_v1                 = CONV symsgv( /iwcor/if_rest_request=>gc_method_put )
+      ).
+
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_tech_exception
+        EXPORTING
+          message_container = mo_context->get_message_container( ).
+    ENDIF.
+
+    CALL METHOD super->/iwbep/if_mgw_core_srv_runtime~update_entity
+      EXPORTING
+        iv_entity_name     = iv_entity_name
+        iv_source_name     = iv_source_name
+        io_data_provider   = io_data_provider
+        is_request_details = is_request_details
+      CHANGING
+        ct_headers         = ct_headers
+        cr_entity          = cr_entity.
+  ENDMETHOD.

@@ -1,0 +1,16 @@
+﻿  METHOD if_cfd_odata_sadl_intgrtn_data~add_cds_fields.
+
+    DATA(lr_cds_fields) = REF #( mt_cds_fields[ cds_view_name = is_cds_fields-cds_view_name ] OPTIONAL ).
+    IF lr_cds_fields IS INITIAL.
+      INSERT VALUE #( cds_view_name = is_cds_fields-cds_view_name ) INTO TABLE mt_cds_fields REFERENCE INTO lr_cds_fields.
+    ENDIF.
+
+    LOOP AT is_cds_fields-enabled_fields INTO DATA(lv_enabled_field).
+      INSERT lv_enabled_field INTO TABLE lr_cds_fields->enabled_fields.
+    ENDLOOP.
+
+    LOOP AT is_cds_fields-existing_fields INTO DATA(lv_existing_field).
+      INSERT lv_existing_field INTO TABLE lr_cds_fields->existing_fields.
+    ENDLOOP.
+
+  ENDMETHOD.

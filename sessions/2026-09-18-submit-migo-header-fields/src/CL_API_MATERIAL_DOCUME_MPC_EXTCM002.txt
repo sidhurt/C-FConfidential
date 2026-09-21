@@ -1,0 +1,34 @@
+﻿  METHOD action_cancel.
+
+    DATA(lo_action) = model->create_action( gc_action_cancel ).
+
+    lo_action->set_label_from_text_element(
+      iv_text_element_symbol = '001'
+      iv_text_element_container = 'CL_API_MATERIAL_DOCUME_MPC_EXTCP' ) ##NO_TEXT.
+    lo_action->set_return_entity_type( gc_a_materialdocumentheadertyp ).
+    lo_action->set_action_for( gc_a_materialdocumentheadertyp ).
+    lo_action->set_http_method( 'POST' ) ##NO_TEXT.
+    lo_action->set_return_multiplicity( '1' ) ##NO_TEXT.
+
+    " Parameters
+    DATA(lo_parameter) = lo_action->create_input_parameter(
+      iv_parameter_name = 'MaterialDocumentYear'
+      iv_abap_fieldname = 'MATERIALDOCUMENTYEAR' ) ##NO_TEXT.
+    lo_parameter->/iwbep/if_mgw_odata_property~set_type_edm_string( ).
+    lo_parameter->set_maxlength( iv_max_length = 4 ) ##NO_TEXT.
+
+    lo_parameter = lo_action->create_input_parameter(
+      iv_parameter_name = 'MaterialDocument'
+      iv_abap_fieldname = 'MATERIALDOCUMENT' ) ##NO_TEXT.
+    lo_parameter->/iwbep/if_mgw_odata_property~set_type_edm_string( ).
+    lo_parameter->set_maxlength( iv_max_length = 10 ) ##NO_TEXT.
+
+    lo_parameter = lo_action->create_input_parameter(
+      iv_parameter_name = 'PostingDate'
+      iv_abap_fieldname = 'POSTINGDATE' ) ##NO_TEXT.
+    lo_parameter->/iwbep/if_mgw_odata_property~set_type_edm_datetime( ).
+    lo_parameter->/iwbep/if_mgw_odata_property~set_nullable( ).
+
+    lo_action->bind_input_structure( iv_structure_name = 'ODATA_MM_IM_ACT_MDOC_CANCEL' ) ##NO_TEXT.
+
+  ENDMETHOD.

@@ -1,0 +1,9 @@
+﻿  METHOD get_etag_relevance.
+    IF iv_action_name = 'ConfirmPickingOneItem' OR iv_action_name = 'ConfirmPickingAllItems'.
+      rv_relevance = cl_le_shp_odata_api_helper=>etag_optional.
+    ELSEIF iv_action_name = 'ReverseGoodsIssue'.
+      rv_relevance = cl_le_shp_odata_api_helper=>etag_none.
+    ELSE.
+      rv_relevance = cl_le_shp_odata_api_helper=>etag_mandatory.
+    ENDIF.
+  ENDMETHOD.

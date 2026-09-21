@@ -1,0 +1,3 @@
+﻿METHOD get_external_field_name.
+  rv_external_field_name = get_external_entity_name( iv_entity_name = iv_field_name ).
+ENDMETHOD.

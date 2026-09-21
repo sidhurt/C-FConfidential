@@ -1,0 +1,7 @@
+﻿  METHOD a_outbdelivery02_get_entity.
+    if_sadl_gw_dpc_util~get_dpc( )->get_entity( EXPORTING io_tech_request_context = io_tech_request_context
+                                                IMPORTING es_data                 = er_entity ).
+
+    mv_item_before_merge = er_entity.
+    APPEND mv_item_before_merge TO mt_items_before_merge.
+  ENDMETHOD.

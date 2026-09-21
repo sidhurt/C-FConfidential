@@ -1,0 +1,15 @@
+﻿class CL_API_OUTBOUND_DELIVE_MPC_FLX definition
+  public
+  inheriting from CL_API_OUTBOUND_DELIVE_MPC
+  create public .
+
+public section.
+
+  interfaces IF_CFD_ODATA_MPC_FLX .
+
+  methods FLX_LOAD_METADATA_API .
+
+  methods DEFINE
+    redefinition .
+  methods GET_LAST_MODIFIED
+    redefinition .

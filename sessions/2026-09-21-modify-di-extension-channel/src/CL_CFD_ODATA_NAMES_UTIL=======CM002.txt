@@ -1,0 +1,3 @@
+﻿METHOD get_entity_set_name.
+  rv_entity_set_name = get_external_entity_name( iv_entity_type_name && gc_entity_set_name_suffix ).
+ENDMETHOD.

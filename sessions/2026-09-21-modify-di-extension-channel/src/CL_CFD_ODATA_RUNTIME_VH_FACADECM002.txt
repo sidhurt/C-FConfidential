@@ -1,0 +1,8 @@
+﻿  METHOD create_instance.
+
+    ro_instance = NEW cl_cfd_odata_runtime_vh_facade(
+      io_odata_buffer  = io_odata_buffer
+      io_odata_context = io_odata_context
+    ).
+
+  ENDMETHOD.

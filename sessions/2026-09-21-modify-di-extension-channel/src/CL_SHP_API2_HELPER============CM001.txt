@@ -1,0 +1,13 @@
+﻿  METHOD if_shp_api2_helper~get_patched_attributes.
+    DATA: lo_struct_descr_1 TYPE REF TO cl_abap_structdescr.
+
+    lo_struct_descr_1 ?= cl_abap_structdescr=>describe_by_data( p_data = is_struct_1 ).
+    LOOP AT lo_struct_descr_1->components ASSIGNING FIELD-SYMBOL(<comp_1>).
+      ASSIGN COMPONENT sy-tabix OF STRUCTURE is_struct_1 TO FIELD-SYMBOL(<value_1>).
+      ASSIGN COMPONENT sy-tabix OF STRUCTURE is_struct_2 TO FIELD-SYMBOL(<value_2>).
+
+      IF <value_1> NE <value_2>.
+        INSERT VALUE #( name   = <comp_1>-name is_ext = iv_is_ext ) INTO TABLE rt_attributes.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.

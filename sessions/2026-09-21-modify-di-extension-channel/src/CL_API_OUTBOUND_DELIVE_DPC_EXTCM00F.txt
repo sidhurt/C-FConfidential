@@ -1,0 +1,102 @@
+﻿  METHOD a_outbdelivery02_update_entity.
+    DATA: ls_entity         TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryitemtype,
+          ls_error_log      TYPE ty_s_vbfs,
+          lt_protocol       TYPE TABLE OF prott,
+          lt_lips           TYPE shp_lips_t,
+          lt_likp           TYPE shp_likp_t,
+          ls_lips           TYPE lipsvb,
+          ls_lips_buffer    TYPE lips,
+          lv_exception      TYPE REF TO cx_od_api_exception,
+          lr_patched_fields TYPE REF TO data,
+          lv_tmp_item       TYPE  aoutbdeliveryitem,
+          ls_cust_patched   LIKE er_entity.
+
+    io_tech_request_context->get_converted_keys(
+      IMPORTING
+        es_key_values = ls_entity    " Entity Key Values - converted
+    ).
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = er_entity
+    ).
+
+*   Check whether only updateable flagged properties where used
+    DATA itab TYPE TABLE OF string.
+    cl_api_outbound_delive_mpc_ext=>get_properties_update_item(
+      IMPORTING
+        ex_whitelist = itab
+    ).
+
+*   get patched fields
+    CREATE DATA lr_patched_fields LIKE er_entity.
+    ASSIGN lr_patched_fields->* TO FIELD-SYMBOL(<fs_patched_fieds>).
+
+    READ TABLE mt_items_before_merge
+      INTO mv_item_before_merge
+      WITH KEY deliverydocument = ls_entity-deliverydocument
+               deliverydocumentitem = ls_entity-deliverydocumentitem.
+
+    DATA(ls_entity_std) = er_entity.
+    DATA(mv_item_before_merge_std) = mv_item_before_merge.
+    CLEAR: ls_entity_std-ext, mv_item_before_merge_std-ext.
+    get_patched_fields(
+      EXPORTING
+        im_struct_1      = ls_entity_std
+        im_struct_2      = mv_item_before_merge_std
+      IMPORTING
+        ev_is_any_change = DATA(lv_is_standard_field_changed)
+      CHANGING
+        ex_struct        = <fs_patched_fieds>
+    ).
+    GET REFERENCE OF <fs_patched_fieds> INTO lr_patched_fields.
+    ASSIGN lr_patched_fields->* TO FIELD-SYMBOL(<fs_tmp_item>).
+    lv_tmp_item = <fs_tmp_item>.
+
+    check_whitelist(
+      EXPORTING
+        im_struct    = <fs_patched_fieds>
+        im_whitelist = itab
+    ).
+
+*   Fill extension fields
+    get_patched_fields(
+      EXPORTING
+        im_struct_1      = er_entity-ext
+        im_struct_2      = mv_item_before_merge-ext
+      IMPORTING
+        ev_is_any_change = DATA(lv_is_custom_field_changed)
+      CHANGING
+        ex_struct        = ls_cust_patched ).
+
+    IF er_entity IS NOT INITIAL AND
+       lv_tmp_item IS INITIAL AND
+       lv_is_standard_field_changed = abap_false AND
+       lv_is_custom_field_changed = abap_false.
+      "No values to update - no changes found
+      RETURN.
+    ENDIF.
+
+    TEST-SEAM lock_delivery_dpc_ext.
+      lock_delivery( im_deliverydocument = ls_entity-deliverydocument ).
+    END-TEST-SEAM.
+
+    TRY .
+        DATA(lo_od_iref) = cl_outbound_delivery_factory=>get_instance( ).
+        lo_od_iref->update_delivery_item(
+          EXPORTING
+            im_deliveryitem              = er_entity
+            im_deliveryitem_before_merge = mv_item_before_merge
+          IMPORTING
+            ex_error_log                 = ls_error_log
+            ex_protocol                  = lt_protocol
+        ).
+      CATCH cx_od_api_exception INTO lv_exception.
+        DATA(lo_exception_processor) = NEW lcl_exception_processor( ).
+        lo_exception_processor->process_update_exceptions(
+          EXPORTING
+            io_exception   = lv_exception
+          CHANGING
+            io_api_context = mo_context
+        ).
+    ENDTRY.
+  ENDMETHOD.

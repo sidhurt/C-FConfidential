@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~get_skip.
+    RETURN ##NEEDED.
+  ENDMETHOD.

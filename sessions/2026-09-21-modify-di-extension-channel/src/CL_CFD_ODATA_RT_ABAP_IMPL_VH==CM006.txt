@@ -1,0 +1,16 @@
+﻿  METHOD get_query_options_entity.
+
+* see CL_SADL_GW_GENERIC_DPC->IF_SADL_GW_DPC~GET_ENTITY
+    rs_query_options-paging = VALUE #(
+      maximum_rows = -1
+      start_row = 1
+    ).
+
+    rs_query_options-restrictions-complex_condition = get_complex_conditions_keys( io_tech_request_context ).
+
+    rs_query_options-requested-elements = get_requested_elements( io_tech_request_context->get_select_entity_properties( ) ).
+
+    rs_query_options-requested-fill_number_all_hits = abap_true.
+    rs_query_options-requested-fill_data            = abap_true.
+
+  ENDMETHOD.

@@ -1,0 +1,36 @@
+﻿  METHOD check_whitelist.
+    DATA:
+      ls_attribute  TYPE if_shp_api2_helper=>ty_attribute_gfn,
+      lt_attributes TYPE if_shp_api2_helper=>tt_attributes_gfn.
+
+    LOOP AT it_patched_attributes
+      ASSIGNING FIELD-SYMBOL(<fs_patched_attribute>)
+      WHERE is_ext = abap_false.
+
+      READ TABLE it_whitelist WITH KEY name = <fs_patched_attribute>-name INTO ls_attribute.
+      IF sy-subrc <> 0.
+        ls_attribute = VALUE #(
+          name   = <fs_patched_attribute>-name
+          gfn    = <fs_patched_attribute>-name
+          update = abap_false ).
+      ENDIF.
+
+      IF ls_attribute-update = abap_false.
+        APPEND ls_attribute TO lt_attributes.
+      ENDIF.
+    ENDLOOP.
+
+    IF lt_attributes IS NOT INITIAL.
+      DATA(lo_shp_exception) = NEW cx_shp_api2_exception( ).
+      LOOP AT lt_attributes INTO ls_attribute.
+        MESSAGE e025(le_shp_odata_api_od) INTO DATA(ls_msg).
+        lo_shp_exception->add_message(
+          EXPORTING
+            is_message = VALUE #( msgid = sy-msgid
+                                  msgno = sy-msgno
+                                  msgty = sy-msgty
+                                  msgv1 = ls_attribute-gfn ) ).
+      ENDLOOP.
+      RAISE EXCEPTION lo_shp_exception.
+    ENDIF.
+  ENDMETHOD.

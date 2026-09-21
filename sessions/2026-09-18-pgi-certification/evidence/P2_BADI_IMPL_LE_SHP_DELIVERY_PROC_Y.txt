@@ -1,0 +1,8 @@
+SESSION|QS4/700 located at connection[0] session[0]|user=QNOVATE8
+SELFIELD|txtI1-LOW=LE_SHP_DELIVERY_PROC
+SELFIELD|txtI3-LOW=Y
+SELFIELD|txtI3-HIGH=Y~
+TABLE|BADI_IMPL
+TITLE|Data Browser: Table BADI_IMPL: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

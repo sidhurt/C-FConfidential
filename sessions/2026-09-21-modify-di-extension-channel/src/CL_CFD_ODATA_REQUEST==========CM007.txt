@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~get_crp_provider_request.
+    RETURN ##NEEDED.
+  ENDMETHOD.

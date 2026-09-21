@@ -1,0 +1,11 @@
+﻿  METHOD get_text_source_data.
+
+    DATA(lt_text_source_data) = mo_odata_buffer->get_cfd_text_source_data( ).
+    rs_text_source_data = VALUE #( lt_text_source_data[ entity_type_name    = mo_extended_entity->get_entity_type_name( )
+                                                        odata_property_name = ir_property->external_odata_name ] OPTIONAL ).
+
+    IF rs_text_source_data IS INITIAL OR rs_text_source_data-property_mapping IS INITIAL.
+      RAISE EXCEPTION NEW cx_cfd_odata_runtime( textid = cx_cfd_odata_runtime=>internal_error ).
+    ENDIF.
+
+  ENDMETHOD.

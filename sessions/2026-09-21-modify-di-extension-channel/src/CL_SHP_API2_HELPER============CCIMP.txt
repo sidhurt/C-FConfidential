@@ -1,0 +1,93 @@
+﻿*"* use this source file for the definition and implementation of
+*"* local helper classes, interface definitions and type
+*"* declarations
+INTERFACE lif_persistency.
+  METHODS:
+    lock_delivery
+      IMPORTING
+        iv_vbeln TYPE vbeln_vl
+      RAISING
+        cx_shp_api2_exception.
+ENDINTERFACE.
+
+CLASS lcl_persistency_injector DEFINITION DEFERRED.
+CLASS lcl_persistency DEFINITION
+  FRIENDS lcl_persistency_injector.
+  PUBLIC SECTION.
+    INTERFACES:
+      lif_persistency.
+
+    CLASS-METHODS:
+      get
+        RETURNING
+          VALUE(ro_instance) TYPE REF TO lif_persistency.
+
+  PRIVATE SECTION.
+    CLASS-DATA:
+      instance TYPE REF TO lif_persistency.
+
+    METHODS:
+      raise_message
+        IMPORTING
+          iv_vbeln   TYPE vbeln_vl
+          is_message TYPE symsg
+        RAISING
+          cx_shp_api2_exception.
+ENDCLASS.
+
+CLASS lcl_persistency IMPLEMENTATION.
+  METHOD get.
+    IF instance IS NOT BOUND.
+      instance = NEW lcl_persistency( ).
+    ENDIF.
+    ro_instance = instance.
+  ENDMETHOD.
+
+  METHOD lif_persistency~lock_delivery.
+    TRY.
+        CALL FUNCTION 'ENQUEUE_EDLV'
+          EXPORTING
+            vbeln          = iv_vbeln
+          EXCEPTIONS
+            foreign_lock   = 1
+            system_failure = 2
+            OTHERS         = 3.
+        IF sy-subrc <> 0.
+          raise_message(
+            EXPORTING
+              iv_vbeln   = iv_vbeln
+              is_message = VALUE #(
+                msgty = sy-msgty
+                msgid = sy-msgid
+                msgno = sy-msgno
+                msgv1 = sy-msgv1
+                msgv2 = sy-msgv2
+                msgv3 = sy-msgv3
+                msgv4 = sy-msgv4
+              )
+          ).
+        ENDIF.
+      CATCH cx_no_check.
+        " For safety reasons catch the unexpected errors.
+        raise_message(
+          EXPORTING
+            iv_vbeln   = iv_vbeln
+            is_message = VALUE #(
+              msgty = 'E'
+              msgid = sy-msgid
+              msgno = sy-msgno
+              msgv1 = sy-msgv1
+              msgv2 = sy-msgv2
+              msgv3 = sy-msgv3
+              msgv4 = sy-msgv4
+            )
+        ).
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD raise_message.
+    DATA(lo_exception) = NEW cx_shp_api2_exception( ).
+    lo_exception->add_message( is_key = VALUE #( vbeln = iv_vbeln ) is_message = is_message ).
+    RAISE EXCEPTION lo_exception.
+  ENDMETHOD.
+ENDCLASS.

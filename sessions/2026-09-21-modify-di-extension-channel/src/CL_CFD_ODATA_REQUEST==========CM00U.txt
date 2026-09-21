@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~get_source_entity_type_name.
+    RETURN ##NEEDED.
+  ENDMETHOD.

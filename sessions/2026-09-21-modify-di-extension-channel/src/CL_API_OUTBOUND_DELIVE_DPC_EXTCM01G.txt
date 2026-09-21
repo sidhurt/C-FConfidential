@@ -1,0 +1,21 @@
+﻿  METHOD a_handlingunit01_create_entity.
+    DATA: ls_entity_create TYPE cl_api_outbound_delive_mpc=>ts_a_handlingunititemdeliveryt.
+
+    DATA(lo_collector) = cl_api_le_dlv_upd_coll_factory=>get_instance( ).
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = ls_entity_create ).
+
+    mo_api_hu->create_hu_itm_entity(
+      EXPORTING
+        io_collector  = lo_collector
+        it_key        = it_key_tab
+        is_itm_entity = ls_entity_create
+        io_context    = mo_context
+      IMPORTING
+        es_itm_entity = ls_entity_create
+    ).
+    er_entity = ls_entity_create.
+
+  ENDMETHOD.

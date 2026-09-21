@@ -1,0 +1,7 @@
+﻿  METHOD constructor.
+
+    mo_odata_buffer    = io_odata_buffer.
+    mo_gw_context      = io_gw_context.
+    mo_application_dpc = io_application_dpc.
+
+  ENDMETHOD.

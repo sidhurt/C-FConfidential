@@ -1,0 +1,431 @@
+﻿***INCLUDE MV50AFZ1 .
+
+************************************************************************
+*                                                                      *
+* This include is reserved for user modifications                      *
+*                                                                      *
+* Forms for delivery processing                                        *
+*                                                                      *
+* The name of modification modules should begin with 'ZZ'.             *
+*                                                                      *
+************************************************************************
+
+*---------------------------------------------------------------------*
+*       FORM ZZEXAMPLE                                                *
+*---------------------------------------------------------------------*
+*       text......................................                    *
+*---------------------------------------------------------------------*
+*FORM ZZEXAMPLE.
+
+*  ...
+
+*ENDFORM.
+
+*eject
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_DELETE_DOCUMENT                                 *
+*---------------------------------------------------------------------*
+*       This userexit can be used to delete data in additional tables *
+*       when a delivery is deleted.                                   *
+*                                                                     *
+*      This form is called in dialog at the end of form BELEG_LOESCHEN*
+*      just before form BELEG_SICHERN is performed to delete the      *
+*      datas on the database.                                         *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_DELETE_DOCUMENT.
+
+ENDFORM.
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_MOVE_FIELD_TO_LIKP                              *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move some fields into the        *
+*       delivery header workaerea LIKP.                               *
+*       This form is called, when a header is created                 *
+*       This form is called at the end of form LIKP_FUELLEN.          *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_MOVE_FIELD_TO_LIKP.
+
+*  LIKP-zzfield = xxxx-zzfield2.
+
+ENDFORM.
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_MOVE_FIELD_TO_LIPS                              *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move some fields into the        *
+*       delivery item workaerea LIPS                                  *
+*       This form is called, when an item is created                  *
+*                                                                     *
+*                                                                     *
+*       This form is called at the end of form LIPS_FUELLEN.          *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_MOVE_FIELD_TO_LIPS.
+
+*  LIPS-zzfield = xxxx-zzfield2.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(1) Form USEREXIT_MOVE_FIELD_TO_LIPS, End                                                                                                             A
+*$*$-Start: (1)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 2  ZEI_LE_UPDATE_DELIVERY_HEAD.    "active version
+    SELECT SINGLE evers FROM ekpo INTO @DATA(lv_evers)
+                  WHERE ebeln = @lips-vgbel AND ebelp = @lips-vgpos.
+    IF sy-subrc = 0.
+      SELECT SINGLE traty FROM zletshipmap INTO likp-traty
+        WHERE evers = lv_evers.
+    ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   (1)---------------------------------------------------------------------------------$*$*
+ENDFORM.
+*eject
+
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_NUMBER_RANGE                                    *
+*---------------------------------------------------------------------*
+*       This userexit can be used to determine the numberranges for   *
+*       the internal document number.                                 *
+*                                                                     *
+*       US_RANGE_INTERN - internal number range                       *
+*                                                                     *
+*       This form is called from form BELEG_SICHERN                   *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_NUMBER_RANGE USING US_RANGE_INTERN.
+
+* Example: Numer range from TVLK like in standard
+* US_RANGE_INTERN = TVLK-NUMKI.
+
+ENDFORM.
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_READ_DOCUMENT                                   *
+*---------------------------------------------------------------------*
+*       This userexit can be used to read data in additional tables   *
+*       when the program reads a delivery.                            *
+*                                                                     *
+*       This form is called at the end of form BELEG_LESEN.           *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_READ_DOCUMENT.
+
+ENDFORM.
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_SAVE_DOCUMENT                                   *
+*---------------------------------------------------------------------*
+*       This userexit can be used to save data in additional tables   *
+*       when a document is saved.                                     *
+*                                                                     *
+*       If field T180-TRTYP contents 'H', the document will be        *
+*       created, else it will be changed.                             *
+*                                                                     *
+*       This form is called at from form BELEG_SICHERN, before COMMIT *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_SAVE_DOCUMENT.
+
+* Example:
+* CALL FUNCTION 'ZZ_EXAMPLE'
+*      IN UPDATE TASK
+*      EXPORTING
+*           ZZTAB = ZZTAB.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(2) Form USEREXIT_SAVE_DOCUMENT, End                                                                                                                  A
+*$*$-Start: (2)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 3  ZEI_LE_UPDATE_DELIVERY_HEAD.    "active version
+        DATA: lt_return TYPE STANDARD TABLE OF bapiret2.
+        CALL FUNCTION 'ZLEF_ILMS_CREATE_PROCORD' DESTINATION 'NONE'
+          TABLES
+            it_xlips       = xlips[]
+            et_return = lt_return.
+ENDENHANCEMENT.
+ENHANCEMENT 1  ZEI_LE_VALIDATE_TRANSPOTER.    "active version
+IF sy-tcode = 'VL02N'.
+  AUTHORITY-CHECK OBJECT 'Z_TRAN_CH'
+  ID 'ACTVT' FIELD '02'.
+  IF sy-subrc <> 0.
+    SELECT SINGLE lifnr FROM vbpa INTO @DATA(lv_old_tran) WHERE vbeln = @xlikp-vbeln AND parvw = 'SP'.
+    IF sy-subrc = 0.
+
+      TRY.
+          DATA(lv_new_tran) = xvbpa[ parvw = 'SP' ]-lifnr.
+        CATCH cx_sy_itab_line_not_found. "*Transporter code is deleted
+      ENDTRY.
+
+      "* Validation will only work on condition that Transporter code should be there while delivery creation
+      IF lv_old_tran <> lv_new_tran.
+        MESSAGE e181(zle).
+      ENDIF.
+
+    ENDIF.
+  ENDIF.
+
+ENDIF.
+*SELECT SINGLE low FROM tvarvc INTO @DATA(lv_chk) WHERE name = 'ZSD_GSTIN_CHECK'.
+*IF lv_chk = abap_true AND xlikp-kunnr IS NOT INITIAL AND ( sy-tcode = 'VL01N' OR  sy-tcode = 'VL02N' ).
+*  SELECT SINGLE * FROM zta_gstin_sat INTO @DATA(ls_gstin)
+*   WHERE buspattner = @xlikp-kunnr ."AND zstatus = 'X'.
+*  IF sy-subrc EQ 0.
+*    IF ls_gstin-zstatus EQ ''.
+*      MESSAGE e001(zgstin) WITH xlikp-kunnr.
+*    ENDIF.
+*  ELSE.
+*     MESSAGE w003(zgstin) WITH xlikp-kunnr.
+*  ENDIF.
+*ENDIF.
+ENDENHANCEMENT.
+ENHANCEMENT 1  ZEI_LE_VALIDATE_YSTO.    "active version
+      CONSTANTS:lc_setname TYPE char15 VALUE 'ZSD_MFG_YSTO'.
+      DATA:lv_value         TYPE rgsmv-from.
+
+      IF xlikp-lfart = 'ZNL'.
+        DATA(lt_komv) = tkomv[].
+        DELETE lt_komv WHERE kbetr IS INITIAL.
+        DATA(lt_lips) = xlips[].
+        DELETE lt_lips WHERE updkz = 'D'.
+        DELETE lt_lips WHERE uecha IS NOT INITIAL.
+
+        LOOP AT lt_lips INTO DATA(ls_xlips).
+          DATA(lv_value_present) = VALUE xfeld( ).
+          CLEAR:lv_value,lv_value_present.
+          lv_value = ls_xlips-mfrgr.
+          CALL METHOD zclsg_abap_utilities=>check_set_value
+            EXPORTING
+              iv_shortname     = lc_setname
+              iv_from          = lv_value
+            RECEIVING
+              ev_values_exists = lv_value_present.
+          IF lv_value_present = abap_false.
+            IF NOT line_exists( lt_komv[ kschl = 'YSTO' ] ).
+*              DATA(lv_msg) = CONV symsgv( 'ZSTO is not maintained for Item :' ) && ls_xlips-posnr.
+*              MESSAGE lv_msg TYPE 'E'.
+              MESSAGE e182(zle) WITH ls_xlips-posnr.
+            ENDIF.
+          ENDIF.
+        ENDLOOP.
+      ENDIF.
+ENDENHANCEMENT.
+ENHANCEMENT 1  ZZCRM_DI_SEND.    "active version
+IF sy-tcode = 'VL01N' OR sy-tcode = 'VL02N' OR sy-tcode = 'VL03N' OR sy-tcode = 'ZLE020' OR sy-tcode = 'ZSD094'.
+  READ TABLE xlips INTO DATA(spart2) INDEX 1.
+  SELECT low FROM tvarvc INTO TABLE @DATA(it_crm_deltype) WHERE NAME = 'ZCRM_DEL_TYPE'.
+  SELECT low FROM tvarvc INTO TABLE @DATA(it_crm_division) WHERE NAME = 'ZCRM_DIVISION'.
+  IF it_crm_deltype IS NOT INITIAL AND it_crm_division IS NOT INITIAL.
+    READ TABLE it_crm_deltype INTO DATA(wa_deltype) WITH KEY low = xlikp-lfart.
+    READ TABLE it_crm_division INTO DATA(wa_division) WITH KEY low = spart2-spart.
+*  if xlikp-lfart = 'ZNP' OR ( ( xlikp-lfart = 'ZRMC' OR xlikp-lfart = 'ZNL' OR xlikp-lfart = 'ZLF' )
+*    AND ( spart2-spart = '10' OR spart2-spart = '16' OR spart2-spart = '14' OR spart2-spart = '20' ) ).
+  IF wa_deltype IS NOT INITIAL AND wa_division IS NOT INITIAL.
+  DATA: s_vbeln  TYPE RANGE OF likp-vbeln,
+        wa_vbeln LIKE LINE OF s_vbeln.
+  wa_vbeln-sign = 'I'.
+  wa_vbeln-option = 'EQ'.
+  wa_vbeln-low = xlikp-vbeln.
+  APPEND wa_vbeln TO s_vbeln.
+  CLEAR wa_vbeln.
+
+  EXPORT xlikp = xlikp TO MEMORY ID 'ZXLIKP'.
+  EXPORT xlips = xlips TO MEMORY ID 'ZXLIPS'.
+  EXPORT xvbpa = xvbpa TO MEMORY ID 'ZXVBPA'.
+
+  SUBMIT zcrm_delivery_send WITH s_del IN s_vbeln AND RETURN.
+ENDIF.
+ENDIF.
+ENDIF.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(3) Form USEREXIT_SAVE_DOCUMENT, End, Enhancement ZZCRM_DI_SEND, End                                                                                  A
+*$*$-Start: (3)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 1  ZZ_LE_BIDDING_QTY.    "active version
+SELECT SINGLE low INTO @DATA(lv_act) FROM tvarvc WHERE name = 'ZLE_BIDING_FRT_QTY'.
+IF sy-tcode = 'VL02N' AND lv_act = abap_true.
+  INCLUDE zz_le_bidding_qty IF FOUND.
+ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   (3)---------------------------------------------------------------------------------$*$*
+ENDENHANCEMENT.
+*$*$-End:   (2)---------------------------------------------------------------------------------$*$*
+ENDFORM.
+*eject
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_SAVE_DOCUMENT_PREPARE                           *
+*---------------------------------------------------------------------*
+*       This userexit can be used for changes or checks, before a     *
+*       document is saved.                                            *
+*                                                                     *
+*       If field T180-TRTYP contents 'H', the document will be        *
+*       created, else it will be changed.                             *
+*                                                                     *
+*       This form is called at the beginning of form BELEG_SICHERN    *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_SAVE_DOCUMENT_PREPARE.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(4) Form USEREXIT_SAVE_DOCUMENT_PREPARE, Start                                                                                                        A
+*$*$-Start: (4)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 1  ZEI_SD_UPDATE_DELBILLINGTYPE.    "active version
+DATA : lv_zrmc        TYPE likp-lfart VALUE 'ZRMC'.
+DATA lv_del_ind TYPE char1.
+
+IMPORT lv_del_ind TO  lv_del_ind FROM MEMORY ID 'ZLV_DEL_IND'.
+FREE MEMORY ID 'ZLV_DEL_IND'.
+
+"Start of code for ZRMC delivery type on 14.11.2024
+IF sy-tcode = 'VL01N' OR sy-tcode = 'VL02N' OR lv_del_ind = 'X'.
+  IF likp-lfart EQ lv_zrmc
+    OR likp-lfart EQ 'ZRM2'. " Added by Ashutosh for 31364
+    DATA: wa_xlips TYPE lips .
+    DATA: wa_vbak_zrmc TYPE vbak .
+
+    READ TABLE xlips[] INTO wa_xlips INDEX 1 .
+    IF wa_xlips-vgbel IS NOT INITIAL .
+      SELECT SINGLE * FROM vbak INTO wa_vbak_zrmc WHERE vbeln = wa_xlips-vgbel
+                                                      AND ( kvgr5 NE 'N' AND kvgr5 NE '' ) .
+      IF sy-subrc = 0.
+        READ TABLE xlikp[] ASSIGNING FIELD-SYMBOL(<fs_fkarv_zrmc>) INDEX 1.
+        IF sy-subrc EQ 0.
+          IF likp-lfart EQ lv_zrmc.
+            <fs_fkarv_zrmc>-fkarv = 'ZRDC'.
+          ELSE.
+            <fs_fkarv_zrmc>-fkarv = 'ZRDE'. " Added by Ashutosh for 31364
+          ENDIF.
+        ENDIF.
+      ELSE.
+        SELECT SINGLE * FROM vbak INTO wa_vbak_zrmc WHERE vbeln = wa_xlips-vgbel
+                                                        AND ( kvgr5 EQ 'N' OR kvgr5 EQ '' ).
+        READ TABLE xlikp[] ASSIGNING FIELD-SYMBOL(<fs_fkarv_zrmc1>) INDEX 1.
+        IF sy-subrc EQ 0.
+          <fs_fkarv_zrmc1>-fkarv = 'ZDOM' .
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+""ASI
+ DATA :  LOW TYPE TVARVC-LOW.
+SELECT SINGLE  LOW
+  FROM tvarvc
+  INTO LOW
+  WHERE name = 'ZUSER_PCODE_INCLUDE'
+  AND  LOW = LIps-WERKS.
+IF LOW IS NOT INITIAL.
+IF sy-tcode = 'VL02N' . "sy-tcode = 'VL01N' OR
+  if  SY-UCOMM = 'SICH_T' AND LIKP-INCO1 EQ 'FTP' AND LIKP-XABLN  = ' ' . .
+  SELECT SINGLE PICKUPCODE FROM  VBAK  WHERE  VBELN = @LIps-vgbel and VBTYP = 'C'
+*  SELECT SINGLE PICKUPCODE FROM VBFA AS A INNER JOIN VBAK AS B ON ( B~VBELN =  A~VBELV ) WHERE  b~VBELN = @LIkp-vbeln AND VBTYP_V = 'C'
+      INTO @DATA(PCODE).
+
+      IF SY-SUBRC = 0..
+        IF PCODE <> LIKP-pickupcode.
+          CLEAR : PCODE , LIKP-PICKUPCODE.
+          MESSAGE 'Pickupcode Mismatch' type 'E'." DISPLAY LIKE 'E'.
+        ENDIF.
+      ENDIF.
+
+ENDIF.
+ENDIF.
+ENDIF.
+  "Vehicle number mandatory
+*  IF likp-lfart EQ lv_zrmc.
+*    IF xlikp-zzvehicle_no IS INITIAL .
+**      MESSAGE 'Vehicle number cannot be blank' TYPE 'E' .  "DISPLAY LIKE 'S' .
+**      PERFORM message_handling(sapmv50a) USING xlips-posnr '002' 'E' 'ZSD'  'Vehicle number cannot be blank' ''  '' '' IF FOUND.
+*    ENDIF.
+*  ENDIF.
+  "End of code for Vehicle number mandatory
+
+  "Delivery quantity should be matched with batch
+  IF likp-lfart EQ lv_zrmc.
+    DATA: var_matdoc_menge TYPE matdoc-menge .
+    DATA: var_matdoc_menge1 TYPE matdoc-menge .
+    DATA: wa_lips_matdoc TYPE lips .
+    CLEAR: var_matdoc_menge ,var_matdoc_menge1,  wa_lips_matdoc .
+
+    DATA: it_matdoc_rmc TYPE TABLE OF matdoc.
+    READ TABLE xlips[] INTO wa_lips_matdoc INDEX 1 .
+    IF wa_lips_matdoc-charg IS NOT INITIAL AND wa_lips_matdoc-lgort IS NOT INITIAL AND wa_lips_matdoc-vgbel IS NOT INITIAL .
+*   SELECT SINGLE MENGE INTO VAR_MATDOC_MENGE
+*     FROM MATDOC WHERE CHARG = WA_LIPS_MATDOC-CHARG
+*     AND  LGORT = WA_LIPS_MATDOC-LGORT
+*     AND  MAT_KDAUF = WA_LIPS_MATDOC-VGBEL .
+      SELECT * FROM matdoc INTO TABLE it_matdoc_rmc
+        WHERE lgort = wa_lips_matdoc-lgort
+        AND   charg = wa_lips_matdoc-charg
+        AND   mat_kdauf = wa_lips_matdoc-vgbel .
+      LOOP AT it_matdoc_rmc INTO DATA(wa_matdoc_rmc).
+        IF wa_matdoc_rmc-shkzg = 'H' .
+          var_matdoc_menge1 = wa_matdoc_rmc-menge * ( -1 ) .
+        ELSE.
+          var_matdoc_menge1 = wa_matdoc_rmc-menge .
+        ENDIF.
+        var_matdoc_menge =  var_matdoc_menge + var_matdoc_menge1 .
+        CLEAR: var_matdoc_menge1 .
+      ENDLOOP.
+      IF var_matdoc_menge LT wa_lips_matdoc-lfimg .
+        MESSAGE |Delivery Qty. should not be greater than Batch No.| && |{ wa_lips_matdoc-charg }| && | selected. | TYPE 'E' .
+      ENDIF.
+    ENDIF.
+  ENDIF.
+ENDIF.
+"End of code for Delivery quantity should be matched with batch
+
+
+ENDENHANCEMENT.
+ENHANCEMENT 1  ZSD_SHIP_CHECK.    "active version
+    IF sy-tcode = 'VL01N' OR sy-tcode = 'VL02N'.
+      IF xlikp-kunnr NE xlikp-kunag.
+        SELECT FROM kna1 FIELDS COUNT(*) WHERE kunnr = @xlikp-kunag AND lifsd = '31'.
+        IF sy-subrc EQ 0.
+          MESSAGE |GSTIN is inactive of sold to { xlikp-kunag }| TYPE 'E'.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   (4)---------------------------------------------------------------------------------$*$*
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""$"$\SE:(5) Form USEREXIT_SAVE_DOCUMENT_PREPARE, End                                                                                                          A
+*$*$-Start: (5)---------------------------------------------------------------------------------$*$*
+ENHANCEMENT 1  ZSD_DEL_SAVE_CHECK.    "active version
+  SELECT SINGLE low INTO @DATA(lv_date) FROM tvarvc WHERE name = 'ZSD_EWM_DATE'.
+  IF ( sy-tcode = 'VL01N' OR sy-tcode = 'VL02N' OR sy-tcode = 'VL03N' ) AND xlikp-erdat GE lv_date.
+    LOOP AT xlips.
+      SELECT COUNT(*) FROM t320 WHERE werks = xlips-werks AND lgort = xlips-lgort.
+      IF sy-subrc IS INITIAL AND sy-dbcnt NE 0.
+        MESSAGE 'EWM Location cannot be selected.' TYPE 'E'.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+ENDENHANCEMENT.
+*$*$-End:   (5)---------------------------------------------------------------------------------$*$*
+ENDFORM.
+*eject
+
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_REFRESH_DOCUMENT                                *
+*---------------------------------------------------------------------*
+*       It is always necessary to refresh user-specific data before   *
+*       the next document will be processed.                          *
+*       This can be done in this userexit.                            *
+*       This userexit can be used to refresh user-specific data       *
+*       when the processing of a delivery is finished                 *
+*       - after the document is saved                                 *
+*       - when you leave the document processing with F3 or F15       *
+*       It may be necessary to refresh user-specific data before      *
+*       the next document will be processed.                          *
+*                                                                     *
+*      This form is called in dialog at the end of form               *
+*      BELEG_INITIALISIEREN                                           *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM USEREXIT_REFRESH_DOCUMENT.
+
+* clear: ZZ50A.
+* refresh: zzitemtab.
+
+ENDFORM.
+*eject

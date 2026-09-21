@@ -1,0 +1,59 @@
+﻿  METHOD if_shp_api2_header_process~update_entity.
+    get_entity(
+      EXPORTING
+        io_tech_request_context = io_tech_request_context
+        io_data_provider        = io_data_provider
+      IMPORTING
+        es_entity_y             = DATA(ls_entity_y)
+        es_entity_x             = DATA(ls_entity_x)
+        es_header_std_x         = DATA(ls_header_std_x)
+        es_header_ext_x         = DATA(ls_header_ext_x) ).
+
+    DATA(lt_patched_attributes) = get_patched_attributes(
+      is_header_std_x = ls_header_std_x
+      is_header_ext_x = ls_header_ext_x ).
+
+    CHECK lt_patched_attributes IS NOT INITIAL.
+
+    TRY.
+        mo_api_helper->lock_delivery( ls_entity_x-deliverydocument ).
+
+        check_whitelist(
+          EXPORTING
+            it_whitelist          = it_whitelist
+            it_patched_attributes = lt_patched_attributes ).
+
+        IF are_dates_exposed_in_utc( ls_entity_x-sddocumentcategory ).
+          change_to_local_timezone(
+            CHANGING
+              cs_entity = ls_entity_x ).
+        ENDIF.
+
+        DATA(ls_vbkok) = get_vbkok(
+          is_entity             = ls_entity_x
+          it_patched_attributes = lt_patched_attributes ).
+
+        io_collector->update(
+          EXPORTING
+            is_vbkok = ls_vbkok ).
+
+      CATCH cx_shp_api2_exception INTO DATA(lo_shp_exception).
+      CATCH cx_od_api_exception INTO DATA(lo_exception).
+        lo_shp_exception = mo_api_helper->get_shp_exception( lo_exception ).
+    ENDTRY.
+
+    IF lo_shp_exception IS BOUND.
+      MESSAGE e026(le_shp_odata_api_od) WITH ls_entity_x-deliverydocument INTO DATA(lv_msg).
+      lo_shp_exception->set_leading_message(
+        EXPORTING
+          is_message = VALUE #(
+            msgid = sy-msgid
+            msgno = sy-msgno
+            msgty = sy-msgty
+            msgv1 = |{ ls_entity_x-deliverydocument ALPHA = OUT }| ) ).
+      mo_api_helper->raise_business_exception(
+        EXPORTING
+          io_exception = lo_shp_exception
+          io_context   = io_context ).
+    ENDIF.
+  ENDMETHOD.

@@ -1,0 +1,55 @@
+﻿  METHOD handle_errors.
+
+    DATA: ls_message TYPE bapiret2.
+
+    LOOP AT it_error INTO DATA(ls_error).
+      io_msg_container->add_message( iv_msg_id     = ls_error-msgid
+                                     iv_msg_type   = ls_error-msgty
+                                     iv_msg_number = CONV #( ls_error-msgno )
+                                     iv_msg_v1     = ls_error-msgv1
+                                     iv_msg_v2     = ls_error-msgv2
+                                     iv_msg_v3     = ls_error-msgv3
+                                     iv_msg_v4     = ls_error-msgv4 ).
+    ENDLOOP.
+* Returns the type of the "worst" message (A > E > W > I > S)
+    DATA(lv_worst_error_type) = io_msg_container->get_worst_message_type( ).
+
+    IF lv_worst_error_type = /iwbep/if_message_container=>gcs_message_type-error
+      OR lv_worst_error_type = /iwbep/if_message_container=>gcs_message_type-abort.
+
+      IF iv_is_changeset = abap_false.
+        ROLLBACK WORK.                                "#EC CI_ROLLBACK.
+      ENDIF.
+
+      IF lines( it_error )  > 1.
+        " adding one generic message wraps the others into "detailed messages" instead of having just the last of the detailed messages as wrapper message
+        io_msg_container->add_message( iv_msg_id     = gc_message_class
+                                       iv_msg_type   = if_nsdm_odata_text_message=>sc_severity-error
+                                       iv_msg_number = 014 ).
+      ENDIF.
+
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          textid            = /iwbep/cx_mgw_busi_exception=>business_error
+          message_container = io_msg_container.
+
+    ELSEIF lv_worst_error_type = /iwbep/if_message_container=>gcs_message_type-success.
+      LOOP AT it_error INTO ls_error.
+        CLEAR ls_message.
+        ls_message-type = ls_error-msgty.
+        ls_message-id = ls_error-msgid.
+        ls_message-number = ls_error-msgno.
+        ls_message-message_v1 = ls_error-msgv1.
+        ls_message-message_v2 = ls_error-msgv2.
+        ls_message-message_v3 = ls_error-msgv3.
+        ls_message-message_v4 = ls_error-msgv4.
+        io_msg_container->add_message_from_bapi(
+          EXPORTING
+            is_bapi_message           = ls_message            " Return Parameter
+            iv_add_to_response_header = abap_true      " Flag for adding or not the message to the response header
+            iv_message_target         =  'MaterialDocument'   " Target (reference) (e.g. Property ID) of a message
+        ).
+      ENDLOOP.
+    ENDIF.
+
+  ENDMETHOD.

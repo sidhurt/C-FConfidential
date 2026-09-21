@@ -1,0 +1,9 @@
+﻿  METHOD class_constructor.
+    mv_data_aging_enabled = cl_data_aging_state=>is_enabled( ).
+    IF mv_data_aging_enabled = abap_true.
+      mo_daag_session_control = cl_abap_session_temperature=>get_session_control( ).
+*      mo_daag_session_control->set_cold( ).
+    ENDIF.
+    mo_nsdm_matdoc_aging_helper = cl_nsdm_matdoc_aging_helper=>get_instance( ).
+
+  ENDMETHOD.

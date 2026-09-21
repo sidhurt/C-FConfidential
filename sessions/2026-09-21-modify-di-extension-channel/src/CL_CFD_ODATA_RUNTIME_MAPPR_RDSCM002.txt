@@ -1,0 +1,11 @@
+﻿  METHOD get_existing_entity_components.
+
+    DATA(lo_struct_desc) = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_data_ref( ir_entity_data ) ).
+    LOOP AT lo_struct_desc->get_included_view( ) REFERENCE INTO DATA(lr_included_view).
+      INSERT VALUE #(
+        field_name      = lr_included_view->name
+        type_descriptor = lr_included_view->type
+      ) INTO TABLE rt_existing_components.
+    ENDLOOP.
+
+  ENDMETHOD.

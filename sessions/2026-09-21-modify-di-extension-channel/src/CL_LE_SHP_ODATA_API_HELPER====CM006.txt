@@ -1,0 +1,20 @@
+﻿  METHOD read_delivery_for_action.
+    cl_le_api_dlv_upd_transact=>get( )->read_delivery(
+      EXPORTING
+        iv_vbeln         = iv_vbeln
+        iv_lock_delivery = 'X'
+      IMPORTING
+        es_ylikp         = es_ylikp
+        es_msg           = DATA(ls_msg_read) ).
+
+    IF NOT ls_msg_read-msgty CA 'EA' AND iv_vbtyp <> es_ylikp-vbtyp.
+      MESSAGE e041(LE_SHP_ODATA_API_OD) WITH |{ iv_vbeln ALPHA = OUT }| INTO DATA(lv_msg).
+      MOVE-CORRESPONDING sy TO ls_msg_read.
+    ENDIF.
+
+    IF ls_msg_read-msgty CA 'EA'.
+      DATA(lo_exception_read) = NEW cx_shp_api2_exception( ).
+      lo_exception_read->add_message( ls_msg_read ).
+      RAISE EXCEPTION lo_exception_read.
+    ENDIF.
+  ENDMETHOD.

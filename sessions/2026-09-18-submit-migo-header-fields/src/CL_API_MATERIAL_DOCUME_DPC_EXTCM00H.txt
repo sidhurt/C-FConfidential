@@ -1,0 +1,11 @@
+﻿  METHOD matdoc_hdr_ent_adapt_cld_store.
+
+    DATA ls_keys TYPE cl_api_material_docume_mpc=>ts_a_materialdocumentheadertyp.
+    io_tech_request_context->get_converted_keys( IMPORTING es_key_values = ls_keys ).
+
+*   check if cold store access has to be enabled
+    IF ls_keys-materialdocumentyear IS NOT INITIAL.
+      adapt_cold_store_access( iv_search_year = ls_keys-materialdocumentyear ).
+    ENDIF.
+
+  ENDMETHOD.

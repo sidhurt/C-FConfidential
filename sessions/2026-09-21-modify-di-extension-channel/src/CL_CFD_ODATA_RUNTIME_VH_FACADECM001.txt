@@ -1,0 +1,14 @@
+﻿  METHOD constructor.
+
+    mo_odata_buffer  = io_odata_buffer.
+
+    mo_vh_provider_cfd = NEW cl_cfd_odata_runtime_vh_prv_cf(
+      io_value_helps   = mo_odata_buffer->get_cfd_value_helps( )
+      io_odata_context = io_odata_context
+    ).
+    mo_vh_provider_de  = NEW cl_cfd_odata_runtime_vh_prv_de(
+      io_value_helps   = mo_odata_buffer->get_de_value_helps( )
+      io_odata_context = io_odata_context
+    ).
+
+  ENDMETHOD.

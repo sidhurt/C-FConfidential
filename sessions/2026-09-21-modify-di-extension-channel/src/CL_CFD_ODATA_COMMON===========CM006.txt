@@ -1,0 +1,27 @@
+﻿  METHOD get_text_keys.
+
+    rs_text_key = VALUE #(
+      text_object_type = if_cfd_odata_types=>gc_text_object_type-sadl_text_badi
+
+      text_elements    = VALUE #(
+        ( text_element_type = if_cfd_odata_types=>gc_text_element_type-label
+          text_key          = get_text_key(
+            io_sadl_entity     = io_sadl_entity
+            iv_field_name      = iv_field_name
+            iv_annotation_name = gc_text_annotation-label ) )
+
+         ( text_element_type = if_cfd_odata_types=>gc_text_element_type-heading
+           text_key          = get_text_key(
+             io_sadl_entity     = io_sadl_entity
+             iv_field_name      = iv_field_name
+             iv_annotation_name = gc_text_annotation-heading ) )
+
+         ( text_element_type = if_cfd_odata_types=>gc_text_element_type-quickinfo
+           text_key          = get_text_key(
+             io_sadl_entity     = io_sadl_entity
+             iv_field_name      = iv_field_name
+             iv_annotation_name = gc_text_annotation-quickinfo ) )
+      )
+    ).
+
+  ENDMETHOD.

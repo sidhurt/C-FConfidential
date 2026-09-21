@@ -1,0 +1,12 @@
+﻿  PROTECTED SECTION.
+
+    METHODS set_data_aging_temperature
+      IMPORTING iv_data_temperature TYPE data_temperature
+      RAISING   cx_abap_session_temperature cx_parameter_invalid_range .
+    METHODS set_data_aging_hot
+      RAISING cx_abap_session_temperature .
+
+    METHODS a_materialdocu01_get_entity    REDEFINITION .
+    METHODS a_materialdocu01_get_entityset REDEFINITION .
+    METHODS a_materialdocume_get_entity    REDEFINITION .
+    METHODS a_materialdocume_get_entityset REDEFINITION .

@@ -1,0 +1,15 @@
+﻿  METHOD if_shp_api2_header_process~get_entity.
+    io_sadl_gw_dpc->get_entity(
+      EXPORTING
+        io_tech_request_context = io_tech_request_context
+      IMPORTING
+        es_data                 = cs_entity ).
+
+    IF iv_operation_type IS NOT INITIAL.
+      DATA:
+        ls_ext_empty TYPE shpdelivery_incl_eew_ps.
+      MOVE-CORRESPONDING cs_entity TO ms_header_std_y.
+      MOVE-CORRESPONDING ls_ext_empty TO ms_header_std_y.
+      MOVE-CORRESPONDING cs_entity TO ms_header_ext_y.
+    ENDIF.
+  ENDMETHOD.

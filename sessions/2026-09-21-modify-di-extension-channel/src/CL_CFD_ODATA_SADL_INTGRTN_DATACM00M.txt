@@ -1,0 +1,11 @@
+﻿  METHOD if_cfd_odata_sadl_intgrtn_data~add_existing_cds_field_names.
+
+    LOOP AT it_cds_field_names INTO DATA(ls_cds_view) GROUP BY ls_cds_view-cds_view_name.
+      DATA(ls_cds_fields) = VALUE if_cfd_odata_sadl_intgrtn_data=>ty_gs_cds_fields( cds_view_name = ls_cds_view-cds_view_name ).
+      LOOP AT GROUP ls_cds_view REFERENCE INTO DATA(lr_cds_field_names).
+        INSERT lr_cds_field_names->field_name INTO TABLE ls_cds_fields-existing_fields.
+      ENDLOOP.
+      if_cfd_odata_sadl_intgrtn_data~add_cds_fields( ls_cds_fields ).
+    ENDLOOP.
+
+  ENDMETHOD.

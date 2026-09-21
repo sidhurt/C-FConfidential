@@ -1,0 +1,17 @@
+﻿  METHOD get_patched_attributes.
+    DATA:
+      lo_api_helper   TYPE REF TO if_shp_api2_helper.
+
+    lo_api_helper = NEW cl_shp_api2_helper( ).
+    rt_attributes = lo_api_helper->get_patched_attributes(
+      EXPORTING
+        is_struct_1   = ms_header_std_y
+        is_struct_2   = is_header_std_x
+        iv_is_ext     = abap_false ).
+
+    INSERT LINES OF lo_api_helper->get_patched_attributes(
+      EXPORTING
+        is_struct_1   = ms_header_ext_y
+        is_struct_2   = is_header_ext_x
+        iv_is_ext     = abap_true ) INTO TABLE rt_attributes.
+  ENDMETHOD.
