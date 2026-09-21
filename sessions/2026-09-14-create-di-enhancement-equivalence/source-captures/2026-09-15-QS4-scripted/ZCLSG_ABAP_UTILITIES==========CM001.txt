@@ -1,0 +1,8 @@
+  METHOD get_plant_regiongroup.
+    SELECT SINGLE adrnr FROM t001w INTO @DATA(lv_adrnr)
+      WHERE werks = @iv_werks.
+    IF sy-subrc = 0.
+      SELECT SINGLE regiogroup FROM adrc INTO @ev_regiogroup
+        WHERE addrnumber = @lv_adrnr AND date_to = @gc_enddate.
+    ENDIF.
+  ENDMETHOD.

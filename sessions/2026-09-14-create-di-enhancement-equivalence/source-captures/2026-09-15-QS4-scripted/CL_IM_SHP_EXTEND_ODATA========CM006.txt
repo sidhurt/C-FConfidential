@@ -1,0 +1,2 @@
+  METHOD if_ex_le_shp_delivery_proc~check_item_deletion.
+  ENDMETHOD.

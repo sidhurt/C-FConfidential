@@ -2,6 +2,22 @@
 
 **Date:** 2026-09-03 · **Systems:** DS4/200 (dev), QS4/700 (quality) · **Owner:** Siddharth
 
+> **Superseded — two conclusions below are wrong. Do not reuse this brief.**
+>
+> 1. **"Enhancement route — structurally safer" is wrong.** `ZCNF_SUBMIT_MIGO_MAP2I` is an
+>    **explicit enhancement**: custom code plugged into SAP's own function module at enhancement
+>    point `MAP2I_B2017_GM_ITEM_TO_IMSEG_1`. In SAP's extension order, source-code enhancements are
+>    the last resort. Only implicit enhancements and modifications rank lower. A released BAdI
+>    ranks above them. This brief argued from "fewer moving parts". It never said where the choice
+>    sits in that order or why the BAdI couldn't be used. The 4 Sep architecture review rejected it
+>    on exactly that point (D-067).
+> 2. **"BAdI route — closed" is wrong.** The probe returned nothing because the test runs failed
+>    before `LMB_BUS2017U04:546`, where the BAdI is called. On 4 Sep the same probe fired once a
+>    run reached it. See `CNF_SUBMIT_MIGO_STATE_OF_THINGS_2026-09-04.md`.
+>
+> Current direction: logic in the `MB_BAPI_GOODSMVT_CREATE` BAdI implementation; enhancement being
+> deleted. Current status: `CURRENT_STATE.md`.
+
 ## The requirement
 
 Post a MIGO goods receipt (movement type 101) from `Delivery` + `DeliveryItem` + `Plant` alone.
@@ -63,14 +79,15 @@ Both 223 and 546 sit **before** 632, so either can supply `VLIEF_AVIS`/`VBELP_AV
 
 ## Where we are
 
-**BAdI route — closed.** `ZCNF_SUBMIT_MIGO` was built, activated, transported
+**BAdI route — closed.** *[Retracted 4 Sep — see banner.]* `ZCNF_SUBMIT_MIGO` was built, activated, transported
 (`DS4K964047`, `DS4K964062`, `DS4K964064`) and registered correctly: `BADI_IMPL` POS 7, spot
 `MB_GOODSMOVEMENT`, `VERSION=A`, no filters, class includes active in QS4, source re-read from QS4
 to confirm. A probe that raises an unconditional error as its **first statement** returned zero
 messages. The method is never invoked. The cause is unresolved and is logged as an open question.
 The implementation has been made inert and transported to QS4 — it is not armed.
 
-**Enhancement route — next, and structurally safer.** An enhancement inside
+**Enhancement route — next, and structurally safer.** *[Retracted 4 Sep — this is an explicit
+enhancement, the last-resort option; see banner.]* An enhancement inside
 `MAP2I_B2017_GM_ITEM_TO_IMSEG` is compiled into the function module itself. It does not depend on
 the enhancement framework dispatching a registered implementation, which is precisely the layer
 that failed silently for the BAdI. Different failure surface, fewer moving parts.

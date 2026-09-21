@@ -10,7 +10,7 @@
 
 **The complete Submit MIGO requirement can be met through supported SAP extensibility, using the
 standard OData service `API_MATERIAL_DOCUMENT_SRV` and BAdI implementations the customer already
-owns. No custom service. No implicit enhancement. No modification. No access key.**
+owns. No custom service. No explicit or implicit enhancement. No modification. No access key.**
 
 This reverses the earlier recommendation in
 `LEGACY_SUBMIT_MIGO_BUILD_PROCESS_2026-09-02.md`, which concluded a custom wrapper was required.

@@ -1,0 +1,24 @@
+  METHOD get_set_values.
+    DATA: lv_setid TYPE sethier-setid.
+    DATA: lt_setvalues TYPE STANDARD TABLE OF rgsb4.
+    CALL FUNCTION 'G_SET_GET_ID_FROM_NAME'
+      EXPORTING
+        shortname = iv_shortname "Set Name
+      IMPORTING
+        new_setid = lv_setid
+      EXCEPTIONS
+        OTHERS    = 10.
+    IF sy-subrc = 0.
+      CALL FUNCTION 'G_SET_GET_ALL_VALUES'
+        EXPORTING
+          setnr           = lv_setid
+          no_descriptions = abap_false
+        TABLES
+          set_values      = lt_setvalues
+        EXCEPTIONS
+          OTHERS          = 10.
+    ENDIF.
+    IF lt_setvalues IS NOT INITIAL.
+      et_setvalues = lt_setvalues.
+    ENDIF.
+  ENDMETHOD.

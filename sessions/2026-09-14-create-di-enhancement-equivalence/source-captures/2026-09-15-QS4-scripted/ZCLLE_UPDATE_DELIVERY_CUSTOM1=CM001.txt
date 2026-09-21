@@ -1,0 +1,28 @@
+  METHOD if_dlv_create_sto_extin~additional_input.
+   DATA: ls_extensionin TYPE bapiparex.
+   LOOP AT it_extension_in INTO ls_extensionin.
+      READ TABLE CT_STO_ITEMS ASSIGNING FIELD-SYMBOL(<ls_sls_item>) WITH KEY rfpos = ls_extensionin-valuepart1.
+      IF sy-subrc = 0.
+        CASE ls_extensionin-structure.
+          WHEN 'LIKP-ZZLRGRNO'.
+            <ls_sls_item>-zzlrgrno = ls_extensionin-valuepart2.
+          WHEN 'LIKP-ZZLRGRDATE'.
+            <ls_sls_item>-zzlrgrdate = ls_extensionin-valuepart2.
+          WHEN 'LIKP-ZZVEHICLE_NO'.
+            <ls_sls_item>-zzvehicle_no = ls_extensionin-valuepart2.
+          WHEN 'LIKP-ZZDRIVER_NO'.
+            <ls_sls_item>-zzdriver_no = ls_extensionin-valuepart2.
+          WHEN 'LIKP-ZZDRIVER_NAME'.
+            <ls_sls_item>-zzdriver_name = ls_extensionin-valuepart2.
+          WHEN 'LIKP-ZZDRIVERMOB'.
+            <ls_sls_item>-zzdrivermob = ls_extensionin-valuepart2.
+          WHEN 'LIKP-ZZWERKS'.
+          WHEN 'LIKP-ZZPARTNER'.
+            <ls_sls_item>-zzpartner = ls_extensionin-valuepart2.
+          WHEN 'LIKP-ZZVHCLTYP'.
+            <ls_sls_item>-zzvhcltyp = ls_extensionin-valuepart2.
+          WHEN OTHERS.
+        ENDCASE.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.

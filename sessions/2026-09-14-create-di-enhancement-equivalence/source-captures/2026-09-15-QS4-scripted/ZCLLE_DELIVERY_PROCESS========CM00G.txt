@@ -1,0 +1,23 @@
+  METHOD if_ex_le_shp_delivery_proc~change_delivery_item.
+    DATA: lt_batch TYPE STANDARD TABLE OF /spe/bapiobdlvitemchg.
+    DATA: ls_batch TYPE /spe/bapiobdlvitemchg.
+*this import statement comes from program ZLEIILMSDOCUMENTS
+*include ZLEIILMSDOCUMENTS_UPDDELBATCH. We are updating
+*batch from BAPI_OUTB_DELIVERY_CHANGE. Unfortunately,
+*we are unable to pass storage location there.
+*this issue has come up because ILMS uable to provide SILO selection during
+*PP out. It is forwarding the same SILO as in PP In. This causes discrepancy
+*during processing. also, user does not check the avbl stock and inputs
+*the SILO while PP in step
+*this is a last moment change and there is no better alternative available
+*at this time. In future, with proper R&D, same can be passed to the
+*BAPI directly
+    IMPORT lt_batch = lt_batch FROM MEMORY ID 'BATCH'.
+    IF lt_batch IS NOT INITIAL.
+      READ TABLE lt_batch INTO ls_batch WITH KEY deliv_numb = cs_lips-vbeln
+                                                 deliv_item = cs_lips-posnr.
+      IF sy-subrc = 0.
+        cs_lips-lgort = ls_batch-stge_loc.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

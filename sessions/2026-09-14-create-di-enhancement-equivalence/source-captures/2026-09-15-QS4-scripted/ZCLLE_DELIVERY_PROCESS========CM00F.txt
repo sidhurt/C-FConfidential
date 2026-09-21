@@ -1,0 +1,53 @@
+  METHOD if_ex_le_shp_delivery_proc~save_and_publish_before_output.
+    DATA: ls_bapi_return       TYPE bapiret2,
+          ls_xlips             TYPE lipsvb,
+          ls_xlikp             TYPE likpvb,
+          ls_bapi_order_header TYPE bapi_pi_order_create,
+          ls_bapi_orderrelease TYPE bapi_order_key.
+    DATA: lv_ordernumber TYPE bapi_order_key-order_number.
+    DATA: lt_bapi_orderrelease TYPE STANDARD TABLE OF bapi_order_key,
+          lt_bapi_relreasereturn TYPE STANDARD TABLE OF BAPI_ORDER_RETURN.
+
+    IF if_trtyp = 'H'.
+      READ TABLE it_xlikp INTO ls_xlikp INDEX 1.
+      IF sy-subrc = 0.
+*        CALL FUNCTION 'ZLEF_ILMS_CREATE_PROCORD' IN UPDATE TASK
+*          TABLES
+*            it_xlips       = it_xlips.
+*        LOOP AT it_xlips INTO ls_xlips.
+*          IF ls_xlips-mfrgr = 'A0000001'.
+*            SELECT SINGLE ablad FROM afpo INTO @DATA(lv_order_exists)
+*              WHERE ablad = @ls_xlips-vbeln.
+*            IF lv_order_exists IS INITIAL.
+*              ls_bapi_order_header-material = ls_xlips-matnr.
+*              ls_bapi_order_header-plant = ls_xlips-werks.
+*              ls_bapi_order_header-order_type = 'ZPFG'.
+*              ls_bapi_order_header-basic_start_date = sy-datum.
+*              ls_bapi_order_header-basic_end_date = sy-datum.
+*              ls_bapi_order_header-quantity = ls_xlips-lfimg.
+*              ls_bapi_order_header-prod_version = 'FG01'.
+*              ls_bapi_order_header-basic_scheduling_type = '3'.
+*              ls_bapi_order_header-unloading_point = ls_xlips-vbeln.
+*              SET UPDATE TASK LOCAL.
+*              CALL FUNCTION 'BAPI_PROCORD_CREATE'
+*                EXPORTING
+*                  orderdata    = ls_bapi_order_header
+*                IMPORTING
+*                  return       = ls_bapi_return
+*                  order_number = lv_ordernumber.
+*              IF lv_ordernumber IS NOT INITIAL.
+**                SET UPDATE TASK LOCAL.
+**                ls_bapi_orderrelease-order_number = lv_ordernumber.
+**                APPEND ls_bapi_orderrelease TO lt_bapi_orderrelease.
+**                CALL FUNCTION 'BAPI_PROCORD_RELEASE'
+**                  TABLES
+**                    orders = lt_bapi_orderrelease
+**                    detail_return = lt_bapi_relreasereturn.
+*              ENDIF.
+*            ENDIF.
+*          ENDIF.
+*          CLEAR: ls_bapi_return,ls_bapi_order_header,lv_ordernumber.
+*        ENDLOOP.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

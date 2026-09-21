@@ -1,0 +1,29 @@
+  METHOD if_ex_le_shp_delivery_proc~save_and_publish_before_output.
+    IF sy-tcode = 'VL09'.
+      LOOP AT it_xlikp INTO DATA(ls_likp).
+        IF ls_likp-lfart = 'ZNL'.
+***Get the shipment Number
+          SELECT ruuid,
+                 vbelv,
+                 vbeln,
+                 vbtyp_n
+            FROM vbfa
+            INTO   TABLE @DATA(lt_vbfa)
+            WHERE vbelv = @ls_likp-vbeln.
+          IF sy-subrc EQ 0.
+            READ TABLE lt_vbfa ASSIGNING FIELD-SYMBOL(<lfs_vbfa>) WITH KEY vbelv = ls_likp-vbeln
+                                                                           vbtyp_n = '8'.
+            IF sy-subrc EQ 0.
+              DATA(lv_ship) = <lfs_vbfa>-vbeln.
+              DATA(lv_delivery) = <lfs_vbfa>-vbelv.
+            ENDIF.
+** If shipment is exist, then call the FM to delete shipment and shipment cost document
+            CALL FUNCTION 'ZOTC_SHIPMENT_SCD_DELETE'
+              EXPORTING
+                im_shipment = lv_ship
+                im_vbeln    = lv_delivery.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.

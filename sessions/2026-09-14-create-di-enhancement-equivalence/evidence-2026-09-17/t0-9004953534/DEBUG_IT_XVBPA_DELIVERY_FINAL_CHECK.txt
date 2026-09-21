@@ -1,0 +1,8 @@
+17.09.2026                                                                                                                                                                                                                                                      Dynamic List Display                                                                                                                                                                                                                                                                                                                1
+
+Properties: Standard [2x65(1342)]
+
+	INDEX	MANDT	VBELN	POSNR	PARVW	KUNNR	LIFNR	PERNR	PARNR	ADRNR	ABLAD	LAND1	ADRDA	XCPDK	HITYP	PRFRE	BOKRE	HISTUNR	KNREF	LZONE	HZUOR	STCEG	PARVW_FF	ADRNP	KALE	_DATAAGING	ASSIGNED_BP	ADDR_OPERATION	ADDR_TYPE	BP_REF_ADRNR	DUMMY_SDDOCPARTNER_INCL_EEW_PS	SDM_VERSION	UPDKZ	NAME1	NRART	FEHGR	SPRAS	TELFX	TELTX	TELX1	CNTPA	REFOBJTYPE	REFOBJKEY	REFLOGSYS	STCD1	STCD2	STCD3	STCD4	STCD5	STKZN	STCDT	J_1KFREPRE	J_1KFTBUS	J_1KFTIND	IPICONTRIBUTOR	ICMSCONTRIBUTOR	PISCONTRIBUTOR	COFINSCONTRIBUTOR	ISSCONTRIBUTOR	ICMSSTCONTRIBUTOR	SUFRAMA	CNAE	LEGALNAT	CRTN	ICMSTAXPAY	TDT
+
+	   1	700	$       1		AG	0011042691				0000328362		IN	D							PB00002216							0011042691		1			01	I	DURGA STEEL	KU	07	E
+	   2	700	$       1		WE	0020222239				0000921604		IN	D							PB00002075							0020222239		1			01	I	DURGA STEEL	KU	07	E

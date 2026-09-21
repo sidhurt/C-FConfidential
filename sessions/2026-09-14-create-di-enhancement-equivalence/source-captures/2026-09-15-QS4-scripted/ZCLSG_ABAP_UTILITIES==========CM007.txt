@@ -1,0 +1,29 @@
+  METHOD get_logo.
+    DATA: gv_object TYPE tdobjectgr VALUE 'GRAPHICS',
+          gv_id     TYPE tdidgr VALUE 'BMAP'.
+    SELECT bukrs,
+           name
+      FROM zsgt_logo
+      UP TO 1 ROWS
+      INTO @DATA(ls_logo)
+      WHERE bukrs = @iv_bukrs.
+    ENDSELECT.
+    IF sy-subrc IS INITIAL.
+      CALL METHOD cl_ssf_xsf_utilities=>get_bds_graphic_as_bmp
+        EXPORTING
+          p_object       = gv_object             " SAPscript Graphics Management: Application object
+          p_name         = ls_logo-name            " Name
+          p_id           = gv_id            " SAPscript Graphics Management: ID
+          p_btype        = iv_btype            " SAPscript: Type of graphic
+        RECEIVING
+          p_bmp          = ev_field             " Graphic Data
+        EXCEPTIONS
+          not_found      = 1                " Graphic Not Found
+          internal_error = 2                " Internal error
+          OTHERS         = 3.
+      IF sy-subrc <> 0.
+* MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*   WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.

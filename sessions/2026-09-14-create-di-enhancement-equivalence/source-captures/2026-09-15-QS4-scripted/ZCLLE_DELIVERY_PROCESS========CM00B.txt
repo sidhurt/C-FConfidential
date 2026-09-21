@@ -1,0 +1,20 @@
+  METHOD if_ex_le_shp_delivery_proc~fill_delivery_header.
+    IF cs_likp-lfart = 'EL'.
+      cs_likp-vsart = '01'.
+    ENDIF.
+
+    "* added by PG~ on 01-02-2025 for filling dummy route code to bypass any validation related to Route or something related to it
+    DATA(lt_values) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_PREREQ_DEL' ).
+    TRY.
+        DATA(lv_value) = lt_values[ 1 ]-low.
+        SPLIT lv_value AT ',' INTO TABLE DATA(lt_value).
+        DATA(lt_lfart) = VALUE lfart_ran_itab( FOR ls_values IN lt_value ( sign = 'I' option  = 'EQ' low = ls_values ) ).
+        IF cs_likp-lfart IN lt_lfart.
+          IF cs_likp-route IS INITIAL.
+            SELECT SINGLE low FROM tvarvc INTO cs_likp-route WHERE name = 'SHORTAGE_DEFAULT_ROUTE'.
+          ENDIF.
+        ENDIF.
+      CATCH cx_sy_itab_line_not_found.
+    ENDTRY.
+    "*end of addition..
+  ENDMETHOD.

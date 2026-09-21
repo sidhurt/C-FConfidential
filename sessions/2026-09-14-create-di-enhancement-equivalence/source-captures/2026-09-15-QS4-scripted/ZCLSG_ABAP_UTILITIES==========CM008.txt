@@ -1,0 +1,20 @@
+  METHOD prepare_fieldcat.
+    DATA(lt_data) = REF #( it_data ).
+    FIELD-SYMBOLS: <tab> TYPE STANDARD TABLE.
+    ASSIGN lt_data->* TO <tab>.
+    TRY.
+        cl_salv_table=>factory(
+        EXPORTING
+          list_display = abap_false
+        IMPORTING
+          r_salv_table = DATA(lr_table)
+        CHANGING
+          t_table      = <tab> ).
+
+        rt_fld = cl_salv_controller_metadata=>get_lvc_fieldcatalog(
+                                 r_columns      = lr_table->get_columns( )
+                                 r_aggregations = lr_table->get_aggregations( ) ).
+      CATCH cx_salv_msg.
+        RETURN.
+    ENDTRY.
+  ENDMETHOD.

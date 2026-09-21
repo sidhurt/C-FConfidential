@@ -1,0 +1,458 @@
+  METHOD if_ex_le_shp_delivery_proc~delivery_final_check.
+    DATA:lv_error_occured TYPE xfeld.
+    DATA:lv_value        TYPE rgsmv-from.
+    CONSTANTS:lc_setname TYPE char20 VALUE 'ZSD_MFG_SHIPSKIP'.
+
+    IF ( sy-tcode = 'VL01N' OR sy-tcode = 'VL02N' ).
+
+      DATA(lv_check_value) = VALUE rvari_val_255( ).
+      DATA(lt_lips) = it_xlips[].
+      DELETE lt_lips WHERE updkz = 'D'.
+      lt_lips = VALUE #( BASE lt_lips FOR ls_lips IN it_ylips WHERE ( updkz <> 'D' ) (  CORRESPONDING #( ls_lips ) ) ).
+      SORT lt_lips BY posnr.
+      DELETE ADJACENT DUPLICATES FROM lt_lips COMPARING posnr.
+      SORT lt_lips BY matnr.
+      DELETE ADJACENT DUPLICATES FROM lt_lips COMPARING matnr.
+
+      TRY.
+          DATA(lss_lips) = lt_lips[ 1 ].
+          lv_check_value = lss_lips-vtweg && ',' && lss_lips-spart.
+          SELECT COUNT( * ) FROM tvarvc WHERE name = 'ZDEL_SPLIT' AND low = lv_check_value.
+          IF sy-subrc = 0.
+            IF lines( lt_lips ) > 1.
+              INSERT VALUE #( vbeln = lss_lips-vbeln pruefung = '99' msgty = 'E' msgid = 'ZSD' msgno = '002' msgv1 = TEXT-e01 ) INTO TABLE ct_finchdel.
+            ENDIF.
+          ENDIF.
+        CATCH cx_sy_itab_line_not_found.
+      ENDTRY.
+
+      "****************************************************************************************
+      "*           Validations for Depo Automation
+      "****************************************************************************************
+      lt_lips = it_xlips.
+      DELETE lt_lips WHERE updkz = 'D'.
+      DELETE lt_lips WHERE uecha = '000000'.
+      IF lt_lips IS NOT INITIAL AND it_xlikp IS NOT INITIAL.
+        TRY.
+            DATA(lv_werks) = lt_lips[ 1 ]-werks.
+            SELECT SINGLE kdkg1 FROM kna1
+                                WHERE kunnr = concat( 'P', @lv_werks )
+                                INTO @DATA(lv_kdkg1).
+            IF lv_kdkg1 = 'A2'.
+              DATA(lv_spi) = it_xlikp[ 1 ]-sdabw.
+              SORT lt_lips BY lgort.
+              DELETE ADJACENT DUPLICATES FROM lt_lips COMPARING lgort.
+              IF lines( lt_lips ) > 1.
+                INSERT VALUE #( vbeln = lss_lips-vbeln pruefung = '99' msgty = 'E' msgid = '00' msgno = '398' msgv1 = TEXT-e02 )
+                 INTO TABLE ct_finchdel.
+              ENDIF.
+
+              IF sy-tcode = 'VL02N'.
+                CLEAR lt_lips.
+                lt_lips = it_xlips.
+                DELETE lt_lips WHERE updkz = 'D'.
+                READ TABLE it_xlikp INTO DATA(l_lfart) INDEX 1.
+                SELECT SINGLE low FROM tvarvc
+                 WHERE name EQ 'ZSD_PREREQ_DEL' AND low EQ @l_lfart-lfart
+                  INTO @DATA(l_low).
+                IF sy-subrc <> 0.
+                  CALL FUNCTION 'ZLEF_DELIVERY_VALIDATONS'
+                    EXPORTING
+                      it_lips          = lt_lips
+                      it_likp          = it_xlikp
+                      it_vbpa          = it_xvbpa
+                      iv_called_from   = 'B'
+                    IMPORTING
+                      ev_error_occured = lv_error_occured.
+                  IF lv_error_occured = abap_true.
+                    INSERT VALUE #( vbeln = lss_lips-vbeln
+                                    pruefung = '99'
+                                    msgty = 'E'
+                                    msgid = '00'
+                                    msgno = '368'
+                                    msgv1 = TEXT-e03
+                                    msgv2 = TEXT-e04 ) INTO TABLE ct_finchdel.
+                  ENDIF.
+                ENDIF.
+              ENDIF.
+            ENDIF.
+          CATCH cx_sy_itab_line_not_found.
+        ENDTRY.
+      ENDIF.
+    ENDIF.
+
+    DATA(ls_likp) = it_xlikp[ 1 ].
+***********************************************************************
+*check deletion authorization -
+************************************************************************
+    LOOP AT it_xlips INTO DATA(ls_xlips) WHERE uecha IS INITIAL.
+      IF ls_xlips-updkz = 'D'.
+        AUTHORITY-CHECK OBJECT 'ZLIKPDEL' ID 'ACTVT' FIELD '06'.
+        IF sy-subrc <> 0.
+          INSERT VALUE #( vbeln    = ls_likp-vbeln
+                                pruefung = '99'
+                                msgty    = 'E'
+                                msgid    = 'ZSD'
+                                msgno    = '013' ) INTO TABLE ct_finchdel.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+    READ TABLE it_xlikp INTO DATA(ls_xlikp) INDEX 1.
+    IF sy-subrc = 0.
+      IF ls_xlikp-updkz = 'D'.
+        AUTHORITY-CHECK OBJECT 'ZLIKPDEL' ID 'ACTVT' FIELD '06'.
+        IF sy-subrc <> 0.
+          INSERT VALUE #( vbeln    = ls_likp-vbeln
+                                pruefung = '99'
+                                msgty    = 'E'
+                                msgid    = 'ZSD'
+                                msgno    = '013' ) INTO TABLE ct_finchdel.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+**************************************************************************
+*     Ensure follow on Shipment document's should be there before PGI
+**************************************************************************
+    DATA(lt_callstack) =  VALUE abap_callstack( ).
+    CALL FUNCTION 'SYSTEM_CALLSTACK'
+      IMPORTING
+        callstack = lt_callstack.
+
+    DATA(lv_ilms_pgi_call) = abap_false.
+    IF line_exists( lt_callstack[ include = 'ZLEIILMSDOCUMENTS_PGI' ] ) .
+      lv_ilms_pgi_call = abap_true.
+    ENDIF.
+
+    DATA: flg_skip_pgi TYPE char1.
+    CLEAR flg_skip_pgi.
+    IF lv_ilms_pgi_call = 'X'.
+      IF line_exists( lt_callstack[ blockname = 'BAPI_OUTB_DELIVERY_CHANGE' ] ) .
+        flg_skip_pgi  = abap_true.
+      ENDIF.
+    ENDIF.
+    IF flg_skip_pgi = ' '.
+      IF ( ( sy-tcode = 'VL01N' OR sy-tcode = 'VL02N' ) AND sy-ucomm = 'WABU_T' ) OR lv_ilms_pgi_call       = abap_true
+                                                                                  OR is_v50agl-wabuc        = abap_true
+                                                                                  OR is_v50agl-warenausgang = abap_true.  "* P G I
+        lt_lips = it_xlips[].
+        DELETE lt_lips WHERE updkz = 'D'.
+        "* Wricef ID SD_N18
+        "*below code added to bypass Stores Material frt GRP
+        LOOP AT lt_lips INTO DATA(ls_delitem) WHERE mfrgr IS NOT INITIAL.
+          DATA(lv_value_present) = VALUE xfeld( ).
+          CLEAR:lv_value.
+          lv_value = ls_delitem-mfrgr.
+          CALL METHOD zclsg_abap_utilities=>check_set_value
+            EXPORTING
+              iv_shortname     = lc_setname
+              iv_from          = lv_value
+            RECEIVING
+              ev_values_exists = lv_value_present.
+        ENDLOOP.
+        "* END of addition......
+
+        IF lv_value_present = abap_false.
+          TRY.
+              DATA(lt_so_type) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_SHP_NOCHK' ).
+              DATA(lt_shp_type) = zclsg_abap_utilities=>check_tvarvc_values( 'ZSD_SHP_COST_NOCHK' ).
+              DATA(lv_error) = abap_false.
+
+              TRY.
+                  DATA(lv_so) = it_xvbfa[ vbtyp_v = 'C' ]-vbelv.  "* Normal Sale
+                  SELECT SINGLE auart FROM vbak INTO @DATA(lv_auart) WHERE vbeln = @lv_so.
+                CATCH cx_sy_itab_line_not_found. "* STO
+                  SELECT SINGLE a~bsart INTO @lv_auart FROM ekko AS a INNER JOIN ekbe AS b ON b~ebeln = a~ebeln
+                                                       WHERE b~belnr = @ls_likp-vbeln AND
+                                                             b~bewtp = 'L'.
+              ENDTRY.
+              IF lv_auart IS NOT INITIAL AND lt_so_type IS NOT INITIAL AND NOT line_exists( lt_so_type[ low = lv_auart ] ).
+                IF NOT line_exists( it_xvbfa[ vbtyp_n = '8' ] ).  "* Shipment Document Not found , Throw Error
+                  INSERT VALUE #( vbeln    = ls_likp-vbeln
+                                  pruefung = '99'
+                                  msgty    = 'E'
+                                  msgid    = '00'
+                                  msgno    = '368'
+                                  msgv1    = TEXT-e05
+                                  msgv2    = TEXT-e06 ) INTO TABLE ct_finchdel.
+                  lv_error = abap_true.
+                ENDIF.
+
+                IF lv_error = abap_false.
+                  TRY.
+                      DATA(lv_tknum) = it_xvbfa[ vbtyp_n = '8' ]-vbeln.
+                      SELECT SINGLE shtyp FROM vttk INTO @DATA(lv_shtyp) WHERE tknum = @lv_tknum.
+
+                      IF NOT line_exists( lt_shp_type[ low = lv_shtyp ] ).
+                        DATA(lv_cost_found) = abap_true.
+*                      SELECT SINGLE @abap_true FROM vfkp INTO @DATA(lv_cost_found) WHERE rebel = @lv_tknum AND netwr <> '0.00'.
+                        SELECT SINGLE rebel,netwr FROM vfkp INTO @DATA(ls_vfkp) WHERE rebel = @lv_tknum.
+                        IF sy-subrc = 0.
+                          IF ls_vfkp-netwr IS INITIAL.
+                            lv_cost_found = abap_false. "* Ship Cost found but with '0'
+                            TRY.
+                                lv_werks =  lt_lips[ 1 ]-werks.
+                                SELECT SINGLE azone FROM tvst INTO @DATA(lv_azone) WHERE vstel = @lv_werks.
+                                DATA(lv_lzone) =  it_xvbpa[ parvw = 'WE' ]-lzone.
+                                IF lv_lzone =  lv_azone.
+                                  lv_cost_found = abap_true. "* Ship cost found with '0' Values but transportation zone's are same so PGI will be allowed
+                                ENDIF.
+                              CATCH cx_sy_itab_line_not_found.
+                                CLEAR:lv_werks.
+                            ENDTRY.
+                          ENDIF.
+                        ELSE.
+                          lv_cost_found = abap_false. "* Shipment Cost Document Not found
+                        ENDIF.
+
+                        IF lv_cost_found = abap_false.  "* Shipment Cost Document Not found , Throw Error
+                          INSERT VALUE #( vbeln = ls_likp-vbeln
+                                          pruefung = '99'
+                                          msgty = 'E'
+                                          msgid = '00'
+                                          msgno = '368'
+                                          msgv1 = TEXT-e05
+                                          msgv2 = TEXT-e07 ) INTO TABLE ct_finchdel.
+                        ENDIF.
+
+                      ENDIF.
+                    CATCH cx_sy_itab_line_not_found.
+                  ENDTRY.
+                ENDIF.
+              ENDIF.
+
+            CATCH cx_sy_itab_line_not_found.
+          ENDTRY.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+
+**Ticket @22202
+**SPI will be auto fill in case of primary plant
+**Skip purulia programs
+*    SELECT setname, lineid, valoption, valfrom, valto
+*      INTO TABLE @DATA(lt_skipset)
+*      FROM setleaf
+*      WHERE setname EQ 'ZSD_PURULIA_EXCL_PROG'.
+*    IF sy-subrc IS INITIAL.
+*      SORT lt_skipset BY valfrom.
+*    ENDIF.
+*    READ TABLE lt_skipset INTO DATA(ls_skipset) WITH KEY valfrom = sy-cprog BINARY SEARCH.
+*    IF sy-subrc IS INITIAL.
+**
+*    ELSE.
+**
+
+    IF ( if_trtyp = 'B' OR
+         if_trtyp = 'H' OR
+         if_trtyp = 'V'  )  AND sy-ucomm <> 'WABU_T'  AND lv_ilms_pgi_call       = abap_false
+                                                      AND is_v50agl-wabuc        = abap_false
+                                                      AND is_v50agl-warenausgang = abap_false.  "* P G I.
+      CLEAR:ls_likp.
+      TRY.
+          ls_likp = it_xlikp[ 1 ].
+          IF ls_likp-updkz = 'D' OR ls_likp-sdabw+0(2) = 'NC'.
+            RETURN.
+          ENDIF.
+
+          IF it_xlips IS NOT INITIAL.
+            lt_lips = it_xlips[].
+          ELSE.
+            lt_lips = it_ylips[].
+          ENDIF.
+
+          DELETE lt_lips WHERE updkz = 'D'.
+          DELETE lt_lips WHERE mfrgr IS INITIAL.
+          IF lt_lips IS INITIAL.
+            RETURN.
+          ENDIF.
+
+          SELECT a~werks,
+                 a~kunnr,
+                 b~kdkg1 FROM t001w AS a INNER JOIN kna1 AS b ON a~kunnr = b~kunnr
+                         INTO TABLE @DATA(lt_plants)
+                         FOR ALL ENTRIES IN @lt_lips
+                         WHERE a~werks = @lt_lips-werks AND
+                               b~kdkg1 = 'A1'.
+          LOOP AT lt_lips INTO ls_delitem.
+            IF line_exists( lt_plants[ werks = ls_delitem-werks ] ).
+              CLEAR:lv_value_present.
+              CALL METHOD zclsg_abap_utilities=>check_set_value
+                EXPORTING
+                  iv_shortname     = 'ZSPIWERKS'
+                  iv_from          = CONV setvalmin( ls_delitem-mfrgr )
+                RECEIVING
+                  ev_values_exists = lv_value_present.
+              IF lv_value_present = abap_true AND ls_likp-sdabw IS NOT INITIAL.
+                INSERT VALUE #( vbeln = ls_likp-vbeln
+                                pruefung = '99'
+                                msgty = 'E'
+                                msgid = 'ZLE'
+                                msgno = '187' ) INTO TABLE ct_finchdel.
+              ENDIF.
+            ENDIF.
+          ENDLOOP.
+        CATCH cx_sy_itab_line_not_found.
+      ENDTRY.
+    ENDIF.
+
+**SEHAJTECH <Stop the delivery creation if weight exceeded than maintained in Weight Table>
+    DATA(lw_lips) = it_xlips[ 1 ].
+    DATA(lw_likp) = it_xlikp[ 1 ].
+    IF lw_lips IS NOT INITIAL.
+      SELECT COUNT(*) FROM zta_pmd_valid WHERE werks = lw_lips-werks
+                                         AND   mfrgr = lw_lips-mfrgr
+                                         AND   vtweg = lw_lips-vtweg.
+      IF sy-subrc EQ 0.
+        SELECT SINGLE zoverwt INTO @DATA(lv_owt) FROM zlet_route_ovrwt
+               WHERE route EQ @lw_likp-route
+               AND   zfrom_date LE @sy-datum
+               AND   zto_date   GE @sy-datum.
+        IF sy-subrc EQ 0.
+          SELECT SINGLE MAX( ztoweight ) INTO @DATA(max_wt) FROM zta_wheeler_wght
+                 WHERE mfrgr =  @lw_lips-mfrgr
+                 AND   zzload_type = @lv_owt
+                 AND   zvalidfrom LE @sy-datum
+                 AND   zvalidto   GE @sy-datum
+            GROUP BY mfrgr, zzload_type.
+          IF max_wt IS NOT INITIAL AND lw_lips-lfimg > max_wt.
+            INSERT VALUE #( vbeln    = lw_likp-vbeln
+                            pruefung = '99'
+                            msgty    = 'E'
+                            msgid    = 'ZLE'
+                            msgno    = '208'
+                            msgv1    = ' '
+                            msgv2    = ' ' ) INTO TABLE ct_finchdel.
+          ENDIF.
+        ELSE.
+          INSERT VALUE #( vbeln    = lw_likp-vbeln
+                          pruefung = '99'
+                          msgty    = 'E'
+                          msgid    = 'ZLE'
+                          msgno    = '210'
+                          msgv1    = lw_likp-route
+                          msgv2    = ' ' ) INTO TABLE ct_finchdel.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+**SEHAJTECH <Stop the delivery creation if weight exceeded than maintained in Weight Table>
+
+* Begin of Change by Ashutosh for 38943
+    DATA:lv_kstbm_max TYPE kstbm,
+         lv_zoverwt   TYPE zde_overweightflag,
+         lv_lfimg     TYPE lfimg.
+
+    IF ( if_trtyp = 'B' OR
+         if_trtyp = 'H' OR
+         if_trtyp = 'V'  ) . "AND sy-ucomm = 'SICH_T'.
+
+      SELECT SINGLE low
+        FROM tvarvc
+        INTO @DATA(lv_low)
+        WHERE name = 'ZLE_WHEELER_FREIGHT'
+          AND type = 'P'.
+
+      "---------------------BOC added by vk on 07.08.2025-----------------------------------"
+      LOOP AT it_xlips INTO DATA(ls_lips_tmp) WHERE updkz NE 'D'.
+        READ TABLE it_xlikp INTO DATA(ls_likp_date) WITH KEY vbeln = ls_lips_tmp-vbeln.
+        IF sy-subrc EQ 0 AND ls_likp_date-erdat LT lv_low AND lv_low IS NOT INITIAL.
+          DATA(lv_wmv_flag) = abap_true.
+          EXIT.
+        ENDIF.
+        SELECT COUNT(*) FROM zta_pmd_valid WHERE werks = ls_lips_tmp-werks AND mfrgr = ls_lips_tmp-mfrgr AND vtweg = ls_lips_tmp-vtweg.
+        IF sy-subrc NE 0.
+          lv_wmv_flag = abap_true.
+          EXIT.
+        ENDIF.
+      ENDLOOP.
+      IF lv_wmv_flag EQ abap_false.
+        "---------------------EOC added by vk on 07.08.2025-----------------------------------"
+        SELECT *
+          FROM zlet_route_ovrwt
+          INTO TABLE @DATA(lt_route_ovrwt)
+          FOR ALL ENTRIES IN @it_xlikp
+          WHERE route = @it_xlikp-route
+            AND zfrom_date LE @sy-datum
+            AND zto_date GE @sy-datum.
+        IF sy-subrc EQ 0 AND lt_route_ovrwt IS NOT INITIAL.
+          SORT lt_route_ovrwt BY route.
+          "---------------BOC by vk on 04.08.2025-----------------"
+          IF line_exists( lt_route_ovrwt[ zoverwt = '' ] ).
+            DATA(ls_route_ovrwt) = VALUE #( lt_route_ovrwt[ zoverwt = '' ] ).
+            INSERT VALUE #( vbeln    = ls_likp-vbeln
+                            pruefung = '99'
+                            msgty    = 'E'
+                            msgid    = 'ZLE'
+                            msgno    = '078'
+                            msgv1    = ls_route_ovrwt-route
+                            msgv2    = 'ZLET_ROUTE_OVRWT' ) INTO TABLE ct_finchdel.
+            "---------------EOC by vk on 04.08.2025-----------------"
+          ENDIF.
+        ELSEIF sy-subrc NE 0.
+          INSERT VALUE #( vbeln    = ls_likp-vbeln
+          pruefung = '99'
+          msgty    = 'E'
+          msgid    = 'ZLE'
+          msgno    = '079'
+          msgv1    = 'ZLET_ROUTE_OVRWT' ) INTO TABLE ct_finchdel.
+        ENDIF.
+
+        TYPES:ty_t_komv TYPE STANDARD TABLE OF komv.
+
+        FIELD-SYMBOLS:<lft_komv> TYPE ty_t_komv.
+        ASSIGN ('(SAPMV50A)TKOMV[]') TO <lft_komv>.
+        IF <lft_komv> IS ASSIGNED AND <lft_komv> IS NOT INITIAL.
+          DATA(lt_komv) = <lft_komv>.
+          DELETE lt_komv WHERE knumh IS INITIAL.
+
+        ENDIF.
+
+        LOOP AT it_xlikp INTO ls_likp WHERE updkz NE 'D'.
+          CLEAR:lv_lfimg.
+          LOOP AT it_xlips INTO DATA(ls_lips1) WHERE vbeln = ls_likp-vbeln
+                                                 AND updkz NE 'D'.
+            lv_lfimg = lv_lfimg + ls_lips1-lfimg.
+            SELECT SINGLE kdkg1 FROM kna1
+                                  WHERE kunnr = concat( 'P', @ls_lips1-werks )
+                                  INTO @DATA(lv_kdkg2).
+            IF sy-subrc EQ 0 AND lv_kdkg2 = 'A1'.
+              READ TABLE lt_komv INTO DATA(ls_komv)  WITH KEY kposn = ls_lips1-posnr
+                                                              kappl = 'F'
+                                                              kschl = 'ZFB0'.
+              IF sy-subrc EQ 0.
+                SELECT MAX( kstbm )
+                 FROM konm
+                 INTO lv_kstbm_max
+                 WHERE knumh = ls_komv-knumh.
+                IF sy-subrc EQ 0 AND lv_kstbm_max IS NOT INITIAL.
+
+                ENDIF.
+              ENDIF.
+            ENDIF.
+          ENDLOOP.
+
+          IF lv_kstbm_max IS NOT INITIAL AND lv_lfimg GT lv_kstbm_max.
+            SELECT SINGLE zoverwt
+             FROM zlet_route_ovrwt
+             INTO lv_zoverwt
+             WHERE route = ls_likp-route
+              AND zfrom_date LE sy-datum
+              AND zto_date GE sy-datum.
+            IF lv_zoverwt = 'No'.
+              INSERT VALUE #( vbeln = ls_likp-vbeln
+                                pruefung = '99'
+                                msgty = 'E'
+                                msgid = 'ZLE'
+                                msgno = '077'
+                                msgv1 = ls_likp-route ) INTO TABLE ct_finchdel.
+            ENDIF.
+          ENDIF.
+        ENDLOOP.
+
+      ENDIF.
+    ENDIF.
+* End of Change by Ashutosh for 38943
+*    ENDIF. ""skip set programs
+  ENDMETHOD.

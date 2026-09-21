@@ -1,0 +1,12 @@
+  method IF_EX_LE_SHP_DELIVERY_PROC~CHANGE_FIELD_ATTRIBUTES.
+
+
+
+
+
+
+
+
+
+
+  endmethod.

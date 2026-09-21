@@ -1,0 +1,44 @@
+  METHOD if_ex_le_shp_delivery_proc~save_document_prepare.
+    DATA: ls_xlikp TYPE likpvb,
+          ls_xvbpa TYPE vbpavb.
+    READ TABLE ct_xlikp INTO ls_xlikp INDEX 1.
+    IF sy-subrc = 0.
+      IF ls_xlikp-zzpartner IS NOT INITIAL.
+        READ TABLE ct_xvbpa ASSIGNING FIELD-SYMBOL(<ls_xvbpa>) WITH KEY parvw = 'SP' lifnr = ls_xlikp-zzpartner.
+        IF sy-subrc <> 0.
+          ls_xvbpa-vbeln = ls_xlikp-vbeln.
+          ls_xvbpa-parvw = 'SP'.
+          ls_xvbpa-lifnr = ls_xlikp-zzpartner.
+          SELECT SINGLE adrnr FROM lfa1 INTO ls_xvbpa-adrnr WHERE lifnr = ls_xlikp-ZZPARTNER.
+          SELECT SINGLE partner_guid FROM cvi_vend_link INTO @DATA(lv_guid)
+            WHERE vendor = @ls_xlikp-ZZPARTNER.
+          IF sy-subrc = 0.
+            SELECT SINGLE partner FROM but000 INTO @ls_xvbpa-assigned_bp WHERE partner_guid = @lv_guid.
+          ENDIF.
+          ls_xvbpa-updkz = 'I'.
+          ls_xvbpa-mandt = sy-mandt.
+          APPEND ls_xvbpa TO ct_xvbpa.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+*update SPI for clinker transfer when delivery is automatically generated from auto token program
+    READ TABLE ct_xlips WITH KEY mfrgr = 'A0000003' TRANSPORTING NO FIELDS.
+    IF sy-subrc = 0.
+      READ TABLE ct_xlikp ASSIGNING FIELD-SYMBOL(<ls_xlikp>) INDEX 1.
+      IF sy-subrc = 0 AND ls_xlikp-zzvehicle_no IS NOT INITIAL.
+        SELECT SINGLE v_typ, v_status FROM zlet_vehicle
+          INTO @DATA(ls_vehicle)
+          WHERE vehical_no = @<ls_xlikp>-zzvehicle_no.
+        IF sy-subrc = 0.
+          IF ls_vehicle-v_status = '04'.
+*            cha_shipments_at_save-TRA_SAVE_CALLER = 'DIA'.
+            <ls_xlikp>-sdabw = 'NC' && ls_vehicle-v_typ.
+          ELSE.
+            <ls_xlikp>-sdabw = 'VT' && ls_vehicle-v_typ.
+*            cha_shipments_at_save-TRA_SAVE_CALLER = 'DIA'.
+          ENDIF.
+        ENDIF.
+
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
