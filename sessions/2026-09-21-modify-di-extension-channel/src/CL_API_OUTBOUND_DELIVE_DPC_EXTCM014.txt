@@ -1,0 +1,55 @@
+﻿  METHOD a_outbdeliveryva_get_entityset.
+
+    if_sadl_gw_dpc_util~get_dpc( )->get_entityset( EXPORTING io_tech_request_context = io_tech_request_context
+                                                   IMPORTING et_data                 = et_entityset
+                                                             es_response_context     = es_response_context ).
+
+    DATA: lv_key  TYPE fsh_vass_buffer-fsh_vas_txt_key,
+          lv_text TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryvaladdedsrvct-valueaddedservicelongtext,
+          tlines  TYPE TABLE OF tline.
+
+    LOOP AT et_entityset ASSIGNING FIELD-SYMBOL(<fs_entityset>).
+
+      CONCATENATE
+        <fs_entityset>-deliverydocument
+        <fs_entityset>-deliverydocumentitem
+        <fs_entityset>-valueaddedservicetype
+        <fs_entityset>-valueaddedsubservicetype
+      INTO lv_key.
+
+      CALL FUNCTION 'READ_TEXT'
+        EXPORTING
+          client                  = sy-mandt
+          id                      = 'VASD'
+          language                = sy-langu
+          name                    = lv_key
+          object                  = 'VAST'
+        TABLES
+          lines                   = tlines
+        EXCEPTIONS
+          id                      = 1
+          language                = 2
+          name                    = 3
+          not_found               = 4
+          object                  = 5
+          reference_check         = 6
+          wrong_access_to_archive = 7
+          OTHERS                  = 8.
+
+      IF sy-subrc = 0.
+        LOOP AT tlines INTO DATA(wa1_lines).
+          IF sy-tabix = 1.
+            lv_text = wa1_lines-tdline.
+            CONTINUE.
+          ENDIF.
+          CONCATENATE lv_text wa1_lines-tdline INTO lv_text SEPARATED BY cl_abap_char_utilities=>newline.
+        ENDLOOP.
+        <fs_entityset>-valueaddedservicelongtext = lv_text.
+      ENDIF.
+
+      REFRESH tlines.
+      CLEAR lv_key.
+      CLEAR lv_text.
+    ENDLOOP.
+
+  ENDMETHOD.

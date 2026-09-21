@@ -11,7 +11,8 @@ $grab = Join-Path $PSScriptRoot "qs4_grab_se38_source.vbs"
 if (-not (Test-Path $OutDir)) { New-Item -ItemType Directory -Path $OutDir -Force | Out-Null }
 
 foreach ($n in $Names) {
-  $target = Join-Path $OutDir "$n.txt"
+  # namespaced names (/SPE/...) cannot be file names; '/' becomes '#'
+  $target = Join-Path $OutDir (($n -replace '/', '#') + ".txt")
   if (Test-Path $target) { Write-Output "SKIP  $n"; continue }
   Set-Clipboard -Value "SENTINEL_EMPTY"
   $res = & C:\Windows\System32\cscript.exe //nologo $grab $n 2>&1

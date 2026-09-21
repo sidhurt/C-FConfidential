@@ -1,0 +1,108 @@
+﻿CLASS lcl_zsd_enh_api_mat_doc_dpc DEFINITION DEFERRED.
+CLASS cl_api_material_docume_dpc_ext DEFINITION LOCAL FRIENDS lcl_zsd_enh_api_mat_doc_dpc.
+CLASS lcl_zsd_enh_api_mat_doc_dpc DEFINITION.
+  PUBLIC SECTION.
+    CLASS-DATA obj TYPE REF TO lcl_zsd_enh_api_mat_doc_dpc. "#EC NEEDED
+    DATA core_object TYPE REF TO cl_api_material_docume_dpc_ext . "#EC NEEDED
+ INTERFACES  IPO_ZSD_ENH_API_MAT_DOC_DPC.
+    METHODS:
+      constructor IMPORTING core_object
+                              TYPE REF TO cl_api_material_docume_dpc_ext OPTIONAL.
+ENDCLASS.
+CLASS lcl_zsd_enh_api_mat_doc_dpc IMPLEMENTATION.
+  METHOD constructor.
+    me->core_object = core_object.
+  ENDMETHOD.
+
+  METHOD ipo_zsd_enh_api_mat_doc_dpc~create_document.
+*"------------------------------------------------------------------------*
+*" Declaration of POST-method, do not insert any comments here please!
+*"
+*"methods CREATE_DOCUMENT
+*"  importing
+*"    !IO_API type ref to IF_MATERIAL_DOCUMENT_API
+*"    !IO_DATA_PROVIDER type ref to /IWBEP/IF_MGW_ENTRY_PROVIDER
+*"    !IO_MSG_CONTAINER type ref to /IWBEP/IF_MESSAGE_CONTAINER
+*"    !IV_IS_CHANGESET type ABAP_BOOL
+*"  changing
+*"    !ER_DEEP_ENTITY type ref to DATA
+*"  raising
+*"    /IWBEP/CX_MGW_BUSI_EXCEPTION
+*"    /IWBEP/CX_MGW_TECH_EXCEPTION .
+*"------------------------------------------------------------------------*
+    DATA: lv_matdoc      TYPE mblnr,
+          lv_matdoc_year TYPE mjahr.
+
+    DATA: ls_custom_hdr TYPE zmmt_migo_hdr.
+
+    FIELD-SYMBOLS: <ls_result> TYPE any,
+                   <lv_matdoc> TYPE any,
+                   <lv_year>   TYPE any.
+
+    " 1. Get the posted document number/year from the exporting parameter
+    ASSIGN er_deep_entity->* TO <ls_result>.
+    IF sy-subrc = 0.
+      ASSIGN COMPONENT 'MATERIALDOCUMENT' OF STRUCTURE <ls_result> TO <lv_matdoc>.
+      ASSIGN COMPONENT 'MATERIALDOCUMENTYEAR' OF STRUCTURE <ls_result> TO <lv_year>.
+      IF sy-subrc = 0.
+        lv_matdoc      = <lv_matdoc>.
+        lv_matdoc_year = <lv_year>.
+      ENDIF.
+    ENDIF.
+
+    " 2. Re-read the custom field from the original request payload
+    TYPES: BEGIN OF ty_header_custom,
+             zz_lifnr TYPE string,
+             zz_tname TYPE string,
+             zz_model TYPE string,
+             zz_vhcle TYPE string,
+             zz_odcdl TYPE string,
+             zz_refno TYPE string,
+             zz_post1 TYPE string,
+             zz_ebill TYPE string,
+             zz_edate TYPE datum,
+             zz_chlno TYPE string,
+             zz_chldt TYPE datum,
+             zz_afrno TYPE string,
+             zz_afrdt TYPE datum,
+             zz_lovct TYPE string,
+             zz_gtpas TYPE string,
+             zz_lrdat TYPE datum,
+             zz_token TYPE string,
+             zz_lfsnr TYPE string,
+             zz_zflag TYPE string,
+           END OF ty_header_custom.
+    DATA(ls_header_custom) = VALUE ty_header_custom( ).
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = ls_header_custom ).
+
+    " 3. Write to the Z table
+    IF lv_matdoc IS NOT INITIAL.
+      ls_custom_hdr-mblnr    = lv_matdoc.
+      ls_custom_hdr-mjahr    = lv_matdoc_year.
+      ls_custom_hdr-lifnr    = ls_header_custom-zz_lifnr.
+      ls_custom_hdr-tname    = ls_header_custom-zz_tname.
+      ls_custom_hdr-model    = ls_header_custom-zz_model.
+      ls_custom_hdr-vhcle    = ls_header_custom-zz_vhcle.
+      ls_custom_hdr-odcdl    = ls_header_custom-zz_odcdl.
+      ls_custom_hdr-refno    = ls_header_custom-zz_refno.
+      ls_custom_hdr-post1    = ls_header_custom-zz_post1.
+      ls_custom_hdr-ebill    = ls_header_custom-zz_ebill.
+      ls_custom_hdr-edate    = ls_header_custom-zz_edate.
+      ls_custom_hdr-chlno    = ls_header_custom-zz_chlno.
+      ls_custom_hdr-chldt    = ls_header_custom-zz_chldt.
+      ls_custom_hdr-afrno    = ls_header_custom-zz_afrno.
+      ls_custom_hdr-afrdt    = ls_header_custom-zz_afrdt.
+      ls_custom_hdr-lovct    = ls_header_custom-zz_lovct.
+      ls_custom_hdr-gtpas    = ls_header_custom-zz_gtpas.
+      ls_custom_hdr-lrdat    = ls_header_custom-zz_lrdat.
+      ls_custom_hdr-token    = ls_header_custom-zz_token.
+      ls_custom_hdr-lfsnr    = ls_header_custom-zz_lfsnr.
+      ls_custom_hdr-zflag    = ls_header_custom-zz_zflag.
+
+      MODIFY zmmt_migo_hdr FROM ls_custom_hdr.
+    ENDIF.
+  ENDMETHOD.
+ENDCLASS.

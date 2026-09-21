@@ -1,0 +1,54 @@
+﻿CLASS cl_api_outbound_delive_dpc_ext DEFINITION
+  PUBLIC
+  INHERITING FROM cl_api_outbound_delive_dpc_flx
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    TYPES:
+      tt_whitelist TYPE TABLE OF string .
+    TYPES:
+      ty_t_protocol TYPE STANDARD TABLE OF prott WITH DEFAULT KEY .
+    TYPES:
+      ty_t_error_log TYPE TABLE OF vbfs .
+    TYPES:
+      BEGIN OF ty_s_vbfs,
+        etenr TYPE vbfs-etenr,
+        mandt TYPE vbfs-mandt,
+        msgid TYPE vbfs-msgid,
+        msgno TYPE symsgno,
+        msgty TYPE vbfs-msgty,
+        msgv1 TYPE vbfs-msgv1,
+        msgv2 TYPE vbfs-msgv2,
+        msgv3 TYPE vbfs-msgv3,
+        msgv4 TYPE vbfs-msgv4,
+        posnr TYPE vbfs-posnr,
+        sammg TYPE vbfs-sammg,
+        smart TYPE vbfs-smart,
+        vbeln TYPE vbfs-vbeln,
+        zaehl TYPE vbfs-zaehl,
+        subrc TYPE sy-subrc,
+      END OF ty_s_vbfs .
+
+    METHODS constructor .
+
+    METHODS /iwbep/if_mgw_appl_srv_runtime~changeset_begin
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~changeset_end
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~changeset_process
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~create_deep_entity
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~execute_action
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~get_entity
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~get_entityset
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~get_expanded_entity
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_appl_srv_runtime~get_is_condi_imple_for_action
+        REDEFINITION .
+    METHODS /iwbep/if_mgw_core_srv_runtime~update_entity
+        REDEFINITION .

@@ -1,0 +1,19 @@
+﻿  METHOD a_outbdelivery06_update_entity. " Update item text
+    DATA:
+      ls_entity_patch TYPE shp_longtext_odata.
+
+    DATA(lo_collector) = cl_api_le_dlv_upd_coll_factory=>get_instance( ).
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = ls_entity_patch ).
+
+    mo_api_text->update_entity(
+      EXPORTING
+        iv_service      = if_shp_api2_text_process=>outbound
+        io_collector    = lo_collector
+        is_entity_db    = ms_text_db
+        is_entity_patch = ls_entity_patch
+        iv_type         = if_shp_api2_text_process=>item_text
+        io_context      = mo_context ).
+  ENDMETHOD.

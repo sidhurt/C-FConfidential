@@ -1,0 +1,13 @@
+﻿  METHOD if_cfd_odata_expand_tree_step~set_vh_data_for_data_mapping.
+
+    DATA(lv_value_help_mapping_key) = create_value_help_mapping_key( is_value_help_data ).
+    DATA(lr_data_mapping) = REF #( mt_data_mapping[ key = lv_value_help_mapping_key ] OPTIONAL ).
+    IF lr_data_mapping IS NOT INITIAL. " in case there is no data mapping, SADL returned a key that we did not request
+      " there might be multiple target entities for a value help key value
+      LOOP AT lr_data_mapping->target_entity_references INTO DATA(lr_target_entity).
+        ASSIGN lr_target_entity->* TO FIELD-SYMBOL(<ls_target_entity>).
+        MOVE-CORRESPONDING is_value_help_data TO <ls_target_entity>.
+      ENDLOOP.
+    ENDIF.
+
+  ENDMETHOD.

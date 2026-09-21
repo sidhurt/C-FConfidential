@@ -1,0 +1,14 @@
+﻿  METHOD if_cfd_odata_runtime_context~get_application_sadl_dpc.
+
+    DATA(lo_dpc) = if_cfd_odata_runtime_context~get_application_dpc( ).
+
+    " we are interested in the generic SADL DPC instance
+    IF lo_dpc IS INSTANCE OF if_sadl_gw_dpc.
+      ro_dpc ?= lo_dpc.
+
+    ELSEIF lo_dpc IS INSTANCE OF if_sadl_gw_dpc_util.
+      ro_dpc ?= CAST if_sadl_gw_dpc_util( lo_dpc )->get_dpc( ).
+
+    ENDIF.
+
+  ENDMETHOD.

@@ -1,0 +1,3 @@
+﻿  METHOD is_standard_vh_entity_set.
+    rv_is_standard_vh_entity_set = mo_odata_buffer->exists_sadl_rds_entity( iv_entity_set_name ).
+  ENDMETHOD.

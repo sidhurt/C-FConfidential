@@ -1,0 +1,384 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~get_entity.
+*&-----------------------------------------------------------------------------------------------*
+*&  Include           /IWBEP/DPC_TEMP_GETENTITY_BASE
+*&* This class has been generated  on 09.02.2017 09:02:09 in client 001
+*&*
+*&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
+*&*   If you want to change the DPC implementation, use the
+*&*   generated methods inside the DPC provider subclass - CL_API_OUTBOUND_DEL_02_DPC_EXT
+*&-----------------------------------------------------------------------------------------------*
+
+    DATA a_outbdeliverydo_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliverydocflowtype.
+    DATA a_outbdelivery01_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryheadertype.
+    DATA a_outbdelivery04_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryaddresstype.
+    DATA a_serialnmbrdeli_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_serialnmbrdeliverytype.
+    DATA a_outbdelivery02_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryitemtype.
+    DATA a_outbdelivery03_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliverypartnertype.
+    DATA a_maintenanceite_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_maintenanceitemobjecttype.
+    DATA a_outbdeliveryht_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryheadertexttyp.
+    DATA a_outbdeliveryit_get_entity TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryitemtexttype.
+    DATA a_outbdlvaddr2_get_entity   TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryaddress2type.
+    DATA lv_entityset_name TYPE string.
+    DATA lr_entity TYPE REF TO data.                        "#EC NEEDED
+
+    lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
+
+    IF mv_entityset_source IS INITIAL.
+      IF io_tech_request_context->get_source_entity_set_name( ) IS NOT INITIAL.
+        mv_entityset_source = io_tech_request_context->get_source_entity_set_name( ).
+      ELSEIF lv_entityset_name = 'A_OutbDeliveryHeader' OR
+             lv_entityset_name = 'A_OutbDeliveryItem' OR
+             lv_entityset_name = 'A_OutbDeliveryDocFlow' OR
+             lv_entityset_name = 'A_OutbDeliveryAddress2' OR
+             lv_entityset_name = 'A_OutbDeliveryHeaderText' OR
+             lv_entityset_name = 'A_OutbDeliveryItemText' OR
+             lv_entityset_name = 'A_OutbDeliveryPartner'.
+        mv_entityset_source = lv_entityset_name.
+      ENDIF.
+    ENDIF.
+
+    IF  mv_entityset_source = 'A_OutbDeliveryHeader'  OR
+        mv_entityset_source = 'A_OutbDeliveryItem'    OR
+        mv_entityset_source = 'A_OutbDeliveryDocFlow' OR
+        mv_entityset_source = 'A_OutbDeliveryAddress2' OR
+        mv_entityset_source = 'A_OutbDeliveryHeaderText' OR
+        mv_entityset_source = 'A_OutbDeliveryItemText' OR
+        mv_entityset_source = 'A_OutbDeliveryPartner'.
+
+      CASE lv_entityset_name.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryDocFlow
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryDocFlow'.
+*     Call the entity set generated method
+          a_outbdeliverydo_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdeliverydo_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdeliverydo_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdeliverydo_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryHeader
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryHeader'.
+*     Call the entity set generated method
+          a_outbdelivery01_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdelivery01_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdelivery01_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdelivery01_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryAddress
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryAddress'.
+*     Call the entity set generated method
+          a_outbdelivery04_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdelivery04_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdelivery04_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdelivery04_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryAddress2
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryAddress2'.
+*     Call the entity set generated method
+          a_outbdelivery08_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdlvaddr2_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdlvaddr2_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdlvaddr2_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_SerialNmbrDelivery
+*-------------------------------------------------------------------------*
+        WHEN 'A_SerialNmbrDelivery'.
+*     Call the entity set generated method
+          a_serialnmbrdeli_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_serialnmbrdeli_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_serialnmbrdeli_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_serialnmbrdeli_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryItem
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryItem'.
+*     Call the entity set generated method
+          a_outbdelivery02_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdelivery02_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdelivery02_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdelivery02_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryPartner
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryPartner'.
+*     Call the entity set generated method
+          a_outbdelivery03_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdelivery03_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdelivery03_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdelivery03_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_MaintenanceItemObject
+*-------------------------------------------------------------------------*
+        WHEN 'A_MaintenanceItemObject'.
+*     Call the entity set generated method
+          a_maintenanceite_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_maintenanceite_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_maintenanceite_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_maintenanceite_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryHeaderText
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryHeaderText'.
+*     Call the entity set generated method
+          a_outbdelivery05_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdeliveryht_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdeliveryht_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdeliveryht_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+*-------------------------------------------------------------------------*
+*             EntitySet -  A_OutbDeliveryItemText
+*-------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryItemText'.
+*     Call the entity set generated method
+          a_outbdelivery06_get_entity(
+            EXPORTING
+              iv_entity_name          = iv_entity_name
+              iv_entity_set_name      = iv_entity_set_name
+              iv_source_name          = iv_source_name
+              it_key_tab              = it_key_tab
+              it_navigation_path      = it_navigation_path
+              io_tech_request_context = io_tech_request_context
+            IMPORTING
+              er_entity               = a_outbdeliveryit_get_entity
+              es_response_context     = es_response_context
+          ).
+
+          IF a_outbdeliveryit_get_entity IS NOT INITIAL.
+*     Send specific entity data to the caller interface
+            copy_data_to_ref(
+              EXPORTING
+                is_data = a_outbdeliveryit_get_entity
+              CHANGING
+                cr_data = er_entity
+            ).
+          ELSE.
+*         In case of initial values - unbind the entity reference
+            er_entity = lr_entity.
+          ENDIF.
+
+        WHEN OTHERS.
+          super->/iwbep/if_mgw_appl_srv_runtime~get_entity(
+            EXPORTING
+              iv_entity_name     = iv_entity_name
+              iv_entity_set_name = iv_entity_set_name
+              iv_source_name     = iv_source_name
+              it_key_tab         = it_key_tab
+              it_navigation_path = it_navigation_path
+            IMPORTING
+              er_entity          = er_entity
+          ).
+      ENDCASE.
+    ELSE.
+      DATA gv_source TYPE c LENGTH 50.
+      IF mv_entityset_source IS NOT INITIAL.
+        gv_source = mv_entityset_source.
+      ELSE.
+        gv_source = lv_entityset_name.
+      ENDIF.
+
+      mo_context->get_message_container( )->add_message(
+        EXPORTING
+          iv_msg_type               = /iwbep/if_message_container=>gcs_message_type-error    " Message Type
+          iv_msg_id                 = 'LE_SHP_ODATA_API_OD'    " Message Class
+          iv_msg_number             = 002   " Message Number
+          iv_msg_v1                 = gv_source
+
+      ).
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          textid            = /iwbep/cx_mgw_busi_exception=>business_error
+          message_container = mo_context->get_message_container( ).
+    ENDIF.
+
+  ENDMETHOD.

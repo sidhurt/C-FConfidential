@@ -1,0 +1,8 @@
+﻿  METHOD add_value_help_key.
+
+    FIELD-SYMBOLS <lt_value_help_keys> TYPE INDEX TABLE.
+
+    ASSIGN mr_value_help_keys->* TO <lt_value_help_keys>.
+    INSERT is_vh_key_structure INTO TABLE <lt_value_help_keys>.
+
+  ENDMETHOD.

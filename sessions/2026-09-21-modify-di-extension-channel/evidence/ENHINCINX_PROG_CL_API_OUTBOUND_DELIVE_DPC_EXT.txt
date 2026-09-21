@@ -1,0 +1,8 @@
+SESSION|QS4/700 located at connection[0] session[0]|user=QNOVATE8
+SELFIELD|txtI4-LOW=CL_API_OUTBOUND_DELIVE_DPC_EXT*
+SELFIELD|txtI1-LOW=Z
+SELFIELD|txtI1-HIGH=Z~
+TABLE|ENHINCINX
+TITLE|Data Browser: Table ENHINCINX: Selection Screen
+SBAR|No table entries found for specified key
+CELLS|0

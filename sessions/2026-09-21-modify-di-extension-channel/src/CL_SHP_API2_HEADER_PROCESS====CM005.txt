@@ -1,0 +1,25 @@
+﻿  METHOD get_entity.
+    " The custom fields assigned to the service header entity is only a subset of extensibility include shpdelivery_incl_eew_ps.
+    " We need to fill all custom fields - also the ones that are not enabled for the OData service.
+
+    get_header_x(
+      EXPORTING
+        io_tech_request_context = io_tech_request_context
+        io_data_provider        = io_data_provider
+      IMPORTING
+        es_header_std_x         = es_header_std_x
+        es_header_ext_x         = es_header_ext_x ).
+
+    DATA(ls_likp_y) = get_sd_delivery_data( )->get_delivery_header( ).
+    DATA(ls_likp_x) = cl_le_shp_odata_api_helper=>get_custom_header_update(
+      iv_vbeln            = ls_likp_y-vbeln
+      is_ext_before_patch = ms_header_ext_y
+      is_ext_after_patch  = es_header_ext_x
+      is_likpvb_ext_db    = ls_likp_y-ext ).
+
+    MOVE-CORRESPONDING ms_header_std_y TO es_entity_y.
+    MOVE-CORRESPONDING es_header_std_x TO es_entity_x.
+
+    MOVE-CORRESPONDING ls_likp_y-ext TO es_entity_y-ext.
+    MOVE-CORRESPONDING ls_likp_x-ext TO es_entity_x-ext.
+  ENDMETHOD.

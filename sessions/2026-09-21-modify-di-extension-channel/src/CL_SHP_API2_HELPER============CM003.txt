@@ -1,0 +1,41 @@
+﻿  METHOD if_shp_api2_helper~raise_business_exception.
+    DATA(lt_messages) = io_exception->get_messages( ).
+    LOOP AT lt_messages
+      ASSIGNING FIELD-SYMBOL(<fs_message>)
+      WHERE msgty = 'E' OR msgty = 'A'.
+
+      io_context->get_message_container( )->add_message(
+        EXPORTING
+          iv_msg_type   = <fs_message>-msgty
+          iv_msg_id     = <fs_message>-msgid
+          iv_msg_number = <fs_message>-msgno
+          iv_msg_v1     = <fs_message>-msgv1
+          iv_msg_v2     = <fs_message>-msgv2
+          iv_msg_v3     = <fs_message>-msgv3
+          iv_msg_v4     = <fs_message>-msgv4
+          iv_is_leading_message = abap_false
+      ).
+    ENDLOOP.
+
+
+    DATA(ls_leading_msg) = io_exception->get_leading_message( ).
+    IF ls_leading_msg IS NOT INITIAL.
+      io_context->get_message_container( )->add_message(
+        EXPORTING
+          iv_msg_type           = ls_leading_msg-msgty
+          iv_msg_id             = ls_leading_msg-msgid
+          iv_msg_number         = ls_leading_msg-msgno
+          iv_msg_v1             = ls_leading_msg-msgv1
+          iv_msg_v2             = ls_leading_msg-msgv2
+          iv_msg_v3             = ls_leading_msg-msgv3
+          iv_msg_v4             = ls_leading_msg-msgv4
+          iv_add_to_response_header = 'X'
+          iv_is_leading_message = 'X'
+      ).
+    ENDIF.
+
+    RAISE EXCEPTION NEW /iwbep/cx_mgw_busi_exception(
+      textid            = /iwbep/cx_mgw_busi_exception=>business_error
+      message_container = io_context->get_message_container( )
+    ).
+  ENDMETHOD.

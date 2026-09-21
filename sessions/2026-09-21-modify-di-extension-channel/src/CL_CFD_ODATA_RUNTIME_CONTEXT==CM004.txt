@@ -1,0 +1,18 @@
+﻿  METHOD get_instance.
+
+    DATA(lr_instance) = REF #( gt_instances[ model_key = io_odata_buffer->ms_model_data-model_key ] OPTIONAL ).
+    IF lr_instance IS INITIAL.
+      ro_instance = NEW cl_cfd_odata_runtime_context(
+        io_odata_buffer    = io_odata_buffer
+        io_gw_context      = io_gw_context
+        io_application_dpc = io_application_dpc
+      ).
+      INSERT VALUE #(
+        model_key = io_odata_buffer->ms_model_data-model_key
+        instance  = ro_instance
+      ) INTO TABLE gt_instances REFERENCE INTO lr_instance.
+    ENDIF.
+
+    ro_instance = lr_instance->instance.
+
+  ENDMETHOD.

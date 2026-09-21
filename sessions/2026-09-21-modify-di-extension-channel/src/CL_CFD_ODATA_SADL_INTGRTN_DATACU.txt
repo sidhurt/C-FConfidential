@@ -1,0 +1,15 @@
+﻿CLASS cl_cfd_odata_sadl_intgrtn_data DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE .
+
+  PUBLIC SECTION.
+    INTERFACES if_cfd_odata_sadl_intgrtn_data.
+    CLASS-METHODS create_instance
+      IMPORTING
+        io_odata_buffer            TYPE REF TO if_cfd_rt_odata_model
+        it_mds_entity_set_type_map TYPE if_cfd_odata_sadl_integration=>tt_entity_set_type_map OPTIONAL
+      RETURNING
+        VALUE(ro_instance)         TYPE REF TO if_cfd_odata_sadl_intgrtn_data
+      RAISING
+        cx_cfd_odata_runtime.

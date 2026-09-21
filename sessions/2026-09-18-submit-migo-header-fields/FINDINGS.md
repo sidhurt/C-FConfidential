@@ -8,6 +8,25 @@ fields to the Submit MIGO header payload (built in DS4, transported to QS4).
 
 ---
 
+> **Correction 2026-09-21: the data half *is* wired.** The 18.09 sweep missed a third
+> enhancement, **`ZSD_ENH_API_MAT_DOC_DPC`**, a *class* enhancement (`ENHHEADER` type
+> `CLASENH`, changed 18.09.2026 by `SEHAJTECH`). The transport search patterns (`*MATDOC*`,
+> `*MATERIAL_DOC*`) did not match `*MAT_DOC*`.
+>
+> It adds a **post-method on `CL_API_MATERIAL_DOCUME_DPC_EXT→CREATE_DOCUMENT`**
+> (`ENHINCINX` `\ME:CREATE_DOCUMENT\SE:%_END`;
+> `sessions/2026-09-21-modify-di-extension-channel/evidence/ENHINCINX_ZSD_ENH_API_MAT_DOC_DPC.txt`).
+> After posting, the post-method:
+>
+> 1. takes the material document number and year from the result;
+> 2. re-reads the request payload into a local type with the 19 `ZZ_` fields;
+> 3. does `MODIFY zmmt_migo_hdr`, keyed `MBLNR`/`MJAHR`
+>    (`src/ZSD_ENH_API_MAT_DOC_DPC=======EIMP.txt`).
+>
+> **Verified from source:** the custom header fields persist to the Z table `ZMMT_MIGO_HDR`, not
+> to `MKPF`. The "values are discarded" statement below is **retracted**. `§3` stays accurate
+> for SAP's own create path only.
+
 ## Summary
 
 The consultant did **not** build a Z service or redefine the service in SEGW. The changes are

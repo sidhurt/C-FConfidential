@@ -1,0 +1,12 @@
+﻿  METHOD add_rds_additional_entity.
+
+    DATA(lr_rds_additional_entity) = REF #( mt_rds_additional_entities[ cds_view_name = is_rds_additional_entity-cds_view_name ] OPTIONAL ).
+    IF lr_rds_additional_entity IS INITIAL.
+      INSERT VALUE #( cds_view_name = is_rds_additional_entity-cds_view_name ) INTO TABLE mt_rds_additional_entities REFERENCE INTO lr_rds_additional_entity.
+    ENDIF.
+
+    LOOP AT is_rds_additional_entity-associations REFERENCE INTO DATA(lr_association).
+      INSERT lr_association->* INTO TABLE lr_rds_additional_entity->associations.
+    ENDLOOP.
+
+  ENDMETHOD.

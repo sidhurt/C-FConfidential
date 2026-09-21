@@ -1,0 +1,37 @@
+﻿  METHOD pick_base_quantity.
+    DATA:
+      ls_param_poi               TYPE cl_api_outbound_delive_mpc=>ts_pickoneitemwithbasequantity,
+      lo_parameter_converter     TYPE REF TO lcl_parameter_converter,
+      lo_api_exception_processor TYPE REF TO lcl_api_exception_processor.
+
+    DATA(lo_od_iref) = cl_outbound_delivery_factory=>get_instance( ).
+
+    TRY .
+        io_tech_request_context->get_converted_parameters(
+          IMPORTING
+            es_parameter_values = ls_param_poi
+        ).
+
+        lo_parameter_converter = NEW lcl_parameter_converter( ).
+        ls_param_poi-deliverydocument = lo_parameter_converter->get_converted_delivery( ls_param_poi-deliverydocument ).
+        ls_param_poi-deliverydocumentitem = lo_parameter_converter->get_converted_deliveryitem( ls_param_poi-deliverydocumentitem ).
+
+        lo_od_iref->pick_base_quantity(
+          EXPORTING
+            im_deliverydocument     = ls_param_poi-deliverydocument
+            im_deliverydocumentitem = ls_param_poi-deliverydocumentitem
+            im_basequantity         = ls_param_poi-actualdeliveredqtyinbaseunit
+            im_baseunit             = ls_param_poi-baseunit
+          IMPORTING
+            ex_error_log            = DATA(ls_error_log)
+            ex_protocol             = rt_protocol
+        ).
+      CATCH cx_od_api_exception INTO DATA(lo_exception).
+        lo_api_exception_processor = NEW lcl_api_exception_processor(
+          io_exception = lo_exception
+          io_context   = mo_context
+        ).
+        lo_api_exception_processor->process_exceptions( ).
+    ENDTRY.
+
+  ENDMETHOD.

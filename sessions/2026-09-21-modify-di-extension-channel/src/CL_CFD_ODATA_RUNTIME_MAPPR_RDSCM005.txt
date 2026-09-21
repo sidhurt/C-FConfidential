@@ -1,0 +1,34 @@
+﻿  METHOD add_missing_entity_components.
+
+**********************************************************************
+* this method is a quick and dirty workaround for the RDS use case
+* where the data type of an entity is created based on the SADL entity
+* (CDS view) without considering the transient fields that are added
+* via includes in the MPC class. unfortunately there is currently no
+* other short term solution for this issue :(
+**********************************************************************
+
+    TRY.
+        IF mo_extended_entity->is_extended( ).
+          DATA(lt_existing_components)  = get_existing_entity_components( cr_entity ).
+          DATA(lt_completed_components) = complete_missing_components( lt_existing_components ).
+
+          IF lt_existing_components NE lt_completed_components.
+            " create a new data type that contains also all missing transient fields
+            DATA(lr_enhanced_entity) = cl_cfd_runtime_type_factory=>get_instance( )->create_structure( lt_completed_components ).
+
+            " take over the data of the existing entity
+            ASSIGN cr_entity->* TO FIELD-SYMBOL(<ls_existing_entity>).
+            ASSIGN lr_enhanced_entity->* TO FIELD-SYMBOL(<ls_enhanced_entity>).
+            MOVE-CORRESPONDING <ls_existing_entity> TO <ls_enhanced_entity>.
+
+            " exchange the existing entity data type with a new one that contains all missing transient fields
+            cr_entity = lr_enhanced_entity.
+          ENDIF.
+        ENDIF.
+      CATCH cx_cfd_rt_odata_model
+            cx_cfd_runtime_type_factory INTO DATA(lx_previous).
+        RAISE EXCEPTION NEW cx_cfd_odata_runtime( previous = lx_previous ).
+    ENDTRY.
+
+  ENDMETHOD.

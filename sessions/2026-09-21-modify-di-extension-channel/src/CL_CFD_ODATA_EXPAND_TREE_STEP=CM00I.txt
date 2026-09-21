@@ -1,0 +1,11 @@
+﻿  METHOD set_value_help_from_navigation.
+
+    TRY.
+        DATA(lo_value_helps) = mo_model_access->get_value_helps( ).
+        mo_value_help = lo_value_helps->get_mds_entity_by_set_name( ms_navigation_property-target_entity_set_name ).
+        mr_value_help_keys = mo_value_help->create_key_table( ).
+      CATCH cx_cfd_rt_odata_model INTO DATA(lx_previous).
+        RAISE EXCEPTION NEW cx_cfd_odata_runtime( previous = lx_previous ).
+    ENDTRY.
+
+  ENDMETHOD.

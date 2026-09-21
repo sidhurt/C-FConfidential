@@ -1,0 +1,7 @@
+﻿  METHOD handle_mapping_exception.
+    RAISE EXCEPTION NEW cx_cfd_odata_runtime(
+      previous      = ix_previous
+      textid        = cx_cfd_odata_runtime=>field_mapping_failed
+      external_name = ir_property->custom_field_external_name
+    ).
+  ENDMETHOD.

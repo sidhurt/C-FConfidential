@@ -1,0 +1,12 @@
+﻿  METHOD get_complex_conditions_filter.
+
+    IF io_filter_tree IS BOUND.
+      NEW cl_sadl_gw_filter_tree_parser( )->get_complex_condition(
+        EXPORTING
+          io_filter_tree = io_filter_tree
+        IMPORTING
+          et_condition   = rt_complex_conditions
+      ).
+    ENDIF.
+
+  ENDMETHOD.

@@ -1,0 +1,383 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~get_entityset.
+*&----------------------------------------------------------------------------------------------*
+*&  Include           /IWBEP/DPC_TMP_ENTITYSET_BASE
+*&* This class has been generated on 09.02.2017 09:02:09 in client 001
+*&*
+*&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
+*&*   If you want to change the DPC implementation, use the
+*&*   generated methods inside the DPC provider subclass - CL_API_OUTBOUND_DEL_02_DPC_EXT
+*&-----------------------------------------------------------------------------------------------*
+    DATA a_outbdeliverydo_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliverydocflowtype.
+    DATA a_outbdelivery01_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliveryheadertype.
+    DATA a_serialnmbrdeli_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_serialnmbrdeliverytype.
+    DATA a_outbdelivery02_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliveryitemtype.
+    DATA a_outbdelivery04_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliveryaddresstype.
+    DATA a_outbdelivery03_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliverypartnertype.
+    DATA a_maintenanceite_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_maintenanceitemobjecttype.
+    DATA a_outbdeliveryht_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliveryheadertexttyp.
+    DATA a_outbdeliveryit_get_entityset TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliveryitemtexttype.
+    DATA a_outbdlvaddr2_get_entityset   TYPE cl_api_outbound_delive_mpc=>tt_a_outbdeliveryaddress2type.
+    DATA lv_entityset_name TYPE string.
+    DATA ls_message TYPE message.
+
+    lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
+
+    IF mv_entityset_source IS INITIAL.
+      IF io_tech_request_context->get_source_entity_set_name( ) IS NOT INITIAL.
+        mv_entityset_source = io_tech_request_context->get_source_entity_set_name( ).
+      ELSEIF lv_entityset_name = 'A_OutbDeliveryHeader' OR
+             lv_entityset_name = 'A_OutbDeliveryItem' OR
+             lv_entityset_name = 'A_OutbDeliveryAddress2' OR
+             lv_entityset_name = 'A_OutbDeliveryPartner'.
+        mv_entityset_source = lv_entityset_name.
+      ENDIF.
+    ENDIF.
+
+    IF  mv_entityset_source = 'A_OutbDeliveryHeader' OR
+        mv_entityset_source = 'A_OutbDeliveryItem' OR
+        mv_entityset_source = 'A_OutbDeliveryAddress2' OR
+        mv_entityset_source = 'A_OutbDeliveryPartner'.
+
+      CASE lv_entityset_name.
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_OutbDeliveryDocFlow
+*  -------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryDocFlow'.
+*       Call the entity set generated method
+          a_outbdeliverydo_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_outbdeliverydo_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_outbdeliverydo_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_OutbDeliveryHeader
+*  -------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryHeader'.
+*       Call the entity set generated method
+          a_outbdelivery01_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_outbdelivery01_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_outbdelivery01_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_SerialNmbrDelivery
+*  -------------------------------------------------------------------------*
+        WHEN 'A_SerialNmbrDelivery'.
+*       Call the entity set generated method
+          a_serialnmbrdeli_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_serialnmbrdeli_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_serialnmbrdeli_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_OutbDeliveryItem
+*  -------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryItem'.
+*       Call the entity set generated method
+          a_outbdelivery02_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_outbdelivery02_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_outbdelivery02_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_OutbDeliveryAddress
+*  -------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryAddress'.
+*       Call the entity set generated method
+          a_outbdelivery04_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_outbdelivery04_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_outbdelivery04_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+*
+**  -------------------------------------------------------------------------*
+**               EntitySet -  A_OutbDeliveryAddress2
+**  -------------------------------------------------------------------------*
+*        WHEN 'A_OutbDeliveryAddress2'.
+**       Call the entity set generated method
+*          a_outbdelivery08_get_entityset(
+*            EXPORTING
+*             iv_entity_name = iv_entity_name
+*             iv_entity_set_name = iv_entity_set_name
+*             iv_source_name = iv_source_name
+*             it_filter_select_options = it_filter_select_options
+*             it_order = it_order
+*             is_paging = is_paging
+*             it_navigation_path = it_navigation_path
+*             it_key_tab = it_key_tab
+*             iv_filter_string = iv_filter_string
+*             iv_search_string = iv_search_string
+*             io_tech_request_context = io_tech_request_context
+*           IMPORTING
+*             et_entityset = a_outbdlvaddr2_get_entityset
+*             es_response_context = es_response_context
+*           ).
+**       Send specific entity data to the caller interface
+*          copy_data_to_ref(
+*            EXPORTING
+*              is_data = a_outbdlvaddr2_get_entityset
+*            CHANGING
+*              cr_data = er_entityset
+*          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_OutbDeliveryPartner
+*  -------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryPartner'.
+*       Call the entity set generated method
+          a_outbdelivery03_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_outbdelivery03_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_outbdelivery03_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_MaintenanceItemObject
+*  -------------------------------------------------------------------------*
+        WHEN 'A_MaintenanceItemObject'.
+*       Call the entity set generated method
+          a_maintenanceite_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_maintenanceite_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_maintenanceite_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_OutbDeliveryHeaderText
+*  -------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryHeaderText'.
+*       Call the entity set generated method
+          a_outbdelivery05_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_outbdeliveryht_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_outbdeliveryht_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+*  -------------------------------------------------------------------------*
+*               EntitySet -  A_OutbDeliveryItemText
+*  -------------------------------------------------------------------------*
+        WHEN 'A_OutbDeliveryItemText'.
+*       Call the entity set generated method
+          a_outbdelivery06_get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              et_entityset             = a_outbdeliveryit_get_entityset
+              es_response_context      = es_response_context
+          ).
+*       Send specific entity data to the caller interface
+          copy_data_to_ref(
+            EXPORTING
+              is_data = a_outbdeliveryit_get_entityset
+            CHANGING
+              cr_data = er_entityset
+          ).
+
+        WHEN OTHERS.
+          super->/iwbep/if_mgw_appl_srv_runtime~get_entityset(
+            EXPORTING
+              iv_entity_name           = iv_entity_name
+              iv_entity_set_name       = iv_entity_set_name
+              iv_source_name           = iv_source_name
+              it_filter_select_options = it_filter_select_options
+              it_order                 = it_order
+              is_paging                = is_paging
+              it_navigation_path       = it_navigation_path
+              it_key_tab               = it_key_tab
+              iv_filter_string         = iv_filter_string
+              iv_search_string         = iv_search_string
+              io_tech_request_context  = io_tech_request_context
+            IMPORTING
+              er_entityset             = er_entityset
+              es_response_context      = es_response_context ).
+      ENDCASE.
+    ELSE.
+      IF lv_entityset_name = 'A_OutbDeliveryHeaderText'.
+        MESSAGE e035(le_shp_odata_api_od) WITH lv_entityset_name 'A_OutbDeliveryHeader' INTO ls_message.
+      ELSEIF lv_entityset_name = 'A_OutbDeliveryItemText'.
+        MESSAGE e035(le_shp_odata_api_od) WITH lv_entityset_name 'A_OutbDeliveryItem' INTO ls_message.
+      ELSE.
+        MESSAGE e000(le_shp_odata_api_od) INTO ls_message.
+      ENDIF.
+      mo_context->get_message_container( )->add_message(
+        EXPORTING
+          iv_msg_type               = /iwbep/if_message_container=>gcs_message_type-error
+          iv_msg_id                 = sy-msgid
+          iv_msg_number             = sy-msgno
+          iv_msg_v1                 = sy-msgv1
+          iv_msg_v2                 = sy-msgv2
+          iv_msg_v3                 = sy-msgv3
+          iv_msg_v4                 = sy-msgv4
+      ).
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          textid            = /iwbep/cx_mgw_busi_exception=>business_error
+          message_container = mo_context->get_message_container( ).
+    ENDIF.
+  ENDMETHOD.

@@ -1,0 +1,20 @@
+﻿  METHOD extract_entity_result.
+
+    rr_entity = mo_query_runtime->create_structure_container( ).
+
+    IF lines( it_entityset ) EQ 1.
+      ASSIGN rr_entity->* TO FIELD-SYMBOL(<ls_entity>).
+      READ TABLE it_entityset INTO <ls_entity> INDEX 1.
+
+    ELSEIF lines( it_entityset ) EQ 0.
+      RAISE EXCEPTION NEW /iwbep/cx_mgw_busi_exception( textid           = /iwbep/cx_mgw_busi_exception=>resource_not_found
+                                                        entity_type      = CONV #( mo_entity->get_entity_type_name( ) )
+                                                        http_status_code = /iwbep/cx_mgw_busi_exception=>gcs_http_status_codes-not_found ).
+
+    ELSEIF lines( it_entityset ) GT 1.
+      RAISE EXCEPTION NEW /iwbep/cx_mgw_busi_exception( textid      = /iwbep/cx_mgw_busi_exception=>resource_duplicate
+                                                        entity_type = CONV #( mo_entity->get_entity_type_name( ) ) ).
+
+    ENDIF.
+
+  ENDMETHOD.

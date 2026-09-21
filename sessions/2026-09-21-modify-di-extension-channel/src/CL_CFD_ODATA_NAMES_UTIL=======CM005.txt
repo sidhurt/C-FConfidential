@@ -1,0 +1,6 @@
+﻿  METHOD get_association_name.
+
+    DATA(lv_hash) = cl_cfd_object_names=>calculate_hash( |{ iv_source_entity_name }_{ iv_association_name }| ).
+    rv_association_name = |assoc{ get_external_entity_name( lv_hash ) }|.
+
+  ENDMETHOD.

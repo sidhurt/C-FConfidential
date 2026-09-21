@@ -1,0 +1,7 @@
+﻿  METHOD is_end_user_exception.
+
+    IF ix_exception IS INSTANCE OF cx_cfd_base.
+      rv_is_end_user_exception = CAST cx_cfd_base( ix_exception )->is_end_user_relevant.
+    ENDIF.
+
+  ENDMETHOD.

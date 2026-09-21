@@ -1,0 +1,13 @@
+﻿  METHOD determine_cds_extension_fields.
+
+    determine_cfd_cds_fields(
+      it_exposed_cds_views = it_exposed_cds_views
+      io_extension_data    = io_extension_data
+    ).
+
+    determine_de_cds_fields(
+      it_exposed_cds_views = it_exposed_cds_views
+      io_extension_data    = io_extension_data
+    ).
+
+  ENDMETHOD.

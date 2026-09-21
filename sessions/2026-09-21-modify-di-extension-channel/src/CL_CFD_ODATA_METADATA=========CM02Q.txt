@@ -1,0 +1,14 @@
+﻿  METHOD add_mds_properties.
+
+    LOOP AT mo_model_access->for_non_rds( )->get_extended_entities( ) INTO DATA(lo_extended_entity).
+      DATA(lo_entity_type) = ms_model_context-model->get_entity_type( lo_extended_entity->get_entity_type_name( ) ).
+      DATA(lo_property_exposure) = cl_cfd_odata_property_exposure=>create_instance(
+        is_model_context = ms_model_context
+        io_entity_type   = lo_entity_type
+      ).
+      LOOP AT lo_extended_entity->get_properties( ) REFERENCE INTO DATA(lr_property).
+        lo_property_exposure->add_property( map_to_odata_property( lr_property->* ) ).
+      ENDLOOP.
+    ENDLOOP.
+
+  ENDMETHOD.

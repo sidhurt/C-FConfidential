@@ -1,0 +1,28 @@
+﻿  METHOD check_precondition.
+    DATA:
+      lv_etag_result TYPE etag_result VALUE precondition_failed.
+
+    IF iv_etag_relevance = etag_none.
+      RETURN.
+    ELSEIF is_conditions IS INITIAL AND iv_etag_relevance = etag_mandatory.
+      lv_etag_result = precondition_required.
+    ELSEIF is_conditions IS INITIAL AND iv_etag_relevance = etag_optional.
+      lv_etag_result = precondition_ok.
+    ELSE.
+      LOOP AT is_conditions-if_match INTO DATA(ls_etag).
+        READ TABLE ls_etag-tag_values TRANSPORTING NO FIELDS
+          WITH KEY name = 'DELIVERYVERSION' value = iv_dlv_version.
+        IF sy-subrc EQ 0 OR ls_etag-any_value IS NOT INITIAL.
+          lv_etag_result = precondition_ok.
+          EXIT.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    IF lv_etag_result <> precondition_ok.
+      raise_etag_error(
+        EXPORTING
+          iv_etag_result = lv_etag_result
+          iv_vbtyp       = iv_vbtyp ).
+    ENDIF.
+  ENDMETHOD.

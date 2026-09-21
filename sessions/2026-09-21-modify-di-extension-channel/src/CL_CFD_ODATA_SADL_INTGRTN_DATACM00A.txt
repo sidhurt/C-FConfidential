@@ -1,0 +1,12 @@
+﻿  METHOD add_rds_entity_extension.
+
+    DATA(lr_rds_entity_extension) = REF #( mt_rds_entity_extensions[ cds_view_name = is_rds_entity_extension-cds_view_name ] OPTIONAL ).
+    IF lr_rds_entity_extension IS INITIAL.
+      INSERT VALUE #( cds_view_name = is_rds_entity_extension-cds_view_name ) INTO TABLE mt_rds_entity_extensions REFERENCE INTO lr_rds_entity_extension.
+    ENDIF.
+
+    LOOP AT is_rds_entity_extension-associations REFERENCE INTO DATA(lr_association).
+      INSERT lr_association->* INTO TABLE lr_rds_entity_extension->associations.
+    ENDLOOP.
+
+  ENDMETHOD.

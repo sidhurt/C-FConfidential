@@ -1,0 +1,3 @@
+﻿  METHOD if_cfd_odata_sadl_intgrtn_data~get_rds_additional_entities.
+    rt_rds_additional_entities = mt_rds_additional_entities.
+  ENDMETHOD.

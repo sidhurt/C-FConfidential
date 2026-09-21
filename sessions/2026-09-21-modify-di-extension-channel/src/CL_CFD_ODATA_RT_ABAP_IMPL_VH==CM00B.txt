@@ -1,0 +1,6 @@
+﻿  METHOD constructor.
+
+    mo_entity = io_entity.
+    mo_query_runtime = cl_cfd_abap_impl_value_help=>create_instance( io_entity->get_cds_view_name( ) ).
+
+  ENDMETHOD.

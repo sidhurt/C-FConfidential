@@ -1,0 +1,3 @@
+﻿  METHOD if_cfd_odata_expand_tree_step~get_extended_source_entity.
+    ro_extended_source_entity = mo_extended_entity.
+  ENDMETHOD.

@@ -1,0 +1,14 @@
+﻿  METHOD a_outbdelivery06_get_entity. " Read item text
+    DATA(lv_operation_type) = io_tech_request_context->get_conditional_operation_for( ).
+    mo_api_text->get_entity(
+      EXPORTING
+        iv_service         = if_shp_api2_text_process=>outbound
+        iv_entity_set_name = iv_entity_set_name
+        it_key_tab         = it_key_tab
+        it_navigation_path = it_navigation_path
+        io_context         = mo_context
+        iv_operation_type  = lv_operation_type
+      IMPORTING
+        er_entity          = er_entity ).
+    ms_text_db = er_entity.
+  ENDMETHOD.

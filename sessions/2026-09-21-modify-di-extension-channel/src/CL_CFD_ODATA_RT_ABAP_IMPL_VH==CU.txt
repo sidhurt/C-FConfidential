@@ -1,0 +1,12 @@
+﻿CLASS cl_cfd_odata_rt_abap_impl_vh DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE .
+
+  PUBLIC SECTION.
+    INTERFACES if_cfd_odata_rt_abap_impl_vh.
+    CLASS-METHODS create_instance
+      IMPORTING
+        io_entity          TYPE REF TO if_cfd_rt_odata_md_vh_mds
+      RETURNING
+        VALUE(ro_instance) TYPE REF TO if_cfd_odata_rt_abap_impl_vh.

@@ -1,0 +1,86 @@
+﻿  METHOD check_whitelist.
+    DATA: lo_type_descr   TYPE REF TO cl_abap_typedescr,
+          lo_struct_descr TYPE REF TO cl_abap_structdescr,
+          lv_comp_found   TYPE abap_bool.
+    FIELD-SYMBOLS: <fs_table> TYPE ANY TABLE,
+                   <fs_value> TYPE any.
+
+    lo_type_descr ?= cl_abap_typedescr=>describe_by_data( p_data = im_struct ).
+
+    IF lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_struct2 OR
+       lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_struct1.
+      lo_struct_descr ?= cl_abap_structdescr=>describe_by_data( p_data = im_struct ).
+      LOOP AT lo_struct_descr->components ASSIGNING FIELD-SYMBOL(<fs_comp>).
+        ASSIGN COMPONENT sy-tabix OF STRUCTURE im_struct TO <fs_value>.
+        lo_type_descr ?= cl_abap_typedescr=>describe_by_data( p_data = <fs_value> ).
+        lv_comp_found = abap_false.
+        IF  lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_struct2 OR
+            lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_struct1  OR
+            lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_table.
+          check_whitelist(
+            EXPORTING
+              im_struct    = <fs_value>
+              im_whitelist = im_whitelist
+          ).
+        ELSE.
+          READ TABLE im_whitelist TRANSPORTING NO FIELDS WITH KEY table_line = <fs_comp>-name BINARY SEARCH.
+          IF sy-subrc EQ 0.
+            lv_comp_found = abap_true.
+          ENDIF.
+          IF lv_comp_found EQ abap_false.
+            CHECK <fs_value> IS NOT INITIAL.
+            mo_context->get_message_container( )->add_message(
+              EXPORTING
+                iv_msg_type               = /iwbep/if_message_container=>gcs_message_type-error    " Message Type
+                iv_msg_id                 = 'LE_SHP_ODATA_API_OD'    " Message Class
+                iv_msg_number             = 001    " Message Number
+            ).
+            RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+              EXPORTING
+                textid            = /iwbep/cx_mgw_busi_exception=>business_error
+                message_container = mo_context->get_message_container( )
+              . "Raise exception
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+    ELSEIF lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_table.
+      ASSIGN im_struct TO <fs_table>.
+      LOOP AT <fs_table> ASSIGNING FIELD-SYMBOL(<fs_tab_index>).
+        lo_struct_descr ?= cl_abap_structdescr=>describe_by_data( p_data = <fs_tab_index> ).
+        LOOP AT lo_struct_descr->components ASSIGNING <fs_comp>.
+          ASSIGN COMPONENT sy-tabix OF STRUCTURE <fs_tab_index> TO <fs_value>.
+          lo_type_descr ?= cl_abap_typedescr=>describe_by_data( p_data = <fs_value> ).
+          lv_comp_found = abap_false.
+          IF  lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_struct2 OR
+              lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_struct1  OR
+              lo_type_descr->type_kind EQ cl_abap_typedescr=>typekind_table.
+
+            check_whitelist(
+              EXPORTING
+                im_struct    = <fs_value>
+                im_whitelist = im_whitelist
+            ).
+          ELSE.
+            READ TABLE im_whitelist TRANSPORTING NO FIELDS WITH KEY table_line = <fs_comp>-name BINARY SEARCH.
+            IF sy-subrc EQ 0.
+              lv_comp_found = abap_true.
+            ENDIF.
+            IF lv_comp_found EQ abap_false.
+              CHECK <fs_value> IS NOT INITIAL.
+              mo_context->get_message_container( )->add_message(
+              EXPORTING
+                iv_msg_type               = /iwbep/if_message_container=>gcs_message_type-error    " Message Type
+                iv_msg_id                 = 'LE_SHP_ODATA_API_OD'    " Message Class
+                iv_msg_number             = 001    " Message Number
+              ).
+              RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+                EXPORTING
+                  textid            = /iwbep/cx_mgw_busi_exception=>business_error
+                  message_container = mo_context->get_message_container( )
+                . "Raise exception
+            ENDIF.
+          ENDIF.
+        ENDLOOP.
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.

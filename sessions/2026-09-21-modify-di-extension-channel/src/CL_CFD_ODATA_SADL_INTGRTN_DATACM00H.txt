@@ -1,0 +1,12 @@
+﻿  METHOD if_cfd_odata_sadl_intgrtn_data~add_disabled_cds_elements.
+
+    DATA(lr_disabled_elements) = REF #( mt_disabled_elements[ cds_view_name = is_disabled_elements-cds_view_name ] OPTIONAL ).
+    IF lr_disabled_elements IS INITIAL.
+      INSERT VALUE #( cds_view_name = is_disabled_elements-cds_view_name ) INTO TABLE mt_disabled_elements REFERENCE INTO lr_disabled_elements.
+    ENDIF.
+
+    LOOP AT is_disabled_elements-elements INTO DATA(lv_element).
+      INSERT lv_element INTO TABLE lr_disabled_elements->elements.
+    ENDLOOP.
+
+  ENDMETHOD.

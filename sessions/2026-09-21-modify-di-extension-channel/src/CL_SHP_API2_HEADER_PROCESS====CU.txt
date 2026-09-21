@@ -1,0 +1,11 @@
+﻿CLASS cl_shp_api2_header_process DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+    INTERFACES:
+      if_shp_api2_header_process.
+
+    METHODS:
+      constructor.

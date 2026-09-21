@@ -1,0 +1,7 @@
+﻿  method FLX_GET_MODEL_NAME.
+    " -------------- !! GENERATED CODE !! ----------------
+    " !!  ONLY REDEFINITION IN YOUR EXT SUBCLASS ALLOWED!!
+
+    rv_mdl_name = get_model_name( ).
+
+  endmethod.

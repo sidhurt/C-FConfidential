@@ -1,0 +1,18 @@
+﻿  METHOD map_field_control_fields.
+
+    LOOP AT it_properties REFERENCE INTO DATA(lr_property)
+      WHERE property_kind EQ if_cfd_rt_odata_builder=>gc_property_kind-field_control. "#EC CI_SORTSEQ - only few entries expected
+      TRY.
+          map_field_control_field(
+            ir_property           = lr_property
+            ir_external_structure = ir_external_structure
+          ).
+        CATCH cx_cfd_base INTO DATA(lx_previous).
+          handle_mapping_exception(
+            ir_property = lr_property
+            ix_previous = lx_previous
+          ).
+      ENDTRY.
+    ENDLOOP.
+
+  ENDMETHOD.

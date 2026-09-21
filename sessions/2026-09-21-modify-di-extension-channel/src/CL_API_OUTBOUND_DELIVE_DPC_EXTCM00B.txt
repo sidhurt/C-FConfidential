@@ -1,0 +1,11 @@
+﻿  METHOD a_outbdelivery01_update_entity. "Delivery header
+    DATA(lo_collector) = cl_api_le_dlv_upd_coll_factory=>get_instance( ).
+
+    mo_header_process->update_entity(
+      EXPORTING
+        io_tech_request_context = io_tech_request_context
+        io_data_provider        = io_data_provider
+        io_collector            = lo_collector
+        io_context              = mo_context
+        it_whitelist            = cl_api_outbound_delive_mpc_ext=>header_whitelist ).
+  ENDMETHOD.

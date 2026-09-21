@@ -1,0 +1,12 @@
+﻿  METHOD if_cfd_odata_sadl_intgrtn_data~add_rds_entity_extension.
+
+    IF line_exists( ms_model_data-sadl_data-rds_entities[ cds_view_name = is_rds_entity_extension-cds_view_name ] ).
+      add_rds_entity_extension( is_rds_entity_extension ).
+    ELSE.
+      RAISE EXCEPTION NEW cx_cfd_odata_runtime(
+        textid      = cx_cfd_odata_runtime=>entity_set_not_found
+        entity_name = CONV #( is_rds_entity_extension-cds_view_name )
+      ).
+    ENDIF.
+
+  ENDMETHOD.

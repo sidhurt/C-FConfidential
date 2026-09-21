@@ -1,0 +1,9 @@
+﻿  METHOD if_cfd_odata_runtime_vh_facade~is_custom_value_help.
+
+    IF NOT is_standard_vh_entity_set( iv_entity_set_name ) AND (
+       mo_vh_provider_cfd->supports_entity_set( iv_entity_set_name ) OR
+       mo_vh_provider_de->supports_entity_set( iv_entity_set_name ) ).
+       rv_is_custom_value_help = abap_true.
+    ENDIF.
+
+  ENDMETHOD.

@@ -1,0 +1,3 @@
+﻿  METHOD create_instance.
+    ro_instance = NEW cl_cfd_odata_request( ).
+  ENDMETHOD.

@@ -1,0 +1,21 @@
+﻿  METHOD get_query_options_entityset.
+
+* see CL_SADL_GW_GENERIC_DPC->_GET_ENTITYSET and CL_SADL_GW_ODATA_RUNTIME->_GET_ENTITYSET_VIA_FETCH
+    rs_query_options-paging = get_paging(
+      iv_top  = io_tech_request_context->get_top( )
+      iv_skip = io_tech_request_context->get_skip( )
+    ).
+
+    rs_query_options-restrictions-complex_condition = get_complex_conditions_filter( io_tech_request_context->get_filter_expression_tree_con( ) ).
+    rs_query_options-restrictions-text_search = get_text_search( io_tech_request_context->get_search_string( ) ).
+
+    rs_query_options-requested-fill_number_all_hits = xsdbool(
+      io_tech_request_context->has_inlinecount( ) OR
+      io_tech_request_context->has_count( )
+    ).
+    rs_query_options-requested-fill_data = xsdbool( rs_query_options-paging-maximum_rows > 0 ).
+    rs_query_options-requested-elements = get_requested_elements( io_tech_request_context->get_select_entity_properties( ) ).
+
+    rs_query_options-sort_elements = get_sort_elements( io_tech_request_context->get_orderby( ) ).
+
+  ENDMETHOD.

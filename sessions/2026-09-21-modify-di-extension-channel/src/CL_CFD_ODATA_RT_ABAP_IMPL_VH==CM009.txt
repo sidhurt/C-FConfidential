@@ -1,0 +1,15 @@
+﻿  METHOD get_sort_elements.
+
+    " simplified, as
+    "- we only allow plain custom entities without associations
+    "- we control exposure of names
+    LOOP AT it_orderby REFERENCE INTO DATA(lr_orderby).
+
+      INSERT VALUE #(
+        descending   = xsdbool( lr_orderby->order EQ 'desc' ) ##NO_TEXT
+        element_name = lr_orderby->property
+      ) INTO TABLE rt_sort_elements.
+
+    ENDLOOP.
+
+  ENDMETHOD.

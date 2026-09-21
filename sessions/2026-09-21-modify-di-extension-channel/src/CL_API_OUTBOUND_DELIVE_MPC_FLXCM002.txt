@@ -1,0 +1,20 @@
+﻿  method DEFINE.
+    " ----------------   !! GENERATED CODE !! --------------------
+    " !!  DO NOT CHANGE, WILL BE OVERWRITTEN AT NEXT GENERATION !!
+
+    super->define( ).
+
+    flx_load_metadata_api( ).
+
+    TRY.
+       mo_flx_metadata_api->add_custom_metadata(
+          io_model            = model
+          io_annotation_model = vocab_anno_model
+          iv_namespace        = flx_get_namespace( ) ).
+    CATCH cx_cfd_odata_metadata INTO DATA(lx_metadata).
+       RAISE EXCEPTION TYPE /iwbep/cx_mgw_med_exception
+         EXPORTING
+           previous = lx_metadata.
+    ENDTRY.
+
+  endmethod.

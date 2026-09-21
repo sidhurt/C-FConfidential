@@ -1,0 +1,71 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~get_expanded_entity.
+    DATA:
+      lv_entityset_name  TYPE /iwbep/mgw_tech_name,
+      ls_header          TYPE ty_s_headers,
+      ls_entity          TYPE cl_api_outbound_delive_mpc=>ts_a_outbdeliveryheadertype,
+      ls_expanded_clause LIKE LINE OF et_expanded_tech_clauses,
+      ls_delivery        TYPE leshp_delivery_s,
+      ls_data            TYPE leshp_data,
+      et_delivery        TYPE leshp_delivery_t.
+
+    lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
+
+    IF lv_entityset_name = 'A_OutbDeliveryHeader' AND
+      io_expand->compare_to_tech_names('TO_DELIVERYDOCUMENTITEM/TO_DOCUMENTFLOW') EQ
+      io_expand->gcs_compare_result-match_equals.
+
+      io_tech_request_context->get_converted_keys(
+        IMPORTING
+          es_key_values = ls_entity    " Entity Key Values - converted
+      ).
+
+      ls_data-item = 'X'.
+      ls_data-doc_flow = 'X'.
+
+      CALL FUNCTION 'LE_DELIVERY_GET_BUFFERED'
+        EXPORTING
+          if_vbeln               = ls_entity-deliverydocument
+          is_data                = ls_data
+        CHANGING
+          cx_deliveries          = et_delivery
+        EXCEPTIONS
+          no_item_selected       = 0
+          selected_item_enqueued = 0
+          no_key_specified       = 0
+          OTHERS                 = 0.
+
+      READ TABLE et_delivery INTO       ls_delivery    INDEX 1.
+
+      map_expanded_header_to_odata(
+        EXPORTING
+          im_delivery = ls_delivery
+        IMPORTING
+          em_delivery = ls_header
+      ).
+      me->copy_data_to_ref(
+        EXPORTING
+          is_data = ls_header
+        CHANGING
+          cr_data = er_entity
+      ).
+
+      ls_expanded_clause = 'TO_DELIVERYDOCUMENTITEM/TO_DOCUMENTFLOW'.
+      APPEND ls_expanded_clause TO et_expanded_tech_clauses.
+
+    ELSE.
+      CALL METHOD super->/iwbep/if_mgw_appl_srv_runtime~get_expanded_entity
+        EXPORTING
+          iv_entity_name           = iv_entity_name
+          iv_entity_set_name       = iv_entity_set_name
+          iv_source_name           = iv_source_name
+          it_key_tab               = it_key_tab
+          it_navigation_path       = it_navigation_path
+          io_expand                = io_expand
+          io_tech_request_context  = io_tech_request_context
+        IMPORTING
+          er_entity                = er_entity
+          es_response_context      = es_response_context
+          et_expanded_clauses      = et_expanded_clauses
+          et_expanded_tech_clauses = et_expanded_tech_clauses.
+    ENDIF.
+  ENDMETHOD.

@@ -1,0 +1,10 @@
+﻿  METHOD if_shp_api2_helper~lock_delivery.
+    IF mv_locked_deliverydocument <> iv_deliverydocument.
+      DATA(lo_persistency) = lcl_persistency=>get( ).
+      lo_persistency->lock_delivery(
+        EXPORTING
+          iv_vbeln = iv_deliverydocument
+      ).
+      mv_locked_deliverydocument = iv_deliverydocument.
+    ENDIF.
+  ENDMETHOD.

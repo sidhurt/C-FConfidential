@@ -1,0 +1,143 @@
+﻿  METHOD get_vbkok.
+    DATA:
+      ls_ext TYPE likp-ext.
+
+    CLEAR rs_vbkok.
+    rs_vbkok-vbeln = is_entity-deliverydocument.
+
+    IF line_exists( it_patched_attributes[ name = 'PICKINGDATE' ] ) OR
+       line_exists( it_patched_attributes[ name = 'PICKINGTIME' ] ).
+      rs_vbkok-kodat = is_entity-pickingdate.
+      rs_vbkok-kouhr = is_entity-pickingtime.
+      rs_vbkok-kzkodat = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'PLANNEDGOODSISSUEDATE' ] ) OR
+       line_exists( it_patched_attributes[ name = 'GOODSISSUETIME' ] ).
+      rs_vbkok-wadat = is_entity-plannedgoodsissuedate.
+      rs_vbkok-wauhr = is_entity-goodsissuetime.
+      rs_vbkok-kzwad = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'DELIVERYDATE' ] ) OR
+       line_exists( it_patched_attributes[ name = 'DELIVERYTIME' ] ).
+      rs_vbkok-lfdat = is_entity-deliverydate.
+      rs_vbkok-lfuhr = is_entity-deliverytime.
+      rs_vbkok-kzlfd = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'LOADINGDATE' ] ) OR
+       line_exists( it_patched_attributes[ name = 'LOADINGTIME' ] ).
+      rs_vbkok-lddat = is_entity-loadingdate.
+      rs_vbkok-lduhr = is_entity-loadingtime.
+      rs_vbkok-kzlddat = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'TRANSPORTATIONPLANNINGDATE' ] ) OR
+       line_exists( it_patched_attributes[ name = 'TRANSPORTATIONPLANNINGTIME' ] ).
+      rs_vbkok-tddat = is_entity-transportationplanningdate.
+      rs_vbkok-tduhr = is_entity-transportationplanningtime.
+      rs_vbkok-kztddat = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'ACTUALGOODSMOVEMENTDATE' ] ) OR
+       line_exists( it_patched_attributes[ name = 'ACTUALGOODSMOVEMENTTIME' ] ).
+      rs_vbkok-wadat_ist = is_entity-actualgoodsmovementdate.
+      rs_vbkok-spe_wauhr_ist = is_entity-actualgoodsmovementtime.
+      rs_vbkok-spe_wazone_ist = is_entity-shippinglocationtimezone.
+      rs_vbkok-kzwadat_ist = 'X'.
+    ENDIF.
+
+
+
+    IF line_exists( it_patched_attributes[ name = 'HEADERGROSSWEIGHT' ] ) OR
+       line_exists( it_patched_attributes[ name = 'HEADERWEIGHTUNIT' ] ).
+      rs_vbkok-brgew = is_entity-headergrossweight.
+      rs_vbkok-gewei = is_entity-headerweightunit.
+      rs_vbkok-kzbrg = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'HEADERNETWEIGHT' ] ) OR
+       line_exists( it_patched_attributes[ name = 'HEADERWEIGHTUNIT' ] ).
+      rs_vbkok-ntgew = is_entity-headernetweight.
+      rs_vbkok-gewei = is_entity-headerweightunit.
+      rs_vbkok-kzntg = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'HEADERVOLUME' ] ) OR
+       line_exists( it_patched_attributes[ name = 'HEADERVOLUMEUNIT' ] ).
+      rs_vbkok-volum = is_entity-headervolume.
+      rs_vbkok-voleh = is_entity-headervolumeunit.
+      rs_vbkok-kzvol = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'DELIVERYBLOCKREASON' ] ).
+      rs_vbkok-lifsk = is_entity-deliveryblockreason.
+      rs_vbkok-kzlsp = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'BILLOFLADING' ] ).
+      rs_vbkok-bolnr = is_entity-billoflading.
+      "Missing functionality: bolnr is its own changeflag. You can't set the field to initial.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'MEANSOFTRANSPORTTYPE' ] ).
+      rs_vbkok-traty = is_entity-meansoftransporttype.
+      "Missing functionality: traty is its own changeflag. You can't set the field to initial.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'MEANSOFTRANSPORT' ] ).
+      rs_vbkok-traid = is_entity-meansoftransport.
+      "Missing functionality: traid is its own changeflag. You can't set the field to initial.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'INCOTERMSCLASSIFICATION' ] ) OR
+       line_exists( it_patched_attributes[ name = 'INCOTERMSTRANSFERLOCATION' ] ).
+      rs_vbkok-inco1 = is_entity-incotermsclassification.
+      rs_vbkok-inco2 = is_entity-incotermstransferlocation.
+      rs_vbkok-inco2_l = is_entity-incotermstransferlocation.
+      rs_vbkok-kzinco1 = 'X'.
+      rs_vbkok-kzinco2 = 'X'.
+      rs_vbkok-kzincov = 'X'.
+      rs_vbkok-kzinco2_l = 'X'.
+      rs_vbkok-kzinco3_l = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'PROPOSEDDELIVERYROUTE' ] ).
+      rs_vbkok-route = is_entity-proposeddeliveryroute.
+      rs_vbkok-kzroute = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'DELIVERYPRIORITY' ] ).
+      rs_vbkok-lprio = is_entity-deliverypriority.
+      rs_vbkok-kzlprio = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'SHIPPINGTYPE' ] ).
+      rs_vbkok-vsart = is_entity-shippingtype.
+      rs_vbkok-kzvsart = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'DELIVERYDOCUMENTBYSUPPLIER' ] ).
+      rs_vbkok-lifex = is_entity-deliverydocumentbysupplier.
+      rs_vbkok-kzlifex = 'X'.
+    ENDIF.
+
+    IF line_exists( it_patched_attributes[ name = 'UNLOADINGPOINTNAME' ] ).
+      rs_vbkok-ablad = is_entity-unloadingpointname.
+      rs_vbkok-kzablad = 'X'.
+    ENDIF.
+
+    READ TABLE it_patched_attributes WITH KEY is_ext = abap_true TRANSPORTING NO FIELDS.
+    IF sy-subrc = 0. " At least one custom field to update
+      MOVE-CORRESPONDING is_entity TO rs_vbkok-ext.
+      rs_vbkok-update_extension_fields = abap_true.
+    ENDIF.
+
+    READ TABLE it_patched_attributes WITH KEY is_ext = abap_false TRANSPORTING NO FIELDS.
+    IF sy-subrc <> 0. " Custom fields only!
+      rs_vbkok-vbeln_vl = is_entity-deliverydocument.
+      rs_vbkok-ignore_goods_mvmt_status   = abap_true.
+      rs_vbkok-ignore_distribution_status = abap_true.
+    ENDIF.
+  ENDMETHOD.

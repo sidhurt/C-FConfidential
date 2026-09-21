@@ -1,0 +1,20 @@
+﻿  METHOD get_header_x.
+    DATA:
+      ls_key_values TYPE if_shp_api2_header_process=>ty_entity,
+      ls_entity_x   TYPE REF TO data,
+      ls_ext_empty TYPE shpdelivery_incl_eew_ps.
+
+    io_tech_request_context->get_converted_keys(
+      IMPORTING
+        es_key_values = ls_key_values ).
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = es_header_std_x ).
+    es_header_std_x-deliverydocument = ms_header_std_y-deliverydocument.
+    MOVE-CORRESPONDING ls_ext_empty TO es_header_std_x.
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = es_header_ext_x ).
+  ENDMETHOD.

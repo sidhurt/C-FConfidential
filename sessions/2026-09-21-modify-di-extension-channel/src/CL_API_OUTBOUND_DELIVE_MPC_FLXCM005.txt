@@ -1,0 +1,7 @@
+﻿  method FLX_GET_NAMESPACE.
+    " -------------- !! GENERATED CODE !! ----------------
+    " !!  ONLY REDEFINITION IN YOUR EXT SUBCLASS ALLOWED!!
+
+    rv_namespace = 'API_OUTBOUND_DELIVERY_SRV' ##no_text.
+
+  endmethod.

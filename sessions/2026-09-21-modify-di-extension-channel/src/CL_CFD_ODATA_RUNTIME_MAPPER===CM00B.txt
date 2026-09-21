@@ -1,0 +1,9 @@
+﻿  METHOD if_cfd_odata_runtime_mapper~enrich_entity_and_components.
+
+    IF ir_entity IS NOT INITIAL.
+      if_cfd_odata_runtime_mapper~enrich_entity( ir_entity ).
+    ELSE.
+      if_cfd_odata_runtime_mapper~enrich_entity( cr_entity ).
+    ENDIF.
+
+  ENDMETHOD.

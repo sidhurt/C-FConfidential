@@ -1,0 +1,57 @@
+﻿CLASS cl_le_shp_odata_api_helper DEFINITION
+  PUBLIC
+  CREATE PUBLIC.
+  PUBLIC SECTION.
+  TYPES:
+         bapidlvserialnumber_t TYPE STANDARD TABLE OF bapidlvserialnumber,
+         BEGIN OF ref_doc_item,
+            rfbel type rfbel_vl,
+            rfpos type rfpos_vl,
+         END of ref_doc_item,
+         ref_doc_item_t TYPE STANDARD TABLE OF ref_doc_item.
+
+    TYPES:
+      BEGIN OF ENUM etag_relevance,
+        etag_mandatory,
+        etag_optional,
+        etag_none,
+      END OF ENUM etag_relevance.
+
+    CLASS-METHODS:
+      get_custom_header_update
+        IMPORTING
+          iv_vbeln               TYPE vbeln_vl
+          is_ext_before_patch    TYPE any
+          is_ext_after_patch     TYPE any
+          is_likpvb_ext_db       TYPE likpvb-ext
+        RETURNING
+          VALUE(rs_likpvb_patch) TYPE likpvb,
+
+      get_custom_item_update
+        IMPORTING
+          iv_vbeln               TYPE vbeln_vl
+          iv_posnr               TYPE posnr_vl
+          is_ext_before_patch    TYPE any
+          is_ext_after_patch     TYPE any
+          is_lipsvb_ext_db       TYPE lipsvb-ext
+        RETURNING
+          VALUE(rs_lipsvb_patch) TYPE lipsvb,
+
+      check_precondition
+        IMPORTING
+          iv_dlv_version    TYPE dlv_version
+          iv_vbtyp          TYPE likp-vbtyp
+          is_conditions     TYPE /iwbep/if_mgw_appl_types=>ty_s_conditions
+          iv_etag_relevance TYPE etag_relevance
+        RAISING
+          /iwbep/cx_mgw_busi_exception,
+
+      read_delivery_for_action
+        IMPORTING
+          iv_vbeln TYPE vbeln_vl
+          iv_vbtyp TYPE vbtypl
+        EXPORTING
+          es_ylikp TYPE likp
+        RAISING
+          cx_shp_api2_exception.
+

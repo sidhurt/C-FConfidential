@@ -1,0 +1,11 @@
+﻿  METHOD get_custom_header_update.
+    rs_likpvb_patch-vbeln = iv_vbeln.
+    get_ext_include_for_update(
+      EXPORTING
+        is_ext_before_patch = is_ext_before_patch
+        is_ext_after_patch  = is_ext_after_patch
+        is_ext_db           = is_likpvb_ext_db
+      CHANGING
+        cs_ext_patch        = rs_likpvb_patch
+    ).
+  ENDMETHOD.

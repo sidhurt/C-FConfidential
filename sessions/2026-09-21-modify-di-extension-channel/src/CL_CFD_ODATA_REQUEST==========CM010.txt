@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~is_cache_page_on_hb_allowed.
+    RETURN ##NEEDED.
+  ENDMETHOD.

@@ -1,0 +1,5 @@
+﻿  METHOD if_cfd_odata_entity_exposure~exists_entity_type.
+
+    rv_entity_type_exists = boolc( get_entity_type( iv_entity_type_name ) IS NOT INITIAL ).
+
+  ENDMETHOD.

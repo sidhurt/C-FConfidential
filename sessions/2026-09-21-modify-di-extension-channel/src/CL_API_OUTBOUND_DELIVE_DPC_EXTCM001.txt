@@ -1,0 +1,19 @@
+﻿  METHOD /iwbep/if_mgw_appl_srv_runtime~changeset_begin.
+    DATA lo_msg_container TYPE REF TO /iwbep/if_message_container.
+
+    DATA(lo_od_iref) = cl_outbound_delivery_factory=>get_instance( ).
+    lo_od_iref->set_changeset( im_changeset_value = abap_true ).
+
+    TRY.
+        cl_api_le_dlv_upd_coll_factory=>changeset_begin( it_operation_info ).
+      CATCH cx_od_api_exception INTO DATA(lo_exception).
+        lo_msg_container = mo_context->get_message_container( ).
+        lo_msg_container->add_message( iv_msg_id     = 'LE_SHP_ODATA_API_OD'
+                                       iv_msg_type   = 'E'
+                                       iv_msg_number = 005 ).
+        RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+          EXPORTING
+            textid            = /iwbep/cx_mgw_busi_exception=>business_error
+            message_container = lo_msg_container.
+    ENDTRY.
+  ENDMETHOD.

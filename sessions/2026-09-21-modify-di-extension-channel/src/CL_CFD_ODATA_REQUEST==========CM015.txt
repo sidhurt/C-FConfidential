@@ -1,0 +1,3 @@
+﻿  METHOD /iwbep/if_mgw_req_entityset~is_strict_handling_requested.
+    RETURN ##NEEDED.
+  ENDMETHOD.

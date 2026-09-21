@@ -1,0 +1,12 @@
+﻿  METHOD format_sequence_number.
+
+    DATA(lv_sequence_number) = iv_sequence_number.
+    CONDENSE lv_sequence_number.
+
+    IF strlen( lv_sequence_number ) LT 2.
+      rv_formated_sequence_number = |0{ lv_sequence_number }|.
+    ELSE.
+      rv_formated_sequence_number = lv_sequence_number.
+    ENDIF.
+
+  ENDMETHOD.

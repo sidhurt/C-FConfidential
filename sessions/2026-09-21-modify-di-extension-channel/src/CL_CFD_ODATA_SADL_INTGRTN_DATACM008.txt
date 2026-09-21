@@ -1,0 +1,16 @@
+﻿  METHOD add_mds_entity_extension.
+
+    DATA(lr_mds_entity_extension) = REF #( mt_mds_entity_extensions[ entity_set_name = is_mds_entity_extension-entity_set_name ] OPTIONAL ).
+    IF lr_mds_entity_extension IS INITIAL.
+      INSERT VALUE #( entity_set_name = is_mds_entity_extension-entity_set_name ) INTO TABLE mt_mds_entity_extensions REFERENCE INTO lr_mds_entity_extension.
+    ENDIF.
+
+    LOOP AT is_mds_entity_extension-properties REFERENCE INTO DATA(lr_property).
+      INSERT lr_property->* INTO TABLE lr_mds_entity_extension->properties.
+    ENDLOOP.
+
+    LOOP AT is_mds_entity_extension-navigation_properties REFERENCE INTO DATA(lr_navigation_property).
+      INSERT lr_navigation_property->* INTO TABLE lr_mds_entity_extension->navigation_properties.
+    ENDLOOP.
+
+  ENDMETHOD.
