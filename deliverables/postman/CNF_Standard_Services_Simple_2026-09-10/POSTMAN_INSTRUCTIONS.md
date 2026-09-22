@@ -15,12 +15,10 @@ Use the Create DI environment with the Create DI collection. Use the Submit MIGO
 
 ## Scope
 
-These collections repeat the last certified standard SAP service calls on QS4/700:
+- **Create DI** through `API_OUTBOUND_DELIVERY_SRV;v=2` for C&F depots. Proven in QS4/700 on 17 Sep 2026 for depot Trade (`ZTRD` → `ZNP`), depot Non-trade (`ZNTR` → `ZLF`) and depot-to-depot STO (`ZNL`), with the same five-field request. Standard SAP already refuses over-quantity, credit-blocked, delivery-blocked and incomplete orders. A billing block does not stop the DI yet (check planned).
+- **Submit MIGO** through `API_MATERIAL_DOCUMENT_SRV`, movement 101 referencing both the STO item and the delivery item. Certified: material document `5007138616/2026` against delivery `9004953150/000010`. This remains a technical baseline; it does not contain the delivery-led MIGO contract or all MIGO validations.
 
-- **Create DI** through `API_OUTBOUND_DELIVERY_SRV;v=2`, STO predecessor only. Certified: delivery `9004953174` from STO `5600084209/000010`.
-- **Submit MIGO** through `API_MATERIAL_DOCUMENT_SRV`, movement 101 referencing both the STO item and the delivery item. Certified: material document `5007138616/2026` against delivery `9004953150/000010`.
-
-They are technical baselines. They do not contain the delivery-led MIGO contract, BAdI or exit logic, shortage handling, C&F validations or duplicate protection. Trade and Non-trade Create DI are not certified.
+Duplicate protection is not in SAP; it belongs to Hybris/CPI.
 
 Every POST creates a real SAP document.
 
@@ -43,27 +41,53 @@ Every POST creates a real SAP document.
 
 ## Create DI
 
-Use a fresh STO item with open delivery quantity.
+### Choosing an order
 
-Set:
+Use an order item at a C&F depot that is open for delivery. Check it in VA03 (sales order) or ME23N (STO) first:
 
-- `shippingPoint`
-- `referenceSDDocument`
-- `referenceSDDocumentItem` — normally `000010`
-- `actualDeliveryQuantity`
-- `deliveryQuantityUnit` — the STO item's unit; there is no default
+- open quantity left, not rejected
+- for a sales order: credit check passed or released, no delivery block, no billing block, order complete (SPI filled on the order)
+- nobody else is using it
 
-Run:
+### Variables
+
+| Variable | Value |
+|---|---|
+| `shippingPoint` | Sales order: the order item's shipping point (the depot). STO: the supplying depot's shipping point |
+| `referenceSDDocument` | Sales order number or STO number |
+| `referenceSDDocumentItem` | Item, e.g. `000010` |
+| `actualDeliveryQuantity` | Default `1` |
+| `deliveryQuantityUnit` | Default `TO` |
+| `expectedOutcome` | `CREATE` for a positive test, `REJECT` for a negative test |
+| `expectedErrorCode` | Optional, for negatives, e.g. `VL/363` |
+
+### Run
 
 1. `01.1 GET CSRF token - Delivery service`. Tests must be green.
-2. Check the resolved body of `01.2` (hover the variables or use the Postman console).
+2. Set the variables above and check the resolved body of `01.2`.
 3. Set `confirmCreateDI` to `YES`.
-4. Send `01.2 POST Create DI - STO deep insert - REAL WRITE` once. Expect HTTP 201 and green tests. `deliveryDocument` is stored.
-5. Run `01.3 GET Created DI header - readback`.
-6. Run `01.4 GET Created DI items - readback`. It reads only the new delivery's items and checks the STO item, quantity and unit.
-7. Verify in `VL03N` and the document flow in `ME23N`.
+4. Send `01.2 POST Create DI - REAL WRITE` once.
+   - `CREATE`: expect HTTP 201 and green tests; `deliveryDocument` is stored.
+   - `REJECT`: expect HTTP 400, no delivery number, and the error code if you set one.
+5. For a created DI, run `01.3` (header and partners) and `01.4` (items). The create response has no items, so these are required.
+6. Verify in `VL03N` and the order's document flow.
 
-Do not add `ReferenceSDDocumentCategory`; SAP marks it not creatable.
+Do not add `ReferenceSDDocumentCategory`; SAP marks it not creatable. In the partner readback, OData codes are English: `SP` = sold-to, `SH` = ship-to.
+
+### Test scenarios
+
+| Scenario | Order to use | `expectedOutcome` | Expected SAP result |
+|---|---|---|---|
+| Depot Trade DI | Open `ZTRD` order item at a depot | `CREATE` | 201, delivery type `ZNP` |
+| Depot Non-trade DI | Open `ZNTR` order item at a depot | `CREATE` | 201, delivery type `ZLF` |
+| Depot STO DI | Open STO item supplied by a depot | `CREATE` | 201, delivery type `ZNL` |
+| Quantity above open | Any open order; quantity higher than what is left | `REJECT` (`VL/363`) | 400 "Delivery quantity is greater than target quantity" |
+| Credit-blocked order | Order that failed credit check | `REJECT` (`VL/060`) | 400 "Order blocked for delivery as a result of credit check" |
+| Delivery-blocked order | Order with a header delivery block | `REJECT` | 400; message names the delivery block |
+| Incomplete order | Order missing SPI | `REJECT` (`VL/096`) | 400 "Order is incomplete – maintain the order" |
+| Billing-blocked order | Credit-OK order with a billing block | `CREATE` today | 201 — known gap until the billing-block check is built |
+
+Saving an order in VA02 (for example to set a block) re-runs the credit check. For block tests, use a customer without overdue items and re-check the order's credit status after saving.
 
 ## Submit MIGO
 
@@ -108,7 +132,8 @@ Run:
 
 ## Do not reuse
 
-- STO `5600084209/000010`, delivery `9004953174` (Create DI)
+- STO `5600084209/000010`, delivery `9004953174` (Create DI, factory STO)
+- Orders `5284403`, `5284692`, `5284664`, `5284465`, `5284415`, `5284812`; STO `5600083801`; deliveries `9004953534`, `9004953537`, `9004953538`, `9004953540` (Create DI depot tests, 17 Sep 2026)
 - PO `5600084239/00010`, material document `5007138597` (Submit MIGO, PO-only)
 - Delivery `9004953150/000010`, material document `5007138616` (Submit MIGO, PO+delivery)
 

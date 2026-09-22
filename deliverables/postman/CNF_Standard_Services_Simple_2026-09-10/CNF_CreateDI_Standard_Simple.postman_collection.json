@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "5a65c83c-a07e-49c2-85aa-a08699e71f69",
-    "name": "CNF Create DI - Standard SAP Service - STO Baseline",
-    "description": "Create DI through the standard API_OUTBOUND_DELIVERY_SRV;v=2 deep insert, exactly as certified on QS4/700 (delivery 9004953174 from STO 5600084209/000010, 1 TO, HTTP 201, OData readback and LIKP/LIPS persistence confirmed). SAP runs BAPI_OUTB_DELIVERY_CREATE_STO underneath.\n\nScope: STO predecessor only. Trade and Non-trade predecessors are not certified. No C&F business rules or duplicate protection are applied.\n\nSafety controls in this collection:\n- The POST is blocked unless confirmCreateDI=YES. The switch is reset to NO before the request is sent, so a second click is blocked.\n- The POST is blocked if any payload variable or the CSRF token is empty.\n- deliveryDocument is cleared before the POST, so a failed POST can never be followed by a readback of an older delivery.\n- Tests fail on anything other than the expected status and document key.\n\nUsed evidence - do not reuse: STO 5600084209/000010 and delivery 9004953174.",
+    "name": "CNF Create DI - Standard SAP Service - Depot",
+    "description": "Create DI for C&F depots through SAP's standard API_OUTBOUND_DELIVERY_SRV;v=2 deep insert.\n\nProven in QS4/700 on 17 Sep 2026 for all three depot flows with the same five-field request:\n- Depot Trade: sales order type ZTRD -> delivery type ZNP\n- Depot Non-trade: sales order type ZNTR -> delivery type ZLF\n- Depot to depot STO -> delivery type ZNL\n\nStandard SAP refuses a DI (HTTP 400, nothing created) when:\n- the quantity is above the open order quantity (VL/363)\n- the order failed credit check (VL/060)\n- the order has a delivery block\n- the order is incomplete, e.g. SPI missing on the order (VL/096)\n\nKnown gap: a billing block on the order does NOT stop the DI today. A BAdI check is planned.\n\nSafety controls in this collection:\n- The POST is blocked unless confirmCreateDI=YES. The switch resets to NO before sending, so every POST needs a fresh YES.\n- The POST is blocked if the CSRF token or any payload variable is empty.\n- deliveryDocument is cleared before the POST, so a failed POST can never be followed by a readback of an older delivery.\n- expectedOutcome=CREATE expects 201 and a delivery number; expectedOutcome=REJECT expects 400 and, if expectedErrorCode is set, that SAP error code.\n\nDocuments already used in testing - do not reuse: orders 5284403, 5284692, 5284664, 5284465, 5284415, 5284812; STO 5600083801; deliveries 9004953534, 9004953537, 9004953538, 9004953540.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -69,15 +69,15 @@
                 }
               ]
             },
-            "description": "HTTP 200 with EDMX metadata confirms authentication and routing. The ;v=2 suffix is mandatory; without it the request reaches a different service version."
+            "description": "HTTP 200 with EDMX metadata confirms authentication and routing. The ;v=2 suffix is mandatory; without it Gateway returns 403 /IWFND/MED/170."
           },
           "response": []
         }
       ]
     },
     {
-      "name": "01 - Create DI - standard outbound delivery service",
-      "description": "Run 01.1, set confirmCreateDI=YES, run 01.2 once, then run 01.3 and 01.4. A 201 response can carry an empty expanded item array, so both readbacks are required before the call counts as verified.",
+      "name": "01 - Create DI - depot Trade, Non-trade or STO",
+      "description": "Run 01.1, set the order variables and expectedOutcome, set confirmCreateDI=YES, run 01.2 once. For a created DI, run 01.3 and 01.4. The create response carries an empty item array, so the readbacks are required before the DI counts as verified.",
       "item": [
         {
           "name": "01.1 GET CSRF token - Delivery service",
@@ -123,12 +123,12 @@
                 }
               ]
             },
-            "description": "Fetches the CSRF token and the SAP session cookies it is bound to. Keep Postman's cookie jar enabled. Fetch the token from this delivery service, not from the material document service."
+            "description": "Fetches the CSRF token and the SAP session cookies it is bound to. Keep Postman's cookie jar enabled."
           },
           "response": []
         },
         {
-          "name": "01.2 POST Create DI - STO deep insert - REAL WRITE",
+          "name": "01.2 POST Create DI - REAL WRITE",
           "event": [
             {
               "listen": "prerequest",
@@ -138,12 +138,16 @@
                   "const confirmation = pm.environment.get('confirmCreateDI');",
                   "pm.environment.set('confirmCreateDI', 'NO');",
                   "if (confirmation !== 'YES') {",
-                  "  throw new Error('Create DI blocked. Set confirmCreateDI=YES only after validating a fresh open STO item. The switch resets to NO on every attempt.');",
+                  "  throw new Error('Create DI blocked. Set confirmCreateDI=YES only after checking the order in VA03/ME23N. The switch resets to NO on every attempt.');",
                   "}",
                   "const required = ['csrf', 'shippingPoint', 'referenceSDDocument', 'referenceSDDocumentItem', 'actualDeliveryQuantity', 'deliveryQuantityUnit'];",
                   "const missing = required.filter((key) => !pm.environment.get(key));",
                   "if (missing.length) {",
                   "  throw new Error('Create DI blocked. Missing environment variables: ' + missing.join(', '));",
+                  "}",
+                  "const outcome = (pm.environment.get('expectedOutcome') || 'CREATE').toUpperCase();",
+                  "if (!['CREATE', 'REJECT'].includes(outcome)) {",
+                  "  throw new Error('expectedOutcome must be CREATE or REJECT.');",
                   "}",
                   "pm.environment.set('deliveryDocument', '');"
                 ]
@@ -154,18 +158,27 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Create DI returned 201 Created', () => pm.response.to.have.status(201));",
-                  "let delivery;",
-                  "try {",
-                  "  const payload = pm.response.json();",
-                  "  delivery = payload?.d?.DeliveryDocument ?? payload?.DeliveryDocument;",
-                  "} catch (error) {",
-                  "  console.warn('Response was not JSON. Review it manually.');",
-                  "}",
-                  "pm.test('SAP returned a delivery document number', () => pm.expect(delivery).to.match(/^\\d+$/));",
-                  "if (delivery) {",
-                  "  pm.environment.set('deliveryDocument', delivery);",
-                  "  console.log('Created delivery:', delivery);",
+                  "const outcome = (pm.environment.get('expectedOutcome') || 'CREATE').toUpperCase();",
+                  "let body = {};",
+                  "try { body = pm.response.json(); } catch (error) { console.warn('Response was not JSON. Review it manually.'); }",
+                  "if (outcome === 'CREATE') {",
+                  "  pm.test('Create DI returned 201 Created', () => pm.response.to.have.status(201));",
+                  "  const delivery = body?.d?.DeliveryDocument;",
+                  "  pm.test('SAP returned a delivery document number', () => pm.expect(delivery).to.match(/^\\d+$/));",
+                  "  if (delivery) {",
+                  "    pm.environment.set('deliveryDocument', delivery);",
+                  "    console.log('Created delivery:', delivery, 'type', body.d.DeliveryDocumentType);",
+                  "  }",
+                  "} else {",
+                  "  pm.test('SAP refused the DI with 400', () => pm.response.to.have.status(400));",
+                  "  const code = body?.error?.code;",
+                  "  const message = body?.error?.message?.value;",
+                  "  console.log('SAP error:', code, message);",
+                  "  const expected = pm.environment.get('expectedErrorCode');",
+                  "  if (expected) {",
+                  "    pm.test('SAP error code is ' + expected, () => pm.expect(code).to.eql(expected));",
+                  "  }",
+                  "  pm.test('No delivery number returned', () => pm.expect(body?.d?.DeliveryDocument).to.be.undefined);",
                   "}"
                 ]
               }
@@ -212,12 +225,12 @@
                 }
               ]
             },
-            "description": "REAL SAP WRITE. Creates an outbound delivery.\n\nPayload is exactly the certified five fields. SAP derives delivery type, plants, route, customer and movement type from the STO.\n\nDo not add ReferenceSDDocumentCategory: live QS4 metadata marks it sap:creatable=false.\n\nDo not resend after a timeout or lost response. Search VL06O / LIPS by STO item first."
+            "description": "REAL SAP WRITE when SAP accepts the request.\n\nThe same request works for all three depot flows:\n- Trade or Non-trade: referenceSDDocument = sales order, item e.g. 000010, shippingPoint = the order item's shipping point (the depot)\n- STO: referenceSDDocument = STO number, item e.g. 000010, shippingPoint = the supplying depot's shipping point\n\nSAP derives delivery type, route, partners, Incoterm and SPI from the order. Do not send ReferenceSDDocumentCategory; SAP marks it not creatable.\n\nDo not resend after a timeout or lost response. Check the order's document flow (VA03 / ME23N) for a new delivery first."
           },
           "response": []
         },
         {
-          "name": "01.3 GET Created DI header - readback",
+          "name": "01.3 GET Created DI header and partners - readback",
           "event": [
             {
               "listen": "prerequest",
@@ -236,10 +249,10 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('Delivery header readback returned 200', () => pm.response.to.have.status(200));",
-                  "const payload = pm.response.json();",
-                  "const header = payload?.d ?? payload;",
+                  "const header = pm.response.json()?.d ?? {};",
                   "pm.test('Readback matches the created delivery', () => pm.expect(header.DeliveryDocument).to.eql(pm.environment.get('deliveryDocument')));",
-                  "pm.test('Shipping point matches the request', () => pm.expect(header.ShippingPoint).to.eql(pm.environment.get('shippingPoint')));"
+                  "pm.test('Shipping point matches the request', () => pm.expect(header.ShippingPoint).to.eql(pm.environment.get('shippingPoint')));",
+                  "console.log('Delivery type:', header.DeliveryDocumentType, '| SPI:', header.SpecialProcessingCode, '| Incoterm:', header.IncotermsClassification);"
                 ]
               }
             }
@@ -253,7 +266,7 @@
               }
             ],
             "url": {
-              "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader('{{deliveryDocument}}')?$format=json&sap-client={{sap-client}}",
+              "raw": "{{base}}/API_OUTBOUND_DELIVERY_SRV;v=2/A_OutbDeliveryHeader('{{deliveryDocument}}')?$expand=to_DeliveryDocumentPartner&$format=json&sap-client={{sap-client}}",
               "host": [
                 "{{base}}"
               ],
@@ -262,6 +275,10 @@
                 "A_OutbDeliveryHeader('{{deliveryDocument}}')"
               ],
               "query": [
+                {
+                  "key": "$expand",
+                  "value": "to_DeliveryDocumentPartner"
+                },
                 {
                   "key": "$format",
                   "value": "json"
@@ -272,7 +289,7 @@
                 }
               ]
             },
-            "description": "Independent readback of the created delivery header. Confirm in VL03N as well."
+            "description": "Independent readback of the created delivery header and partners. Note: OData partner codes are English: SP = sold-to, SH = ship-to. Confirm in VL03N as well."
           },
           "response": []
         },
@@ -300,7 +317,7 @@
                   "const items = pm.response.json()?.d?.results ?? [];",
                   "pm.test('Created delivery has at least one item', () => pm.expect(items.length).to.be.above(0));",
                   "const item = items.find((row) => unpad(row.ReferenceSDDocument) === unpad(pm.environment.get('referenceSDDocument')) && unpad(row.ReferenceSDDocumentItem) === unpad(pm.environment.get('referenceSDDocumentItem')));",
-                  "pm.test('An item references the requested STO item', () => pm.expect(item).to.not.be.undefined);",
+                  "pm.test('An item references the requested order item', () => pm.expect(item).to.not.be.undefined);",
                   "if (item) {",
                   "  pm.test('Delivered quantity matches the request', () => pm.expect(Number(item.ActualDeliveryQuantity)).to.eql(Number(pm.environment.get('actualDeliveryQuantity'))));",
                   "  pm.test('Delivery unit matches the request', () => pm.expect(item.DeliveryQuantityUnit).to.eql(pm.environment.get('deliveryQuantityUnit')));",
@@ -341,7 +358,7 @@
                 }
               ]
             },
-            "description": "Reads only the items of the delivery just created, then checks that one of them references the requested STO item with the requested quantity and unit. Filtering by the STO item alone would also return earlier partial deliveries. Confirm the document flow in ME23N."
+            "description": "Reads only the items of the delivery just created and checks the order item, quantity and unit."
           },
           "response": []
         }
